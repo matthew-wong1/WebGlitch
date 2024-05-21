@@ -5,9 +5,19 @@
     {
       "methodName": "requestAdapter",
       "type": "object",
+      "declaration": true,
+      "async": true,
+      "returnType": "GPUAdapter",
       "properties": [
         {
-          "powerPreference": {"type": "string", "enum":  ["low-power", "high-performance"]}
+          "powerPreference": {
+            "type": "string",
+            "optional": true,
+            "enum": [
+              "low-power",
+              "high-performance"
+            ]
+          }
         }
       ]
     }

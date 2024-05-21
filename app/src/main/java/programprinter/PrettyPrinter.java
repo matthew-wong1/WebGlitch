@@ -1,3 +1,3 @@
-package webglitch.jsprinter;
+package programprinter;
 
 public class PrettyPrinter {}

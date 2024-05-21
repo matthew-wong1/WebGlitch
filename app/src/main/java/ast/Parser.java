@@ -60,8 +60,6 @@ public class Parser {
               rootASTNode = newRootNode;
             }
 
-            System.out.println(rootASTNode.toString());
-
             return rootASTNode;
         }
 

@@ -1,3 +1,3 @@
-package org.example;
+package generator;
 
 public class ParamGenerator {}

@@ -1,0 +1,15 @@
+{
+  "objectType": "GPU",
+  "name": "navigator.gpu",
+  "methods": [
+    {
+      "methodName": "requestAdapter",
+      "type": "object",
+      "properties": [
+        {
+          "powerPreference": {"type": "string", "enum":  ["low-power", "high-performance"]}
+        }
+      ]
+    }
+  ]
+}

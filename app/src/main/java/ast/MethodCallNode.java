@@ -1,4 +1,4 @@
-package webglitch.ast;
+package ast;
 
 import java.util.stream.Collectors;
 

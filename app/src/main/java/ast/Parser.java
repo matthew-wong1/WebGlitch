@@ -1,4 +1,4 @@
-package webglitch.ast;
+package ast;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

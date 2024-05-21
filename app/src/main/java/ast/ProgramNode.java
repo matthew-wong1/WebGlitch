@@ -1,4 +1,4 @@
-package webglitch.ast;
+package ast;
 
 public class ProgramNode extends ASTNode {
 

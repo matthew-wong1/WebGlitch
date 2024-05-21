@@ -1,4 +1,4 @@
-package webglitch.ast;
+package ast;
 
 import org.apache.commons.text.RandomStringGenerator;
 

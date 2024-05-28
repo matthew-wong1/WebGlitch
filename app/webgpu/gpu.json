@@ -1,5 +1,5 @@
 {
-  "objectType": "GPU",
+  "objectType": "gpu",
   "name": "navigator.gpu",
   "methods": [
     {

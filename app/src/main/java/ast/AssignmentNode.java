@@ -12,16 +12,14 @@ public class AssignmentNode extends ASTNode {
 
     private final String varName;
 
-    private static final int MIN_VAR_LENGTH = 5;
-    private static final int MAX_VAR_LENGTH = 20;
-    private static final char[][] ALLOWED_CHARS = {{'a','z'},{'A','Z'}};
+
 
     // Kind means type of declaration eg var, let, const
-    public AssignmentNode(String kind, boolean isAsync) {
+    public AssignmentNode(String kind, boolean isAsync, String varName) {
         super(operator);
         this.kind = kind;
         this.isAsync = isAsync;
-        this.varName = new RandomStringGenerator.Builder().withinRange(ALLOWED_CHARS).get().generate(MIN_VAR_LENGTH, MAX_VAR_LENGTH);
+        this.varName = varName;
     }
 
     @Override

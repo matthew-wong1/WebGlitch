@@ -2,6 +2,8 @@ package ast;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import generator.Generator;
+import org.apache.commons.text.RandomStringGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,16 +12,24 @@ import java.util.Random;
 public class Parser {
 
         private static final Random rand = new Random();
+        private static final int MIN_VAR_LENGTH = 5;
+        private static final int MAX_VAR_LENGTH = 20;
+        private static final char[][] ALLOWED_CHARS = {{'a','z'},{'A','Z'}};
+        private final Generator generator;
 
-        public static void main(String[] args) {
-
-            try {
-                parseAndBuildAST("./app/webgpu/gpu.json");
-            } catch(IOException e) {
-                System.out.println("Failed to find file: " + e.getMessage());
-            }
+        public Parser(Generator generator) {
+            this.generator = generator;
         }
-        public static ASTNode parseAndBuildAST(String filePath) throws IOException {
+
+    //        public static void main(String[] args) {
+//
+//            try {
+//                parseAndBuildAST("./app/webgpu/gpu.json");
+//            } catch(IOException e) {
+//                System.out.println("Failed to find file: " + e.getMessage());
+//            }
+//        }
+        public ASTNode parseAndBuildAST(String filePath) throws IOException {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootJsonNode = mapper.readTree(new File(filePath));
             JsonNode methodsJsonNode = rootJsonNode.get("methods");
@@ -55,9 +65,12 @@ public class Parser {
             // Need to update this to check which object types are available
             // and then use that as root node
             if (methodJsonNode.has("declaration")) {
-              ASTNode newRootNode = new AssignmentNode("const", methodJsonNode.get("async").asBoolean());
+                String varName = new RandomStringGenerator.Builder().withinRange(ALLOWED_CHARS).get().generate(MIN_VAR_LENGTH, MAX_VAR_LENGTH);
+              ASTNode newRootNode = new AssignmentNode("const", methodJsonNode.get("async").asBoolean(), varName);
               newRootNode.addNode(rootASTNode);
               rootASTNode = newRootNode;
+
+                generator.addToSymbolTable(rootJsonNode.get("objectType").asText(), varName);
             }
 
             return rootASTNode;

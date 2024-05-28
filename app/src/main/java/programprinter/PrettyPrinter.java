@@ -42,6 +42,7 @@ public class PrettyPrinter {
 
     try {
       this.formatJavaScript(pathName.replace('/', File.separatorChar));
+
     } catch (IOException | InterruptedException e) {
       System.out.println("Error formatting JavaScript");
       e.printStackTrace();
@@ -50,10 +51,11 @@ public class PrettyPrinter {
 
   public void formatJavaScript(String filePath) throws IOException, InterruptedException {
     ProcessBuilder builder = new ProcessBuilder();
-    String command = "npx prettier --write " + filePath;
+    String command = "npx js-beautify -r " + filePath;
 
     if (System.getProperty("os.name").toLowerCase().contains("win")) {
       builder.command("cmd", "/c", command);
+      System.out.println(command);
     } else {
       builder.command("bash", "-c", command);
     }

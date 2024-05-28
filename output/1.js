@@ -21,20 +21,20 @@ async function main() {
   canvas.height = canvas.clientHeight * devicePixelRatio;
   const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
 
-  const agQtuBvwk = await navigator.gpu.requestAdapter({
+  const FcIQSROWpdmIdkIkQ = await navigator.gpu.requestAdapter({
     powerPreference: "high-performance",
   });
-  const muWBeDlaNKz = await navigator.gpu.requestAdapter({
+  const VcjnrcTiNfy = await navigator.gpu.requestAdapter({
     powerPreference: "high-performance",
   });
-  const UeYSROxi = await navigator.gpu.requestAdapter({
+  const sMZmoZdcqVbGVSuz = await navigator.gpu.requestAdapter({
     powerPreference: "high-performance",
   });
-  const eiiJBHUBsOAIFg = await navigator.gpu.requestAdapter({
-    powerPreference: "low-power",
+  const jlBBuwYjxyUERe = await navigator.gpu.requestAdapter({
+    powerPreference: "high-performance",
   });
-  const kkHbrSDlkONvzS = await navigator.gpu.requestAdapter({
-    powerPreference: "low-power",
+  const doChhhRs = await navigator.gpu.requestAdapter({
+    powerPreference: "high-performance",
   });
 
   await browser.close();

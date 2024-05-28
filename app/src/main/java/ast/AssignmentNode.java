@@ -14,7 +14,6 @@ public class AssignmentNode extends ASTNode {
 
   // Kind means type of declaration eg var, let, const
   public AssignmentNode(String kind, boolean isAsync, String varName) {
-    super(operator);
     this.kind = kind;
     this.isAsync = isAsync;
     this.varName = varName;

@@ -5,9 +5,10 @@ import java.util.stream.Collectors;
 public class MethodCallNode extends ASTNode {
 
   private final boolean jsonParams;
+  private final String callName;
 
   public MethodCallNode(String receiver, String methodName, boolean jsonParams) {
-    super(receiver + "." + methodName);
+    this.callName = receiver + "." + methodName;
     this.jsonParams = jsonParams;
   }
 
@@ -23,6 +24,6 @@ public class MethodCallNode extends ASTNode {
       parameters = subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(delimiter));
     }
 
-    return this.name + "(" + parameters + ");";
+    return this.callName + "(" + parameters + ");";
   }
 }

@@ -14,7 +14,6 @@ public class ParameterNode extends ASTNode {
 
   public ParameterNode(String fieldName, JsonNode details, boolean jsonParams) {
     // Parse details
-    super("DEPRECATED");
     this.fieldName = fieldName;
     this.jsonParams = jsonParams;
 

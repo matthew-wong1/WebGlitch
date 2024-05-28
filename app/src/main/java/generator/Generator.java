@@ -27,7 +27,7 @@ public class Generator {
     }
 
     public void generateProgram(int maxCalls, int fileNum) {
-        ASTNode root = new ProgramNode("root");
+        ASTNode root = new ProgramNode();
 
         // But 1 class could have more methods but equally likely that object is selected
         File jsonDirectory = new File(JSON_DIRECTORY_PATH);

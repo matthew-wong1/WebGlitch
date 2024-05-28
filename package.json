@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "js-beautify": "^1.15.1",
     "prettier": "^3.2.5",
     "puppeteer": "^22.10.0"
   }

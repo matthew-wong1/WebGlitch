@@ -1,24 +1,54 @@
 package generator;
 
+import org.apache.commons.cli.*;
+
 import static java.lang.Integer.parseInt;
 
 public class WebGlitch {
 
-  private static final Generator generator = new Generator();
+  private static final String DEFAULT_MAX_CALLS = "1000";
 
   public static void main(String[] args) {
-    // Number of files to generate. Max num lines. Allow optional params (default=true)
+      Options options = new Options();
+      Option numFiles = new Option("n", "num-files", true, "Number of files to generate");
+      Option maxLines = new Option("l", "max-lines", true, "Maximum number of lines per file");
+      Option allowOptional = new Option("o", "allow-optional", false, "Allow optional parameters");
 
-    if (args.length != 2) {
-      System.out.println("Usage: ./webglitch <no. files> <max API calls>");
-      System.exit(1);
-    }
+      numFiles.setType(Integer.class);
+      numFiles.setRequired(true);
 
-    int numPrograms = parseInt(args[0]);
-    int maxCalls = parseInt(args[1]);
+      maxLines.setType(Integer.class);
+      maxLines.setRequired(false);
+
+      allowOptional.setType(Boolean.class);
+      allowOptional.setRequired(false);
+
+      options.addOption(numFiles);
+      options.addOption(maxLines);
+      options.addOption(allowOptional);
+
+      CommandLineParser parser = new DefaultParser();
+      CommandLine cmd = null;
+
+      try {
+          cmd = parser.parse(options, args);
+      } catch (ParseException e) {
+          System.out.println(e.getMessage());
+          HelpFormatter formatter = new HelpFormatter();
+          formatter.printHelp("webglitch", options);
+          System.exit(1);
+      }
+
+      int numPrograms = parseInt(cmd.getOptionValue("n"));
+      int maxCalls = parseInt(cmd.getOptionValue("l", DEFAULT_MAX_CALLS));
+      boolean allowOptionalParams = cmd.hasOption("o");
+
+      Generator generator = new Generator(maxCalls, allowOptionalParams);
+
+
 
     for (int i = 0; i < numPrograms; i++) {
-      generator.generateProgram(maxCalls, i);
+      generator.generateProgram(i);
     }
   }
 }

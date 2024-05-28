@@ -20,13 +20,20 @@ public class Generator {
     private final Map<String, List<String>> symbolTable = new HashMap<>();
     private final String JSON_DIRECTORY_PATH = "./app/webgpu/";
     private final Parser parser = new Parser(this);
+    private final int maxCalls;
+    private final boolean allowOptParams;
 
-    public static void main(String[] args) {
-        Generator generator = new Generator();
-        generator.generateProgram(5, 1);
+    public Generator(int maxCalls, boolean allowOptParams) {
+        this.maxCalls = maxCalls;
+        this.allowOptParams = allowOptParams;
     }
 
-    public void generateProgram(int maxCalls, int fileNum) {
+    public static void main(String[] args) {
+        Generator generator = new Generator(5, false);
+        generator.generateProgram(1);
+    }
+
+    public void generateProgram(int fileNum) {
         ASTNode root = new ProgramNode();
 
         // But 1 class could have more methods but equally likely that object is selected

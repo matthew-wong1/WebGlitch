@@ -12,13 +12,13 @@ import java.util.*;
 
 public class Generator {
 
+    private static final Random rand = new Random();
+    private static final PrettyPrinter printer = new PrettyPrinter();
     // Hash map to keep track of state
     // Key: Type of object eg adapter, device
     // Value: Reference to that objet that currently exists
     private final Map<String, List<String>> symbolTable = new HashMap<>();
     private final String JSON_DIRECTORY_PATH = "./app/webgpu/";
-    private static final Random rand = new Random();
-    private static final PrettyPrinter printer = new PrettyPrinter();
     private final Parser parser = new Parser(this);
 
     public static void main(String[] args) {

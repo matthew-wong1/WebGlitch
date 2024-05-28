@@ -1,5 +1,5 @@
 # WebGlitch
 
 ## Dependencies:
-1. nodeJS, Prettier (installed globally)
+1. nodeJS, js-beautify (installed globally)
 2. Gradle

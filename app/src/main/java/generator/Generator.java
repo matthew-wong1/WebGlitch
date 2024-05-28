@@ -8,16 +8,19 @@ import programprinter.PrettyPrinter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
+import java.util.*;
 
 public class Generator {
 
     // Hash map to keep track of state
     // Key: Type of object eg adapter, device
     // Value: Reference to that objet that currently exists
+    private final Map<String, List<String>> symbolTable = new HashMap<>();
     private final String JSON_DIRECTORY_PATH = "./app/webgpu/";
     private static final Random rand = new Random();
     private static final PrettyPrinter printer = new PrettyPrinter();
+    private final Parser parser = new Parser(this);
+
     public static void main(String[] args) {
         Generator generator = new Generator();
         generator.generateProgram(5, 1);
@@ -36,13 +39,21 @@ public class Generator {
             String fileName = apiCalls[randIdx].getName();
 
             try {
-                root.addNode(Parser.parseAndBuildAST(JSON_DIRECTORY_PATH + fileName));
+                root.addNode(parser.parseAndBuildAST(JSON_DIRECTORY_PATH + fileName));
             } catch (IOException e) {
                 System.out.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
             }
         }
 
         printer.printToFile(root, fileNum);
+    }
+
+    public void addToSymbolTable(String objectType, String variableName) {
+        if (!symbolTable.containsKey(objectType)) {
+            symbolTable.put(objectType, new ArrayList<>());
+        }
+
+        symbolTable.get(objectType).add(variableName);
     }
 
 }

@@ -19,6 +19,10 @@ public class AssignmentNode extends ASTNode {
     this.varName = varName;
   }
 
+  public String getVarName() {
+    return varName;
+  }
+  
   @Override
   public String toString() {
     String assignment = kind + " " + varName + " " + operator + " ";

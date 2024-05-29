@@ -3,6 +3,7 @@ package ast;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
+import generator.ParamGenerator;
 import org.apache.commons.text.RandomStringGenerator;
 
 import java.io.File;
@@ -12,9 +13,7 @@ import java.util.Random;
 public class Parser {
 
   private static final Random rand = new Random();
-  private static final int MIN_VAR_LENGTH = 5;
-  private static final int MAX_VAR_LENGTH = 20;
-  private static final char[][] ALLOWED_CHARS = {{'a', 'z'}, {'A', 'Z'}};
+
   private final Generator generator;
 
   public Parser(Generator generator) {
@@ -29,7 +28,9 @@ public class Parser {
   //                System.out.println("Failed to find file: " + e.getMessage());
   //            }
   //        }
-  public ASTNode parseAndBuildAST(String filePath) throws IOException {
+  public ASTNode parseAndBuildRandMethod(String filePath) throws IOException {
+    
+    // Open file
     ObjectMapper mapper = new ObjectMapper();
     JsonNode rootJsonNode = mapper.readTree(new File(filePath));
     JsonNode methodsJsonNode = rootJsonNode.get("methods");
@@ -38,47 +39,70 @@ public class Parser {
     int randIdx = rand.nextInt(methodsJsonNode.size());
     JsonNode methodJsonNode = methodsJsonNode.get(randIdx);
 
-    // construct method call first as root AST node. CHANGE THIS LATER
-    String receiver = rootJsonNode.get("name").asText();
-    String methodName = methodJsonNode.get("methodName").asText();
-    boolean jsonParams = methodJsonNode.get("type").asText().equals("object");
-    ASTNode rootASTNode = new MethodCallNode(receiver, methodName, jsonParams);
+    String receiverType = rootJsonNode.get("objectType").asText();
+    String receiver = generator.determineReceiver(receiverType, rootJsonNode.has("requirements"));
+    
+    // Check if receiver exists
 
-    JsonNode paramsJsonNode = methodJsonNode.get("properties");
 
-    // Add all params to method
-    for (JsonNode param : paramsJsonNode) {
-      ASTNode finalRootASTNode = rootASTNode;
-      param
-          .fieldNames()
-          .forEachRemaining(
-              fieldName -> {
-                JsonNode paramDetails = param.get(fieldName);
+    String methodName = methodJsonNode.get("methodName").asText(); // Required field
+    boolean jsonParams = methodJsonNode.path("paramType").asText("csv").equals("object");
+    JsonNode paramsJsonNode = methodJsonNode.path("properties");
+    ASTNode rootASTNode = new MethodCallNode(receiver, methodName, jsonParams, paramsJsonNode);
 
-                //                    if (paramDetails.has("optional")) {
-                //
-                //                    }
 
-                finalRootASTNode.addNode(new ParameterNode(fieldName, paramDetails, jsonParams));
-              });
-    }
-
-    // Need to update this to check which object types are available
-    // and then use that as root node
+    // Extra syntax for declarations
     if (methodJsonNode.has("declaration")) {
-      String varName =
-          new RandomStringGenerator.Builder()
-              .withinRange(ALLOWED_CHARS)
-              .get()
-              .generate(MIN_VAR_LENGTH, MAX_VAR_LENGTH);
-      ASTNode newRootNode =
-          new AssignmentNode("const", methodJsonNode.get("async").asBoolean(), varName);
-      newRootNode.addNode(rootASTNode);
-      rootASTNode = newRootNode;
-
-      generator.addToSymbolTable(rootJsonNode.get("objectType").asText(), varName);
+      rootASTNode = generateDeclaration(methodJsonNode, rootASTNode, methodJsonNode.get("returnType").asText());
     }
 
     return rootASTNode;
   }
+
+  private ASTNode generateDeclaration(JsonNode methodJsonNode, ASTNode rootASTNode, String returnType) {
+    String varName = ParamGenerator.generateRandVarName();
+
+    // Create the ASTNode 
+    ASTNode newRootNode =
+        new AssignmentNode("const", methodJsonNode.get("async").asBoolean(), varName);
+    newRootNode.addNode(rootASTNode);
+
+    generator.addToSymbolTable(returnType, varName);
+
+    return newRootNode;
+  }
+
+  public ASTNode parseAndBuildMethod(String filePath, String methodName, String currentReceiverType, boolean isDeclaration) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode rootJsonNode = mapper.readTree(new File(filePath));
+
+    JsonNode methodsJsonNode = rootJsonNode.get("methods");
+
+    JsonNode methodJsonNode = null;
+
+    for (JsonNode methodNode : methodsJsonNode) {
+      if (methodNode.get("methodName").asText().equals(methodName)) {
+        methodJsonNode = methodNode;
+      }
+    }
+
+    if (methodJsonNode == null) {
+      System.out.println("Error, the method " + methodName + " does not exist in path " + filePath);
+      System.exit(1);
+    }
+
+    String parentReceiverType = rootJsonNode.get("objectType").asText();
+
+    boolean jsonParams = methodJsonNode.path("paramType").asText("csv").equals("object");
+    JsonNode paramsJsonNode = methodJsonNode.path("properties");
+    ASTNode rootASTNode = new MethodCallNode(generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements")), methodName, jsonParams, paramsJsonNode);
+
+    if (isDeclaration) {
+      return generateDeclaration(methodJsonNode, rootASTNode, currentReceiverType);
+    }
+
+    return rootASTNode;
+  }
+
+
 }

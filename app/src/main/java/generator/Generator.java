@@ -1,13 +1,13 @@
 package generator;
 
-import ast.ASTNode;
-import ast.Parser;
-import ast.ProgramNode;
+import ast.*;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import programprinter.PrettyPrinter;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class Generator {
@@ -18,14 +18,65 @@ public class Generator {
     // Key: Type of object eg adapter, device
     // Value: Reference to that objet that currently exists
     private final Map<String, List<String>> symbolTable = new HashMap<>();
+    private final Map<String, Map<String, String>> receiverInits = new HashMap<>();
+    private final Map<String, Double> callProbabilities = new HashMap<>();
+
     private final String JSON_DIRECTORY_PATH = "./app/webgpu/";
     private final Parser parser = new Parser(this);
     private final int maxCalls;
     private final boolean allowOptParams;
+    private ASTNode programNode;
+
+    // ASSIGN PROBABILTIES BY FIRST LOADING ALL METHODS FROM ALL FILES INTO SOME MAP, INITIALIZE PROBABILITIES
+    // EG MAP OF STRING TO DOUBLE
 
     public Generator(int maxCalls, boolean allowOptParams) {
         this.maxCalls = maxCalls;
         this.allowOptParams = allowOptParams;
+
+        try {
+            this.initializeReceiverInitsAndCallProbs();
+        } catch (IOException e) {
+            System.err.println("Error initializing call probabilities and receiver init methods: " + e.getMessage());
+        }
+
+    }
+
+    private void initializeReceiverInitsAndCallProbs() throws IOException {
+        File jsonDirectory = new File(JSON_DIRECTORY_PATH);
+        File[] apiInterfaces = jsonDirectory.listFiles();
+        assert apiInterfaces != null;
+
+        // Get all the names of the interfaces
+//        List<String> interfaceNames = Arrays.stream(apiInterfaces).map(file -> file.getName().substring(0, file.getName().lastIndexOf('.'))).toList();
+//        System.out.println(interfaceNames);
+
+        for (File apiInterface : apiInterfaces) {
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootJsonNode = mapper.readTree(new File(JSON_DIRECTORY_PATH + apiInterface.getName()));
+            JsonNode methodsJsonNode = rootJsonNode.get("methods");
+
+            for (JsonNode methodJsonNode : methodsJsonNode) {
+
+                String returnType = methodJsonNode.get("returnType").asText();
+                // Only works once have all the files because your return type is going to be another file name
+//                if (interfaceNames.contains(methodName)) {
+//                    System.out.println(methodName);
+//                }
+
+                if (!returnType.equals("string")) {
+                    String methodName = methodJsonNode.get("methodName").asText();
+                    Map<String, String> initInfo = new HashMap<>();
+                    initInfo.put("fileName", apiInterface.getName());
+                    initInfo.put("methodName", methodName);
+                    receiverInits.put(returnType, initInfo);
+
+                }
+
+            }
+
+        }
     }
 
     public static void main(String[] args) {
@@ -34,33 +85,71 @@ public class Generator {
     }
 
     public void generateProgram(int fileNum) {
-        ASTNode root = new ProgramNode();
+        this.programNode = new ProgramNode();
 
         // But 1 class could have more methods but equally likely that object is selected
         File jsonDirectory = new File(JSON_DIRECTORY_PATH);
-        File[] apiCalls = jsonDirectory.listFiles();
+        File[] apiInterfaces = jsonDirectory.listFiles();
 
         for (int i = 0; i < maxCalls; i++) {
-            assert apiCalls != null;
-            int randIdx = rand.nextInt(apiCalls.length);
-            String fileName = apiCalls[randIdx].getName();
+            assert apiInterfaces != null;
+            int randIdx = rand.nextInt(apiInterfaces.length);
+            String fileName = apiInterfaces[randIdx].getName();
 
             try {
-                root.addNode(parser.parseAndBuildAST(JSON_DIRECTORY_PATH + fileName));
+                this.programNode.addNode(parser.parseAndBuildRandMethod(JSON_DIRECTORY_PATH + fileName));
             } catch (IOException e) {
                 System.out.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
             }
         }
 
-        printer.printToFile(root, fileNum);
+        printer.printToFile(this.programNode, fileNum);
     }
 
-    public void addToSymbolTable(String objectType, String variableName) {
-        if (!symbolTable.containsKey(objectType)) {
-            symbolTable.put(objectType, new ArrayList<>());
+    public void addToSymbolTable(String returnedObjectType, String variableName) {
+        if (!symbolTable.containsKey(returnedObjectType)) {
+            symbolTable.put(returnedObjectType, new ArrayList<>());
+        }
+        System.out.println("added " + variableName);
+
+        symbolTable.get(returnedObjectType).add(variableName);
+    }
+
+    public boolean hasGenerated(String receiverType) {
+        return symbolTable.containsKey(receiverType);
+    }
+
+    public String getRandomReceiver(String receiverType) {
+        System.out.println("Getting random receiver of type " + receiverType);
+        List<String> variables = symbolTable.get(receiverType);
+        int randIdx = rand.nextInt(variables.size());
+        return variables.get(randIdx);
+    }
+
+    public ASTNode generateObject(String receiverType) {
+        Map<String, String> receiverInfo = receiverInits.get(receiverType);
+        ASTNode receiver = null;
+
+        try {
+            receiver = parser.parseAndBuildMethod(JSON_DIRECTORY_PATH + receiverInfo.get("fileName"), receiverInfo.get("methodName"), receiverType, true);
+        } catch (IOException e) {
+            System.out.println("Failed to open JSON file: " + receiverInfo.get("fileName") + ". " + e.getMessage());
         }
 
-        symbolTable.get(objectType).add(variableName);
+        this.programNode.addNode(receiver);
+        return receiver;
     }
 
+    public String determineReceiver(String receiverType, boolean hasRequirements) {
+        if (hasRequirements) {
+            if (hasGenerated(receiverType)) {
+                return getRandomReceiver(receiverType);
+            } else {
+                AssignmentNode newNode = (AssignmentNode) generateObject(receiverType);
+                return newNode.getVarName();
+            }
+        } else {
+            return receiverType;
+        }
+    }
 }

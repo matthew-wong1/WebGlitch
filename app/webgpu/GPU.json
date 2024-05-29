@@ -1,10 +1,9 @@
 {
-  "objectType": "gpu",
-  "name": "navigator.gpu",
+  "objectType": "navigator.gpu",
   "methods": [
     {
       "methodName": "requestAdapter",
-      "type": "object",
+      "paramType": "object",
       "declaration": true,
       "async": true,
       "returnType": "GPUAdapter",
@@ -20,6 +19,12 @@
           }
         }
       ]
+    },
+    {
+      "methodName": "getPreferredCanvasFormat",
+      "declaration": true,
+      "async": false,
+      "returnType": "string"
     }
   ]
 }

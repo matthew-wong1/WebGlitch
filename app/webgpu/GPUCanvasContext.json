@@ -1,0 +1,60 @@
+{
+  "receiverType": "RenderingContext",
+  "requirements": ["RenderingContext"],
+  "methods": [
+    {
+      "methodName": "configure",
+      "paramType": "object",
+      "returnType": "none",
+      "properties": [
+        {
+          "alphaMode": {
+            "type": "string",
+            "optional": true,
+            "enum": [
+              "opaque",
+              "premultiplied"
+            ]
+          },
+          "colorSpace": {
+            "type": "string",
+            "enum": [
+              "srgb",
+              "display-p3"
+            ]
+          },
+          "device": {
+            "type": "GPUDevice"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "bgra8unorm",
+              "rgba8unorm",
+              "rgba16float"
+            ]
+          },
+          "usage": {
+            "type": "bitwiseFlag",
+            "enum": [
+              "GPUTextureUsage.COPY_SRC",
+              "GPUTextureUsage.COPY_DST",
+              "GPUTextureUsage.RENDER_ATTACHMENT",
+              "GPUTextureUsage.TEXTURE_BINDING",
+              "GPUTextureUsage.STORAGE_BINDING"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "methodName": "getCurrentTexture",
+      "returnType": "GPUTexture",
+      "declaration": true
+    },
+    {
+      "methodName": "unconfigure",
+      "returnType": "none"
+    }
+  ]
+}

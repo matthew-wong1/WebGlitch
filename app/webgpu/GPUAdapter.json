@@ -1,5 +1,5 @@
 {
-  "objectType": "GPUAdapter",
+  "receiverType": "GPUAdapter",
   "requirements": ["GPUAdapter"],
   "methods": [
     {

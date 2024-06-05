@@ -1,6 +1,7 @@
 package ast;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import generator.Generator;
 
 import java.util.stream.Collectors;
 
@@ -8,10 +9,12 @@ public class MethodCallNode extends ASTNode {
 
     private final boolean jsonParams;
     private final String callName;
+    private final Generator generator;
 
-    public MethodCallNode(String receiver, String methodName, boolean jsonParams, JsonNode paramsJsonNode) {
+    public MethodCallNode(String receiver, String methodName, boolean jsonParams, JsonNode paramsJsonNode, Generator generator) {
         this.callName = receiver + "." + methodName;
         this.jsonParams = jsonParams;
+        this.generator = generator;
 
         this.generateParams(paramsJsonNode, this.jsonParams);
     }
@@ -43,7 +46,7 @@ public class MethodCallNode extends ASTNode {
                                 //
                                 //                    }
 
-                                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams));
+                                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, generator));
                             });
         }
     }

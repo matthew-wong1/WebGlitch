@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
 import generator.ParamGenerator;
-import org.apache.commons.text.RandomStringGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +12,7 @@ import java.util.Random;
 public class Parser {
 
   private static final Random rand = new Random();
+
 
   private final Generator generator;
 
@@ -39,7 +39,7 @@ public class Parser {
     int randIdx = rand.nextInt(methodsJsonNode.size());
     JsonNode methodJsonNode = methodsJsonNode.get(randIdx);
 
-    String receiverType = rootJsonNode.get("objectType").asText();
+    String receiverType = rootJsonNode.get("receiverType").asText();
     String receiver = generator.determineReceiver(receiverType, rootJsonNode.has("requirements"));
     
     // Check if receiver exists
@@ -48,7 +48,7 @@ public class Parser {
     String methodName = methodJsonNode.get("methodName").asText(); // Required field
     boolean jsonParams = methodJsonNode.path("paramType").asText("csv").equals("object");
     JsonNode paramsJsonNode = methodJsonNode.path("properties");
-    ASTNode rootASTNode = new MethodCallNode(receiver, methodName, jsonParams, paramsJsonNode);
+    ASTNode rootASTNode = new MethodCallNode(receiver, methodName, jsonParams, paramsJsonNode, generator);
 
 
     // Extra syntax for declarations
@@ -61,10 +61,11 @@ public class Parser {
 
   private ASTNode generateDeclaration(JsonNode methodJsonNode, ASTNode rootASTNode, String returnType) {
     String varName = ParamGenerator.generateRandVarName();
+    boolean isAsync = methodJsonNode.has("async");
 
     // Create the ASTNode 
     ASTNode newRootNode =
-        new AssignmentNode("const", methodJsonNode.get("async").asBoolean(), varName);
+        new AssignmentNode("const", isAsync, varName);
     newRootNode.addNode(rootASTNode);
 
     generator.addToSymbolTable(returnType, varName);
@@ -91,11 +92,11 @@ public class Parser {
       System.exit(1);
     }
 
-    String parentReceiverType = rootJsonNode.get("objectType").asText();
+    String parentReceiverType = rootJsonNode.get("receiverType").asText();
 
     boolean jsonParams = methodJsonNode.path("paramType").asText("csv").equals("object");
     JsonNode paramsJsonNode = methodJsonNode.path("properties");
-    ASTNode rootASTNode = new MethodCallNode(generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements")), methodName, jsonParams, paramsJsonNode);
+    ASTNode rootASTNode = new MethodCallNode(generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements")), methodName, jsonParams, paramsJsonNode, generator);
 
     if (isDeclaration) {
       return generateDeclaration(methodJsonNode, rootASTNode, currentReceiverType);

@@ -7,10 +7,11 @@ import programprinter.PrettyPrinter;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.*;
 
 public class Generator {
+    public record FileNameCallProbPair(String fileName, Double callProbability) {}
+    public record FileNameMethodNamePair(String fileName, String methodName) {}
 
     private static final Random rand = new Random();
     private static final PrettyPrinter printer = new PrettyPrinter();
@@ -18,8 +19,10 @@ public class Generator {
     // Key: Type of object eg adapter, device
     // Value: Reference to that objet that currently exists
     private final Map<String, List<String>> symbolTable = new HashMap<>();
-    private final Map<String, Map<String, String>> receiverInits = new HashMap<>();
-    private final Map<String, Double> callProbabilities = new HashMap<>();
+    private final Map<String, FileNameMethodNamePair> receiverInits = new HashMap<>();
+
+    // Maps method call name to File it's located in and Probability (double)
+    private final Map<String, FileNameCallProbPair> callProbabilities = new HashMap<>();
 
     private final String JSON_DIRECTORY_PATH = "./app/webgpu/";
     private final Parser parser = new Parser(this);
@@ -63,23 +66,24 @@ public class Generator {
             for (JsonNode methodJsonNode : methodsJsonNode) {
 
                 String returnType = methodJsonNode.get("returnType").asText();
+                String methodName = methodJsonNode.get("methodName").asText();
+                String fileName = apiInterface.getName();
                 // Only works once have all the files because your return type is going to be another file name
 //                if (interfaceNames.contains(methodName)) {
 //                    System.out.println(methodName);
 //                }
 
                 if (!returnType.equals("string") && !returnType.equals("none")) {
-                    String methodName = methodJsonNode.get("methodName").asText();
-                    Map<String, String> initInfo = new HashMap<>();
-                    initInfo.put("fileName", apiInterface.getName());
-                    initInfo.put("methodName", methodName);
-                    receiverInits.put(returnType, initInfo);
-
+                    receiverInits.put(returnType, new FileNameMethodNamePair(fileName, methodName));
                 }
+
+                // READ FROM CONFIG FILE HERE
+                callProbabilities.put(methodName, new FileNameCallProbPair(fileName, 0.0));
 
             }
 
         }
+
     }
 
     public static void main(String[] args) {
@@ -90,14 +94,11 @@ public class Generator {
     public void generateProgram(int fileNum) {
         this.programNode = new ProgramNode();
 
-        // But 1 class could have more methods but equally likely that object is selected
-        File jsonDirectory = new File(JSON_DIRECTORY_PATH);
-        File[] apiInterfaces = jsonDirectory.listFiles();
-
         for (int i = 0; i < maxCalls; i++) {
-            assert apiInterfaces != null;
-            int randIdx = rand.nextInt(apiInterfaces.length);
-            String fileName = apiInterfaces[randIdx].getName();
+            String[] methods = callProbabilities.keySet().toArray(new String[0]);
+            int randIdx = rand.nextInt(methods.length);
+            String methodName = methods[randIdx];
+            String fileName = callProbabilities.get(methodName).fileName;
 
             try {
                 this.programNode.addNode(parser.parseAndBuildRandMethod(JSON_DIRECTORY_PATH + fileName));
@@ -118,10 +119,6 @@ public class Generator {
         symbolTable.get(returnedObjectType).add(variableName);
     }
 
-    public boolean hasGenerated(String receiverType) {
-        return symbolTable.containsKey(receiverType);
-    }
-
     public String getRandomReceiver(String receiverType) {
         if (!symbolTable.containsKey(receiverType)) {
             generateObject(receiverType);
@@ -132,19 +129,18 @@ public class Generator {
         return variables.get(randIdx);
     }
 
-    public ASTNode generateObject(String receiverType) {
+    public void generateObject(String receiverType) {
         System.out.println(receiverType);
-        Map<String, String> receiverInfo = receiverInits.get(receiverType);
+        FileNameMethodNamePair receiverInfo = receiverInits.get(receiverType);
         ASTNode receiver = null;
 
         try {
-            receiver = parser.parseAndBuildMethod(JSON_DIRECTORY_PATH + receiverInfo.get("fileName"), receiverInfo.get("methodName"), receiverType, true);
+            receiver = parser.parseAndBuildMethod(JSON_DIRECTORY_PATH + receiverInfo.fileName, receiverInfo.methodName, receiverType, true);
         } catch (IOException e) {
-            System.out.println("Failed to open JSON file: " + receiverInfo.get("fileName") + ". " + e.getMessage());
+            System.out.println("Failed to open JSON file: " + receiverInfo.fileName + ". " + e.getMessage());
         }
 
         this.programNode.addNode(receiver);
-        return receiver;
     }
 
     public String determineReceiver(String receiverType, boolean hasRequirements) {
@@ -153,4 +149,5 @@ public class Generator {
         }
         return receiverType;
     }
+
 }

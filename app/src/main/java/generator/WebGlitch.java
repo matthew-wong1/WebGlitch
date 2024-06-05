@@ -13,6 +13,8 @@ public class WebGlitch {
       Option numFiles = new Option("n", "num-files", true, "Number of files to generate");
       Option maxLines = new Option("l", "max-lines", true, "Maximum number of lines per file");
       Option allowOptional = new Option("o", "allow-optional", false, "Allow optional parameters");
+      Option swarm = new Option("s", "swarm", false, "Enable swarm testing");
+      Option useConfig = new Option("c", "use-config", false, "Use config file for probabilities");
 
       numFiles.setType(Integer.class);
       numFiles.setRequired(true);

@@ -27,6 +27,8 @@ public class Generator {
     private final boolean allowOptParams;
     private ASTNode programNode;
 
+    private static final String DEFAULT_CONTEXT_NAME = "context";
+
     // ASSIGN PROBABILTIES BY FIRST LOADING ALL METHODS FROM ALL FILES INTO SOME MAP, INITIALIZE PROBABILITIES
     // EG MAP OF STRING TO DOUBLE
 
@@ -40,6 +42,7 @@ public class Generator {
             System.err.println("Error initializing call probabilities and receiver init methods: " + e.getMessage());
         }
 
+        symbolTable.put("RenderingContext", new ArrayList<>(List.of(DEFAULT_CONTEXT_NAME)));
     }
 
     private void initializeReceiverInitsAndCallProbs() throws IOException {
@@ -65,7 +68,7 @@ public class Generator {
 //                    System.out.println(methodName);
 //                }
 
-                if (!returnType.equals("string")) {
+                if (!returnType.equals("string") && !returnType.equals("none")) {
                     String methodName = methodJsonNode.get("methodName").asText();
                     Map<String, String> initInfo = new HashMap<>();
                     initInfo.put("fileName", apiInterface.getName());
@@ -80,7 +83,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(5, false);
+        Generator generator = new Generator(20, false);
         generator.generateProgram(1);
     }
 
@@ -120,13 +123,17 @@ public class Generator {
     }
 
     public String getRandomReceiver(String receiverType) {
-        System.out.println("Getting random receiver of type " + receiverType);
+        if (!symbolTable.containsKey(receiverType)) {
+            generateObject(receiverType);
+        }
+
         List<String> variables = symbolTable.get(receiverType);
         int randIdx = rand.nextInt(variables.size());
         return variables.get(randIdx);
     }
 
     public ASTNode generateObject(String receiverType) {
+        System.out.println(receiverType);
         Map<String, String> receiverInfo = receiverInits.get(receiverType);
         ASTNode receiver = null;
 
@@ -142,14 +149,8 @@ public class Generator {
 
     public String determineReceiver(String receiverType, boolean hasRequirements) {
         if (hasRequirements) {
-            if (hasGenerated(receiverType)) {
-                return getRandomReceiver(receiverType);
-            } else {
-                AssignmentNode newNode = (AssignmentNode) generateObject(receiverType);
-                return newNode.getVarName();
-            }
-        } else {
-            return receiverType;
+            return getRandomReceiver(receiverType);
         }
+        return receiverType;
     }
 }

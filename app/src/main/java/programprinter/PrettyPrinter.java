@@ -10,7 +10,7 @@ import java.nio.file.StandardCopyOption;
 public class PrettyPrinter {
   private final String OUT_DIRECTORY_PATH = "./output/";
   private final String SKELETON_SRC_PATH = "./rsrcs/js/nodeSkeleton.js";
-  private final String FOOTER = "\nawait browser.close()}\nmain().catch(console.error);";
+  private final String FOOTER = "\n});\nawait browser.close()}\nmain().catch(console.error);";
 
   public void printToFile(ASTNode root, Integer fileNum) {
 

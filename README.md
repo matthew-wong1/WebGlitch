@@ -5,5 +5,5 @@
 2. Gradle
 
 ## Adding new JSON files
-1. Requirements: Top level requirements apply to all methods. Also have individual method requirements 
-2. 
+1. Requirements: Top level requirements apply to all methods. These specify objects of a certain type that must already exist.
+2. Also have individual method requirements (individual methods that must've been already called for a certain call to be valid)

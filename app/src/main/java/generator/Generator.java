@@ -11,7 +11,8 @@ import java.util.*;
 
 public class Generator {
     public record FileNameCallProbPair(String fileName, Double callProbability) {}
-    public record FileNameMethodNamePair(String fileName, String methodName) {}
+    public record FileNameReceiverNameMethodName(String fileName, String receiverName, String methodName) {}
+    public record ReceiverNameMethodNamePair(String receiverName, String methodName) {}
 
     private static final Random rand = new Random();
     private static final PrettyPrinter printer = new PrettyPrinter();
@@ -19,10 +20,13 @@ public class Generator {
     // Key: Type of object eg adapter, device
     // Value: Reference to that objet that currently exists
     private final Map<String, List<String>> symbolTable = new HashMap<>();
-    private final Map<String, FileNameMethodNamePair> receiverInits = new HashMap<>();
+    private final Map<String, FileNameReceiverNameMethodName> receiverInits = new HashMap<>();
 
     // Maps method call name to File it's located in and Probability (double)
-    private final Map<String, FileNameCallProbPair> callProbabilities = new HashMap<>();
+    private final Map<ReceiverNameMethodNamePair, FileNameCallProbPair> callProbabilities = new HashMap<>();
+
+    // Tracks call histories
+    private final Set<ReceiverNameMethodNamePair> callHistory = new HashSet<>();
 
     private final String JSON_DIRECTORY_PATH = "./app/webgpu/";
     private final Parser parser = new Parser(this);
@@ -62,6 +66,7 @@ public class Generator {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootJsonNode = mapper.readTree(new File(JSON_DIRECTORY_PATH + apiInterface.getName()));
             JsonNode methodsJsonNode = rootJsonNode.get("methods");
+            String receiverType = rootJsonNode.get("receiverType").asText();
 
             for (JsonNode methodJsonNode : methodsJsonNode) {
 
@@ -74,11 +79,13 @@ public class Generator {
 //                }
 
                 if (!returnType.equals("string") && !returnType.equals("none")) {
-                    receiverInits.put(returnType, new FileNameMethodNamePair(fileName, methodName));
+                    receiverInits.put(returnType, new FileNameReceiverNameMethodName(fileName, receiverType, methodName));
+
                 }
 
                 // READ FROM CONFIG FILE HERE
-                callProbabilities.put(methodName, new FileNameCallProbPair(fileName, 0.0));
+                System.out.println(receiverType + " " + methodName + " from " + fileName);
+                callProbabilities.put(new ReceiverNameMethodNamePair(receiverType,methodName), new FileNameCallProbPair(fileName, 0.0));
 
             }
 
@@ -95,10 +102,10 @@ public class Generator {
         this.programNode = new ProgramNode();
 
         for (int i = 0; i < maxCalls; i++) {
-            String[] methods = callProbabilities.keySet().toArray(new String[0]);
+            ReceiverNameMethodNamePair[] methods = callProbabilities.keySet().toArray(new ReceiverNameMethodNamePair[0]);
             int randIdx = rand.nextInt(methods.length);
-            String methodName = methods[randIdx];
-            String fileName = callProbabilities.get(methodName).fileName;
+            ReceiverNameMethodNamePair randMethod = methods[randIdx];
+            String fileName = callProbabilities.get(randMethod).fileName;
 
             try {
                 this.programNode.addNode(parser.parseAndBuildRandMethod(JSON_DIRECTORY_PATH + fileName));
@@ -121,7 +128,11 @@ public class Generator {
 
     public String getRandomReceiver(String receiverType) {
         if (!symbolTable.containsKey(receiverType)) {
-            generateObject(receiverType);
+            FileNameReceiverNameMethodName initInfo = receiverInits.get(receiverType);
+            String initMethodName = initInfo.methodName;
+            String initReceiverType = initInfo.receiverName;
+            System.out.println("GENERATING REQUIREMENT" +  initReceiverType + initMethodName);
+            generateCall(new ReceiverNameMethodNamePair(initReceiverType, initMethodName));
         }
 
         List<String> variables = symbolTable.get(receiverType);
@@ -129,15 +140,22 @@ public class Generator {
         return variables.get(randIdx);
     }
 
-    public void generateObject(String receiverType) {
-        System.out.println(receiverType);
-        FileNameMethodNamePair receiverInfo = receiverInits.get(receiverType);
+    public void generateCall(ReceiverNameMethodNamePair receiverNameMethodNamePair) {
+        if (callHistory.contains(receiverNameMethodNamePair)) {
+            return;
+        }
+
+        String receiverName = receiverNameMethodNamePair.receiverName;
+        String methodName = receiverNameMethodNamePair.methodName;
+        System.out.println(receiverName + "." + methodName);
+        String fileName = callProbabilities.get(receiverNameMethodNamePair).fileName;
+
         ASTNode receiver = null;
 
         try {
-            receiver = parser.parseAndBuildMethod(JSON_DIRECTORY_PATH + receiverInfo.fileName, receiverInfo.methodName, receiverType, true);
+            receiver = parser.parseAndBuildMethod(JSON_DIRECTORY_PATH + fileName, methodName, receiverName);
         } catch (IOException e) {
-            System.out.println("Failed to open JSON file: " + receiverInfo.fileName + ". " + e.getMessage());
+            System.out.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }
 
         this.programNode.addNode(receiver);
@@ -148,6 +166,10 @@ public class Generator {
             return getRandomReceiver(receiverType);
         }
         return receiverType;
+    }
+
+    public void addToCallHistory(ReceiverNameMethodNamePair receiverNameMethodNamePair) {
+        callHistory.add(receiverNameMethodNamePair);
     }
 
 }

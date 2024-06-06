@@ -50,6 +50,11 @@
     {
       "methodName": "getCurrentTexture",
       "returnType": "GPUTexture",
+      "prerequisiteMethods": [
+        {
+          "receiverType": "RenderingContext",
+          "methodName": "configure"
+        }],
       "declaration": true
     },
     {

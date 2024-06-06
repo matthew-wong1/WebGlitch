@@ -61,7 +61,15 @@ public class Parser {
     if (methodJsonNode.has("declaration")) {
       rootASTNode = generateDeclaration(methodJsonNode, rootASTNode);
     }
-    generator.addToCallHistory(new Generator.ReceiverNameMethodNamePair(receiverType, methodName));
+    generator.addToCallState(new Generator.ReceiverNameMethodNamePair(receiverType, methodName));
+
+    if (methodJsonNode.has("resets")) {
+      JsonNode resetMethodsJsonNode = methodJsonNode.get("resets");
+      for (JsonNode resetMethod : resetMethodsJsonNode) {
+        generator.removeFromCallState(new Generator.ReceiverNameMethodNamePair(resetMethod.get("receiverType").asText(), resetMethod.get("methodName").asText()));
+      }
+    }
+
     return rootASTNode;
   }
 
@@ -111,7 +119,13 @@ public class Parser {
       return generateDeclaration(methodJsonNode, rootASTNode);
     }
 
-    generator.addToCallHistory(new Generator.ReceiverNameMethodNamePair(currentReceiverType, methodName));
+    generator.addToCallState(new Generator.ReceiverNameMethodNamePair(currentReceiverType, methodName));
+    if (methodJsonNode.has("resets")) {
+      JsonNode resetMethodsJsonNode = methodJsonNode.get("resets");
+      for (JsonNode resetMethod : resetMethodsJsonNode) {
+        generator.removeFromCallState(new Generator.ReceiverNameMethodNamePair(resetMethod.get("receiverType").asText(), resetMethod.get("methodName").asText()));
+      }
+    }
     return rootASTNode;
   }
 

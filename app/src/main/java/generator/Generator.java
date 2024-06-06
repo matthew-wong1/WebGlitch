@@ -26,7 +26,7 @@ public class Generator {
     private final Map<ReceiverNameMethodNamePair, FileNameCallProbPair> callProbabilities = new HashMap<>();
 
     // Tracks call histories
-    private final Set<ReceiverNameMethodNamePair> callHistory = new HashSet<>();
+    private final Set<ReceiverNameMethodNamePair> callState = new HashSet<>();
 
     private final String JSON_DIRECTORY_PATH = "./app/webgpu/";
     private final Parser parser = new Parser(this);
@@ -141,7 +141,7 @@ public class Generator {
     }
 
     public void generateCall(ReceiverNameMethodNamePair receiverNameMethodNamePair) {
-        if (callHistory.contains(receiverNameMethodNamePair)) {
+        if (callState.contains(receiverNameMethodNamePair)) {
             return;
         }
 
@@ -168,8 +168,12 @@ public class Generator {
         return receiverType;
     }
 
-    public void addToCallHistory(ReceiverNameMethodNamePair receiverNameMethodNamePair) {
-        callHistory.add(receiverNameMethodNamePair);
+    public void addToCallState(ReceiverNameMethodNamePair receiverNameMethodNamePair) {
+        callState.add(receiverNameMethodNamePair);
+    }
+
+    public void removeFromCallState(ReceiverNameMethodNamePair receiverNameMethodNamePair) {
+        callState.remove(receiverNameMethodNamePair);
     }
 
 }

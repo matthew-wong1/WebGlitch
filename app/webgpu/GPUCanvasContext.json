@@ -59,7 +59,11 @@
     },
     {
       "methodName": "unconfigure",
-      "returnType": "none"
+      "returnType": "none",
+      "resets": [{
+        "receiverType": "RenderingContext",
+        "methodName": "configure"
+      }]
     }
   ]
 }

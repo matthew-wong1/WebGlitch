@@ -40,37 +40,10 @@ public class Parser {
     JsonNode methodJsonNode = methodsJsonNode.get(randIdx);
 
     String receiverType = rootJsonNode.get("receiverType").asText();
-    String receiver = generator.determineReceiver(receiverType, rootJsonNode.has("requirements"));
-    
-    // First generate any prerequisite methodCalls
-    if (methodJsonNode.has("prerequisiteMethods")) {
-      JsonNode prerequisiteMethodsJsonNode = methodJsonNode.get("prerequisiteMethods");
-      for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
-        System.out.println(prerequisiteMethod.asText());
-        generator.generateCall(new Generator.ReceiverNameMethodNamePair(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("methodName").asText()));
-      }
-    }
-
     String methodName = methodJsonNode.get("methodName").asText(); // Required field
-    boolean jsonParams = methodJsonNode.path("paramType").asText("csv").equals("object");
-    JsonNode paramsJsonNode = methodJsonNode.path("properties");
-    ASTNode rootASTNode = new MethodCallNode(receiver, methodName, jsonParams, paramsJsonNode, generator);
 
+    return parseAndBuildMethod(filePath, methodName, receiverType);
 
-    // Extra syntax for declarations
-    if (methodJsonNode.has("declaration")) {
-      rootASTNode = generateDeclaration(methodJsonNode, rootASTNode);
-    }
-    generator.addToCallState(new Generator.ReceiverNameMethodNamePair(receiverType, methodName));
-
-    if (methodJsonNode.has("resets")) {
-      JsonNode resetMethodsJsonNode = methodJsonNode.get("resets");
-      for (JsonNode resetMethod : resetMethodsJsonNode) {
-        generator.removeFromCallState(new Generator.ReceiverNameMethodNamePair(resetMethod.get("receiverType").asText(), resetMethod.get("methodName").asText()));
-      }
-    }
-
-    return rootASTNode;
   }
 
   private ASTNode generateDeclaration(JsonNode methodJsonNode, ASTNode rootASTNode) {
@@ -92,7 +65,6 @@ public class Parser {
   public ASTNode parseAndBuildMethod(String filePath, String methodName, String currentReceiverType) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     JsonNode rootJsonNode = mapper.readTree(new File(filePath));
-
     JsonNode methodsJsonNode = rootJsonNode.get("methods");
 
     JsonNode methodJsonNode = null;
@@ -108,12 +80,22 @@ public class Parser {
       System.exit(1);
     }
 
+    // First generate any prerequisite methodCalls
+    if (methodJsonNode.has("prerequisiteMethods")) {
+      JsonNode prerequisiteMethodsJsonNode = methodJsonNode.get("prerequisiteMethods");
+      for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
+        System.out.println(prerequisiteMethod.asText());
+        generator.generateCall(new Generator.ReceiverNameMethodNamePair(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("methodName").asText()));
+      }
+    }
+
     boolean isDeclaration = methodJsonNode.has("declaration");
     String parentReceiverType = rootJsonNode.get("receiverType").asText();
+    String receiver = generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements"));
 
     boolean jsonParams = methodJsonNode.path("paramType").asText("csv").equals("object");
     JsonNode paramsJsonNode = methodJsonNode.path("properties");
-    ASTNode rootASTNode = new MethodCallNode(generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements")), methodName, jsonParams, paramsJsonNode, generator);
+    ASTNode rootASTNode = new MethodCallNode(receiver, methodName, jsonParams, paramsJsonNode, generator);
 
     if (isDeclaration) {
       return generateDeclaration(methodJsonNode, rootASTNode);

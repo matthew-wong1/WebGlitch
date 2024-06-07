@@ -7,3 +7,6 @@
 # These are Windows script files and should use crlf
 *.bat           text eol=crlf
 
+# Exclude directories from GitHub's language calculations
+rsrcs/wgsl/* linguist-generated
+output/* linguist-generated

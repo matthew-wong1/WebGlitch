@@ -2,6 +2,7 @@ package ast;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import generator.Generator;
+import generator.ParamGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,8 +55,13 @@ public class ParameterNode extends ASTNode {
         this.value = "\"" + enumValues.get(randIdx) + "\"";
       }
 
-    }
-    else { // Requires a WebGPU object
+    } else if (paramType.equals("string")) {
+      this.value = "\"" + ParamGenerator.generateRandVarName() + "\"";
+    } else if (paramType.equals("uint")) {
+      this.value = String.valueOf(rand.nextInt(Integer.MAX_VALUE));
+    } else if (paramType.equals("boolean")) {
+      this.value = String.valueOf(rand.nextBoolean());
+    } else { // Requires a WebGPU object
       this.value = generator.getRandomReceiver(paramType);
     }
 

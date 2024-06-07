@@ -17,7 +17,7 @@
             "optional": true
           },
           "size": {
-            "type:": "uint"
+            "type": "uint"
           },
           "usage": {
             "type": "bitwiseFlag",

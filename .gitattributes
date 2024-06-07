@@ -8,5 +8,5 @@
 *.bat           text eol=crlf
 
 # Exclude directories from GitHub's language calculations
-rsrcs/wgsl/* linguist-generated
+rsrcs/shaders/* linguist-generated
 output/* linguist-generated

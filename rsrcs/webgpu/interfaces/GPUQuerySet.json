@@ -6,10 +6,7 @@
       "methodName": "destroy",
       "returnType": "none",
       "declaration": true,
-      "resets": [{
-        "receiverType": "GPUDevice",
-        "methodName": "createQuerySet"
-      }]
+      "deletes": true
     }
   ]
 }

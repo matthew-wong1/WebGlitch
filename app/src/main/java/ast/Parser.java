@@ -108,6 +108,12 @@ public class Parser {
         generator.removeFromCallState(new Generator.ReceiverNameMethodNamePair(resetMethod.get("receiverType").asText(), resetMethod.get("methodName").asText()));
       }
     }
+
+    // Delete object
+    if (methodJsonNode.has("deletes")) {
+      generator.removeFromSymbolTable(parentReceiverType, receiver);
+    }
+
     return rootASTNode;
   }
 

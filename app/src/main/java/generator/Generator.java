@@ -126,6 +126,14 @@ public class Generator {
         symbolTable.get(returnedObjectType).add(variableName);
     }
 
+    public void removeFromSymbolTable(String returnedObjectType, String variableName) {
+        symbolTable.get(returnedObjectType).remove(variableName);
+
+        if (symbolTable.get(returnedObjectType).isEmpty()) {
+            symbolTable.remove(returnedObjectType);
+        }
+    }
+
     public String getRandomReceiver(String receiverType) {
         if (!symbolTable.containsKey(receiverType)) {
             FileNameReceiverNameMethodName initInfo = receiverInits.get(receiverType);

@@ -52,13 +52,15 @@ public class ParameterNode extends ASTNode {
         this.value = String.join(" | ", chosenFlags);
       } else {
         int randIdx = rand.nextInt(enumValues.size());
-        this.value = "\"" + enumValues.get(randIdx) + "\"";
+        String chosenFlag = enumValues.get(randIdx);
+        this.value = paramType.equals("string") ? encodeAsString(chosenFlag) : chosenFlag;
       }
 
     } else if (paramType.equals("string")) {
-      this.value = "\"" + ParamGenerator.generateRandVarName() + "\"";
+      this.value = encodeAsString(ParamGenerator.generateRandVarName());
     } else if (paramType.equals("uint")) {
-      this.value = String.valueOf(rand.nextInt(Integer.MAX_VALUE));
+      int max_value = details.has("max") ? details.get("max").asInt() : Integer.MAX_VALUE;
+      this.value = String.valueOf(rand.nextInt(max_value));
     } else if (paramType.equals("boolean")) {
       this.value = String.valueOf(rand.nextBoolean());
     } else { // Requires a WebGPU object
@@ -74,5 +76,9 @@ public class ParameterNode extends ASTNode {
       return fieldName + ": " + this.value;
     }
     return this.value;
+  }
+
+  private String encodeAsString(String value) {
+    return "\"" + value + "\"";
   }
 }

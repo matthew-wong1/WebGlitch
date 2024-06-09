@@ -49,6 +49,29 @@
           }
         }
       ]
+    },
+    {
+      "methodName": "createQuerySet",
+      "paramType": "object",
+      "returnType": "GPUQuerySet",
+      "properties": [
+        {
+          "count": {
+            "type": "uint",
+            "max": 4096
+          },
+          "label": {
+            "type": "string",
+            "optional": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "occlusion"
+            ]
+          }
+        }
+      ]
     }
   ]
 }

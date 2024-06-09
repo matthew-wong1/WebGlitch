@@ -64,7 +64,45 @@
       "optional": true
     },
     {
-      "stencilLoadOp": ""
+      "fieldName": "depthStoreOp",
+      "type": "string",
+      "optional": true,
+      "enum": [
+        "discard",
+        "store"
+      ]
+    },
+    {
+      "fieldName": "stencilClearValue",
+      "type": "int",
+      "optional": true
+    },
+    {
+      "fieldName": "stencilLoadOp",
+      "type": "string",
+      "optional": true,
+      "enum": [
+        "clear",
+        "load"
+      ]
+    },
+    {
+      "fieldName": "stencilReadOnly",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "fieldName": "stencilStoreOp",
+      "type": "string",
+      "optional": true,
+      "enum": [
+        "discard",
+        "store"
+      ]
+    },
+    {
+      "fieldName": "view",
+      "type": "GPUTextureView"
     }
   ]
 

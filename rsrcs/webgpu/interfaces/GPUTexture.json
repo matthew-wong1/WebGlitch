@@ -1,0 +1,70 @@
+{
+  "receiverType": "GPUTexture",
+  "requirements": ["GPUTexture"],
+  "methods": [
+    {
+      "methodName": "createView",
+      "paramType": "object",
+      "declaration": true,
+      "returnType": "GPUTextureView",
+      "properties:": [
+        {
+          "arrayLayerCount": {
+            "type": "uint",
+            "optional": true
+          },
+          "aspect": {
+            "type": "string",
+            "enum": [
+              "all",
+              "depth-only",
+              "stencil-only"
+            ],
+            "optional": true
+          },
+          "baseArrayLayer": {
+            "type": "uint",
+            "optional": true
+          },
+          "baseMipLevel": {
+            "type": "uint",
+            "optional": true
+          },
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "1d",
+              "2d",
+              "2d-array",
+              "cube",
+              "cube-array",
+              "3d"
+            ],
+            "optional": true
+          },
+          "format": {
+            "type": "gpuTextureFormat",
+            "optional": true
+          },
+          "label": {
+            "type": "string",
+            "optional": true
+          },
+          "mipLevelCount": {
+            "type": "uint",
+            "optional": true
+          }
+        }
+      ]
+    },
+    {
+      "methodName": "destroy",
+      "returnType": "none",
+      "declaration": true,
+      "resets": [{
+        "receiverType": "GPUDevice",
+        "methodName": "createTexture"
+      }]
+    }
+  ]
+}

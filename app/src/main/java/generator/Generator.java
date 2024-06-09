@@ -28,7 +28,7 @@ public class Generator {
     // Tracks call histories
     private final Set<ReceiverNameMethodNamePair> callState = new HashSet<>();
 
-    private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/json/";
+    private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/interfaces/";
     private final Parser parser = new Parser(this);
     private final int maxCalls;
     private final boolean allowOptParams;

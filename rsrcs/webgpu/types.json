@@ -1,0 +1,72 @@
+{
+  "clearValue": [
+    {
+      "fieldName": "r",
+      "type": "rgba"
+    },
+    {
+      "fieldName": "g",
+      "type": "rgba"
+    },
+    {
+      "fieldName": "b",
+      "type": "rgba"
+    },
+    {
+      "fieldName": "a",
+      "type": "rgba"
+    }
+  ],
+  "colorAttachment": [
+    {
+      "fieldName": "clearValue",
+      "type": "clearValue",
+      "optional": true
+    },
+    {
+      "fieldName": "loadOp",
+      "type": "string",
+      "enum": [
+        "clear",
+        "load"
+      ]
+    },
+    {
+      "fieldName": "storeOp",
+      "type": "string",
+      "enum": [
+        "discard",
+        "store"
+      ]
+    },
+    {
+      "fieldName": "resolveTarget",
+      "type": "GPUTextureView",
+      "optional": true
+    },
+    {
+      "fieldName": "view",
+      "type": "GPUTextureView"
+    }
+  ],
+
+  "depthStencilAttachment": [
+    {
+      "fieldName": "depthClearValue",
+      "type": "double",
+      "min": 0.0,
+      "max": 1.0,
+      "optional": true
+    },
+    {
+      "fieldName": "depthReadOnly",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "stencilLoadOp": ""
+    }
+  ]
+
+
+}

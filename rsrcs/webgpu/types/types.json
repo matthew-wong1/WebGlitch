@@ -104,6 +104,21 @@
       "fieldName": "view",
       "type": "GPUTextureView"
     }
+  ],
+  "textureSize": [
+    {
+      "fieldName": "width",
+      "type": "uint"
+    },
+    {
+      "fieldName": "height",
+      "type": "uint",
+      "optional": true
+    },
+    {
+      "fieldName": "depthOrArrayLayers",
+      "type": "uint"
+    }
   ]
 
 

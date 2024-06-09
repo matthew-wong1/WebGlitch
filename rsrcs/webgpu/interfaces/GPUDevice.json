@@ -41,6 +41,7 @@
       "methodName": "createCommandEncoder",
       "paramType": "object",
       "returnType": "GPUCommandEncoder",
+      "declaration": true,
       "properties": [
         {
           "label": {
@@ -54,6 +55,7 @@
       "methodName": "createQuerySet",
       "paramType": "object",
       "returnType": "GPUQuerySet",
+      "declaration": true,
       "properties": [
         {
           "count": {
@@ -69,6 +71,47 @@
             "enum": [
               "occlusion"
             ]
+          }
+        }
+      ]
+    },
+    {
+      "methodName": "createTexture",
+      "paramType": "object",
+      "returnType": "GPUTexture",
+      "declaration": true,
+      "properties:": [
+        {
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "1d",
+              "2d",
+              "3d"
+            ],
+            "optional": true
+          },
+          "format": {
+            "type": "gpuTextureFormat"
+          },
+          "label": {
+            "type": "string",
+            "optional": true
+          },
+          "mipLevelCount": {
+            "type": "uint",
+            "optional": true
+          },
+          "sampleCount": {
+            "type": "int",
+            "enum": [
+              1,
+              4
+            ],
+            "optional": true
+          },
+          "size": {
+            "type": "textureSize"
           }
         }
       ]

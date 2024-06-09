@@ -1,0 +1,10 @@
+{
+  "type": "bitwiseFlag",
+  "enum": [
+    "GPUTextureUsage.COPY_SRC",
+    "GPUTextureUsage.COPY_DST",
+    "GPUTextureUsage.RENDER_ATTACHMENT",
+    "GPUTextureUsage.TEXTURE_BINDING",
+    "GPUTextureUsage.STORAGE_BINDING"
+  ]
+}

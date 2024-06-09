@@ -1,0 +1,43 @@
+{
+  "receiverType": "GPUCommandEncoder",
+  "requirements": ["GPUCommandEncoder"],
+  "methods": [
+    {
+      "methodName": "beginRenderPass",
+      "paramType": "object",
+      "returnType": "GPURenderPassEncoder",
+      "properties": [
+        {
+          
+
+          "label": {
+            "type": "string",
+            "optional": true
+          },
+          "mappedAtCreation": {
+            "type": "boolean",
+            "optional": true
+          },
+          "size": {
+            "type": "uint"
+          },
+          "usage": {
+            "type": "bitwiseFlag",
+            "enum": [
+              "GPUBufferUsage.COPY_SRC",
+              "GPUBufferUsage.COPY_DST",
+              "GPUBufferUsage.INDEX",
+              "GPUBufferUsage.INDIRECT",
+              "GPUBufferUsage.MAP_READ",
+              "GPUBufferUsage.MAP_WRITE",
+              "GPUBufferUsage.QUERY_RESOLVE",
+              "GPUBufferUsage.STORAGE",
+              "GPUBufferUsage.UNIFORM",
+              "GPUBufferUsage.VERTEX"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

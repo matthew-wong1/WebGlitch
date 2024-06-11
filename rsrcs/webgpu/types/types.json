@@ -1,123 +1,114 @@
 {
   "clearValue": [
     {
-      "fieldName": "r",
-      "type": "rgba"
-    },
-    {
-      "fieldName": "g",
-      "type": "rgba"
-    },
-    {
-      "fieldName": "b",
-      "type": "rgba"
-    },
-    {
-      "fieldName": "a",
-      "type": "rgba"
+      "r": {
+        "type": "rgba"
+      },
+      "g": {
+        "type": "rgba"
+      },
+      "b": {
+        "type": "rgba"
+      },
+      "a": {
+        "type": "rgba"
+      }
     }
   ],
+
   "colorAttachment": [
     {
-      "fieldName": "clearValue",
-      "type": "clearValue",
-      "optional": true
-    },
-    {
-      "fieldName": "loadOp",
-      "type": "string",
-      "enum": [
-        "clear",
-        "load"
-      ]
-    },
-    {
-      "fieldName": "storeOp",
-      "type": "string",
-      "enum": [
-        "discard",
-        "store"
-      ]
-    },
-    {
-      "fieldName": "resolveTarget",
-      "type": "GPUTextureView",
-      "optional": true
-    },
-    {
-      "fieldName": "view",
-      "type": "GPUTextureView"
+      "clearValue": {
+        "type": "clearValue",
+        "optional": true
+      },
+      "loadOp": {
+        "fieldName": "",
+        "type": "string",
+        "enum": [
+          "clear",
+          "load"
+        ]
+      },
+      "storeOp": {
+        "type": "string",
+        "enum": [
+          "discard",
+          "store"
+        ]
+      },
+      "resolveTarget": {
+        "type": "GPUTextureView",
+        "optional": true
+      },
+      "view": {
+        "type": "GPUTextureView"
+      }
     }
   ],
 
   "depthStencilAttachment": [
     {
-      "fieldName": "depthClearValue",
-      "type": "double",
-      "min": 0.0,
-      "max": 1.0,
-      "optional": true
-    },
-    {
-      "fieldName": "depthReadOnly",
-      "type": "boolean",
-      "optional": true
-    },
-    {
-      "fieldName": "depthStoreOp",
-      "type": "string",
-      "optional": true,
-      "enum": [
-        "discard",
-        "store"
-      ]
-    },
-    {
-      "fieldName": "stencilClearValue",
-      "type": "int",
-      "optional": true
-    },
-    {
-      "fieldName": "stencilLoadOp",
-      "type": "string",
-      "optional": true,
-      "enum": [
-        "clear",
-        "load"
-      ]
-    },
-    {
-      "fieldName": "stencilReadOnly",
-      "type": "boolean",
-      "optional": true
-    },
-    {
-      "fieldName": "stencilStoreOp",
-      "type": "string",
-      "optional": true,
-      "enum": [
-        "discard",
-        "store"
-      ]
-    },
-    {
-      "fieldName": "view",
-      "type": "GPUTextureView"
+      "depthClearValue": {
+        "type": "double",
+        "min": 0.0,
+        "max": 1.0,
+        "optional": true
+      },
+      "depthReadOnly": {
+        "type": "boolean",
+        "optional": true
+      },
+      "depthStoreOp": {
+        "type": "string",
+        "optional": true,
+        "enum": [
+          "discard",
+          "store"
+        ]
+      },
+      "stencilClearValue": {
+        "type": "int",
+        "optional": true
+      },
+      "stencilLoadOp": {
+        "type": "string",
+        "optional": true,
+        "enum": [
+          "clear",
+          "load"
+        ]
+      },
+      "stencilReadOnly": {
+        "type": "boolean",
+        "optional": true
+      },
+      "stencilStoreOp": {
+        "type": "string",
+        "optional": true,
+        "enum": [
+          "discard",
+          "store"
+        ]
+      },
+      "view": {
+        "type": "GPUTextureView"
+      }
     }
   ],
+
   "textureSize": [
     {
-      "fieldName": "width",
-      "type": "uint"
-    },
-    {
-      "fieldName": "height",
-      "type": "uint",
-      "optional": true
-    },
-    {
-      "fieldName": "depthOrArrayLayers",
-      "type": "uint"
+      "width": {
+        "type": "uint"
+      },
+      "height": {
+        "type": "uint",
+        "optional": true
+      },
+      "depthOrArrayLayers": {
+        "type": "uint"
+      }
     }
   ]
 }

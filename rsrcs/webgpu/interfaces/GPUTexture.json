@@ -7,7 +7,7 @@
       "paramType": "object",
       "declaration": true,
       "returnType": "GPUTextureView",
-      "properties:": [
+      "properties": [
         {
           "arrayLayerCount": {
             "type": "uint",

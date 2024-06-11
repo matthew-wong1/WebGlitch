@@ -80,7 +80,7 @@
       "paramType": "object",
       "returnType": "GPUTexture",
       "declaration": true,
-      "properties:": [
+      "properties": [
         {
           "dimension": {
             "type": "string",

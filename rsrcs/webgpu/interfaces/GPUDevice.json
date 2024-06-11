@@ -92,7 +92,8 @@
             "optional": true
           },
           "format": {
-            "type": "gpuTextureFormat"
+            "type": "gpuTextureFormat",
+            "enum": true
           },
           "label": {
             "type": "string",

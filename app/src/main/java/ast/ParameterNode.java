@@ -45,20 +45,35 @@ public class ParameterNode extends ASTNode {
 
     if (paramType.equals("name")) {
       this.value = encodeAsString(ParamGenerator.generateRandVarName());
-    } else if (paramType.equals("uint")) {
+    } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
       int max_value = details.has("max") ? details.get("max").asInt() : Integer.MAX_VALUE;
-      this.value = String.valueOf(rand.nextInt(max_value));
+      int min_value = details.has("min") ? details.get("min").asInt() : Integer.MIN_VALUE;
+
+      this.value = String.valueOf(ParamGenerator.generateRandNumber(paramType, min_value, max_value));
     } else if (paramType.equals("boolean")) {
       this.value = String.valueOf(rand.nextBoolean());
-    } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
-      this.value = generator.getRandomReceiver(paramType);
     } else if (isEnum) {
       generateEnumVal(details, paramType);
-    } else{ // Requires WebGPU Type
-
+    } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
+      this.value = generator.getRandomReceiver(paramType);
+    } else { // Requires WebGPU Type
+      generateParamAsJson(paramType);
     }
 
 
+  }
+
+  private void generateParamAsJson(String paramType) {
+    ObjectMapper mapper = new ObjectMapper();
+
+    JsonNode details = null;
+    try {
+      details = mapper.readTree(new File(TYPES_PATH));
+    } catch (IOException e) {
+      System.err.println(e.getMessage());
+    }
+
+    this.value = generateParams();
   }
 
   private void generateEnumVal(JsonNode details, String paramType) {

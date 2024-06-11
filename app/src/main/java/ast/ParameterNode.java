@@ -68,12 +68,12 @@ public class ParameterNode extends ASTNode {
 
     JsonNode details = null;
     try {
-      details = mapper.readTree(new File(TYPES_PATH));
+      details = mapper.readTree(new File(TYPES_PATH)).get(paramType);
     } catch (IOException e) {
       System.err.println(e.getMessage());
     }
 
-    this.value = generateParams();
+    this.value = new ParameterListNode(details, true, generator).toString();
   }
 
   private void generateEnumVal(JsonNode details, String paramType) {

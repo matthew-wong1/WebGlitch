@@ -1,5 +1,6 @@
 {
-  "allDevices": [
+  "type": "string",
+  "enum": [
     "r8unorm",
     "r8snorm",
     "r8uint",

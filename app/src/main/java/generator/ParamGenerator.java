@@ -14,14 +14,14 @@ public class ParamGenerator {
         return new RandomStringGenerator.Builder().withinRange(ALLOWED_CHARS).get().generate(MIN_VAR_LENGTH, MAX_VAR_LENGTH);
     }
 
-    public static Number generateRandNumber(String paramType, int minValue, int maxValue) {
+    public static Number generateRandNumber(String paramType, long minValue, long maxValue) {
         switch (paramType) {
             case "rgba":
                 maxValue = 255;
             case "uint":
-                return rand.nextInt(maxValue);
+                return rand.nextLong(maxValue);
             case "int":
-                return rand.nextInt(minValue, maxValue);
+                return rand.nextLong(minValue, maxValue);
             default: // double
                 return rand.nextDouble(minValue, maxValue);
         }

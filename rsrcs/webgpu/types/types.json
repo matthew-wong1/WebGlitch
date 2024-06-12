@@ -68,7 +68,7 @@
         ]
       },
       "stencilClearValue": {
-        "type": "int",
+        "type": "uint",
         "optional": true
       },
       "stencilLoadOp": {

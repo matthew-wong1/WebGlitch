@@ -21,6 +21,8 @@ public class ParameterNode extends ASTNode {
     private final Random rand = new Random();
     private final String TYPES_PATH = "./rsrcs/webgpu/types/types.json";
     private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
+    private final long MAX_SAFE_INT_JS = 9007199254740990L;
+    private final long MIN_SAFE_INT_JS = -9007199254740990L;
     private String value;
 
     public ParameterNode(String fieldName, JsonNode details, boolean jsonParams, Generator generator) {
@@ -48,8 +50,8 @@ public class ParameterNode extends ASTNode {
         } else if (paramType.equals("string")) {
             this.value = encodeAsString(ParamGenerator.generateRandVarName());
         } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
-            int max_value = details.has("max") ? details.get("max").asInt() : Integer.MAX_VALUE;
-            int min_value = details.has("min") ? details.get("min").asInt() : Integer.MIN_VALUE;
+            long max_value = details.has("max") ? details.get("max").asLong() : MAX_SAFE_INT_JS;
+            long min_value = details.has("min") ? details.get("min").asLong() : MIN_SAFE_INT_JS;
 
             this.value = String.valueOf(ParamGenerator.generateRandNumber(paramType, min_value, max_value));
         } else if (paramType.equals("boolean")) {

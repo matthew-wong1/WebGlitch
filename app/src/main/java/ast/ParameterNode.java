@@ -15,122 +15,121 @@ import java.util.stream.Collectors;
 
 public class ParameterNode extends ASTNode {
 
-  private final String fieldName;
-  private String value;
-  private final boolean jsonParams;
-  private final Generator generator;
-  private final Random rand = new Random();
+    private final String fieldName;
+    private final boolean jsonParams;
+    private final Generator generator;
+    private final Random rand = new Random();
+    private final String TYPES_PATH = "./rsrcs/webgpu/types/types.json";
+    private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
+    private String value;
 
-  private final String TYPES_PATH = "./rsrcs/webgpu/types/types.json";
-  private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
+    public ParameterNode(String fieldName, JsonNode details, boolean jsonParams, Generator generator) {
+        // Parse details
+        this.fieldName = fieldName;
+        this.jsonParams = jsonParams;
+        this.generator = generator;
 
-  public ParameterNode(String fieldName, JsonNode details, boolean jsonParams, Generator generator) {
-    // Parse details
-    this.fieldName = fieldName;
-    this.jsonParams = jsonParams;
-    this.generator = generator;
+        // Check if need to pass in webGPU object. Go through sequence where create one
+        generateParams(details);
 
-    // Check if need to pass in webGPU object. Go through sequence where create one
-    generateParams(details);
-
-  }
-
-  private void generateParams(JsonNode details) {
-    if (!details.has("type")) {
-      return;
     }
 
-    String paramType = details.get("type").asText();
+    private void generateParams(JsonNode details) {
+        if (!details.has("type")) {
+            return;
+        }
 
-    boolean isEnum = details.has("enum");
+        String paramType = details.get("type").asText();
 
-    if (isEnum) {
-      generateEnumVal(details, paramType);
-    } else if (paramType.equals("string")) {
-      this.value = encodeAsString(ParamGenerator.generateRandVarName());
-    } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
-      int max_value = details.has("max") ? details.get("max").asInt() : Integer.MAX_VALUE;
-      int min_value = details.has("min") ? details.get("min").asInt() : Integer.MIN_VALUE;
+        boolean isEnum = details.has("enum");
 
-      this.value = String.valueOf(ParamGenerator.generateRandNumber(paramType, min_value, max_value));
-    } else if (paramType.equals("boolean")) {
-      this.value = String.valueOf(rand.nextBoolean());
-    } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
-      this.value = generator.getRandomReceiver(paramType);
-    } else { // Requires WebGPU Type
+        if (isEnum) {
+            generateEnumVal(details, paramType);
+        } else if (paramType.equals("string")) {
+            this.value = encodeAsString(ParamGenerator.generateRandVarName());
+        } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
+            int max_value = details.has("max") ? details.get("max").asInt() : Integer.MAX_VALUE;
+            int min_value = details.has("min") ? details.get("min").asInt() : Integer.MIN_VALUE;
 
-      generateParamAsJson(paramType);
+            this.value = String.valueOf(ParamGenerator.generateRandNumber(paramType, min_value, max_value));
+        } else if (paramType.equals("boolean")) {
+            this.value = String.valueOf(rand.nextBoolean());
+        } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
+            this.value = generator.getRandomReceiver(paramType);
+        } else { // Requires WebGPU Type
+
+            generateParamAsJson(paramType);
+        }
+
+
     }
 
+    private void generateParamAsJson(String paramType) {
+        ObjectMapper mapper = new ObjectMapper();
 
-  }
-
-  private void generateParamAsJson(String paramType) {
-    ObjectMapper mapper = new ObjectMapper();
-
-    JsonNode details = null;
-    try {
-      details = mapper.readTree(new File(TYPES_PATH)).get(paramType);
-    } catch (IOException e) {
-      System.err.println(e.getMessage());
-    }
-    ParameterListNode parameterListNode = new ParameterListNode(details, true, generator);
-    parameterListNode.generateParams();
-    this.value = parameterListNode.toString();
-  }
-
-  private void generateEnumVal(JsonNode details, String paramType) {
-    boolean isArray = details.has("array");
-
-    if (details.get("enum").isBoolean()) {
-      // FETCH ENUM FILE
-      ObjectMapper mapper = new ObjectMapper();
-
-      try {
-        details = mapper.readTree(new File(ENUMS_PATH + paramType + ".json"));
-      } catch (IOException e) {
-        System.err.println(e.getMessage());
-      }
-
-      paramType = details.get("type").asText();
+        JsonNode details = null;
+        try {
+            details = mapper.readTree(new File(TYPES_PATH)).get(paramType);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        ParameterListNode parameterListNode = new ParameterListNode(details, true, generator);
+        parameterListNode.generateParams();
+        this.value = parameterListNode.toString();
     }
 
-    List<String> enumValues = new ArrayList<>();
-    JsonNode enumNode = details.get("enum");
-    enumNode.forEach(
-            enumValue -> {
-              enumValues.add(enumValue.asText());
-            });
+    private void generateEnumVal(JsonNode details, String paramType) {
+        boolean isArray = details.has("array");
 
-    if (paramType.equals("bitwiseFlag")) {
-      // Random int between 1 and end of list
-      int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+        if (details.get("enum").isBoolean()) {
+            // FETCH ENUM FILE
+            ObjectMapper mapper = new ObjectMapper();
 
-      Collections.shuffle(enumValues);
-      List<String> chosenFlags = enumValues.subList(0, randIdx);
-      this.value = String.join(" | ", chosenFlags);
-    } else if (isArray) {
-      int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+            try {
+                details = mapper.readTree(new File(ENUMS_PATH + paramType + ".json"));
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
 
-      Collections.shuffle(enumValues);
-      List<String> chosenFlags = enumValues.subList(0, randIdx);
-      this.value = chosenFlags.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ", "[", "]"));
-    } else {
-      int randIdx = rand.nextInt(enumValues.size());
-      String chosenFlag = enumValues.get(randIdx);
-      this.value = paramType.equals("string") ? encodeAsString(chosenFlag) : chosenFlag;
+            paramType = details.get("type").asText();
+        }
+
+        List<String> enumValues = new ArrayList<>();
+        JsonNode enumNode = details.get("enum");
+        enumNode.forEach(
+                enumValue -> {
+                    enumValues.add(enumValue.asText());
+                });
+
+        if (paramType.equals("bitwiseFlag")) {
+            // Random int between 1 and end of list
+            int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+
+            Collections.shuffle(enumValues);
+            List<String> chosenFlags = enumValues.subList(0, randIdx);
+            this.value = String.join(" | ", chosenFlags);
+        } else if (isArray) {
+            int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+
+            Collections.shuffle(enumValues);
+            List<String> chosenFlags = enumValues.subList(0, randIdx);
+            this.value = chosenFlags.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ", "[", "]"));
+        } else {
+            int randIdx = rand.nextInt(enumValues.size());
+            String chosenFlag = enumValues.get(randIdx);
+            this.value = paramType.equals("string") ? encodeAsString(chosenFlag) : chosenFlag;
+        }
     }
-  }
 
-  @Override
-  public String toString() {
-    if (jsonParams) {
-      return fieldName + ": " + this.value;
+    @Override
+    public String toString() {
+        if (jsonParams) {
+            return fieldName + ": " + this.value;
+        }
+        return this.value;
     }
-    return this.value;
-  }
 
-  private String encodeAsString(String value) {
-    return "\"" + value + "\"";
-  }
+    private String encodeAsString(String value) {
+        return "\"" + value + "\"";
+    }
 }

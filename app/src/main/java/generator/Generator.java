@@ -10,34 +10,23 @@ import java.io.IOException;
 import java.util.*;
 
 public class Generator {
-    public record FileNameCallProbPair(String fileName, Double callProbability) {}
-    public record FileNameReceiverNameMethodName(String fileName, String receiverName, String methodName) {}
-    public record ReceiverNameMethodNamePair(String receiverName, String methodName) {}
-
     private static final Random rand = new Random();
     private static final PrettyPrinter printer = new PrettyPrinter();
+    private static final String DEFAULT_CONTEXT_NAME = "context";
     // Hash map to keep track of state
     // Key: Type of object eg adapter, device
     // Value: Reference to that objet that currently exists
     private final Map<String, List<String>> symbolTable = new HashMap<>();
     private final Map<String, FileNameReceiverNameMethodName> receiverInits = new HashMap<>();
-
     // Maps method call name to File it's located in and Probability (double)
     private final Map<ReceiverNameMethodNamePair, FileNameCallProbPair> callProbabilities = new HashMap<>();
-
     // Tracks call histories
     private final Set<ReceiverNameMethodNamePair> callState = new HashSet<>();
-
     private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/interfaces/";
     private final Parser parser = new Parser(this);
     private final int maxCalls;
     private final boolean allowOptParams;
     private ASTNode programNode;
-
-    private static final String DEFAULT_CONTEXT_NAME = "context";
-
-    // ASSIGN PROBABILTIES BY FIRST LOADING ALL METHODS FROM ALL FILES INTO SOME MAP, INITIALIZE PROBABILITIES
-    // EG MAP OF STRING TO DOUBLE
 
     public Generator(int maxCalls, boolean allowOptParams) {
         this.maxCalls = maxCalls;
@@ -50,6 +39,11 @@ public class Generator {
         }
 
         symbolTable.put("RenderingContext", new ArrayList<>(List.of(DEFAULT_CONTEXT_NAME)));
+    }
+
+    public static void main(String[] args) {
+        Generator generator = new Generator(20, false);
+        generator.generateProgram(1);
     }
 
     private void initializeReceiverInitsAndCallProbs() throws IOException {
@@ -85,7 +79,7 @@ public class Generator {
 
                 // READ FROM CONFIG FILE HERE
                 System.out.println(receiverType + " " + methodName + " from " + fileName);
-                callProbabilities.put(new ReceiverNameMethodNamePair(receiverType,methodName), new FileNameCallProbPair(fileName, 0.0));
+                callProbabilities.put(new ReceiverNameMethodNamePair(receiverType, methodName), new FileNameCallProbPair(fileName, 0.0));
 
             }
 
@@ -93,10 +87,8 @@ public class Generator {
 
     }
 
-    public static void main(String[] args) {
-        Generator generator = new Generator(20, false);
-        generator.generateProgram(1);
-    }
+    // ASSIGN PROBABILTIES BY FIRST LOADING ALL METHODS FROM ALL FILES INTO SOME MAP, INITIALIZE PROBABILITIES
+    // EG MAP OF STRING TO DOUBLE
 
     public void generateProgram(int fileNum) {
         this.programNode = new ProgramNode();
@@ -139,7 +131,7 @@ public class Generator {
             FileNameReceiverNameMethodName initInfo = receiverInits.get(receiverType);
             String initMethodName = initInfo.methodName;
             String initReceiverType = initInfo.receiverName;
-            System.out.println("GENERATING REQUIREMENT" +  initReceiverType + initMethodName);
+            System.out.println("GENERATING REQUIREMENT" + initReceiverType + initMethodName);
             generateCall(new ReceiverNameMethodNamePair(initReceiverType, initMethodName));
         }
 
@@ -182,6 +174,15 @@ public class Generator {
 
     public void removeFromCallState(ReceiverNameMethodNamePair receiverNameMethodNamePair) {
         callState.remove(receiverNameMethodNamePair);
+    }
+
+    public record FileNameCallProbPair(String fileName, Double callProbability) {
+    }
+
+    public record FileNameReceiverNameMethodName(String fileName, String receiverName, String methodName) {
+    }
+
+    public record ReceiverNameMethodNamePair(String receiverName, String methodName) {
     }
 
 }

@@ -11,14 +11,11 @@ public class ParamGenerator {
     private static final Random rand = new Random();
 
     public static String generateRandVarName() {
-        return new RandomStringGenerator.Builder()
-                        .withinRange(ALLOWED_CHARS)
-                        .get()
-                        .generate(MIN_VAR_LENGTH, MAX_VAR_LENGTH);
+        return new RandomStringGenerator.Builder().withinRange(ALLOWED_CHARS).get().generate(MIN_VAR_LENGTH, MAX_VAR_LENGTH);
     }
 
     public static Number generateRandNumber(String paramType, int minValue, int maxValue) {
-        switch(paramType) {
+        switch (paramType) {
             case "rgba":
                 maxValue = 255;
             case "uint":

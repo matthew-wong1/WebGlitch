@@ -22,8 +22,7 @@ public class ParameterListNode extends ASTNode {
 
         String parameters;
         if (jsonParams) {
-            parameters =
-                    subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(delimiter, "{", "}"));
+            parameters = subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(delimiter, "{", "}"));
         } else {
             parameters = subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(delimiter));
         }
@@ -35,18 +34,15 @@ public class ParameterListNode extends ASTNode {
 
 
         for (JsonNode param : paramsJsonNode) {
-            param
-                    .fieldNames()
-                    .forEachRemaining(
-                            fieldName -> {
-                                JsonNode paramDetails = param.get(fieldName);
+            param.fieldNames().forEachRemaining(fieldName -> {
+                JsonNode paramDetails = param.get(fieldName);
 
-                                //                    if (paramDetails.has("optional")) {
-                                //
-                                //                    }
+//                if (paramDetails.has("optional")) {
+//
+//                }
 
-                                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, generator));
-                            });
+                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, generator));
+            });
         }
     }
 }

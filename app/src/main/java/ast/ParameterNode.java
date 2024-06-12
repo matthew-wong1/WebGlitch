@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class ParameterNode extends ASTNode {
 
@@ -79,6 +80,8 @@ public class ParameterNode extends ASTNode {
   }
 
   private void generateEnumVal(JsonNode details, String paramType) {
+    boolean isArray = details.has("array");
+
     if (details.get("enum").isBoolean()) {
       // FETCH ENUM FILE
       ObjectMapper mapper = new ObjectMapper();
@@ -106,6 +109,12 @@ public class ParameterNode extends ASTNode {
       Collections.shuffle(enumValues);
       List<String> chosenFlags = enumValues.subList(0, randIdx);
       this.value = String.join(" | ", chosenFlags);
+    } else if (isArray) {
+      int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+
+      Collections.shuffle(enumValues);
+      List<String> chosenFlags = enumValues.subList(0, randIdx);
+      this.value = chosenFlags.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ", "[", "]"));
     } else {
       int randIdx = rand.nextInt(enumValues.size());
       String chosenFlag = enumValues.get(randIdx);

@@ -113,6 +113,16 @@
           },
           "size": {
             "type": "textureSize"
+          },
+          "usage": {
+            "type": "gpuTextureUsage",
+            "enum": true
+          },
+          "viewFormats": {
+            "type": "gpuTextureFormat",
+            "optional": true,
+            "enum": true,
+            "array": true
           }
         }
       ]

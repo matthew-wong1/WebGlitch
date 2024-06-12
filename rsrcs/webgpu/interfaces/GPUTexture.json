@@ -5,7 +5,6 @@
     {
       "methodName": "createView",
       "paramType": "object",
-      "declaration": true,
       "returnType": "GPUTextureView",
       "properties": [
         {
@@ -61,7 +60,6 @@
     {
       "methodName": "destroy",
       "returnType": "none",
-      "declaration": true,
       "deletes": true
     }
   ]

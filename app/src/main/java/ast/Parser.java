@@ -88,7 +88,7 @@ public class Parser {
             }
         }
 
-        boolean isDeclaration = methodJsonNode.has("declaration");
+        String returnType = methodJsonNode.get("returnType").asText();
         String parentReceiverType = rootJsonNode.get("receiverType").asText();
         String receiver = generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements"));
 
@@ -97,7 +97,7 @@ public class Parser {
         JsonNode paramsJsonNode = methodJsonNode.path("properties");
         ASTNode rootASTNode = new MethodCallNode(receiver, methodName, jsonParams, isArray, paramsJsonNode, generator);
 
-        if (isDeclaration) {
+        if (!returnType.equals("none")) {
             return generateDeclaration(methodJsonNode, rootASTNode);
         }
 

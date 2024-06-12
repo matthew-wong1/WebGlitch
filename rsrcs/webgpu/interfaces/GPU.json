@@ -4,7 +4,6 @@
     {
       "methodName": "requestAdapter",
       "paramType": "object",
-      "declaration": true,
       "async": true,
       "returnType": "GPUAdapter",
       "properties": [
@@ -22,7 +21,6 @@
     },
     {
       "methodName": "getPreferredCanvasFormat",
-      "declaration": true,
       "async": false,
       "returnType": "string"
     }

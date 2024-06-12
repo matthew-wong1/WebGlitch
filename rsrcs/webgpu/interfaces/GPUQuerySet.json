@@ -5,7 +5,6 @@
     {
       "methodName": "destroy",
       "returnType": "none",
-      "declaration": true,
       "deletes": true
     }
   ]

@@ -49,7 +49,6 @@
           "receiverType": "RenderingContext",
           "methodName": "configure"
         }],
-      "declaration": true
     },
     {
       "methodName": "unconfigure",

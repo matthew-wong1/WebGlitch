@@ -4,13 +4,11 @@
   "methods": [
     {
       "methodName": "requestDevice",
-      "declaration": true,
       "async": true,
       "returnType": "GPUDevice"
     },
     {
       "methodName": "requestAdapterInfo",
-      "declaration": true,
       "async": false,
       "returnType": "GPUAdapterInfo"
     }

@@ -9,11 +9,13 @@ public class ParameterListNode extends ASTNode {
     private final Generator generator;
     private final boolean jsonParams;
     private final JsonNode paramsJsonNode;
+    private final boolean isArray;
 
-    public ParameterListNode(JsonNode paramsJsonNode, boolean jsonParams, Generator generator) {
+    public ParameterListNode(JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray, Generator generator) {
         this.generator = generator;
-        this.jsonParams = jsonParams;
+        this.jsonParams = isJsonParams;
         this.paramsJsonNode = paramsJsonNode;
+        this.isArray = isArray;
     }
 
     @Override
@@ -25,6 +27,10 @@ public class ParameterListNode extends ASTNode {
             parameters = subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(delimiter, "{", "}"));
         } else {
             parameters = subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(delimiter));
+        }
+
+        if (isArray) {
+            parameters = "[" + parameters + "]";
         }
 
         return parameters;

@@ -58,13 +58,13 @@ public class ParameterNode extends ASTNode {
             this.value = generator.getRandomReceiver(paramType);
         } else { // Requires WebGPU Type
 
-            generateParamAsJson(paramType);
+            generateParamAsJson(paramType, details.has("array"));
         }
 
 
     }
 
-    private void generateParamAsJson(String paramType) {
+    private void generateParamAsJson(String paramType, boolean isArray) {
         ObjectMapper mapper = new ObjectMapper();
 
         JsonNode details = null;
@@ -73,7 +73,7 @@ public class ParameterNode extends ASTNode {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-        ParameterListNode parameterListNode = new ParameterListNode(details, true, generator);
+        ParameterListNode parameterListNode = new ParameterListNode(details, true, isArray, generator);
         parameterListNode.generateParams();
         this.value = parameterListNode.toString();
     }

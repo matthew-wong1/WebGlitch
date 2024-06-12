@@ -93,8 +93,9 @@ public class Parser {
         String receiver = generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements"));
 
         boolean jsonParams = methodJsonNode.path("paramType").asText("csv").equals("object");
+        boolean isArray = methodJsonNode.has("array");
         JsonNode paramsJsonNode = methodJsonNode.path("properties");
-        ASTNode rootASTNode = new MethodCallNode(receiver, methodName, jsonParams, paramsJsonNode, generator);
+        ASTNode rootASTNode = new MethodCallNode(receiver, methodName, jsonParams, isArray, paramsJsonNode, generator);
 
         if (isDeclaration) {
             return generateDeclaration(methodJsonNode, rootASTNode);

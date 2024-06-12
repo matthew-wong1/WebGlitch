@@ -9,7 +9,8 @@
       "properties": [
         {
           "colorAttachments": {
-            "type": "colorAttachment"
+            "type": "colorAttachment",
+            "array": true
           },
           "depthStencilAttachment": {
             "type": "depthStencilAttachment",

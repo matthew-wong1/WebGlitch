@@ -9,9 +9,9 @@ public class MethodCallNode extends ASTNode {
 
     private final String callName;
 
-    public MethodCallNode(String receiver, String methodName, boolean jsonParams, JsonNode paramsJsonNode, Generator generator) {
+    public MethodCallNode(String receiver, String methodName, boolean jsonParams, boolean isArray, JsonNode paramsJsonNode, Generator generator) {
         this.callName = receiver + "." + methodName;
-        ParameterListNode parameterListNode = new ParameterListNode(paramsJsonNode, jsonParams, generator);
+        ParameterListNode parameterListNode = new ParameterListNode(paramsJsonNode, jsonParams, isArray, generator);
         parameterListNode.generateParams();
         this.addNode(parameterListNode);
     }

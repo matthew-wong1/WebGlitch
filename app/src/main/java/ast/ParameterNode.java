@@ -43,8 +43,9 @@ public class ParameterNode extends ASTNode {
 
     boolean isEnum = details.has("enum");
 
-
-    if (paramType.equals("string")) {
+    if (isEnum) {
+      generateEnumVal(details, paramType);
+    } else if (paramType.equals("string")) {
       this.value = encodeAsString(ParamGenerator.generateRandVarName());
     } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
       int max_value = details.has("max") ? details.get("max").asInt() : Integer.MAX_VALUE;
@@ -53,8 +54,6 @@ public class ParameterNode extends ASTNode {
       this.value = String.valueOf(ParamGenerator.generateRandNumber(paramType, min_value, max_value));
     } else if (paramType.equals("boolean")) {
       this.value = String.valueOf(rand.nextBoolean());
-    } else if (isEnum) {
-      generateEnumVal(details, paramType);
     } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
       this.value = generator.getRandomReceiver(paramType);
     } else { // Requires WebGPU Type

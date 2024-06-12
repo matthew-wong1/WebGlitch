@@ -3,6 +3,7 @@ package ast;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
+import generator.NumericConstraints;
 import generator.ParamGenerator;
 
 import java.io.File;
@@ -21,15 +22,15 @@ public class ParameterNode extends ASTNode {
     private final Random rand = new Random();
     private final String TYPES_PATH = "./rsrcs/webgpu/types/types.json";
     private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
-    private final long MAX_SAFE_ULONG_CPP = 4294967295L;
-    private final long MIN_SAFE_SIGNED_LONG_CPP = -2147483648;
+    private final ParameterListNode parent;
     private String value;
 
-    public ParameterNode(String fieldName, JsonNode details, boolean jsonParams, Generator generator) {
+    public ParameterNode(String fieldName, JsonNode details, boolean jsonParams, Generator generator, ParameterListNode parent) {
         // Parse details
         this.fieldName = fieldName;
         this.jsonParams = jsonParams;
         this.generator = generator;
+        this.parent = parent;
 
         // Check if need to pass in webGPU object. Go through sequence where create one
         generateParams(details);
@@ -50,10 +51,7 @@ public class ParameterNode extends ASTNode {
         } else if (paramType.equals("string")) {
             this.value = encodeAsString(ParamGenerator.generateRandVarName());
         } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
-            long max_value = details.has("max") ? details.get("max").asLong() : MAX_SAFE_ULONG_CPP;
-            long min_value = details.has("min") ? details.get("min").asLong() : MIN_SAFE_SIGNED_LONG_CPP;
-
-            this.value = String.valueOf(ParamGenerator.generateRandNumber(paramType, min_value, max_value));
+            generateNumber(details, paramType);
         } else if (paramType.equals("boolean")) {
             this.value = String.valueOf(rand.nextBoolean());
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
@@ -63,7 +61,36 @@ public class ParameterNode extends ASTNode {
             generateParamAsJson(paramType, details.has("array"));
         }
 
+        parent.addFlag(fieldName, value);
+    }
 
+    private void generateNumber(JsonNode details, String paramType) {
+
+        NumericConstraints numericConstraints = new NumericConstraints(paramType);
+
+        if (details.has("min")) {
+            numericConstraints.setMin(details.get("min").asLong());
+        }
+
+        if (details.has("max")) {
+            numericConstraints.setMax(details.get("max").asLong());
+        }
+
+        if (details.has("conditions")) {
+            JsonNode conditions = details.get("conditions");
+
+            conditions.fieldNames().forEachRemaining(fieldName -> {
+                JsonNode condition = conditions.get(fieldName);
+                condition.fieldNames().forEachRemaining(field -> {
+                    JsonNode fieldNode = condition.get(field);
+                    if (parent.getFlag(fieldName).contains(field)) {
+                        numericConstraints.set(fieldNode.get("constraint").asText(), fieldNode.get("value").asLong());
+                    }
+                });
+            });
+        }
+
+        this.value = String.valueOf(ParamGenerator.generateRandNumber(paramType, numericConstraints));
     }
 
     private void generateParamAsJson(String paramType, boolean isArray) {

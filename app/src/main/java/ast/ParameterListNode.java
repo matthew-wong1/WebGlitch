@@ -3,6 +3,7 @@ package ast;
 import com.fasterxml.jackson.databind.JsonNode;
 import generator.Generator;
 
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class ParameterListNode extends ASTNode {
@@ -10,6 +11,7 @@ public class ParameterListNode extends ASTNode {
     private final boolean jsonParams;
     private final JsonNode paramsJsonNode;
     private final boolean isArray;
+    private final HashMap<String, String> flags = new HashMap<>();
 
     public ParameterListNode(JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray, Generator generator) {
         this.generator = generator;
@@ -47,8 +49,16 @@ public class ParameterListNode extends ASTNode {
 //
 //                }
 
-                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, generator));
+                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, generator, this));
             });
         }
+    }
+
+    public String getFlag(String fieldName) {
+        return flags.get(fieldName);
+    }
+
+    public void addFlag(String fieldName, String flag) {
+        flags.put(fieldName, flag);
     }
 }

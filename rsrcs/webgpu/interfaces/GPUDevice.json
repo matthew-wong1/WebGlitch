@@ -17,7 +17,15 @@
             "optional": true
           },
           "size": {
-            "type": "uint"
+            "type": "uint",
+            "conditions": {
+              "mappedAtCreation": {
+                "true": {
+                  "constraint": "max",
+                  "value": 999999999
+                }
+              }
+            }
           },
           "usage": {
             "type": "bitwiseFlag",

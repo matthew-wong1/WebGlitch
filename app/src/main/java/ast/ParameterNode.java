@@ -86,7 +86,7 @@ public class ParameterNode extends ASTNode {
         }
 
         if (conditions.has("divisible")) {
-            numericConstraints.setDivisibility(conditions.get("divisible)").asInt());
+            numericConstraints.setDivisibility(conditions.get("divisible").asInt());
         }
     }
 
@@ -106,6 +106,10 @@ public class ParameterNode extends ASTNode {
 
     private void generateEnumVal(JsonNode details, String paramType) {
         boolean isArray = details.has("array");
+        JsonNode conditions = null;
+        if (details.has("conditions")) {
+            conditions = details.get("conditions");
+        }
 
         if (details.get("enum").isBoolean()) {
             // FETCH ENUM FILE
@@ -127,9 +131,7 @@ public class ParameterNode extends ASTNode {
                     enumValues.add(enumValue.asText());
                 });
 
-        if (details.has("conditions")) {
-            parseEnumConditions(details.get("conditions"), enumValues);
-        }
+        parseEnumConditions(conditions, enumValues);
 
         Collections.shuffle(enumValues);
 
@@ -140,7 +142,13 @@ public class ParameterNode extends ASTNode {
             List<String> chosenFlags = enumValues.subList(0, randIdx);
             this.value = String.join(" | ", chosenFlags);
         } else if (isArray) {
-            int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+            int randIdx;
+            if (enumValues.size() == 1) {
+                randIdx = 1;
+            } else {
+                randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+            }
+
             List<String> chosenFlags = enumValues.subList(0, randIdx);
             this.value = chosenFlags.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ", "[", "]"));
         } else {
@@ -151,11 +159,29 @@ public class ParameterNode extends ASTNode {
     }
 
     private void parseEnumConditions(JsonNode conditions, List<String> enumValues) {
-        if (conditions.has("textureCompatible")) {
-            String SUFFIX = "-srgb";
-            String compatibleTexture = parent.getFlag(conditions.get("textureCompatible").asText());
-            enumValues.removeIf(flag -> !(flag.equals(compatibleTexture)) || flag.equals(compatibleTexture + SUFFIX));
+        if (conditions == null) {
+            return;
         }
+
+        if (conditions.has("textureCompatible")) {
+
+            String compatibleTexture = findCompatibleTexture(parent.getFlag(conditions.get("textureCompatible").asText()));
+            enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
+
+        }
+    }
+
+    private String findCompatibleTexture(String compatibleTexture) {
+        String SUFFIX = "-srgb";
+
+        // Remove quotes
+        compatibleTexture = compatibleTexture.substring(1, compatibleTexture.length() - 1);
+
+        if (compatibleTexture.endsWith(SUFFIX)) {
+            compatibleTexture = compatibleTexture.substring(0, compatibleTexture.length() - SUFFIX.length());
+        }
+        System.out.println("THE COMPATIBLE TEXTURE: " + compatibleTexture);
+        return compatibleTexture;
     }
 
     @Override

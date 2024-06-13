@@ -18,6 +18,8 @@
           },
           "size": {
             "type": "uint",
+            "max": 268435456,
+            "divisible": 4,
             "conditions": {
               "mappedAtCreation": {
                 "true": {
@@ -127,7 +129,10 @@
             "type": "gpuTextureFormat",
             "optional": true,
             "enum": true,
-            "array": true
+            "array": true,
+            "conditions": {
+              "format": "textureCompatible"
+              }
           }
         }
       ]

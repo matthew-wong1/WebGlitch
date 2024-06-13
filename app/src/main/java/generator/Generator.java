@@ -42,7 +42,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(100, false);
+        Generator generator = new Generator(1000, false);
         generator.generateProgram(1);
     }
 

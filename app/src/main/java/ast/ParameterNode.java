@@ -90,6 +90,10 @@ public class ParameterNode extends ASTNode {
             });
         }
 
+        if (details.has("divisible")) {
+            numericConstraints.setDivisibility(details.get("divisible)").asInt());
+        }
+
         this.value = String.valueOf(ParamGenerator.generateRandNumber(paramType, numericConstraints));
     }
 

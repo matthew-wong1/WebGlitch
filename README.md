@@ -9,3 +9,4 @@
 2. Also have individual method requirements (individual methods that must've been already called for a certain call to be valid)
 3. GPUInterface Types (object instances) specified with capital letter. Special custom types eg depthStencilAtachment start with lowercase
 4. If a Method call destroy the object on which it is called, specify by: "deletes": "this"
+5. Conditions: Specifies how the parameter's validity changes depending on the value of another parameter

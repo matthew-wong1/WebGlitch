@@ -1,5 +1,7 @@
 package generator;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class NumericConstraints {
 
 
@@ -11,6 +13,7 @@ public class NumericConstraints {
 
     private long max;
     private long min;
+    private Integer divisibility;
 
     public NumericConstraints(String type) {
         switch (type) {
@@ -27,6 +30,8 @@ public class NumericConstraints {
                 this.min = MIN_RGBA;
                 break;
         }
+
+        divisibility = null;
     }
 
     public long getMax() {
@@ -54,5 +59,13 @@ public class NumericConstraints {
                 min = value;
                 break;
         }
+    }
+
+    public void setDivisibility(Integer divisibility) {
+        this.divisibility = divisibility;
+    }
+
+    public Integer getDivisibility() {
+        return divisibility;
     }
 }

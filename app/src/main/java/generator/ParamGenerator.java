@@ -20,6 +20,11 @@ public class ParamGenerator {
         long maxValue = numericConstraints.getMax();
         long minValue = numericConstraints.getMin();
 
+        Integer divisibility = numericConstraints.getDivisibility();
+        if (divisibility != null) {
+            return rand.nextLong(minValue / divisibility, maxValue / divisibility) * divisibility;
+        }
+
         if (paramType.equals("double") || paramType.equals("rgba")) {
             return rand.nextDouble(minValue, maxValue);
         }

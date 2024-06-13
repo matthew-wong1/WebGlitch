@@ -3,7 +3,7 @@
   "requirements": ["GPUCommandEncoder"],
   "methods": [
     {
-      "methodName": "beginRenderPass",
+      "name": "beginRenderPass",
       "paramType": "object",
       "returnType": "GPURenderPassEncoder",
       "properties": [

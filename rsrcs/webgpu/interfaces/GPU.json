@@ -2,7 +2,7 @@
   "receiverType": "navigator.gpu",
   "methods": [
     {
-      "methodName": "requestAdapter",
+      "name": "requestAdapter",
       "paramType": "object",
       "async": true,
       "returnType": "GPUAdapter",
@@ -20,7 +20,7 @@
       ]
     },
     {
-      "methodName": "getPreferredCanvasFormat",
+      "name": "getPreferredCanvasFormat",
       "async": false,
       "returnType": "string"
     }

@@ -65,7 +65,7 @@ public class Generator {
             for (JsonNode methodJsonNode : methodsJsonNode) {
 
                 String returnType = methodJsonNode.get("returnType").asText();
-                String methodName = methodJsonNode.get("methodName").asText();
+                String methodName = methodJsonNode.get("name").asText();
                 String fileName = apiInterface.getName();
                 // Only works once have all the files because your return type is going to be another file name
 //                if (interfaceNames.contains(methodName)) {
@@ -82,6 +82,8 @@ public class Generator {
                 callProbabilities.put(new ReceiverNameMethodNamePair(receiverType, methodName), new FileNameCallProbPair(fileName, 0.0));
 
             }
+
+
 
         }
 

@@ -40,7 +40,7 @@ public class Parser {
         JsonNode methodJsonNode = methodsJsonNode.get(randIdx);
 
         String receiverType = rootJsonNode.get("receiverType").asText();
-        String methodName = methodJsonNode.get("methodName").asText(); // Required field
+        String methodName = methodJsonNode.get("name").asText(); // Required field
 
         return parseAndBuildMethod(filePath, methodName, receiverType);
 
@@ -69,7 +69,7 @@ public class Parser {
         JsonNode methodJsonNode = null;
 
         for (JsonNode methodNode : methodsJsonNode) {
-            if (methodNode.get("methodName").asText().equals(methodName)) {
+            if (methodNode.get("name").asText().equals(methodName)) {
                 methodJsonNode = methodNode;
             }
         }
@@ -84,7 +84,7 @@ public class Parser {
             JsonNode prerequisiteMethodsJsonNode = methodJsonNode.get("prerequisiteMethods");
             for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
                 System.out.println(prerequisiteMethod.asText());
-                generator.generateCall(new Generator.ReceiverNameMethodNamePair(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("methodName").asText()));
+                generator.generateCall(new Generator.ReceiverNameMethodNamePair(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText()));
             }
         }
 
@@ -105,7 +105,7 @@ public class Parser {
         if (methodJsonNode.has("resets")) {
             JsonNode resetMethodsJsonNode = methodJsonNode.get("resets");
             for (JsonNode resetMethod : resetMethodsJsonNode) {
-                generator.removeFromCallState(new Generator.ReceiverNameMethodNamePair(resetMethod.get("receiverType").asText(), resetMethod.get("methodName").asText()));
+                generator.removeFromCallState(new Generator.ReceiverNameMethodNamePair(resetMethod.get("receiverType").asText(), resetMethod.get("name").asText()));
             }
         }
 

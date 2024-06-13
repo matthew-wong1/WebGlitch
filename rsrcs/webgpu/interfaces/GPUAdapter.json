@@ -3,12 +3,12 @@
   "requirements": ["GPUAdapter"],
   "methods": [
     {
-      "methodName": "requestDevice",
+      "name": "requestDevice",
       "async": true,
       "returnType": "GPUDevice"
     },
     {
-      "methodName": "requestAdapterInfo",
+      "name": "requestAdapterInfo",
       "async": false,
       "returnType": "GPUAdapterInfo"
     }

@@ -3,7 +3,7 @@
   "requirements": ["GPUTexture"],
   "methods": [
     {
-      "methodName": "createView",
+      "name": "createView",
       "paramType": "object",
       "returnType": "GPUTextureView",
       "properties": [
@@ -58,7 +58,7 @@
       ]
     },
     {
-      "methodName": "destroy",
+      "name": "destroy",
       "returnType": "none",
       "deletes": true
     }

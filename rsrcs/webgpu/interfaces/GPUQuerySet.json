@@ -3,7 +3,7 @@
   "requirements": ["GPUQuerySet"],
   "methods": [
     {
-      "methodName": "destroy",
+      "name": "destroy",
       "returnType": "none",
       "deletes": true
     }

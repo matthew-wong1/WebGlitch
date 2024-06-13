@@ -3,7 +3,7 @@
   "requirements": ["GPUDevice"],
   "methods": [
     {
-      "methodName": "createBuffer",
+      "name": "createBuffer",
       "paramType": "object",
       "returnType": "GPUBuffer",
       "properties": [
@@ -46,7 +46,7 @@
       ]
     },
     {
-      "methodName": "createCommandEncoder",
+      "name": "createCommandEncoder",
       "paramType": "object",
       "returnType": "GPUCommandEncoder",
       "properties": [
@@ -59,7 +59,7 @@
       ]
     },
     {
-      "methodName": "createQuerySet",
+      "name": "createQuerySet",
       "paramType": "object",
       "returnType": "GPUQuerySet",
       "properties": [
@@ -82,7 +82,7 @@
       ]
     },
     {
-      "methodName": "createTexture",
+      "name": "createTexture",
       "paramType": "object",
       "returnType": "GPUTexture",
       "properties": [
@@ -131,6 +131,12 @@
           }
         }
       ]
+    }
+  ],
+  "attributes": [
+    {
+      "name": "queue",
+      "returnType": "GPUQueue"
     }
   ]
 }

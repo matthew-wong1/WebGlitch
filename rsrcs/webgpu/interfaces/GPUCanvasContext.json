@@ -3,7 +3,7 @@
   "requirements": ["RenderingContext"],
   "methods": [
     {
-      "methodName": "configure",
+      "name": "configure",
       "paramType": "object",
       "returnType": "none",
       "properties": [
@@ -42,20 +42,20 @@
       ]
     },
     {
-      "methodName": "getCurrentTexture",
+      "name": "getCurrentTexture",
       "returnType": "GPUTexture",
       "prerequisiteMethods": [
         {
           "receiverType": "RenderingContext",
-          "methodName": "configure"
+          "name": "configure"
         }]
     },
     {
-      "methodName": "unconfigure",
+      "name": "unconfigure",
       "returnType": "none",
       "resets": [{
         "receiverType": "RenderingContext",
-        "methodName": "configure"
+        "name": "configure"
       }]
     }
   ]

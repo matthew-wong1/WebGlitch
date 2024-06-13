@@ -84,7 +84,7 @@ public class Parser {
             JsonNode prerequisiteMethodsJsonNode = methodJsonNode.get("prerequisiteMethods");
             for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
                 System.out.println(prerequisiteMethod.asText());
-                generator.generateCall(new Generator.ReceiverNameMethodNamePair(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText()));
+                generator.generateCall(new Generator.ReceiverNameCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true));
             }
         }
 
@@ -101,11 +101,11 @@ public class Parser {
             return generateDeclaration(methodJsonNode, rootASTNode);
         }
 
-        generator.addToCallState(new Generator.ReceiverNameMethodNamePair(currentReceiverType, methodName));
+        generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, methodName, true));
         if (methodJsonNode.has("resets")) {
             JsonNode resetMethodsJsonNode = methodJsonNode.get("resets");
             for (JsonNode resetMethod : resetMethodsJsonNode) {
-                generator.removeFromCallState(new Generator.ReceiverNameMethodNamePair(resetMethod.get("receiverType").asText(), resetMethod.get("name").asText()));
+                generator.removeFromCallState(new Generator.ReceiverNameCallNameCallType(resetMethod.get("receiverType").asText(), resetMethod.get("name").asText(), true));
             }
         }
 

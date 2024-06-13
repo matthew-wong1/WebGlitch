@@ -17,11 +17,11 @@ public class Generator {
     // Key: Type of object eg adapter, device
     // Value: Reference to that objet that currently exists
     private final Map<String, List<String>> symbolTable = new HashMap<>();
-    private final Map<String, FileNameReceiverNameMethodName> receiverInits = new HashMap<>();
+    private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
     // Maps method call name to File it's located in and Probability (double)
-    private final Map<ReceiverNameMethodNamePair, FileNameCallProbPair> callProbabilities = new HashMap<>();
+    private final Map<ReceiverNameCallNameCallType, FileNameCallProbPair> callProbabilities = new HashMap<>();
     // Tracks call histories
-    private final Set<ReceiverNameMethodNamePair> callState = new HashSet<>();
+    private final Set<ReceiverNameCallNameCallType> callState = new HashSet<>();
     private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/interfaces/";
     private final Parser parser = new Parser(this);
     private final int maxCalls;
@@ -63,30 +63,34 @@ public class Generator {
             String receiverType = rootJsonNode.get("receiverType").asText();
 
             for (JsonNode methodJsonNode : methodsJsonNode) {
-
-                String returnType = methodJsonNode.get("returnType").asText();
-                String methodName = methodJsonNode.get("name").asText();
-                String fileName = apiInterface.getName();
-                // Only works once have all the files because your return type is going to be another file name
-//                if (interfaceNames.contains(methodName)) {
-//                    System.out.println(methodName);
-//                }
-
-                if (!returnType.equals("string") && !returnType.equals("none")) {
-                    receiverInits.put(returnType, new FileNameReceiverNameMethodName(fileName, receiverType, methodName));
-
-                }
-
-                // READ FROM CONFIG FILE HERE
-                System.out.println(receiverType + " " + methodName + " from " + fileName);
-                callProbabilities.put(new ReceiverNameMethodNamePair(receiverType, methodName), new FileNameCallProbPair(fileName, 0.0));
-
+                addCall(apiInterface, methodJsonNode, receiverType, true);
             }
 
+            if (!rootJsonNode.has("attributes")) {
+                continue;
+            }
 
+            JsonNode attributesJsonNode = rootJsonNode.get("attributes");
+            
+            for (JsonNode attributeJsonNode : attributesJsonNode) {
+                addCall(apiInterface, attributeJsonNode, receiverType, false);
+            } 
 
         }
 
+    }
+
+    private void addCall(File apiInterface, JsonNode callJsonNode, String receiverType, boolean isMethod) {
+        String returnType = callJsonNode.get("returnType").asText();
+        String callName = callJsonNode.get("name").asText();
+        String fileName = apiInterface.getName();
+
+        if (!returnType.equals("string") && !returnType.equals("none")) {
+            receiverInits.put(returnType, new FileNameReceiverNameCallNameCallType(fileName, receiverType, callName, isMethod));
+        }
+
+        // READ FROM CONFIG FILE HERE
+        callProbabilities.put(new ReceiverNameCallNameCallType(receiverType, callName, isMethod), new FileNameCallProbPair(fileName, 0.0));
     }
 
     // ASSIGN PROBABILTIES BY FIRST LOADING ALL METHODS FROM ALL FILES INTO SOME MAP, INITIALIZE PROBABILITIES
@@ -96,9 +100,9 @@ public class Generator {
         this.programNode = new ProgramNode();
 
         for (int i = 0; i < maxCalls; i++) {
-            ReceiverNameMethodNamePair[] methods = callProbabilities.keySet().toArray(new ReceiverNameMethodNamePair[0]);
+            ReceiverNameCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverNameCallNameCallType[0]);
             int randIdx = rand.nextInt(methods.length);
-            ReceiverNameMethodNamePair randMethod = methods[randIdx];
+            ReceiverNameCallNameCallType randMethod = methods[randIdx];
             String fileName = callProbabilities.get(randMethod).fileName;
 
             try {
@@ -130,11 +134,12 @@ public class Generator {
 
     public String getRandomReceiver(String receiverType) {
         if (!symbolTable.containsKey(receiverType)) {
-            FileNameReceiverNameMethodName initInfo = receiverInits.get(receiverType);
-            String initMethodName = initInfo.methodName;
+            FileNameReceiverNameCallNameCallType initInfo = receiverInits.get(receiverType);
+            String initMethodName = initInfo.callName;
             String initReceiverType = initInfo.receiverName;
+            boolean initIsMethod = initInfo.methodCall;
             System.out.println("GENERATING REQUIREMENT" + initReceiverType + initMethodName);
-            generateCall(new ReceiverNameMethodNamePair(initReceiverType, initMethodName));
+            generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod));
         }
 
         List<String> variables = symbolTable.get(receiverType);
@@ -142,15 +147,15 @@ public class Generator {
         return variables.get(randIdx);
     }
 
-    public void generateCall(ReceiverNameMethodNamePair receiverNameMethodNamePair) {
-        if (callState.contains(receiverNameMethodNamePair)) {
+    public void generateCall(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
+        if (callState.contains(receiverNameCallNameCallType)) {
             return;
         }
 
-        String receiverName = receiverNameMethodNamePair.receiverName;
-        String methodName = receiverNameMethodNamePair.methodName;
+        String receiverName = receiverNameCallNameCallType.receiverName;
+        String methodName = receiverNameCallNameCallType.callName;
         System.out.println(receiverName + "." + methodName);
-        String fileName = callProbabilities.get(receiverNameMethodNamePair).fileName;
+        String fileName = callProbabilities.get(receiverNameCallNameCallType).fileName;
 
         ASTNode receiver = null;
 
@@ -170,21 +175,21 @@ public class Generator {
         return receiverType;
     }
 
-    public void addToCallState(ReceiverNameMethodNamePair receiverNameMethodNamePair) {
-        callState.add(receiverNameMethodNamePair);
+    public void addToCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
+        callState.add(receiverNameCallNameCallType);
     }
 
-    public void removeFromCallState(ReceiverNameMethodNamePair receiverNameMethodNamePair) {
-        callState.remove(receiverNameMethodNamePair);
+    public void removeFromCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
+        callState.remove(receiverNameCallNameCallType);
     }
 
     public record FileNameCallProbPair(String fileName, Double callProbability) {
     }
 
-    public record FileNameReceiverNameMethodName(String fileName, String receiverName, String methodName) {
+    public record FileNameReceiverNameCallNameCallType(String fileName, String receiverName, String callName, boolean methodCall) {
     }
 
-    public record ReceiverNameMethodNamePair(String receiverName, String methodName) {
+    public record ReceiverNameCallNameCallType(String receiverName, String callName, boolean isMethod) {
     }
 
 }

@@ -7,6 +7,9 @@ import generator.ParamGenerator;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Parser {
@@ -28,21 +31,31 @@ public class Parser {
     //                System.out.println("Failed to find file: " + e.getMessage());
     //            }
     //        }
-    public ASTNode parseAndBuildRandMethod(String filePath) throws IOException {
+    public ASTNode parseAndBuildRandCall(String filePath) throws IOException {
 
         // Open file
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootJsonNode = mapper.readTree(new File(filePath));
-        JsonNode methodsJsonNode = rootJsonNode.get("methods");
 
+        List<String> options = new ArrayList<>(Arrays.asList("methods", "attributes"));
+        JsonNode callsJsonNode;
+        String option;
+
+        if (rootJsonNode.has("attributes")) {
+            option = options.get(rand.nextInt(options.size()));
+        } else {
+            option = options.getFirst();
+        }
+
+        callsJsonNode = rootJsonNode.get(option);
         // Pick a random method from the length of 'methods'
-        int randIdx = rand.nextInt(methodsJsonNode.size());
-        JsonNode methodJsonNode = methodsJsonNode.get(randIdx);
+        int randIdx = rand.nextInt(callsJsonNode.size());
+        JsonNode methodJsonNode = callsJsonNode.get(randIdx);
 
         String receiverType = rootJsonNode.get("receiverType").asText();
-        String methodName = methodJsonNode.get("name").asText(); // Required field
+        String callName = methodJsonNode.get("name").asText(); // Required field
 
-        return parseAndBuildMethod(filePath, methodName, receiverType);
+        return parseAndBuildCall(filePath, callName, receiverType, option.equals("methods"));
 
     }
 
@@ -61,56 +74,60 @@ public class Parser {
         return newRootNode;
     }
 
-    public ASTNode parseAndBuildMethod(String filePath, String methodName, String currentReceiverType) throws IOException {
+
+    public ASTNode parseAndBuildCall(String filePath, String callName, String currentReceiverType, boolean isMethod) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootJsonNode = mapper.readTree(new File(filePath));
-        JsonNode methodsJsonNode = rootJsonNode.get("methods");
 
-        JsonNode methodJsonNode = null;
+        String callType = isMethod ? "methods" : "attributes";
 
-        for (JsonNode methodNode : methodsJsonNode) {
-            if (methodNode.get("name").asText().equals(methodName)) {
-                methodJsonNode = methodNode;
+        JsonNode callsJsonNode = rootJsonNode.get(callType);
+
+        JsonNode callJsonNode = null;
+
+        for (JsonNode methodNode : callsJsonNode) {
+            if (methodNode.get("name").asText().equals(callName)) {
+                callJsonNode = methodNode;
             }
         }
 
-        if (methodJsonNode == null) {
-            System.out.println("Error, the method " + methodName + " does not exist in path " + filePath);
+        if (callJsonNode == null) {
+            System.out.println("Error, the call " + callName + " does not exist in path " + filePath);
             System.exit(1);
         }
 
         // First generate any prerequisite methodCalls
-        if (methodJsonNode.has("prerequisiteMethods")) {
-            JsonNode prerequisiteMethodsJsonNode = methodJsonNode.get("prerequisiteMethods");
+        if (callJsonNode.has("prerequisiteMethods")) {
+            JsonNode prerequisiteMethodsJsonNode = callJsonNode.get("prerequisiteMethods");
             for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
                 System.out.println(prerequisiteMethod.asText());
                 generator.generateCall(new Generator.ReceiverNameCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true));
             }
         }
 
-        String returnType = methodJsonNode.get("returnType").asText();
+        String returnType = callJsonNode.get("returnType").asText();
         String parentReceiverType = rootJsonNode.get("receiverType").asText();
         String receiver = generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements"));
 
-        boolean jsonParams = methodJsonNode.path("paramType").asText("csv").equals("object");
-        boolean isArray = methodJsonNode.has("array");
-        JsonNode paramsJsonNode = methodJsonNode.path("properties");
-        ASTNode rootASTNode = new MethodCallNode(receiver, methodName, jsonParams, isArray, paramsJsonNode, generator);
+        boolean jsonParams = callJsonNode.path("paramType").asText("csv").equals("object");
+        boolean isArray = callJsonNode.has("array");
+        JsonNode paramsJsonNode = callJsonNode.path("properties");
+        ASTNode rootASTNode = new CallNode(receiver, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode);
 
         if (!returnType.equals("none")) {
-            return generateDeclaration(methodJsonNode, rootASTNode);
+            return generateDeclaration(callJsonNode, rootASTNode);
         }
 
-        generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, methodName, true));
-        if (methodJsonNode.has("resets")) {
-            JsonNode resetMethodsJsonNode = methodJsonNode.get("resets");
+        generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName, isMethod));
+        if (callJsonNode.has("resets")) {
+            JsonNode resetMethodsJsonNode = callJsonNode.get("resets");
             for (JsonNode resetMethod : resetMethodsJsonNode) {
                 generator.removeFromCallState(new Generator.ReceiverNameCallNameCallType(resetMethod.get("receiverType").asText(), resetMethod.get("name").asText(), true));
             }
         }
 
         // Delete object
-        if (methodJsonNode.has("deletes")) {
+        if (callJsonNode.has("deletes")) {
             generator.removeFromSymbolTable(parentReceiverType, receiver);
         }
 

@@ -106,7 +106,7 @@ public class Generator {
             String fileName = callProbabilities.get(randMethod).fileName;
 
             try {
-                this.programNode.addNode(parser.parseAndBuildRandMethod(JSON_DIRECTORY_PATH + fileName));
+                this.programNode.addNode(parser.parseAndBuildRandCall(JSON_DIRECTORY_PATH + fileName));
             } catch (IOException e) {
                 System.out.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
             }
@@ -153,14 +153,14 @@ public class Generator {
         }
 
         String receiverName = receiverNameCallNameCallType.receiverName;
-        String methodName = receiverNameCallNameCallType.callName;
-        System.out.println(receiverName + "." + methodName);
+        String callName = receiverNameCallNameCallType.callName;
+        boolean isMethod = receiverNameCallNameCallType.isMethod;
         String fileName = callProbabilities.get(receiverNameCallNameCallType).fileName;
 
         ASTNode receiver = null;
 
         try {
-            receiver = parser.parseAndBuildMethod(JSON_DIRECTORY_PATH + fileName, methodName, receiverName);
+            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverName, isMethod);
         } catch (IOException e) {
             System.out.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }

@@ -20,7 +20,7 @@ public class ParamGenerator {
         long maxValue = numericConstraints.getMax();
         long minValue = numericConstraints.getMin();
 
-        if (paramType.equals("double")) {
+        if (paramType.equals("double") || paramType.equals("rgba")) {
             return rand.nextDouble(minValue, maxValue);
         }
 

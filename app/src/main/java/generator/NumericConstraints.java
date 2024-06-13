@@ -6,7 +6,7 @@ public class NumericConstraints {
     private final long MAX_SAFE_ULONG_CPP = 4294967295L;
     private final long MIN_SAFE_SIGNED_LONG_CPP = -2147483648;
     private final long MAX_SAFE_SIGNED_LONG_CPP = 2147483647;
-    private final long MAX_RGBA = 255;
+    private final long MAX_RGBA = 1;
     private final long MIN_RGBA = 0;
 
     private long max;

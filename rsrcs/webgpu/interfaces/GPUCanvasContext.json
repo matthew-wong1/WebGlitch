@@ -58,5 +58,11 @@
         "name": "configure"
       }]
     }
+  ],
+  "attributes": [
+    {
+      "name": "canvas",
+      "returnType": "HTMLCanvasElement"
+    }
   ]
 }

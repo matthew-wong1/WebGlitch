@@ -31,5 +31,11 @@
         }
       ]
     }
+  ],
+  "attributes": [
+    {
+      "name": "label",
+      "returnType": "string"
+    }
   ]
 }

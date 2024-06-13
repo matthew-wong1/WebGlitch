@@ -135,6 +135,18 @@
   ],
   "attributes": [
     {
+      "name": "features",
+      "returnType": "GPUSupportedFeatures"
+    },
+    {
+      "name": "label",
+      "returnType": "string"
+    },
+    {
+      "name": "limits",
+      "returnType": "GPUSupportedLimits"
+    },
+    {
       "name": "queue",
       "returnType": "GPUQueue"
     }

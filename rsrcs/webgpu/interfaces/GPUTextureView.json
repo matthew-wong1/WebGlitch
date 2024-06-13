@@ -1,0 +1,10 @@
+{
+  "receiverType": "GPUTextureView",
+  "requirements": ["GPUTextureView"],
+  "attributes": [
+    {
+      "name": "label",
+      "returnType": "string"
+    }
+  ]
+}

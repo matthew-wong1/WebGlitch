@@ -59,22 +59,22 @@ public class Generator {
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootJsonNode = mapper.readTree(new File(JSON_DIRECTORY_PATH + apiInterface.getName()));
-            JsonNode methodsJsonNode = rootJsonNode.get("methods");
             String receiverType = rootJsonNode.get("receiverType").asText();
 
-            for (JsonNode methodJsonNode : methodsJsonNode) {
-                addCall(apiInterface, methodJsonNode, receiverType, true);
+            if (rootJsonNode.has("methods")) {
+                JsonNode methodsJsonNode = rootJsonNode.get("methods");
+                for (JsonNode methodJsonNode : methodsJsonNode) {
+                    addCall(apiInterface, methodJsonNode, receiverType, true);
+                }
             }
 
-            if (!rootJsonNode.has("attributes")) {
-                continue;
-            }
+            if (rootJsonNode.has("attributes")) {
+                JsonNode attributesJsonNode = rootJsonNode.get("attributes");
 
-            JsonNode attributesJsonNode = rootJsonNode.get("attributes");
-            
-            for (JsonNode attributeJsonNode : attributesJsonNode) {
-                addCall(apiInterface, attributeJsonNode, receiverType, false);
-            } 
+                for (JsonNode attributeJsonNode : attributesJsonNode) {
+                    addCall(apiInterface, attributeJsonNode, receiverType, false);
+                }
+            }
 
         }
 
@@ -85,7 +85,9 @@ public class Generator {
         String callName = callJsonNode.get("name").asText();
         String fileName = apiInterface.getName();
 
-        if (!returnType.equals("string") && !returnType.equals("none")) {
+        List<String> ignoredTypes = new ArrayList<>(Arrays.asList("string", "none", "boolean"));
+
+        if (!ignoredTypes.contains(returnType)) {
             receiverInits.put(returnType, new FileNameReceiverNameCallNameCallType(fileName, receiverType, callName, isMethod));
         }
 

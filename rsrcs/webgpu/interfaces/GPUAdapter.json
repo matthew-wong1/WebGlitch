@@ -12,5 +12,19 @@
       "async": false,
       "returnType": "GPUAdapterInfo"
     }
+  ],
+  "attributes": [
+    {
+      "name": "features",
+      "returnType": "GPUSupportedFeatures"
+    },
+    {
+      "name": "isFallbackAdapter",
+      "returnType": "boolean"
+    },
+    {
+      "name": "limits",
+      "returnType": "GPUSupportedLimits"
+    }
   ]
 }

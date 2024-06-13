@@ -41,10 +41,12 @@ public class Parser {
         JsonNode callsJsonNode;
         String option;
 
-        if (rootJsonNode.has("attributes")) {
-            option = options.get(rand.nextInt(options.size()));
-        } else {
+        if (!rootJsonNode.has("attributes")) {
             option = options.getFirst();
+        } else if (!rootJsonNode.has("methods")) {
+            option = options.getLast();
+        } else {
+            option = options.get(rand.nextInt(options.size()));
         }
 
         callsJsonNode = rootJsonNode.get(option);

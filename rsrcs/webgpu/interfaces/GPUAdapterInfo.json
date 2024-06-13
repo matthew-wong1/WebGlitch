@@ -1,0 +1,22 @@
+{
+  "receiverType": "GPUAdapterInfo",
+  "requirements": ["GPUAdapterInfo"],
+  "attributes": [
+    {
+      "name": "architecture",
+      "returnType": "string"
+    },
+    {
+      "name": "description",
+      "returnType": "string"
+    },
+    {
+      "name": "device",
+      "returnType": "string"
+    },
+    {
+      "name": "vendor",
+      "returnType": "string"
+    }
+  ]
+}

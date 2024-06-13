@@ -51,8 +51,10 @@
     {
       "depthClearValue": {
         "type": "double",
-        "min": 0.0,
-        "max": 1.0,
+        "conditions": {
+          "min": 0.0,
+          "max": 1.0
+        },
         "optional": true
       },
       "depthReadOnly": {

@@ -68,33 +68,26 @@ public class ParameterNode extends ASTNode {
 
         NumericConstraints numericConstraints = new NumericConstraints(paramType);
 
-        if (details.has("min")) {
-            numericConstraints.setMin(details.get("min").asLong());
-        }
-
-        if (details.has("max")) {
-            numericConstraints.setMax(details.get("max").asLong());
-        }
-
         if (details.has("conditions")) {
-            JsonNode conditions = details.get("conditions");
-
-            conditions.fieldNames().forEachRemaining(fieldName -> {
-                JsonNode condition = conditions.get(fieldName);
-                condition.fieldNames().forEachRemaining(field -> {
-                    JsonNode fieldNode = condition.get(field);
-                    if (parent.getFlag(fieldName).contains(field)) {
-                        numericConstraints.set(fieldNode.get("constraint").asText(), fieldNode.get("value").asLong());
-                    }
-                });
-            });
+            parseNumericConditions(details.get("conditions"), numericConstraints);
         }
 
-        if (details.has("divisible")) {
-            numericConstraints.setDivisibility(details.get("divisible)").asInt());
-        }
 
         this.value = String.valueOf(ParamGenerator.generateRandNumber(paramType, numericConstraints));
+    }
+
+    private void parseNumericConditions(JsonNode conditions, NumericConstraints numericConstraints) {
+        if (conditions.has("min")) {
+            numericConstraints.setMin(conditions.get("min").asLong());
+        }
+
+        if (conditions.has("max")) {
+            numericConstraints.setMax(conditions.get("max").asLong());
+        }
+
+        if (conditions.has("divisible")) {
+            numericConstraints.setDivisibility(conditions.get("divisible)").asInt());
+        }
     }
 
     private void generateParamAsJson(String paramType, boolean isArray) {
@@ -134,23 +127,34 @@ public class ParameterNode extends ASTNode {
                     enumValues.add(enumValue.asText());
                 });
 
+        if (details.has("conditions")) {
+            parseEnumConditions(details.get("conditions"), enumValues);
+        }
+
+        Collections.shuffle(enumValues);
+
         if (paramType.equals("bitwiseFlag")) {
             // Random int between 1 and end of list
             int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
 
-            Collections.shuffle(enumValues);
             List<String> chosenFlags = enumValues.subList(0, randIdx);
             this.value = String.join(" | ", chosenFlags);
         } else if (isArray) {
             int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
-
-            Collections.shuffle(enumValues);
             List<String> chosenFlags = enumValues.subList(0, randIdx);
             this.value = chosenFlags.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ", "[", "]"));
         } else {
             int randIdx = rand.nextInt(enumValues.size());
             String chosenFlag = enumValues.get(randIdx);
             this.value = paramType.equals("string") ? encodeAsString(chosenFlag) : chosenFlag;
+        }
+    }
+
+    private void parseEnumConditions(JsonNode conditions, List<String> enumValues) {
+        if (conditions.has("textureCompatible")) {
+            String SUFFIX = "-srgb";
+            String compatibleTexture = parent.getFlag(conditions.get("textureCompatible").asText());
+            enumValues.removeIf(flag -> !(flag.equals(compatibleTexture)) || flag.equals(compatibleTexture + SUFFIX));
         }
     }
 

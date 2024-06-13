@@ -18,15 +18,9 @@
           },
           "size": {
             "type": "uint",
-            "max": 268435456,
-            "divisible": 4,
             "conditions": {
-              "mappedAtCreation": {
-                "true": {
-                  "constraint": "max",
-                  "value": 999999999
-                }
-              }
+              "max": 268435456,
+              "divisible": 4
             }
           },
           "usage": {
@@ -68,7 +62,9 @@
         {
           "count": {
             "type": "uint",
-            "max": 4096
+            "conditions": {
+              "max": 4096
+            }
           },
           "label": {
             "type": "string",
@@ -131,8 +127,8 @@
             "enum": true,
             "array": true,
             "conditions": {
-              "format": "textureCompatible"
-              }
+              "textureCompatible": "format"
+            }
           }
         }
       ]

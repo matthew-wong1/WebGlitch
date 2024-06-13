@@ -9,9 +9,13 @@ if (!navigator.gpu) {
 }
 
 async function main() {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({dumpio: true});
     const page = await browser.newPage();
 
+    page.on('console', msg => {
+        const text = msg.text();
+        console.log(text);
+    });
     await page.goto(`file://${path.resolve(__dirname, '../rsrcs/html/index.html')}`);
     await page.waitForSelector('canvas'); // Ensure the canvas is loaded
 
@@ -23,3 +27,4 @@ async function main() {
         const devicePixelRatio = window.devicePixelRatio;
         canvas.width = canvas.clientWidth * devicePixelRatio;
         canvas.height = canvas.clientHeight * devicePixelRatio;
+

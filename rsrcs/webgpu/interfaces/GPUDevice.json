@@ -112,10 +112,6 @@
             "type": "string",
             "optional": true
           },
-          "mipLevelCount": {
-            "type": "uint",
-            "optional": true
-          },
           "sampleCount": {
             "type": "int",
             "enum": [
@@ -126,6 +122,16 @@
           },
           "size": {
             "type": "textureSize"
+          },
+          "mipLevelCount": {
+            "type": "uint",
+            "optional": true,
+            "conditions": {
+              "constraints": true,
+              "max": {
+                "customValidation": "mipLevelCount"
+              }
+            }
           },
           "usage": {
             "type": "gpuTextureUsage",

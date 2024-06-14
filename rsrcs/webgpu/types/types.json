@@ -104,9 +104,10 @@
       "width": {
         "type": "uint",
         "conditions": {
-          "constraints": true,
+          "min": 1,
           "max": {
             "name": "dimension",
+            "constraints": true,
             "1d": 8192,
             "2d": 8192,
             "3d": 2048
@@ -116,9 +117,10 @@
       "height": {
         "type": "uint",
         "conditions": {
-          "constraints": true,
+          "min": 1,
           "max": {
             "name": "dimension",
+            "constraints": true,
             "1d": 1,
             "2d": 8192,
             "3d": 2048
@@ -129,8 +131,9 @@
       "depthOrArrayLayers": {
         "type": "uint",
         "conditions": {
-          "constraints": true,
+          "min": 1,
           "max": {
+            "constraints": true,
             "name": "dimension",
             "1d": 1,
             "2d": 256,

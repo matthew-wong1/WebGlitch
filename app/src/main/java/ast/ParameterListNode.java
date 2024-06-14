@@ -50,7 +50,6 @@ public class ParameterListNode extends ASTNode {
 //                if (paramDetails.has("optional")) {
 //
 //                }
-                System.out.println(fieldName);
                 this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, generator, this));
             });
         }
@@ -58,7 +57,7 @@ public class ParameterListNode extends ASTNode {
 
     public String getFlag(String fieldName) {
         String flag = flags.get(fieldName);
-        if (flag == null) {
+        if (flag == null && parent != null) {
             return parent.getFlag(fieldName);
         }
 
@@ -66,12 +65,15 @@ public class ParameterListNode extends ASTNode {
     }
 
     public void addFlag(String fieldName, String flag) {
-        System.out.println(fieldName + " " + flag);
-        System.out.println(flag);
+
         if (flag.startsWith("\"")) {
             flag = flag.substring(1, flag.length() - 1);
         }
 
-        flags.put(fieldName, flag);
+        if (parent != null) {
+            parent.addFlag(fieldName, flag);
+        } else {
+            flags.put(fieldName, flag);
+        }
     }
 }

@@ -1,5 +1,7 @@
 package generator;
 
+import ast.ParameterListNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.Random;
@@ -29,7 +31,23 @@ public class ParamGenerator {
             return rand.nextDouble(minValue, maxValue);
         }
 
-        System.out.println(minValue + " to " + maxValue);
+        if (maxValue == minValue) {
+            return maxValue;
+        }
+
         return rand.nextLong(minValue, maxValue);
+    }
+
+
+    public static String generateCustomConstraint(String customValidation, ParameterListNode parent) {
+        switch (customValidation) {
+            case "mipLevelCount":
+                int width = Integer.parseInt(parent.getFlag("width"));
+                int height = Integer.parseInt(parent.getFlag("height"));
+                int max = (int) (Math.floor(Math.log(Math.min(width, height)) / Math.log(2)) + 1);
+                return String.valueOf(max);
+        }
+
+        return null;
     }
 }

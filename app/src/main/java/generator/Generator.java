@@ -121,7 +121,6 @@ public class Generator {
         if (!symbolTable.containsKey(returnedObjectType)) {
             symbolTable.put(returnedObjectType, new ArrayList<>());
         }
-        System.out.println("added " + variableName);
 
         symbolTable.get(returnedObjectType).add(variableName);
     }
@@ -140,7 +139,7 @@ public class Generator {
             String initMethodName = initInfo.callName;
             String initReceiverType = initInfo.receiverName;
             boolean initIsMethod = initInfo.methodCall;
-            System.out.println("GENERATING REQUIREMENT" + initReceiverType + initMethodName);
+
             generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod));
         }
 

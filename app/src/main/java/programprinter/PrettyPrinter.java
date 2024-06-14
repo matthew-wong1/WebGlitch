@@ -55,7 +55,6 @@ public class PrettyPrinter {
 
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             builder.command("cmd", "/c", command);
-            System.out.println(command);
         } else {
             builder.command("bash", "-c", command);
         }

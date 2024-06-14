@@ -70,7 +70,6 @@ public class Parser {
         ASTNode newRootNode = new AssignmentNode("const", isAsync, varName);
         newRootNode.addNode(rootASTNode);
 
-        System.out.println("adding to symbol table: " + returnType + " " + varName);
         generator.addToSymbolTable(returnType, varName);
 
         return newRootNode;
@@ -102,7 +101,7 @@ public class Parser {
         if (callJsonNode.has("prerequisiteMethods")) {
             JsonNode prerequisiteMethodsJsonNode = callJsonNode.get("prerequisiteMethods");
             for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
-                System.out.println(prerequisiteMethod.asText());
+
                 generator.generateCall(new Generator.ReceiverNameCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true));
             }
         }

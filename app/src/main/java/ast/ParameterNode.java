@@ -33,6 +33,9 @@ public class ParameterNode extends ASTNode {
         // Check if need to pass in webGPU object. Go through sequence where create one
         generateParams(details);
 
+        if (this.fieldName.equals("usage")) {
+            System.out.println(this.value);
+        }
     }
 
     private void generateParams(JsonNode details) {
@@ -88,13 +91,13 @@ public class ParameterNode extends ASTNode {
 
             long value;
 
-            if (conditions.has("constraints")) {
-
+            if (valueNode.has("customValidation")) {
+                value = Long.parseLong(ParamGenerator.generateCustomConstraint(valueNode.get("customValidation").asText(), parent));
+            } else if (valueNode.has("constraints")) {
                 String flagValue = parent.getFlag(valueNode.get("name").asText());
                 value = valueNode.get(flagValue).asLong();
             } else {
                 value = valueNode.asLong();
-                System.out.println("default " + value);
             }
 
             switch (numericCondition) {
@@ -102,9 +105,6 @@ public class ParameterNode extends ASTNode {
                     numericConstraints.setMin(value);
                     break;
                 case "max":
-                    if (value == 0) {
-                        System.out.println("MAX IS 0 ");
-                    }
                     numericConstraints.setMax(value);
                     break;
                 case "divisible":
@@ -181,6 +181,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private void generateBitwiseFlag(List<String> enumValues, JsonNode mutexNode) {
+
         int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
 
         List<String> chosenFlags = enumValues.subList(0, randIdx);
@@ -195,6 +196,7 @@ public class ParameterNode extends ASTNode {
                 if (chosenFlags.getFirst().equals(mutexFlag)) {
                     List<String> allowedFlags = mapper.convertValue(mutex.get("allowed"), new TypeReference<>() {
                     });
+                    allowedFlags.add(mutexFlag);
                     for (String flag : chosenFlags) {
                         if (!allowedFlags.contains(flag)) {
                             toRemove.add(flag);
@@ -205,7 +207,11 @@ public class ParameterNode extends ASTNode {
                 }
             }
         }
+
+        System.out.println("before " + chosenFlags);
+        System.out.println("to remove " + toRemove);
         chosenFlags.removeAll(toRemove);
+        System.out.println("after " + chosenFlags);
         this.value = String.join(" | ", chosenFlags);
     }
 
@@ -228,7 +234,6 @@ public class ParameterNode extends ASTNode {
         if (compatibleTexture.endsWith(SUFFIX)) {
             compatibleTexture = compatibleTexture.substring(0, compatibleTexture.length() - SUFFIX.length());
         }
-        System.out.println("THE COMPATIBLE TEXTURE: " + compatibleTexture);
         return compatibleTexture;
     }
 

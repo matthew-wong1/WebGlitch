@@ -20,7 +20,7 @@ public class ParamGenerator {
         long maxValue = numericConstraints.getMax();
         long minValue = numericConstraints.getMin();
 
-        Integer divisibility = numericConstraints.getDivisibility();
+        Long divisibility = numericConstraints.getDivisibility();
         if (divisibility != null) {
             return rand.nextLong(minValue / divisibility, maxValue / divisibility) * divisibility;
         }
@@ -29,6 +29,7 @@ public class ParamGenerator {
             return rand.nextDouble(minValue, maxValue);
         }
 
+        System.out.println(minValue + " to " + maxValue);
         return rand.nextLong(minValue, maxValue);
     }
 }

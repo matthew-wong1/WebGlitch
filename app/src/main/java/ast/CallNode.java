@@ -13,7 +13,7 @@ public class CallNode extends ASTNode {
         this.isMethod = isMethod;
 
         if (isMethod) {
-            ParameterListNode parameterListNode = new ParameterListNode(paramsJsonNode, jsonParams, isArray, generator);
+            ParameterListNode parameterListNode = new ParameterListNode(paramsJsonNode, jsonParams, isArray, generator, null);
             parameterListNode.generateParams();
             this.addNode(parameterListNode);
         }

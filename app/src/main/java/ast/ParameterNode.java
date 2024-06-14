@@ -8,10 +8,7 @@ import generator.ParamGenerator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ParameterNode extends ASTNode {
@@ -69,6 +66,7 @@ public class ParameterNode extends ASTNode {
         NumericConstraints numericConstraints = new NumericConstraints(paramType);
 
         if (details.has("conditions")) {
+
             parseNumericConditions(details.get("conditions"), numericConstraints);
         }
 
@@ -77,16 +75,41 @@ public class ParameterNode extends ASTNode {
     }
 
     private void parseNumericConditions(JsonNode conditions, NumericConstraints numericConstraints) {
-        if (conditions.has("min")) {
-            numericConstraints.setMin(conditions.get("min").asLong());
-        }
+        List<String> numericConditions = Arrays.asList("min", "max", "divisible");
 
-        if (conditions.has("max")) {
-            numericConstraints.setMax(conditions.get("max").asLong());
-        }
+        for (String numericCondition : numericConditions) {
 
-        if (conditions.has("divisible")) {
-            numericConstraints.setDivisibility(conditions.get("divisible").asInt());
+            JsonNode valueNode = conditions.get(numericCondition);
+
+            if (valueNode == null) {
+                continue;
+            }
+
+            long value;
+
+            if (conditions.has("constraints")) {
+
+                String flagValue = parent.getFlag(valueNode.get("name").asText());
+                value = valueNode.get(flagValue).asLong();
+            } else {
+                value = valueNode.asLong();
+                System.out.println("default " + value);
+            }
+
+            switch (numericCondition) {
+                case "min":
+                    numericConstraints.setMin(value);
+                    break;
+                case "max":
+                    if (value == 0) {
+                        System.out.println("MAX IS 0 ");
+                    }
+                    numericConstraints.setMax(value);
+                    break;
+                case "divisible":
+                    numericConstraints.setDivisibility(value);
+                    break;
+            }
         }
     }
 
@@ -99,7 +122,7 @@ public class ParameterNode extends ASTNode {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-        ParameterListNode parameterListNode = new ParameterListNode(details, true, isArray, generator);
+        ParameterListNode parameterListNode = new ParameterListNode(details, true, isArray, generator, parent);
         parameterListNode.generateParams();
         this.value = parameterListNode.toString();
     }
@@ -173,9 +196,6 @@ public class ParameterNode extends ASTNode {
 
     private String findCompatibleTexture(String compatibleTexture) {
         String SUFFIX = "-srgb";
-
-        // Remove quotes
-        compatibleTexture = compatibleTexture.substring(1, compatibleTexture.length() - 1);
 
         if (compatibleTexture.endsWith(SUFFIX)) {
             compatibleTexture = compatibleTexture.substring(0, compatibleTexture.length() - SUFFIX.length());

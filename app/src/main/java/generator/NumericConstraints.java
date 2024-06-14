@@ -13,7 +13,7 @@ public class NumericConstraints {
 
     private long max;
     private long min;
-    private Integer divisibility;
+    private Long divisibility;
 
     public NumericConstraints(String type) {
         switch (type) {
@@ -50,22 +50,11 @@ public class NumericConstraints {
         this.min = min;
     }
 
-    public void set(String field, long value) {
-        switch (field) {
-            case "max":
-                max = value;
-                break;
-            case "min":
-                min = value;
-                break;
-        }
-    }
-
-    public void setDivisibility(Integer divisibility) {
+    public void setDivisibility(Long divisibility) {
         this.divisibility = divisibility;
     }
 
-    public Integer getDivisibility() {
+    public Long getDivisibility() {
         return divisibility;
     }
 }

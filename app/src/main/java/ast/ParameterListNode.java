@@ -8,16 +8,18 @@ import java.util.stream.Collectors;
 
 public class ParameterListNode extends ASTNode {
     private final Generator generator;
+    private final ParameterListNode parent;
     private final boolean jsonParams;
     private final JsonNode paramsJsonNode;
     private final boolean isArray;
     private final HashMap<String, String> flags = new HashMap<>();
 
-    public ParameterListNode(JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray, Generator generator) {
+    public ParameterListNode(JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray, Generator generator, ParameterListNode parent) {
         this.generator = generator;
         this.jsonParams = isJsonParams;
         this.paramsJsonNode = paramsJsonNode;
         this.isArray = isArray;
+        this.parent = parent;
     }
 
     @Override
@@ -48,17 +50,28 @@ public class ParameterListNode extends ASTNode {
 //                if (paramDetails.has("optional")) {
 //
 //                }
-
+                System.out.println(fieldName);
                 this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, generator, this));
             });
         }
     }
 
     public String getFlag(String fieldName) {
-        return flags.get(fieldName);
+        String flag = flags.get(fieldName);
+        if (flag == null) {
+            return parent.getFlag(fieldName);
+        }
+
+        return flag;
     }
 
     public void addFlag(String fieldName, String flag) {
+        System.out.println(fieldName + " " + flag);
+        System.out.println(flag);
+        if (flag.startsWith("\"")) {
+            flag = flag.substring(1, flag.length() - 1);
+        }
+
         flags.put(fieldName, flag);
     }
 }

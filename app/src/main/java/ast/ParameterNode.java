@@ -1,5 +1,6 @@
 package ast;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
@@ -129,6 +130,7 @@ public class ParameterNode extends ASTNode {
 
     private void generateEnumVal(JsonNode details, String paramType) {
         boolean isArray = details.has("array");
+        JsonNode mutexNode = details.get("mutex");
         JsonNode conditions = null;
         if (details.has("conditions")) {
             conditions = details.get("conditions");
@@ -160,10 +162,7 @@ public class ParameterNode extends ASTNode {
 
         if (paramType.equals("bitwiseFlag")) {
             // Random int between 1 and end of list
-            int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
-
-            List<String> chosenFlags = enumValues.subList(0, randIdx);
-            this.value = String.join(" | ", chosenFlags);
+            generateBitwiseFlag(enumValues, mutexNode);
         } else if (isArray) {
             int randIdx;
             if (enumValues.size() == 1) {
@@ -179,6 +178,35 @@ public class ParameterNode extends ASTNode {
             String chosenFlag = enumValues.get(randIdx);
             this.value = paramType.equals("string") ? encodeAsString(chosenFlag) : chosenFlag;
         }
+    }
+
+    private void generateBitwiseFlag(List<String> enumValues, JsonNode mutexNode) {
+        int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+
+        List<String> chosenFlags = enumValues.subList(0, randIdx);
+        List<String> toRemove = new ArrayList<>();
+
+        // Post pass to remove mutually exclusive values
+        if (mutexNode != null) {
+            for (JsonNode mutex : mutexNode) {
+                ObjectMapper mapper = new ObjectMapper();
+                String mutexFlag = mutex.get("name").asText();
+
+                if (chosenFlags.getFirst().equals(mutexFlag)) {
+                    List<String> allowedFlags = mapper.convertValue(mutex.get("allowed"), new TypeReference<>() {
+                    });
+                    for (String flag : chosenFlags) {
+                        if (!allowedFlags.contains(flag)) {
+                            toRemove.add(flag);
+                        }
+                    }
+                } else {
+                    toRemove.add(mutexFlag);
+                }
+            }
+        }
+        chosenFlags.removeAll(toRemove);
+        this.value = String.join(" | ", chosenFlags);
     }
 
     private void parseEnumConditions(JsonNode conditions, List<String> enumValues) {

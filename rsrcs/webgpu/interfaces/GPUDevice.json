@@ -36,6 +36,16 @@
               "GPUBufferUsage.STORAGE",
               "GPUBufferUsage.UNIFORM",
               "GPUBufferUsage.VERTEX"
+            ],
+            "mutex": [
+              {
+                "name": "GPUBufferUsage.MAP_WRITE",
+                "allowed": ["GPUBufferUsage.COPY_DST"]
+              },
+              {
+                "name": "GPUBufferUsage.MAP_READ",
+                "allowed": ["GPUBufferUsage.COPY_DST"]
+              }
             ]
           }
         }

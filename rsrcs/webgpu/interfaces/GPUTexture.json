@@ -44,6 +44,7 @@
           "format": {
             "type": "gpuTextureFormat",
             "enum": true,
+            "inFile": true,
             "optional": true
           },
           "label": {

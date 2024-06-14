@@ -106,7 +106,8 @@
           },
           "format": {
             "type": "gpuTextureFormat",
-            "enum": true
+            "enum": true,
+            "inFile": true
           },
           "label": {
             "type": "string",
@@ -114,11 +115,17 @@
           },
           "sampleCount": {
             "type": "int",
-            "enum": [
-              1,
-              4
-            ],
-            "optional": true,
+            "enum": true,
+            "conditions": {
+              "constraints": true,
+              "enum": {
+                "name": "dimension",
+                "1d": [1],
+                "2d": [1, 4],
+                "3d": [1, 4]
+              }
+            },
+            "optional": true
           },
           "size": {
             "type": "textureSize"
@@ -135,12 +142,14 @@
           },
           "usage": {
             "type": "gpuTextureUsage",
-            "enum": true
+            "enum": true,
+            "inFile": true
           },
           "viewFormats": {
             "type": "gpuTextureFormat",
             "optional": true,
             "enum": true,
+            "inFile": true,
             "array": true,
             "conditions": {
               "textureCompatible": "format"

@@ -136,7 +136,7 @@ public class ParameterNode extends ASTNode {
             conditions = details.get("conditions");
         }
 
-        if (details.get("enum").isBoolean()) {
+        if (details.has("inFile")) {
             // FETCH ENUM FILE
             ObjectMapper mapper = new ObjectMapper();
 
@@ -151,10 +151,9 @@ public class ParameterNode extends ASTNode {
 
         List<String> enumValues = new ArrayList<>();
         JsonNode enumNode = details.get("enum");
-        enumNode.forEach(
-                enumValue -> {
-                    enumValues.add(enumValue.asText());
-                });
+        if (!enumNode.isBoolean()) {
+            extractNodeAsList(enumNode, enumValues);
+        }
 
         parseEnumConditions(conditions, enumValues);
 
@@ -162,25 +161,42 @@ public class ParameterNode extends ASTNode {
 
         if (paramType.equals("bitwiseFlag")) {
             // Random int between 1 and end of list
-            generateBitwiseFlag(enumValues, mutexNode);
+            generateEnumAsBitwiseFlags(enumValues, mutexNode);
         } else if (isArray) {
-            int randIdx;
-            if (enumValues.size() == 1) {
-                randIdx = 1;
-            } else {
-                randIdx = rand.nextInt(enumValues.size() - 1) + 1;
-            }
-
-            List<String> chosenFlags = enumValues.subList(0, randIdx);
-            this.value = chosenFlags.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ", "[", "]"));
+            generateEnumAsArray(enumValues);
         } else {
-            int randIdx = rand.nextInt(enumValues.size());
-            String chosenFlag = enumValues.get(randIdx);
-            this.value = paramType.equals("string") ? encodeAsString(chosenFlag) : chosenFlag;
+            generateEnumAsDefault(paramType, enumValues);
         }
     }
 
-    private void generateBitwiseFlag(List<String> enumValues, JsonNode mutexNode) {
+    private void extractNodeAsList(JsonNode enumNode, List<String> enumValues) {
+        enumValues.clear();
+        enumNode.forEach(
+                enumValue -> {
+                    enumValues.add(enumValue.asText());
+                });
+    }
+
+    private void generateEnumAsDefault(String paramType, List<String> enumValues) {
+        System.out.println(enumValues);
+        int randIdx = rand.nextInt(enumValues.size());
+        String chosenFlag = enumValues.get(randIdx);
+        this.value = paramType.equals("string") ? encodeAsString(chosenFlag) : chosenFlag;
+    }
+
+    private void generateEnumAsArray(List<String> enumValues) {
+        int randIdx;
+        if (enumValues.size() == 1) {
+            randIdx = 1;
+        } else {
+            randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+        }
+
+        List<String> chosenFlags = enumValues.subList(0, randIdx);
+        this.value = chosenFlags.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ", "[", "]"));
+    }
+
+    private void generateEnumAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode) {
 
         int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
 
@@ -208,23 +224,26 @@ public class ParameterNode extends ASTNode {
             }
         }
 
-        System.out.println("before " + chosenFlags);
-        System.out.println("to remove " + toRemove);
-        chosenFlags.removeAll(toRemove);
-        System.out.println("after " + chosenFlags);
         this.value = String.join(" | ", chosenFlags);
     }
 
     private void parseEnumConditions(JsonNode conditions, List<String> enumValues) {
+
         if (conditions == null) {
             return;
         }
 
         if (conditions.has("textureCompatible")) {
-
             String compatibleTexture = findCompatibleTexture(parent.getFlag(conditions.get("textureCompatible").asText()));
             enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
+        }
 
+        if (conditions.has("constraints")) {
+            JsonNode newEnumNode = conditions.get("enum");
+            String value = parent.getFlag(newEnumNode.get("name").asText());
+            newEnumNode = newEnumNode.get(value);
+            
+            extractNodeAsList(newEnumNode, enumValues);
         }
     }
 

@@ -36,6 +36,7 @@
           },
           "usage": {
             "type": "gpuTextureUsage",
+            "inFile": true,
             "enum": true
           }
         }

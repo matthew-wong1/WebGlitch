@@ -137,7 +137,8 @@
               "constraints": true,
               "max": {
                 "customValidation": "mipLevelCount"
-              }
+              },
+              "min": 1
             }
           },
           "usage": {

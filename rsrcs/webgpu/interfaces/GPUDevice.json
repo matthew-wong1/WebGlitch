@@ -40,7 +40,7 @@
             "mutex": [
               {
                 "name": "GPUBufferUsage.MAP_WRITE",
-                "allowed": ["GPUBufferUsage.COPY_DST"]
+                "allowed": ["GPUBufferUsage.COPY_SRC"]
               },
               {
                 "name": "GPUBufferUsage.MAP_READ",

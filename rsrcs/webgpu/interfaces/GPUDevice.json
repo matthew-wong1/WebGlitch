@@ -144,7 +144,10 @@
           "usage": {
             "type": "gpuTextureUsage",
             "enum": true,
-            "inFile": true
+            "inFile": true,
+            "conditions": {
+              "textureUsageCompatible": "dimension"
+            }
           },
           "viewFormats": {
             "type": "gpuTextureFormat",

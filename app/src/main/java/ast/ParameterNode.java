@@ -239,6 +239,14 @@ public class ParameterNode extends ASTNode {
             enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
         }
 
+        if (conditions.has("textureUsageCompatible")) {
+            String currentTexture = parent.getFlag(conditions.get("textureUsageCompatible").asText());
+
+            if (currentTexture.equals("rgba8unorm-srgb")) {
+                enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.STORAGE_BINDING"));
+            }
+        }
+
         if (conditions.has("constraints")) {
             JsonNode newEnumNode = conditions.get("enum");
             String value = parent.getFlag(newEnumNode.get("name").asText());

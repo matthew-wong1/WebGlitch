@@ -8,19 +8,19 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ParameterListNode extends ASTNode {
-    private final Generator generator;
     private final ParameterListNode parent;
     private final boolean jsonParams;
     private final JsonNode paramsJsonNode;
     private final boolean isArray;
     private final HashMap<String, String> flags = new HashMap<>();
+    private final CallNode callNode;
 
-    public ParameterListNode(JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray, Generator generator, ParameterListNode parent) {
-        this.generator = generator;
+    public ParameterListNode(CallNode callNode, JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray, ParameterListNode parent) {
         this.jsonParams = isJsonParams;
         this.paramsJsonNode = paramsJsonNode;
         this.isArray = isArray;
         this.parent = parent;
+        this.callNode = callNode;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ParameterListNode extends ASTNode {
 //                if (paramDetails.has("optional")) {
 //
 //                }
-                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, generator, this));
+                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, callNode.getGenerator(), this));
             });
         }
 
@@ -81,5 +81,13 @@ public class ParameterListNode extends ASTNode {
 
     public Map<String, String> getAllFlags() {
         return flags;
+    }
+
+    public CallNode getCallNode() {
+        return callNode;
+    }
+
+    public String getReceiver() {
+        return callNode.getReceiver();
     }
 }

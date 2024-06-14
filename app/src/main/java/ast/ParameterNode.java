@@ -120,7 +120,7 @@ public class ParameterNode extends ASTNode {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-        ParameterListNode parameterListNode = new ParameterListNode(details, true, isArray, generator, parent);
+        ParameterListNode parameterListNode = new ParameterListNode(parent.getCallNode(), details, true, isArray, parent);
         parameterListNode.generateParams();
         this.value = parameterListNode.toString();
     }
@@ -233,14 +233,31 @@ public class ParameterNode extends ASTNode {
         if (conditions.has("textureCompatible")) {
             String compatibleTexture = findCompatibleTexture(parent.getFlag(conditions.get("textureCompatible").asText()));
             enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
+
         }
 
         if (conditions.has("textureFormatCompatible")) {
-            String currentTexture = parent.getFlag(conditions.get("textureFormatCompatible").asText());
+            String fieldName = conditions.get("textureFormatCompatible").asText();
+            String currentTexture;
 
-            if (currentTexture.equals("rgba8unorm-srgb")) {
-                enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.STORAGE_BINDING"));
+            switch (fieldName) {
+                case "format":
+                    currentTexture = parent.getFlag(fieldName);
+
+                    if (currentTexture.equals("rgba8unorm-srgb")) {
+                        enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.STORAGE_BINDING"));
+                    }
+                    break;
+                case "aspect": {
+                    currentTexture = generator.getObjectAttributes(parent.getReceiver(), "dimension");
+                    System.out.println("receiver " + parent.getReceiver());
+                    if (!(currentTexture.startsWith("stencil") || currentTexture.startsWith("depth"))) {
+                        enumValues.removeIf(flag -> !flag.equals("all"));
+                    }
+                    break;
+                }
             }
+
         }
 
         if (conditions.has("textureUsageCompatible")) {

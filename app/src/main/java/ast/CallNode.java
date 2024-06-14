@@ -7,16 +7,21 @@ import java.util.Map;
 
 public class CallNode extends ASTNode {
 
-    private final String callName;
+    private final String fullCallName;
     private final boolean isMethod;
+    private final String receiver;
     private ParameterListNode parameterListNode = null;
+    private final Generator generator;
 
     public CallNode(String receiver, String callName, boolean jsonParams, boolean isArray, boolean isMethod, Generator generator, JsonNode paramsJsonNode) {
-        this.callName = receiver + "." + callName;
+        this.receiver = receiver;
+        this.fullCallName = receiver + "." + callName;
         this.isMethod = isMethod;
+        this.generator = generator;
+        System.out.println("GENERATING FOR RECEIVER " + receiver);
 
         if (isMethod) {
-            this.parameterListNode = new ParameterListNode(paramsJsonNode, jsonParams, isArray, generator, null);
+            this.parameterListNode = new ParameterListNode(this, paramsJsonNode, jsonParams, isArray, null);
             parameterListNode.generateParams();
             this.addNode(parameterListNode);
         }
@@ -36,10 +41,17 @@ public class CallNode extends ASTNode {
     public String toString() {
 
         if (isMethod) {
-            return this.callName + "(" + subnodes.getFirst().toString() + ");";
+            return this.fullCallName + "(" + subnodes.getFirst().toString() + ");";
         }
 
-        return this.callName;
+        return this.fullCallName;
     }
 
+    public Generator getGenerator() {
+        return generator;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
 }

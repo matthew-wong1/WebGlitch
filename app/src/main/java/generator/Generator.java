@@ -137,6 +137,8 @@ public class Generator {
     }
 
     public String getObjectAttributes(String variableName, String fieldName) {
+        Map<String, String> specific = objectAttributesTable.get(variableName);
+        System.out.println(specific);
         return objectAttributesTable.get(variableName).get(fieldName);
     }
 

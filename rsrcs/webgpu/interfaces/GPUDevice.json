@@ -118,7 +118,7 @@
               1,
               4
             ],
-            "optional": true
+            "optional": true,
           },
           "size": {
             "type": "textureSize"

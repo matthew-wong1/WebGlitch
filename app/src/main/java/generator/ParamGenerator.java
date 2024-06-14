@@ -42,6 +42,15 @@ public class ParamGenerator {
     public static String generateCustomConstraint(String customValidation, ParameterListNode parent) {
         switch (customValidation) {
             case "mipLevelCount":
+                String MULTI_SAMPLING_FLAG = "4";
+                String MAX_MIP_COUNT_IF_MULTI_SAMPLING = "1";
+
+                boolean multiSampling = parent.getFlag("sampleCount").equals(MULTI_SAMPLING_FLAG);
+
+                if (multiSampling) {
+                    return MAX_MIP_COUNT_IF_MULTI_SAMPLING;
+                }
+
                 int width = Integer.parseInt(parent.getFlag("width"));
                 int height = Integer.parseInt(parent.getFlag("height"));
                 int max = (int) (Math.floor(Math.log(Math.min(width, height)) / Math.log(2)) + 1);

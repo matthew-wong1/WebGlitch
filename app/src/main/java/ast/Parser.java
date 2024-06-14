@@ -61,7 +61,7 @@ public class Parser {
 
     }
 
-    private ASTNode generateDeclaration(JsonNode methodJsonNode, ASTNode rootASTNode) {
+    private ASTNode generateDeclaration(JsonNode methodJsonNode, CallNode rootASTNode) {
         String varName = ParamGenerator.generateRandVarName();
         String returnType = methodJsonNode.get("returnType").asText();
         boolean isAsync = methodJsonNode.has("async");
@@ -71,6 +71,7 @@ public class Parser {
         newRootNode.addNode(rootASTNode);
 
         generator.addToSymbolTable(returnType, varName);
+        generator.addToObjectAttributesTable(varName, rootASTNode.getParameters());
 
         return newRootNode;
     }
@@ -113,10 +114,12 @@ public class Parser {
         boolean jsonParams = callJsonNode.path("paramType").asText("csv").equals("object");
         boolean isArray = callJsonNode.has("array");
         JsonNode paramsJsonNode = callJsonNode.path("properties");
-        ASTNode rootASTNode = new CallNode(receiver, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode);
+        CallNode rootASTNode = new CallNode(receiver, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode);
 
         if (!returnType.equals("none")) {
             return generateDeclaration(callJsonNode, rootASTNode);
+        } else {
+            generator.addToObjectAttributesTable(receiver, rootASTNode.getParameters());
         }
 
         generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName, isMethod));

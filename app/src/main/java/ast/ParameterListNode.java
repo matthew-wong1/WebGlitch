@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import generator.Generator;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ParameterListNode extends ASTNode {
@@ -53,6 +54,7 @@ public class ParameterListNode extends ASTNode {
                 this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, generator, this));
             });
         }
+
     }
 
     public String getFlag(String fieldName) {
@@ -75,5 +77,9 @@ public class ParameterListNode extends ASTNode {
         } else {
             flags.put(fieldName, flag);
         }
+    }
+
+    public Map<String, String> getAllFlags() {
+        return flags;
     }
 }

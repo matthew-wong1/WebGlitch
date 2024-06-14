@@ -19,6 +19,9 @@
               "depth-only",
               "stencil-only"
             ],
+            "conditions": {
+              "textureFormatCompatible": "format"
+            },
             "optional": true
           },
           "baseArrayLayer": {

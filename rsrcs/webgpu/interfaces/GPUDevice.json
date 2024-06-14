@@ -146,6 +146,7 @@
             "enum": true,
             "inFile": true,
             "conditions": {
+              "textureFormatCompatible": "format",
               "textureUsageCompatible": "dimension"
             }
           },

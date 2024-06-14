@@ -33,9 +33,6 @@ public class ParameterNode extends ASTNode {
         // Check if need to pass in webGPU object. Go through sequence where create one
         generateParams(details);
 
-        if (this.fieldName.equals("usage")) {
-            System.out.println(this.value);
-        }
     }
 
     private void generateParams(JsonNode details) {
@@ -178,7 +175,6 @@ public class ParameterNode extends ASTNode {
     }
 
     private void generateEnumAsDefault(String paramType, List<String> enumValues) {
-        System.out.println(enumValues);
         int randIdx = rand.nextInt(enumValues.size());
         String chosenFlag = enumValues.get(randIdx);
         this.value = paramType.equals("string") ? encodeAsString(chosenFlag) : chosenFlag;
@@ -239,11 +235,19 @@ public class ParameterNode extends ASTNode {
             enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
         }
 
-        if (conditions.has("textureUsageCompatible")) {
-            String currentTexture = parent.getFlag(conditions.get("textureUsageCompatible").asText());
+        if (conditions.has("textureFormatCompatible")) {
+            String currentTexture = parent.getFlag(conditions.get("textureFormatCompatible").asText());
 
             if (currentTexture.equals("rgba8unorm-srgb")) {
                 enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.STORAGE_BINDING"));
+            }
+        }
+
+        if (conditions.has("textureUsageCompatible")) {
+            String currentDimension = parent.getFlag(conditions.get("textureUsageCompatible").asText());
+
+            if (currentDimension.equals("1d")) {
+                enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.RENDER_ATTACHMENT"));
             }
         }
 

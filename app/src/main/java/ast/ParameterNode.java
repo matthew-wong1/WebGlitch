@@ -224,6 +224,7 @@ public class ParameterNode extends ASTNode {
             }
         }
 
+        chosenFlags.removeAll(toRemove);
         this.value = String.join(" | ", chosenFlags);
     }
 

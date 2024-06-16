@@ -135,13 +135,7 @@ public class ParameterNode extends ASTNode {
 
         if (details.has("inFile")) {
             // FETCH ENUM FILE
-            ObjectMapper mapper = new ObjectMapper();
-
-            try {
-                details = mapper.readTree(new File(ENUMS_PATH + paramType + ".json"));
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-            }
+            details = parseJsonFromFile(paramType);
 
             paramType = details.get("type").asText();
         }
@@ -166,6 +160,18 @@ public class ParameterNode extends ASTNode {
         }
     }
 
+    private JsonNode parseJsonFromFile(String paramType) {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+
+        try {
+            node = mapper.readTree(new File(ENUMS_PATH + paramType + ".json"));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        return node;
+    }
+
     private void extractNodeAsList(JsonNode enumNode, List<String> enumValues) {
         enumValues.clear();
         enumNode.forEach(
@@ -175,8 +181,17 @@ public class ParameterNode extends ASTNode {
     }
 
     private void generateEnumAsDefault(String paramType, List<String> enumValues) {
-        int randIdx = rand.nextInt(enumValues.size());
-        String chosenFlag = enumValues.get(randIdx);
+        int enumValuesSize = enumValues.size();
+        String chosenFlag;
+
+        if (enumValuesSize == 1) {
+            chosenFlag = enumValues.getFirst();
+        } else {
+            System.out.println(paramType + " " + enumValuesSize);
+            int randIdx = rand.nextInt(enumValuesSize);
+            chosenFlag = enumValues.get(randIdx);
+        }
+
         this.value = paramType.equals("string") ? encodeAsString(chosenFlag) : chosenFlag;
     }
 
@@ -237,25 +252,36 @@ public class ParameterNode extends ASTNode {
         }
 
         if (conditions.has("textureFormatCompatible")) {
-            String fieldName = conditions.get("textureFormatCompatible").asText();
-            String currentTexture;
+            String currentTexture = parent.getFlag("format");
 
-            switch (fieldName) {
-                case "format":
-                    currentTexture = parent.getFlag(fieldName);
+            JsonNode incompatibleTexturesForStorageNode = parseJsonFromFile("gpuTextureFormat");
+            List<String> incompatibleTexturesForStorage = new ArrayList<>();
+            extractNodeAsList(incompatibleTexturesForStorageNode.get("storageBindingIncompatible"), incompatibleTexturesForStorage);
 
-                    if (currentTexture.equals("rgba8unorm-srgb")) {
-                        enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.STORAGE_BINDING"));
-                    }
-                    break;
-                case "aspect": {
-                    currentTexture = generator.getObjectAttributes(parent.getReceiver(), "dimension");
-                    System.out.println("receiver " + parent.getReceiver());
-                    if (!(currentTexture.startsWith("stencil") || currentTexture.startsWith("depth"))) {
-                        enumValues.removeIf(flag -> !flag.equals("all"));
-                    }
-                    break;
-                }
+
+            if (currentTexture == null) {
+                currentTexture = generator.getObjectAttributes(parent.getReceiver(), "format");
+            }
+
+            if (currentTexture == null) {
+                currentTexture = generator.getObjectAttributes("context", "format");
+            }
+
+            if (incompatibleTexturesForStorage.contains(currentTexture)) {
+
+                enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.STORAGE_BINDING"));
+            }
+        }
+
+        if (conditions.has("textureAspectCompatible")) {
+            System.out.println("The receiver: " + parent.getReceiver());
+            String currentTexture = parent.getFlag("aspect");;
+
+            if (!currentTexture.equals("all")) {
+                System.out.println(currentTexture);
+                System.out.println(("in here ") + enumValues);
+                enumValues.removeIf(flag -> !((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
+                System.out.println(("in here ") + enumValues);
             }
 
         }

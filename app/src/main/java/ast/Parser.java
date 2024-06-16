@@ -117,10 +117,18 @@ public class Parser {
         JsonNode paramsJsonNode = callJsonNode.path("properties");
         CallNode rootASTNode = new CallNode(receiver, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode);
 
+        if (receiver.equals("context") || receiver.equals("canvas")) {
+            System.out.println("IN HERE " + receiver);
+        }
+
         if (!returnType.equals("none")) {
             return generateDeclaration(callJsonNode, rootASTNode);
         } else {
+            if (receiver.equals("context") || receiver.equals("canvas")) {
+                System.out.println("IN HERE 2 " + receiver);
+            }
             generator.addToObjectAttributesTable(receiver, rootASTNode.getParameters());
+            System.out.println(generator.objectAttributesTable.get(receiver));
         }
 
         generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName, isMethod));

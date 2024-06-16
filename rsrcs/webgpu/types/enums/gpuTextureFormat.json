@@ -109,5 +109,27 @@
       "astc-12x12-unorm",
       "astc-12x12-unorm-srgb"
     ]
-  }
+  },
+
+  "storageBindingIncompatible": [
+    "r8unorm",
+    "r8snorm",
+    "r8uint",
+    "r8sint",
+    "rg8unorm",
+    "rg8snorm",
+    "rg8uint",
+    "rg8sint",
+    "rgba8unorm-srgb",
+    "bgra8unorm-srgb",
+    "r16uint",
+    "r16sint",
+    "r16float",
+    "rg16uint",
+    "rg16sint",
+    "rg16float",
+    "rgb10a2uint",
+    "rgb10a2unorm",
+    "rg11b10ufloat"
+  ]
 }

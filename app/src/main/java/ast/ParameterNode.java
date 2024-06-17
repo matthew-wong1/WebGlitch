@@ -88,6 +88,7 @@ public class ParameterNode extends ASTNode {
             }
 
             final long[] value = new long[1];
+            value[0] = Long.MIN_VALUE;
 
             if (valueNode.has("customValidation")) {
 
@@ -105,6 +106,11 @@ public class ParameterNode extends ASTNode {
                 });
             } else {
                 value[0] = valueNode.asLong();
+            }
+
+            // Variable has not been set
+            if (value[0] == Long.MIN_VALUE) {
+                continue;
             }
 
             switch (numericCondition) {

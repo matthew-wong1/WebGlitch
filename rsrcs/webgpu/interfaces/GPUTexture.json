@@ -8,10 +8,6 @@
       "returnType": "GPUTextureView",
       "properties": [
         {
-          "arrayLayerCount": {
-            "type": "uint",
-            "optional": true
-          },
           "aspect": {
             "type": "string",
             "enum": [
@@ -22,14 +18,6 @@
             "conditions": {
               "textureFormatCompatible": true
             },
-            "optional": true
-          },
-          "baseArrayLayer": {
-            "type": "uint",
-            "optional": true
-          },
-          "baseMipLevel": {
-            "type": "uint",
             "optional": true
           },
           "dimension": {
@@ -44,6 +32,61 @@
             ],
             "optional": true
           },
+          "arrayLayerCount": {
+            "type": "uint",
+            "optional": true,
+            "conditions": {
+              "min": {
+                "constraints": {
+                  "dimension": {
+                    "1d": 1,
+                    "2d": 1,
+                    "cube": 1,
+                    "cube-array": 6,
+                    "3d": 1
+                  }
+                }
+              },
+              "max": {
+                "constraints": {
+                  "dimension": {
+                    "1d": 1,
+                    "2d": 1,
+                    "cube": 6,
+                    "3d": 1
+                  }
+                }
+              },
+              "divisible": {
+                "constraints": {
+                  "dimension": {
+                    "cube-array": 6
+                  }
+                }
+              }
+            }
+          },
+          "baseArrayLayer": {
+            "type": "uint",
+            "optional": true,
+            "conditions": {
+              "depthOrArrayLayersMax": true
+            }
+          },
+          "mipLevelCount": {
+            "type": "uint",
+            "optional": true,
+            "conditions": {
+              "min": 1
+            }
+          },
+          "baseMipLevel": {
+            "type": "uint",
+            "optional": true,
+            "conditions": {
+              "mipLevelCountMax": true
+            }
+          },
           "format": {
             "type": "gpuTextureFormat",
             "enum": true,
@@ -55,10 +98,6 @@
           },
           "label": {
             "type": "string",
-            "optional": true
-          },
-          "mipLevelCount": {
-            "type": "uint",
             "optional": true
           }
         }

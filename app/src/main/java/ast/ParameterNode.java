@@ -82,30 +82,40 @@ public class ParameterNode extends ASTNode {
 
             JsonNode valueNode = conditions.get(numericCondition);
 
+
             if (valueNode == null) {
                 continue;
             }
 
-            long value;
+            final long[] value = new long[1];
 
             if (valueNode.has("customValidation")) {
-                value = Long.parseLong(ParamGenerator.generateCustomConstraint(valueNode.get("customValidation").asText(), parent));
+
+                value[0] = Long.parseLong(ParamGenerator.generateCustomConstraint(valueNode.get("customValidation").asText(), parent));
             } else if (valueNode.has("constraints")) {
-                String flagValue = parent.getFlag(valueNode.get("name").asText());
-                value = valueNode.get(flagValue).asLong();
+                JsonNode constraintsNode = valueNode.get("constraints");
+
+                constraintsNode.fieldNames().forEachRemaining(fieldName -> {
+                    String flagValue = parent.getFlag(fieldName);
+                    JsonNode constraintNode = constraintsNode.get(fieldName);
+                    if (constraintNode.has(flagValue)) {
+                        value[0] = constraintNode.get(flagValue).asLong();
+                    }
+
+                });
             } else {
-                value = valueNode.asLong();
+                value[0] = valueNode.asLong();
             }
 
             switch (numericCondition) {
                 case "min":
-                    numericConstraints.setMin(value);
+                    numericConstraints.setMin(value[0]);
                     break;
                 case "max":
-                    numericConstraints.setMax(value);
+                    numericConstraints.setMax(value[0]);
                     break;
                 case "divisible":
-                    numericConstraints.setDivisibility(value);
+                    numericConstraints.setDivisibility(value[0]);
                     break;
             }
         }

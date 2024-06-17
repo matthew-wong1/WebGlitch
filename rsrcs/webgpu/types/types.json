@@ -106,11 +106,13 @@
         "conditions": {
           "min": 1,
           "max": {
-            "name": "dimension",
-            "constraints": true,
-            "1d": 8192,
-            "2d": 8192,
-            "3d": 2048
+            "constraints": {
+              "dimension": {
+                "1d": 8192,
+                "2d": 8192,
+                "3d": 2048
+              }
+            }
           }
         }
       },
@@ -119,11 +121,13 @@
         "conditions": {
           "min": 1,
           "max": {
-            "name": "dimension",
-            "constraints": true,
-            "1d": 1,
-            "2d": 8192,
-            "3d": 2048
+            "constraints": {
+              "dimension": {
+                "1d": 1,
+                "2d": 8192,
+                "3d": 2048
+              }
+            }
           }
         },
         "optional": true
@@ -133,16 +137,16 @@
         "conditions": {
           "min": 1,
           "max": {
-            "constraints": true,
-            "dimension": {
-              "1d": 1,
-              "2d": 256,
-              "3d": 2048
-            },
-            "sampleCount": {
-              "4": 1
+            "constraints": {
+              "dimension": {
+                "1d": 1,
+                "2d": 256,
+                "3d": 2048
+              },
+              "sampleCount": {
+                "4": 1
+              }
             }
-
           }
         }
       }

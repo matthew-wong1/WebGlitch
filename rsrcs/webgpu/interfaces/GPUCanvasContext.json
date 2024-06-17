@@ -37,7 +37,10 @@
           "usage": {
             "type": "gpuTextureUsage",
             "inFile": true,
-            "enum": true
+            "enum": true,
+            "conditions": {
+              "textureFormatCompatible": true
+            }
           }
         }
       ]

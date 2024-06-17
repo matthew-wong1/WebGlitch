@@ -90,4 +90,8 @@ public class ParameterListNode extends ASTNode {
     public String getReceiver() {
         return callNode.getReceiver();
     }
+
+    public void setFlag(String aspect, String all) {
+
+    }
 }

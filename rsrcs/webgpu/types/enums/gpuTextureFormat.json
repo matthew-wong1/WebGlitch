@@ -130,6 +130,19 @@
     "rg16float",
     "rgb10a2uint",
     "rgb10a2unorm",
+    "rg11b10ufloat",
+    "stencil8",
+    "depth16unorm",
+    "depth24plus",
+    "depth24plus-stencil8",
+    "depth32float",
+    "bgra8unorm"
+  ],
+
+  "renderAttachmentIncompatible": [
+    "r8snorm",
+    "rg8snorm",
+    "rgba8snorm",
     "rg11b10ufloat"
   ]
 }

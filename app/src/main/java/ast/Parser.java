@@ -28,7 +28,7 @@ public class Parser {
     //            try {
     //                parseAndBuildAST("./app/webgpu/gpu.json");
     //            } catch(IOException e) {
-    //                System.out.println("Failed to find file: " + e.getMessage());
+    //                System.err.println("Failed to find file: " + e.getMessage());
     //            }
     //        }
     public ASTNode parseAndBuildRandCall(String filePath) throws IOException {
@@ -71,7 +71,6 @@ public class Parser {
         newRootNode.addNode(rootASTNode);
 
         generator.addToSymbolTable(returnType, varName);
-        System.out.println(returnType + " " + varName);
         generator.addToObjectAttributesTable(varName, rootASTNode.getParameters());
 
         return newRootNode;
@@ -95,7 +94,7 @@ public class Parser {
         }
 
         if (callJsonNode == null) {
-            System.out.println("Error, the call " + callName + " does not exist in path " + filePath);
+            System.err.println("Error, the call " + callName + " does not exist in path " + filePath);
             System.exit(1);
         }
 
@@ -117,18 +116,10 @@ public class Parser {
         JsonNode paramsJsonNode = callJsonNode.path("properties");
         CallNode rootASTNode = new CallNode(receiver, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode);
 
-        if (receiver.equals("context") || receiver.equals("canvas")) {
-            System.out.println("IN HERE " + receiver);
-        }
-
         if (!returnType.equals("none")) {
             return generateDeclaration(callJsonNode, rootASTNode);
         } else {
-            if (receiver.equals("context") || receiver.equals("canvas")) {
-                System.out.println("IN HERE 2 " + receiver);
-            }
             generator.addToObjectAttributesTable(receiver, rootASTNode.getParameters());
-            System.out.println(generator.objectAttributesTable.get(receiver));
         }
 
         generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName, isMethod));

@@ -111,7 +111,7 @@ public class Generator {
             try {
                 this.programNode.addNode(parser.parseAndBuildRandCall(JSON_DIRECTORY_PATH + fileName));
             } catch (IOException e) {
-                System.out.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
+                System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
             }
         }
 
@@ -137,8 +137,6 @@ public class Generator {
     }
 
     public String getObjectAttributes(String variableName, String fieldName) {
-        System.out.println(objectAttributesTable);
-        Map<String, String> specific = objectAttributesTable.get(variableName);
         return objectAttributesTable.get(variableName).get(fieldName);
     }
 
@@ -189,7 +187,7 @@ public class Generator {
         try {
             receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverName, isMethod);
         } catch (IOException e) {
-            System.out.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
+            System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }
 
         this.programNode.addNode(receiver);

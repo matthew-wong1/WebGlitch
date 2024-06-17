@@ -23,7 +23,6 @@ public class CallNode extends ASTNode {
             this.parameterListNode = new ParameterListNode(this, paramsJsonNode, jsonParams, isArray, null);
             parameterListNode.generateParams();
             this.addNode(parameterListNode);
-            System.out.println("Generated the following call for receiver " + receiver + ": " + this);
         }
 
 

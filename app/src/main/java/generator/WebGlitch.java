@@ -35,7 +35,7 @@ public class WebGlitch {
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("webglitch", options);
             System.exit(1);

@@ -134,10 +134,15 @@
           "min": 1,
           "max": {
             "constraints": true,
-            "name": "dimension",
-            "1d": 1,
-            "2d": 256,
-            "3d": 2048
+            "dimension": {
+              "1d": 1,
+              "2d": 256,
+              "3d": 2048
+            },
+            "sampleCount": {
+              "4": 1
+            }
+
           }
         }
       }

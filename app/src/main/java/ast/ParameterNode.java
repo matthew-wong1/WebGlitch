@@ -187,7 +187,6 @@ public class ParameterNode extends ASTNode {
         if (enumValuesSize == 1) {
             chosenFlag = enumValues.getFirst();
         } else {
-            System.out.println(paramType + " " + enumValuesSize);
             int randIdx = rand.nextInt(enumValuesSize);
             chosenFlag = enumValues.get(randIdx);
         }
@@ -263,34 +262,21 @@ public class ParameterNode extends ASTNode {
             }
 
             if (currentTexture == null) {
-                System.out.println("in here for context");
                 currentTexture = generator.getObjectAttributes("context", "format");
-                System.out.println("currentTExture " + currentTexture);
             }
 
-            if (currentTexture.equals("bgra8unorm")) {
-                System.out.println("SPECIAL TEXTURE");
-            }
             if (incompatibleTexturesForStorage.contains(currentTexture)) {
                 enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.STORAGE_BINDING"));
-                if (currentTexture.equals("bgra8unorm")) {
-                    System.out.println("SPECIAL TEXTURE 2");
-                }
-                System.out.println("usage enum: " + enumValues);
             }
 
             if (currentTexture.startsWith("stencil") || currentTexture.startsWith("depth")) { // Remove aspect enums
                 enumValues.remove("all");
             } else {
-                System.out.println(currentTexture);
-                System.out.println("ASPECT ENUMS " + enumValues);
                 enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
-                System.out.println(enumValues);
             }
         }
 
         if (conditions.has("textureAspectCompatible")) {
-            System.out.println("The receiver: " + parent.getReceiver());
             String currentAspect = parent.getFlag("aspect");
 
             if (currentAspect.equals("non-stencil-or-depth")) {
@@ -300,13 +286,7 @@ public class ParameterNode extends ASTNode {
             }
 
             if (!currentAspect.equals("all")) {
-                System.out.println(currentAspect);
-                System.out.println(("in here ") + enumValues);
                 enumValues.removeIf(flag -> !((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
-                System.out.println(("in here ") + enumValues);
-                // You write all, but then you meant to remove any stencil and depth ones but you need to
-                // differentiate between when you randomly generated an 'all' and when you mean to set it to all
-                // as a means to exclude depth and stencil
             } else {
                 enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
             }

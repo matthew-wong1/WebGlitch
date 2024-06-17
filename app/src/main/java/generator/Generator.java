@@ -153,7 +153,7 @@ public class Generator {
 
     public void removeFromSymbolTable(String returnedObjectType, String variableName) {
         symbolTable.get(returnedObjectType).remove(variableName);
-
+        removeFromObjectAttributesTable(variableName);
         if (symbolTable.get(returnedObjectType).isEmpty()) {
             symbolTable.remove(returnedObjectType);
         }

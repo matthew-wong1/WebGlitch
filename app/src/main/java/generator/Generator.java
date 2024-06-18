@@ -17,7 +17,7 @@ public class Generator {
     // Key: Type of object eg adapter, device
     // Value: Reference to that objet that currently exists
     private final Map<String, List<String>> symbolTable = new HashMap<>();
-    public final Map<String, Map<String, String>> objectAttributesTable = new HashMap<>();
+    public final Map<String, Map<String, List<Parameter>>> objectAttributesTable = new HashMap<>();
     private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
     // Maps method call name to File it's located in and Probability (double)
     private final Map<ReceiverNameCallNameCallType, FileNameCallProbPair> callProbabilities = new HashMap<>();
@@ -118,7 +118,7 @@ public class Generator {
         printer.printToFile(this.programNode, fileNum);
     }
 
-    public void addToObjectAttributesTable(String variableName, Map<String, String> keyValuePairs) {
+    public void addToObjectAttributesTable(String variableName, Map<String, List<Parameter>> keyValuePairs) {
         if (keyValuePairs == null) {
             return;
         }
@@ -127,7 +127,7 @@ public class Generator {
             objectAttributesTable.put(variableName, new HashMap<>());
         }
 
-        Map<String, String> specificObjectAttributesTable = objectAttributesTable.get(variableName);
+        Map<String, List<Parameter>> specificObjectAttributesTable = objectAttributesTable.get(variableName);
 
         specificObjectAttributesTable.putAll(keyValuePairs);
     }
@@ -137,7 +137,11 @@ public class Generator {
     }
 
     public String getObjectAttributes(String variableName, String fieldName) {
-        return objectAttributesTable.get(variableName).get(fieldName);
+        return objectAttributesTable.get(variableName).get(fieldName).getFirst().getValue();
+    }
+
+    public List<String> getAllObjectAttributes(String variableName, String fieldName) {
+        return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 
     public void addToSymbolTable(String returnedObjectType, String variableName) {

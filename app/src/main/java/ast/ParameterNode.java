@@ -14,52 +14,66 @@ import java.util.stream.Collectors;
 
 public class ParameterNode extends ASTNode {
 
-    private final String fieldName;
-    private final boolean jsonParams;
-    private final Generator generator;
-    private final Random rand = new Random();
+
     private final String TYPES_PATH = "./rsrcs/webgpu/types/types.json";
     private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
-    private final ParameterListNode parent;
-    private String value;
+    private final String fieldName;
 
-    public ParameterNode(String fieldName, JsonNode details, boolean jsonParams, Generator generator, ParameterListNode parent) {
+    private final boolean isJsonFormat;
+    private boolean isArray;
+    private boolean isBitwiseFlags;
+    private boolean isString;
+    private boolean isNested = false;
+
+    private final Generator generator;
+    private final Random rand = new Random();
+    private final ParameterListNode parent;
+
+    private final List<Parameter> parameters = new ArrayList<>();
+    private final Map<String, ParamsAndFormattingPair> nestedParameters = new HashMap<>();
+
+    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, Generator generator, ParameterListNode parent) {
         // Parse details
         this.fieldName = fieldName;
-        this.jsonParams = jsonParams;
+        this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parent = parent;
 
-        // Check if need to pass in webGPU object. Go through sequence where create one
-        generateParams(details);
 
+        // Only generate parameters if is a method call (don't generate for attributes)
+        if (details.has("type")) {
+            generateParam(details, details.get("type").asText());
+        }
     }
 
-    private void generateParams(JsonNode details) {
-        if (!details.has("type")) {
-            return;
-        }
+    private void generateParam(JsonNode details, String paramType) {
+        resetFormattingFlags();
+        this.isString = paramType.equals("string");
+        this.isArray = details.has("array");
 
-        String paramType = details.get("type").asText();
-
-        boolean isEnum = details.has("enum");
-
-        if (isEnum) {
+        if (details.has("enum")) {
             generateEnumVal(details, paramType);
-        } else if (paramType.equals("string")) {
-            this.value = encodeAsString(ParamGenerator.generateRandVarName());
+        } else if (isString) {
+            this.parameters.add(new Parameter(ParamGenerator.generateRandVarName()));
         } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
             generateNumber(details, paramType);
         } else if (paramType.equals("boolean")) {
-            this.value = String.valueOf(rand.nextBoolean());
+            this.parameters.add(new Parameter(String.valueOf(rand.nextBoolean())));
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
-            this.value = generator.getRandomReceiver(paramType);
+            this.parameters.add(new Parameter(generator.getRandomReceiver(paramType)));
         } else { // Requires WebGPU Type
-
-            generateParamAsJson(paramType, details.has("array"));
+            generateParamAsJson(paramType);
         }
 
-        parent.addFlag(fieldName, value);
+        if (!isNested) {
+            parent.addParameters(fieldName, parameters);
+        }
+    }
+
+    private void resetFormattingFlags() {
+        this.isArray = false;
+        this.isBitwiseFlags = false;
+        this.isString = false;
     }
 
     private void generateNumber(JsonNode details, String paramType) {
@@ -71,8 +85,7 @@ public class ParameterNode extends ASTNode {
             parseNumericConditions(details.get("conditions"), numericConstraints);
         }
 
-
-        this.value = String.valueOf(ParamGenerator.generateRandNumber(paramType, numericConstraints));
+        this.parameters.add(new Parameter(String.valueOf(ParamGenerator.generateRandNumber(paramType, numericConstraints))));
     }
 
     private void parseNumericConditions(JsonNode conditions, NumericConstraints numericConstraints) {
@@ -127,7 +140,9 @@ public class ParameterNode extends ASTNode {
         }
     }
 
-    private void generateParamAsJson(String paramType, boolean isArray) {
+    private void generateParamAsJson(String paramType) {
+        this.isNested = true;
+
         ObjectMapper mapper = new ObjectMapper();
 
         JsonNode details = null;
@@ -136,13 +151,28 @@ public class ParameterNode extends ASTNode {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+
+
         ParameterListNode parameterListNode = new ParameterListNode(parent.getCallNode(), details, true, isArray, parent);
         parameterListNode.generateParams();
-        this.value = parameterListNode.toString();
+
+        for (JsonNode param : details) {
+            param.fieldNames().forEachRemaining(nestedFieldName -> {
+                JsonNode paramDetails = param.get(nestedFieldName);
+
+//                if (paramDetails.has("optional")) {
+//
+//                }
+                generateParam(paramDetails, paramDetails.get("type").asText());
+                nestedParameters.put(nestedFieldName, new ParamsAndFormattingPair(parameters, new ParamFormatting(this.isArray, this.isString, this.isBitwiseFlags)));
+                parent.addParameters(this.fieldName + "." + nestedFieldName, parameters);
+                parameters.clear();
+            });
+        }
+
     }
 
     private void generateEnumVal(JsonNode details, String paramType) {
-        boolean isArray = details.has("array");
         JsonNode mutexNode = details.get("mutex");
         JsonNode conditions = null;
         if (details.has("conditions")) {
@@ -154,6 +184,7 @@ public class ParameterNode extends ASTNode {
             details = parseJsonFromFile(paramType);
 
             paramType = details.get("type").asText();
+            this.isString = paramType.equals("string");
         }
 
         List<String> enumValues = new ArrayList<>();
@@ -165,14 +196,24 @@ public class ParameterNode extends ASTNode {
         parseEnumConditions(conditions, enumValues);
 
         Collections.shuffle(enumValues);
+        List<String> chosenEnumValues;
 
         if (paramType.equals("bitwiseFlag")) {
             // Random int between 1 and end of list
-            generateEnumAsBitwiseFlags(enumValues, mutexNode);
+            this.isBitwiseFlags = true;
+            chosenEnumValues = pickEnumValuesAsBitwiseFlags(enumValues, mutexNode);
         } else if (isArray) {
-            generateEnumAsArray(enumValues);
+            chosenEnumValues = pickEnumValuesAsArray(enumValues);
         } else {
-            generateEnumAsDefault(paramType, enumValues);
+            chosenEnumValues = pickARandomEnumValue(enumValues);
+        }
+
+        addParametersFromList(chosenEnumValues);
+    }
+
+    private void addParametersFromList(List<String> chosenEnumValues) {
+        for (String enumValue : chosenEnumValues) {
+            parameters.add(new Parameter(enumValue));
         }
     }
 
@@ -196,21 +237,21 @@ public class ParameterNode extends ASTNode {
                 });
     }
 
-    private void generateEnumAsDefault(String paramType, List<String> enumValues) {
+    private List<String> pickARandomEnumValue(List<String> enumValues) {
         int enumValuesSize = enumValues.size();
-        String chosenFlag;
+        List<String> chosenFlag = new ArrayList<>();
 
         if (enumValuesSize == 1) {
-            chosenFlag = enumValues.getFirst();
+            chosenFlag.add(enumValues.getFirst());
         } else {
             int randIdx = rand.nextInt(enumValuesSize);
-            chosenFlag = enumValues.get(randIdx);
+            chosenFlag.add(enumValues.get(randIdx));
         }
 
-        this.value = paramType.equals("string") ? encodeAsString(chosenFlag) : chosenFlag;
+        return chosenFlag;
     }
 
-    private void generateEnumAsArray(List<String> enumValues) {
+    private List<String> pickEnumValuesAsArray(List<String> enumValues) {
         int randIdx;
         if (enumValues.size() == 1) {
             randIdx = 1;
@@ -218,11 +259,11 @@ public class ParameterNode extends ASTNode {
             randIdx = rand.nextInt(enumValues.size() - 1) + 1;
         }
 
-        List<String> chosenFlags = enumValues.subList(0, randIdx);
-        this.value = chosenFlags.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ", "[", "]"));
+        return enumValues.subList(0, randIdx);
+
     }
 
-    private void generateEnumAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode) {
+    private List<String> pickEnumValuesAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode) {
 
         int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
 
@@ -251,7 +292,8 @@ public class ParameterNode extends ASTNode {
         }
 
         chosenFlags.removeAll(toRemove);
-        this.value = String.join(" | ", chosenFlags);
+        return chosenFlags;
+
     }
 
     private void parseEnumConditions(JsonNode conditions, List<String> enumValues) {
@@ -337,14 +379,42 @@ public class ParameterNode extends ASTNode {
 
     @Override
     public String toString() {
-        if (jsonParams) {
-            return fieldName + ": " + this.value;
+        String valueToPrint;
+
+        if (isNested) {
+            List<String> parameterValuesAndFieldNames = nestedParameters.values().stream().map(v -> formatParam(v.parameters.stream().map(Parameter::getFieldNameAndValue).toList(), v.paramFormatting)).toList();
+            return parameterValuesAndFieldNames.stream().collect(Collectors.joining(", ", "{", "}"));
+        } else {
+            List<String> parameterValues = this.parameters.stream().map(Parameter::getValue).toList();
+            valueToPrint = formatParam(parameterValues, new ParamFormatting(isArray, isString, isBitwiseFlags));
+            if (isJsonFormat) {
+                return fieldName + ": " + valueToPrint;
+            }
+
+            return valueToPrint;
         }
-        return this.value;
+
+
+    }
+
+    private String formatParam(List<String> parameterValues, ParamFormatting paramFormatting) {
+        String valueToPrint;
+        if (paramFormatting.isArray()) {
+            valueToPrint = parameterValues.stream().map(s -> paramFormatting.isString() ? "\"" + s + "\"" : s).collect(Collectors.joining(", ", "[", "]"));
+        } else if (paramFormatting.isBitwiseFlags()) {
+            valueToPrint = String.join(" | ", parameterValues);
+        } else if (paramFormatting.isString()) {
+            valueToPrint = encodeAsString(parameterValues.getFirst());
+        } else {
+            valueToPrint = parameterValues.getFirst();
+        }
+        return valueToPrint;
     }
 
     private String encodeAsString(String value) {
         return "\"" + value + "\"";
     }
+
+    private record ParamsAndFormattingPair(List<Parameter> parameters, ParamFormatting paramFormatting) {}
 
 }

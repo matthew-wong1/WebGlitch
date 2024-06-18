@@ -1,9 +1,9 @@
 package ast;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import generator.Generator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -12,7 +12,7 @@ public class ParameterListNode extends ASTNode {
     private final boolean jsonParams;
     private final JsonNode paramsJsonNode;
     private final boolean isArray;
-    private final HashMap<String, String> flags = new HashMap<>();
+    private final HashMap<String, List<Parameter>> flags = new HashMap<>();
     private final CallNode callNode;
 
     public ParameterListNode(CallNode callNode, JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray, ParameterListNode parent) {
@@ -58,28 +58,29 @@ public class ParameterListNode extends ASTNode {
     }
 
     public String getFlag(String fieldName) {
-        String flag = flags.get(fieldName);
+        List<Parameter> flag = flags.get(fieldName);
         if (flag == null && parent != null) {
             return parent.getFlag(fieldName);
         }
 
-        return flag;
+        return flag.getFirst().getValue();
     }
 
-    public void addFlag(String fieldName, String flag) {
-
-        if (flag.startsWith("\"")) {
-            flag = flag.substring(1, flag.length() - 1);
-        }
+    public void addParameters(String fieldName, List<Parameter> parametersList) {
 
         if (parent != null) {
-            parent.addFlag(fieldName, flag);
+            parent.addParameters(fieldName, parametersList);
         } else {
-            flags.put(fieldName, flag);
+            flags.put(fieldName, parametersList);
         }
     }
 
-    public Map<String, String> getAllFlags() {
+    public List<String> getAllFlagsAsList(String fieldName) {
+        List<Parameter> flag = flags.get(fieldName);
+        return flag.stream().map(Parameter::getValue).collect(Collectors.toList());
+    }
+
+    public Map<String, List<Parameter>> getAllFlagsAsMap() {
         return flags;
     }
 

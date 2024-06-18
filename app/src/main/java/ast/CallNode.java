@@ -3,6 +3,7 @@ package ast;
 import com.fasterxml.jackson.databind.JsonNode;
 import generator.Generator;
 
+import java.util.List;
 import java.util.Map;
 
 public class CallNode extends ASTNode {
@@ -28,9 +29,9 @@ public class CallNode extends ASTNode {
 
     }
 
-    public Map<String, String> getParameters() {
+    public Map<String, List<Parameter>> getParameters() {
         if (parameterListNode != null) {
-            return parameterListNode.getAllFlags();
+            return parameterListNode.getAllFlagsAsMap();
         }
 
         return null;

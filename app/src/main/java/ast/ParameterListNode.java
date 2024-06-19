@@ -8,18 +8,16 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ParameterListNode extends ASTNode {
-    private final ParameterListNode parent;
     private final boolean jsonParams;
     private final JsonNode paramsJsonNode;
     private final boolean isArray;
-    private final HashMap<String, List<Parameter>> flags = new HashMap<>();
+    public final HashMap<String, List<Parameter>> flags = new HashMap<>();
     private final CallNode callNode;
 
-    public ParameterListNode(CallNode callNode, JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray, ParameterListNode parent) {
+    public ParameterListNode(CallNode callNode, JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray) {
         this.jsonParams = isJsonParams;
         this.paramsJsonNode = paramsJsonNode;
         this.isArray = isArray;
-        this.parent = parent;
         this.callNode = callNode;
     }
 
@@ -57,10 +55,13 @@ public class ParameterListNode extends ASTNode {
 
     }
 
+    // Returning NULL because it's being stored on another object. You need to hard code for textureFormatCompatible to go looking from ObjectAttributes on generator
     public String getFlag(String fieldName) {
+        System.out.println("flags for aspect: " + flags);
         List<Parameter> flag = flags.get(fieldName);
-        if (flag == null && parent != null) {
-            return parent.getFlag(fieldName);
+
+        if (flag == null || flag.isEmpty()) {
+            return null;
         }
 
         return flag.getFirst().getValue();
@@ -68,11 +69,8 @@ public class ParameterListNode extends ASTNode {
 
     public void addParameters(String fieldName, List<Parameter> parametersList) {
 
-        if (parent != null) {
-            parent.addParameters(fieldName, parametersList);
-        } else {
-            flags.put(fieldName, parametersList);
-        }
+        flags.put(fieldName, parametersList);
+
     }
 
     public List<String> getAllFlagsAsList(String fieldName) {

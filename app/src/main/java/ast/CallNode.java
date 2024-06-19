@@ -21,7 +21,8 @@ public class CallNode extends ASTNode {
         this.generator = generator;
 
         if (isMethod) {
-            this.parameterListNode = new ParameterListNode(this, paramsJsonNode, jsonParams, isArray, null);
+            System.out.println("Generating the following call: " + fullCallName);
+            this.parameterListNode = new ParameterListNode(this, paramsJsonNode, jsonParams, isArray);
             parameterListNode.generateParams();
             this.addNode(parameterListNode);
         }

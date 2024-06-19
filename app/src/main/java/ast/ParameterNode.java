@@ -17,7 +17,7 @@ public class ParameterNode extends ASTNode {
 
     private final String TYPES_PATH = "./rsrcs/webgpu/types/types.json";
     private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
-    private final String fieldName;
+    private String fieldName;
 
     private final boolean isJsonFormat;
     private boolean isArray;
@@ -33,41 +33,40 @@ public class ParameterNode extends ASTNode {
     private final Map<String, ParamsAndFormattingPair> nestedParameters = new HashMap<>();
 
     public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, Generator generator, ParameterListNode parent) {
-        // Parse details
-        this.fieldName = fieldName;
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parent = parent;
 
-
+        System.out.println("generating " + fieldName);
         // Only generate parameters if is a method call (don't generate for attributes)
         if (details.has("type")) {
-            generateParam(details, details.get("type").asText());
+            generateParam(fieldName, details, details.get("type").asText());
         }
     }
 
-    private void generateParam(JsonNode details, String paramType) {
+    private void generateParam(String fieldName, JsonNode details, String paramType) {
         resetFormattingFlags();
+        this.fieldName = fieldName;
         this.isString = paramType.equals("string");
         this.isArray = details.has("array");
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
         } else if (isString) {
-            this.parameters.add(new Parameter(ParamGenerator.generateRandVarName()));
+            this.parameters.add(new Parameter(ParamGenerator.generateRandVarName(), this.fieldName));
         } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
             generateNumber(details, paramType);
         } else if (paramType.equals("boolean")) {
-            this.parameters.add(new Parameter(String.valueOf(rand.nextBoolean())));
+            this.parameters.add(new Parameter(String.valueOf(rand.nextBoolean()), this.fieldName));
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
-            this.parameters.add(new Parameter(generator.getRandomReceiver(paramType)));
+            this.parameters.add(new Parameter(generator.getRandomReceiver(paramType), this.fieldName));
         } else { // Requires WebGPU Type
             generateParamAsJson(paramType);
         }
 
-        if (!isNested) {
+//        if (!isNested) { fix this later when fix json structure
             parent.addParameters(fieldName, parameters);
-        }
+//        }
     }
 
     private void resetFormattingFlags() {
@@ -85,7 +84,7 @@ public class ParameterNode extends ASTNode {
             parseNumericConditions(details.get("conditions"), numericConstraints);
         }
 
-        this.parameters.add(new Parameter(String.valueOf(ParamGenerator.generateRandNumber(paramType, numericConstraints))));
+        this.parameters.add(new Parameter(String.valueOf(ParamGenerator.generateRandNumber(paramType, numericConstraints)), this.fieldName));
     }
 
     private void parseNumericConditions(JsonNode conditions, NumericConstraints numericConstraints) {
@@ -110,7 +109,10 @@ public class ParameterNode extends ASTNode {
                 JsonNode constraintsNode = valueNode.get("constraints");
 
                 constraintsNode.fieldNames().forEachRemaining(fieldName -> {
+                    System.out.println(fieldName);
+                    System.out.println(parent.flags);
                     String flagValue = parent.getFlag(fieldName);
+
                     JsonNode constraintNode = constraintsNode.get(fieldName);
                     if (constraintNode.has(flagValue)) {
                         value[0] = constraintNode.get(flagValue).asLong();
@@ -152,21 +154,23 @@ public class ParameterNode extends ASTNode {
             System.err.println(e.getMessage());
         }
 
-
-        ParameterListNode parameterListNode = new ParameterListNode(parent.getCallNode(), details, true, isArray, parent);
-        parameterListNode.generateParams();
-
+        System.out.println(details);
         for (JsonNode param : details) {
+
             param.fieldNames().forEachRemaining(nestedFieldName -> {
                 JsonNode paramDetails = param.get(nestedFieldName);
 
 //                if (paramDetails.has("optional")) {
 //
 //                }
-                generateParam(paramDetails, paramDetails.get("type").asText());
-                nestedParameters.put(nestedFieldName, new ParamsAndFormattingPair(parameters, new ParamFormatting(this.isArray, this.isString, this.isBitwiseFlags)));
-                parent.addParameters(this.fieldName + "." + nestedFieldName, parameters);
-                parameters.clear();
+                generateParam(nestedFieldName, paramDetails, paramDetails.get("type").asText());
+
+                List<Parameter> parametersCopy = parameters.stream().map(Parameter::new).toList();
+                nestedParameters.put(nestedFieldName, new ParamsAndFormattingPair(parametersCopy, new ParamFormatting(this.isArray, this.isString, this.isBitwiseFlags)));
+                // USE THIS ONCE FIX JSON
+                // String fullFieldName = this.fieldName + "." + nestedFieldName;
+                parent.addParameters(nestedFieldName, parametersCopy);
+                parameters.clear(); // this is deleting it because it's a reference
             });
         }
 
@@ -213,7 +217,7 @@ public class ParameterNode extends ASTNode {
 
     private void addParametersFromList(List<String> chosenEnumValues) {
         for (String enumValue : chosenEnumValues) {
-            parameters.add(new Parameter(enumValue));
+            parameters.add(new Parameter(enumValue, this.fieldName));
         }
     }
 
@@ -406,6 +410,11 @@ public class ParameterNode extends ASTNode {
         } else if (paramFormatting.isString()) {
             valueToPrint = encodeAsString(parameterValues.getFirst());
         } else {
+            // REMOVE LATER WHEN FIX PARAMETER NAMING
+            if (parameterValues.isEmpty()) {
+                return "";
+            }
+
             valueToPrint = parameterValues.getFirst();
         }
         return valueToPrint;

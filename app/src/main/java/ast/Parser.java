@@ -71,6 +71,7 @@ public class Parser {
         newRootNode.addNode(rootASTNode);
 
         generator.addToSymbolTable(returnType, varName);
+        System.out.println(varName);
         generator.addToObjectAttributesTable(varName, rootASTNode.getParameters());
 
         return newRootNode;

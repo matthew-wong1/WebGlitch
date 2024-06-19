@@ -43,7 +43,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(1000, false);
+        Generator generator = new Generator(100, false);
         generator.generateProgram(1);
     }
 
@@ -137,6 +137,14 @@ public class Generator {
     }
 
     public String getObjectAttributes(String variableName, String fieldName) {
+        System.out.println(variableName);
+        System.out.println(objectAttributesTable);
+        List<Parameter> parameters = objectAttributesTable.get(variableName).get(fieldName);
+
+        if (parameters == null || parameters.isEmpty()) {
+            return null;
+        }
+
         return objectAttributesTable.get(variableName).get(fieldName).getFirst().getValue();
     }
 

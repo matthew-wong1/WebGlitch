@@ -2,20 +2,17 @@ package ast;
 
 public class Parameter {
     private final String fieldName;
-    private final ParamFormatting paramFormatting;
     private String value;
 
 
-    Parameter(String value) {
-        this.value = value;
-        this.fieldName = "";
-        this.paramFormatting = null;
-    }
-
-    public Parameter(String value, String fieldName, ParamFormatting paramFormatting) {
+    Parameter(String value, String fieldName) {
         this.value = value;
         this.fieldName = fieldName;
-        this.paramFormatting = paramFormatting;
+    }
+
+    Parameter(Parameter anotherParameter) {
+        this.fieldName = anotherParameter.fieldName;
+        this.value = anotherParameter.value;
     }
 
     public String getValue() {

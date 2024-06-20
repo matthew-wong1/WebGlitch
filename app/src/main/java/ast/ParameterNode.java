@@ -295,69 +295,89 @@ public class ParameterNode extends ASTNode {
         }
 
         if (conditions.has("textureCompatible")) {
-            String compatibleTexture = findCompatibleTexture(parentList.getFlag(conditions.get("textureCompatible").asText()));
-            enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
+            ensureTextureCompatible(conditions, enumValues);
 
         }
 
         if (conditions.has("textureFormatCompatible")) {
-            String currentTexture = parentList.getFlag("format");
-
-            JsonNode incompatibleTexturesForStorageNode = parseJsonFromFile("gpuTextureFormat");
-            List<String> incompatibleTexturesForStorage = new ArrayList<>();
-            extractNodeAsList(incompatibleTexturesForStorageNode.get("storageBindingIncompatible"), incompatibleTexturesForStorage);
-
-            if (currentTexture == null) {
-                currentTexture = generator.getObjectAttributes(parentList.getReceiver(), "format");
-            }
-
-            if (currentTexture == null) {
-                currentTexture = generator.getObjectAttributes("context", "format");
-            }
-
-            if (incompatibleTexturesForStorage.contains(currentTexture)) {
-                enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.STORAGE_BINDING"));
-            }
-
-            if (currentTexture.startsWith("stencil") || currentTexture.startsWith("depth")) { // Remove aspect enums
-                enumValues.remove("all");
-            } else {
-                enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
-            }
+            ensureTextureFormatCompatible(enumValues);
         }
 
         if (conditions.has("textureAspectCompatible")) {
-            String currentAspect = parentList.getFlag("aspect");
-
-            if (currentAspect.equals("non-stencil-or-depth")) {
-                enumValues.removeIf(flag -> ((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
-                parentList.setParamValue("aspect", "all");
-                return;
-            }
-
-            if (!currentAspect.equals("all")) {
-                enumValues.removeIf(flag -> !((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
-            } else {
-                enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
-            }
+            ensureTextureAspectCompatible(enumValues);
 
         }
 
         if (conditions.has("textureUsageCompatible")) {
-            String currentDimension = parentList.getFlag(conditions.get("textureUsageCompatible").asText());
-
-            if (currentDimension.equals("1d")) {
-                enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.RENDER_ATTACHMENT"));
-            }
+            ensureTextureUsageCompatible(conditions, enumValues);
         }
 
         if (conditions.has("constraints")) {
-            JsonNode newEnumNode = conditions.get("enum");
-            String value = parentList.getFlag(newEnumNode.get("name").asText());
-            newEnumNode = newEnumNode.get(value);
-            
-            extractNodeAsList(newEnumNode, enumValues);
+            parseConstraints(conditions, enumValues);
         }
+    }
+
+    private void ensureTextureCompatible(JsonNode conditions, List<String> enumValues) {
+        String compatibleTexture = findCompatibleTexture(parentList.getFlag(conditions.get("textureCompatible").asText()));
+        enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
+    }
+
+    private void ensureTextureAspectCompatible(List<String> enumValues) {
+        String currentAspect = parentList.getFlag("aspect");
+
+        if (currentAspect.equals("non-stencil-or-depth")) {
+            enumValues.removeIf(flag -> ((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
+            parentList.setParamValue("aspect", "all");
+            return;
+        }
+
+        if (!currentAspect.equals("all")) {
+            enumValues.removeIf(flag -> !((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
+        } else {
+            enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
+        }
+    }
+
+    private void ensureTextureFormatCompatible(List<String> enumValues) {
+        String currentTexture = parentList.getFlag("format");
+
+        JsonNode incompatibleTexturesForStorageNode = parseJsonFromFile("gpuTextureFormat");
+        List<String> incompatibleTexturesForStorage = new ArrayList<>();
+        extractNodeAsList(incompatibleTexturesForStorageNode.get("storageBindingIncompatible"), incompatibleTexturesForStorage);
+
+        if (currentTexture == null) {
+            currentTexture = generator.getObjectAttributes(parentList.getReceiver(), "format");
+        }
+
+        if (currentTexture == null) {
+            currentTexture = generator.getObjectAttributes("context", "format");
+        }
+
+        if (incompatibleTexturesForStorage.contains(currentTexture)) {
+            enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.STORAGE_BINDING"));
+        }
+
+        if (currentTexture.startsWith("stencil") || currentTexture.startsWith("depth")) { // Remove aspect enums
+            enumValues.remove("all");
+        } else {
+            enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
+        }
+    }
+
+    private void ensureTextureUsageCompatible(JsonNode conditions, List<String> enumValues) {
+        String currentDimension = parentList.getFlag(conditions.get("textureUsageCompatible").asText());
+
+        if (currentDimension.equals("1d")) {
+            enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.RENDER_ATTACHMENT"));
+        }
+    }
+
+    private void parseConstraints(JsonNode conditions, List<String> enumValues) {
+        JsonNode newEnumNode = conditions.get("enum");
+        String value = parentList.getFlag(newEnumNode.get("name").asText());
+        newEnumNode = newEnumNode.get(value);
+
+        extractNodeAsList(newEnumNode, enumValues);
     }
 
     private String findCompatibleTexture(String compatibleTexture) {

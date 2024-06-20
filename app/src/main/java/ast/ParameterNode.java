@@ -17,17 +17,17 @@ public class ParameterNode extends ASTNode {
 
     private final String TYPES_PATH = "./rsrcs/webgpu/types/types.json";
     private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
-    private String fieldName;
+    private final String fieldName;
 
     private final boolean isJsonFormat;
-    private boolean isArray;
-    private boolean isBitwiseFlags;
+    private final boolean isArray;
     private boolean isString;
-    private boolean isNested = false;
+    private boolean isBitwiseFlags;
+
 
     private final Generator generator;
     private final Random rand = new Random();
-    private final ParameterListNode parent;
+    private final ParameterListNode parentList;
 
     private final List<Parameter> parameters = new ArrayList<>();
     private final Map<String, ParamsAndFormattingPair> nestedParameters = new LinkedHashMap<>();
@@ -35,20 +35,21 @@ public class ParameterNode extends ASTNode {
     public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, Generator generator, ParameterListNode parent) {
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
-        this.parent = parent;
+        this.parentList = parent;
+        this.fieldName = fieldName;
+        this.isArray = details.has("array");
 
         System.out.println("generating " + fieldName);
         // Only generate parameters if is a method call (don't generate for attributes)
         if (details.has("type")) {
-            generateParam(fieldName, details, details.get("type").asText());
+            String paramType = details.get("type").asText();
+            this.isString = paramType.equals("string");
+
+            generateParam(fieldName, details, paramType);
         }
     }
 
     private void generateParam(String fieldName, JsonNode details, String paramType) {
-        resetFormattingFlags();
-        this.fieldName = fieldName;
-        this.isString = paramType.equals("string");
-        this.isArray = details.has("array");
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
@@ -64,15 +65,11 @@ public class ParameterNode extends ASTNode {
             generateParamAsJson(paramType);
         }
 
+        // USE THIS ONCE FIX JSON
+        // String fullFieldName = this.fieldName + "." + nestedFieldName;
 //        if (!isNested) { fix this later when fix json structure
-            parent.addParameters(fieldName, parameters);
+            parentList.addParameters(fieldName, parameters);
 //        }
-    }
-
-    private void resetFormattingFlags() {
-        this.isArray = false;
-        this.isBitwiseFlags = false;
-        this.isString = false;
     }
 
     private void generateNumber(JsonNode details, String paramType) {
@@ -104,14 +101,14 @@ public class ParameterNode extends ASTNode {
 
             if (valueNode.has("customValidation")) {
 
-                value[0] = Long.parseLong(ParamGenerator.generateCustomConstraint(valueNode.get("customValidation").asText(), parent));
+                value[0] = Long.parseLong(ParamGenerator.generateCustomConstraint(valueNode.get("customValidation").asText(), parentList));
             } else if (valueNode.has("constraints")) {
                 JsonNode constraintsNode = valueNode.get("constraints");
 
                 constraintsNode.fieldNames().forEachRemaining(fieldName -> {
                     System.out.println(fieldName);
-                    System.out.println(parent.flags);
-                    String flagValue = parent.getFlag(fieldName);
+                    System.out.println(parentList.flags);
+                    String flagValue = parentList.getFlag(fieldName);
 
                     JsonNode constraintNode = constraintsNode.get(fieldName);
                     if (constraintNode.has(flagValue)) {
@@ -143,7 +140,6 @@ public class ParameterNode extends ASTNode {
     }
 
     private void generateParamAsJson(String paramType) {
-        this.isNested = true;
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -155,6 +151,10 @@ public class ParameterNode extends ASTNode {
         }
 
         System.out.println(details);
+
+        // hacky way of saving state
+
+
         for (JsonNode param : details) {
 
             param.fieldNames().forEachRemaining(nestedFieldName -> {
@@ -163,14 +163,11 @@ public class ParameterNode extends ASTNode {
 //                if (paramDetails.has("optional")) {
 //
 //                }
-                generateParam(nestedFieldName, paramDetails, paramDetails.get("type").asText());
 
-                List<Parameter> parametersCopy = parameters.stream().map(Parameter::new).toList();
-                nestedParameters.put(nestedFieldName, new ParamsAndFormattingPair(parametersCopy, new ParamFormatting(this.isArray, this.isString, this.isBitwiseFlags)));
-                // USE THIS ONCE FIX JSON
-                // String fullFieldName = this.fieldName + "." + nestedFieldName;
-                parent.addParameters(nestedFieldName, parametersCopy);
-                parameters.clear(); // this is deleting it because it's a reference
+                ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, generator, parentList);
+                this.addNode(nestedParameterNode);
+
+
             });
         }
 
@@ -307,20 +304,20 @@ public class ParameterNode extends ASTNode {
         }
 
         if (conditions.has("textureCompatible")) {
-            String compatibleTexture = findCompatibleTexture(parent.getFlag(conditions.get("textureCompatible").asText()));
+            String compatibleTexture = findCompatibleTexture(parentList.getFlag(conditions.get("textureCompatible").asText()));
             enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
 
         }
 
         if (conditions.has("textureFormatCompatible")) {
-            String currentTexture = parent.getFlag("format");
+            String currentTexture = parentList.getFlag("format");
 
             JsonNode incompatibleTexturesForStorageNode = parseJsonFromFile("gpuTextureFormat");
             List<String> incompatibleTexturesForStorage = new ArrayList<>();
             extractNodeAsList(incompatibleTexturesForStorageNode.get("storageBindingIncompatible"), incompatibleTexturesForStorage);
 
             if (currentTexture == null) {
-                currentTexture = generator.getObjectAttributes(parent.getReceiver(), "format");
+                currentTexture = generator.getObjectAttributes(parentList.getReceiver(), "format");
             }
 
             if (currentTexture == null) {
@@ -339,11 +336,11 @@ public class ParameterNode extends ASTNode {
         }
 
         if (conditions.has("textureAspectCompatible")) {
-            String currentAspect = parent.getFlag("aspect");
+            String currentAspect = parentList.getFlag("aspect");
 
             if (currentAspect.equals("non-stencil-or-depth")) {
                 enumValues.removeIf(flag -> ((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
-                parent.setFlag("aspect", "all");
+                parentList.setFlag("aspect", "all");
                 return;
             }
 
@@ -356,7 +353,7 @@ public class ParameterNode extends ASTNode {
         }
 
         if (conditions.has("textureUsageCompatible")) {
-            String currentDimension = parent.getFlag(conditions.get("textureUsageCompatible").asText());
+            String currentDimension = parentList.getFlag(conditions.get("textureUsageCompatible").asText());
 
             if (currentDimension.equals("1d")) {
                 enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.RENDER_ATTACHMENT"));
@@ -365,7 +362,7 @@ public class ParameterNode extends ASTNode {
 
         if (conditions.has("constraints")) {
             JsonNode newEnumNode = conditions.get("enum");
-            String value = parent.getFlag(newEnumNode.get("name").asText());
+            String value = parentList.getFlag(newEnumNode.get("name").asText());
             newEnumNode = newEnumNode.get(value);
             
             extractNodeAsList(newEnumNode, enumValues);
@@ -385,20 +382,54 @@ public class ParameterNode extends ASTNode {
     public String toString() {
         String valueToPrint;
 
-        if (isNested) {
-            List<String> parameterValuesAndFieldNames = nestedParameters.values().stream().map(v -> formatParam(v.parameters.stream().map(Parameter::getFieldNameAndValue).toList(), v.paramFormatting)).toList();
-            return parameterValuesAndFieldNames.stream().collect(Collectors.joining(", ", "{", "}"));
+//        if (isNested) {
+//            List<String> parameterValuesAndFieldNames = nestedParameters.values().stream()
+//                    .map(v -> {
+//                        List<String> values = v.parameters.stream()
+//                                .map(Parameter::getValue)
+//                                .collect(Collectors.toList());
+//                        String formattedParams = formatParam(values, v.paramFormatting);
+//                        System.out.println(formattedParams);
+//                        return v.parameters.stream()
+//                                .map(p -> formatFullJsonString(p, formattedParams))
+//                                .collect(Collectors.joining(", "));
+//                    })
+//                    .toList();
+//            String nestedValues = parameterValuesAndFieldNames.stream().collect(Collectors.joining(", ", "{", "}"));
+//
+//            if (isArray) {
+//                nestedValues = "[" + nestedValues + "]";
+//            }
+//
+//            return this.fieldName + ": " + nestedValues;
+
+        if (!this.hasNoSubNodes()) {
+            valueToPrint = subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(",", "{", "}"));
+            if (isArray) {
+                valueToPrint = "[" + valueToPrint + "]";
+            }
         } else {
             List<String> parameterValues = this.parameters.stream().map(Parameter::getValue).toList();
             valueToPrint = formatParam(parameterValues, new ParamFormatting(isArray, isString, isBitwiseFlags));
-            if (isJsonFormat) {
-                return fieldName + ": " + valueToPrint;
-            }
-
-            return valueToPrint;
         }
 
+        if (isJsonFormat) {
+            return fieldName + ": " + valueToPrint;
+        }
 
+        return valueToPrint;
+
+
+    }
+
+    private String formatFullJsonString(Parameter p, String formattedParams) {
+        String baseKeyValuePair = p.getFieldName() + ": " + formattedParams;
+        if (p.getParentFieldName().equals(this.fieldName)) {
+            return baseKeyValuePair;
+        }
+
+        return baseKeyValuePair;
+//        return p.getParentFieldName() + ": {" + baseKeyValuePair + "}";
     }
 
     private String formatParam(List<String> parameterValues, ParamFormatting paramFormatting) {

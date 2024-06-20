@@ -30,7 +30,6 @@ public class ParameterNode extends ASTNode {
     private final ParameterListNode parentList;
 
     private final List<Parameter> parameters = new ArrayList<>();
-    private final Map<String, ParamsAndFormattingPair> nestedParameters = new LinkedHashMap<>();
 
     public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, Generator generator, ParameterListNode parent) {
         this.isJsonFormat = isJsonFormat;

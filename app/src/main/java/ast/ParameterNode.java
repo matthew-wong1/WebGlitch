@@ -393,16 +393,6 @@ public class ParameterNode extends ASTNode {
 
     }
 
-    private String formatFullJsonString(Parameter p, String formattedParams) {
-        String baseKeyValuePair = p.getFieldName() + ": " + formattedParams;
-        if (p.getParentFieldName().equals(this.fieldName)) {
-            return baseKeyValuePair;
-        }
-
-        return baseKeyValuePair;
-//        return p.getParentFieldName() + ": {" + baseKeyValuePair + "}";
-    }
-
     private String formatParam(List<String> parameterValues, ParamFormatting paramFormatting) {
         String valueToPrint;
         if (paramFormatting.isArray()) {

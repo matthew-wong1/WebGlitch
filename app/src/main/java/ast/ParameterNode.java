@@ -52,13 +52,13 @@ public class ParameterNode extends ASTNode {
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
         } else if (isString) {
-            this.parameters.add(new Parameter(ParamGenerator.generateRandVarName(), this.fieldName));
+            this.parameters.add(new Parameter(ParamGenerator.generateRandVarName()));
         } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
             generateNumber(details, paramType);
         } else if (paramType.equals("boolean")) {
-            this.parameters.add(new Parameter(String.valueOf(rand.nextBoolean()), this.fieldName));
+            this.parameters.add(new Parameter(String.valueOf(rand.nextBoolean())));
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
-            this.parameters.add(new Parameter(generator.getRandomReceiver(paramType), this.fieldName));
+            this.parameters.add(new Parameter(generator.getRandomReceiver(paramType)));
         } else { // Requires WebGPU Type
             generateParamAsJson(paramType);
         }
@@ -79,7 +79,7 @@ public class ParameterNode extends ASTNode {
             parseNumericConditions(details.get("conditions"), numericConstraints);
         }
 
-        this.parameters.add(new Parameter(String.valueOf(ParamGenerator.generateRandNumber(paramType, numericConstraints)), this.fieldName));
+        this.parameters.add(new Parameter(String.valueOf(ParamGenerator.generateRandNumber(paramType, numericConstraints))));
     }
 
     private void parseNumericConditions(JsonNode conditions, NumericConstraints numericConstraints) {
@@ -205,7 +205,7 @@ public class ParameterNode extends ASTNode {
 
     private void addParametersFromList(List<String> chosenEnumValues) {
         for (String enumValue : chosenEnumValues) {
-            parameters.add(new Parameter(enumValue, this.fieldName));
+            parameters.add(new Parameter(enumValue));
         }
     }
 
@@ -331,7 +331,7 @@ public class ParameterNode extends ASTNode {
 
             if (currentAspect.equals("non-stencil-or-depth")) {
                 enumValues.removeIf(flag -> ((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
-                parentList.setFlag("aspect", "all");
+                parentList.setParamValue("aspect", "all");
                 return;
             }
 

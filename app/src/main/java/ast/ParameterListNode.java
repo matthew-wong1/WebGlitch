@@ -73,11 +73,6 @@ public class ParameterListNode extends ASTNode {
 
     }
 
-    public List<String> getAllFlagsAsList(String fieldName) {
-        List<Parameter> flag = flags.get(fieldName);
-        return flag.stream().map(Parameter::getValue).collect(Collectors.toList());
-    }
-
     public Map<String, List<Parameter>> getAllFlagsAsMap() {
         return flags;
     }
@@ -90,7 +85,13 @@ public class ParameterListNode extends ASTNode {
         return callNode.getReceiver();
     }
 
-    public void setFlag(String fieldName, String value) {
+    // Clears all currently set values for the given fieldName, replacing it with 1 value
+    public void setParamValue(String fieldName, String value) {
+
+    }
+
+    // Removes the parameter with a given value if it exists eg 1 element of an array
+    public void removeParamValue(String fieldName, String value) {
 
     }
 }

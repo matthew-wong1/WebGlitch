@@ -31,7 +31,7 @@ public class CallNode extends ASTNode {
 
     public Map<String, List<Parameter>> getParameters() {
         if (parameterListNode != null) {
-            return parameterListNode.getAllFlagsAsMap();
+            return parameterListNode.getAllParametersAsMap();
         }
 
         return null;

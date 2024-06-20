@@ -1,7 +1,6 @@
 package generator;
 
 import ast.ParameterListNode;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.Random;
@@ -45,14 +44,14 @@ public class ParamGenerator {
                 String MULTI_SAMPLING_FLAG = "4";
                 String MAX_MIP_COUNT_IF_MULTI_SAMPLING = "1";
 
-                boolean multiSampling = parent.getFlag("sampleCount").equals(MULTI_SAMPLING_FLAG);
+                boolean multiSampling = parent.getParameter("sampleCount").equals(MULTI_SAMPLING_FLAG);
 
                 if (multiSampling) {
                     return MAX_MIP_COUNT_IF_MULTI_SAMPLING;
                 }
 
-                int width = Integer.parseInt(parent.getFlag("width"));
-                int height = Integer.parseInt(parent.getFlag("height"));
+                int width = Integer.parseInt(parent.getParameter("width"));
+                int height = Integer.parseInt(parent.getParameter("height"));
                 int max = (int) (Math.floor(Math.log(Math.min(width, height)) / Math.log(2)) + 1);
                 return String.valueOf(max);
         }

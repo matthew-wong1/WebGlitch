@@ -104,7 +104,7 @@ public class ParameterNode extends ASTNode {
                 JsonNode constraintsNode = valueNode.get("constraints");
 
                 constraintsNode.fieldNames().forEachRemaining(fieldName -> {
-                    String flagValue = parentList.getFlag(fieldName);
+                    String flagValue = parentList.getParameter(fieldName);
 
                     JsonNode constraintNode = constraintsNode.get(fieldName);
                     if (constraintNode.has(flagValue)) {
@@ -318,12 +318,12 @@ public class ParameterNode extends ASTNode {
     }
 
     private void ensureTextureCompatible(JsonNode conditions, List<String> enumValues) {
-        String compatibleTexture = findCompatibleTexture(parentList.getFlag(conditions.get("textureCompatible").asText()));
+        String compatibleTexture = findCompatibleTexture(parentList.getParameter(conditions.get("textureCompatible").asText()));
         enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
     }
 
     private void ensureTextureAspectCompatible(List<String> enumValues) {
-        String currentAspect = parentList.getFlag("aspect");
+        String currentAspect = parentList.getParameter("aspect");
 
         if (currentAspect.equals("non-stencil-or-depth")) {
             enumValues.removeIf(flag -> ((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
@@ -339,7 +339,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private void ensureTextureFormatCompatible(List<String> enumValues) {
-        String currentTexture = parentList.getFlag("format");
+        String currentTexture = parentList.getParameter("format");
 
         JsonNode incompatibleTexturesForStorageNode = parseJsonFromFile("gpuTextureFormat");
         List<String> incompatibleTexturesForStorage = new ArrayList<>();
@@ -365,7 +365,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private void ensureTextureUsageCompatible(JsonNode conditions, List<String> enumValues) {
-        String currentDimension = parentList.getFlag(conditions.get("textureUsageCompatible").asText());
+        String currentDimension = parentList.getParameter(conditions.get("textureUsageCompatible").asText());
 
         if (currentDimension.equals("1d")) {
             enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.RENDER_ATTACHMENT"));
@@ -374,7 +374,7 @@ public class ParameterNode extends ASTNode {
 
     private void parseConstraints(JsonNode conditions, List<String> enumValues) {
         JsonNode newEnumNode = conditions.get("enum");
-        String value = parentList.getFlag(newEnumNode.get("name").asText());
+        String value = parentList.getParameter(newEnumNode.get("name").asText());
         newEnumNode = newEnumNode.get(value);
 
         extractNodeAsList(newEnumNode, enumValues);

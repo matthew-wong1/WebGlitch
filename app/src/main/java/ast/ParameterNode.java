@@ -39,7 +39,6 @@ public class ParameterNode extends ASTNode {
         this.fieldName = fieldName;
         this.isArray = details.has("array");
 
-        System.out.println("generating " + fieldName);
         // Only generate parameters if is a method call (don't generate for attributes)
         if (details.has("type")) {
             String paramType = details.get("type").asText();
@@ -106,8 +105,6 @@ public class ParameterNode extends ASTNode {
                 JsonNode constraintsNode = valueNode.get("constraints");
 
                 constraintsNode.fieldNames().forEachRemaining(fieldName -> {
-                    System.out.println(fieldName);
-                    System.out.println(parentList.flags);
                     String flagValue = parentList.getFlag(fieldName);
 
                     JsonNode constraintNode = constraintsNode.get(fieldName);
@@ -149,11 +146,6 @@ public class ParameterNode extends ASTNode {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-
-        System.out.println(details);
-
-        // hacky way of saving state
-
 
         for (JsonNode param : details) {
 
@@ -381,27 +373,6 @@ public class ParameterNode extends ASTNode {
     @Override
     public String toString() {
         String valueToPrint;
-
-//        if (isNested) {
-//            List<String> parameterValuesAndFieldNames = nestedParameters.values().stream()
-//                    .map(v -> {
-//                        List<String> values = v.parameters.stream()
-//                                .map(Parameter::getValue)
-//                                .collect(Collectors.toList());
-//                        String formattedParams = formatParam(values, v.paramFormatting);
-//                        System.out.println(formattedParams);
-//                        return v.parameters.stream()
-//                                .map(p -> formatFullJsonString(p, formattedParams))
-//                                .collect(Collectors.joining(", "));
-//                    })
-//                    .toList();
-//            String nestedValues = parameterValuesAndFieldNames.stream().collect(Collectors.joining(", ", "{", "}"));
-//
-//            if (isArray) {
-//                nestedValues = "[" + nestedValues + "]";
-//            }
-//
-//            return this.fieldName + ": " + nestedValues;
 
         if (!this.hasNoSubNodes()) {
             valueToPrint = subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(",", "{", "}"));

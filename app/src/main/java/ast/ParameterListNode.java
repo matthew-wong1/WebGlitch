@@ -57,7 +57,7 @@ public class ParameterListNode extends ASTNode {
 
     // Returning NULL because it's being stored on another object. You need to hard code for textureFormatCompatible to go looking from ObjectAttributes on generator
     public String getFlag(String fieldName) {
-        System.out.println("flags for aspect: " + flags);
+
         List<Parameter> flag = flags.get(fieldName);
 
         if (flag == null || flag.isEmpty()) {

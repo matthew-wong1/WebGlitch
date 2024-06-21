@@ -147,6 +147,23 @@ public class Generator {
         return objectAttributesTable.get(variableName).get(fieldName).getFirst().getValue();
     }
 
+    public void setObjectAttribute(String variableName, String fieldName, String value) {
+        List<Parameter> parameters = objectAttributesTable.get(variableName).get(fieldName);
+        parameters.clear();
+        parameters.add(new Parameter(value));
+    }
+
+    public void appendObjectAttribute(String variableName, String fieldName, String value) {
+        List<Parameter> parameters = objectAttributesTable.get(variableName).get(fieldName);
+        parameters.add(new Parameter(value));
+    }
+
+    // Removes the parameter with a given value if it exists eg 1 element of an array
+    public void removeObjectAttribute(String variableName, String fieldName, String value) {
+        List<Parameter> parameters = objectAttributesTable.get(variableName).get(fieldName);
+        parameters.remove(new Parameter(value));
+    }
+
     public List<String> getAllObjectAttributes(String variableName, String fieldName) {
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }

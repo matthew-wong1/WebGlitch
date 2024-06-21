@@ -6,7 +6,7 @@ public class Parameter {
     private String value;
 
 
-    Parameter(String value) {
+    public Parameter(String value) {
         this.value = value;
     }
 

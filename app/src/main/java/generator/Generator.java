@@ -130,6 +130,7 @@ public class Generator {
         Map<String, List<Parameter>> specificObjectAttributesTable = objectAttributesTable.get(variableName);
 
         specificObjectAttributesTable.putAll(keyValuePairs);
+
     }
 
     public void removeFromObjectAttributesTable(String variableName) {

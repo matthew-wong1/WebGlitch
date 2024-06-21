@@ -49,7 +49,7 @@ public class ParameterListNode extends ASTNode {
 //                if (paramDetails.has("optional")) {
 //
 //                }
-                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, callNode.getGenerator(), this));
+                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, callNode.getGenerator(), this));
             });
         }
         System.out.println(allParameters);
@@ -70,7 +70,7 @@ public class ParameterListNode extends ASTNode {
     public void addParameters(String fieldName, List<Parameter> parametersList) {
 
         allParameters.put(fieldName, parametersList);
-
+        System.out.println(allParameters);
     }
 
     public Map<String, List<Parameter>> getAllParametersAsMap() {

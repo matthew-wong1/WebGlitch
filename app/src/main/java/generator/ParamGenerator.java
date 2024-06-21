@@ -50,8 +50,8 @@ public class ParamGenerator {
                     return MAX_MIP_COUNT_IF_MULTI_SAMPLING;
                 }
 
-                int width = Integer.parseInt(parent.getParameter("width"));
-                int height = Integer.parseInt(parent.getParameter("height"));
+                int width = Integer.parseInt(parent.getParameter("size.width"));
+                int height = Integer.parseInt(parent.getParameter("size.height"));
                 int max = (int) (Math.floor(Math.log(Math.min(width, height)) / Math.log(2)) + 1);
                 return String.valueOf(max);
         }

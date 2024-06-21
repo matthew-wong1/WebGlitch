@@ -19,6 +19,7 @@ public class ParameterNode extends ASTNode {
     private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
     private final String fieldName;
 
+    private final boolean isRoot;
     private final boolean isJsonFormat;
     private final boolean isArray;
     private boolean isString;
@@ -31,11 +32,12 @@ public class ParameterNode extends ASTNode {
 
     private final List<Parameter> parameters = new ArrayList<>();
 
-    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, Generator generator, ParameterListNode parent) {
+    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parent) {
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parentList = parent;
         this.fieldName = fieldName;
+        this.isRoot = isRoot;
         this.isArray = details.has("array");
 
         // Only generate parameters if is a method call (don't generate for attributes)
@@ -63,11 +65,44 @@ public class ParameterNode extends ASTNode {
             generateParamAsJson(paramType);
         }
 
+        // how does this work for triply nested?
+        // Maybe the parent adds it and continually does .getFieldName
+
+        if(!this.isRoot) {
+            return;
+        }
+
+        if (!parameters.isEmpty()) {
+            parentList.addParameters(fieldName, parameters);
+        } else {
+            addAllSubParamsToParent();
+        }
         // USE THIS ONCE FIX JSON
         // String fullFieldName = this.fieldName + "." + nestedFieldName;
 //        if (!isNested) { fix this later when fix json structure
-            parentList.addParameters(fieldName, parameters);
+
 //        }
+    }
+
+    private void addAllSubParamsToParent() {
+        depthFirstTraverseSubnodes(this, this.fieldName);
+    }
+
+    private void depthFirstTraverseSubnodes(ParameterNode parameterNode, String currentPath) {
+
+        System.out.println(currentPath);
+        if (parameterNode.parameters.isEmpty()) {
+            for (ASTNode astNode : parameterNode.subnodes) {
+                ParameterNode subParameterNode = (ParameterNode) astNode;
+                depthFirstTraverseSubnodes(subParameterNode, currentPath + "." + subParameterNode.getFieldName());
+            }
+        } else {
+            parentList.addParameters(currentPath, parameterNode.parameters);
+        }
+    }
+
+    private String getFieldName() {
+        return fieldName;
     }
 
     private void generateNumber(JsonNode details, String paramType) {
@@ -155,7 +190,7 @@ public class ParameterNode extends ASTNode {
 //
 //                }
 
-                ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, generator, parentList);
+                ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, generator, parentList);
                 this.addNode(nestedParameterNode);
 
 
@@ -325,6 +360,7 @@ public class ParameterNode extends ASTNode {
     private void ensureTextureAspectCompatible(List<String> enumValues) {
         String currentAspect = parentList.getParameter("aspect");
 
+        // WORK IN PROGRESS IMPLEMENTATION
         if (currentAspect.equals("non-stencil-or-depth")) {
             enumValues.removeIf(flag -> ((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
             parentList.setParamValue("aspect", "all");

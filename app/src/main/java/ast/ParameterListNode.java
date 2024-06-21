@@ -52,7 +52,6 @@ public class ParameterListNode extends ASTNode {
                 this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, callNode.getGenerator(), this));
             });
         }
-        System.out.println(allParameters);
     }
 
     // Returning NULL because it's being stored on another object. You need to hard code for textureFormatCompatible to go looking from ObjectAttributes on generator
@@ -70,7 +69,6 @@ public class ParameterListNode extends ASTNode {
     public void addParameters(String fieldName, List<Parameter> parametersList) {
 
         allParameters.put(fieldName, parametersList);
-        System.out.println(allParameters);
     }
 
     public Map<String, List<Parameter>> getAllParametersAsMap() {

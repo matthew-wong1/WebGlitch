@@ -90,7 +90,6 @@ public class ParameterNode extends ASTNode {
 
     private void depthFirstTraverseSubnodes(ParameterNode parameterNode, String currentPath) {
 
-        System.out.println(currentPath);
         if (parameterNode.parameters.isEmpty()) {
             for (ASTNode astNode : parameterNode.subnodes) {
                 ParameterNode subParameterNode = (ParameterNode) astNode;

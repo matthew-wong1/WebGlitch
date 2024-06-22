@@ -13,10 +13,6 @@
     {
       "name": "device",
       "returnType": "string"
-    },
-    {
-      "name": "vendor",
-      "returnType": "string"
     }
   ]
 }

@@ -45,7 +45,6 @@ public class ParameterNode extends ASTNode {
         if (details.has("type")) {
             String paramType = details.get("type").asText();
             this.isString = paramType.equals("string");
-            System.out.println("Generating for param " + fieldName);
             generateParam(fieldName, details, paramType);
         }
     }
@@ -119,7 +118,6 @@ public class ParameterNode extends ASTNode {
 
     private void parseNumericConditions(JsonNode conditions, NumericConstraints numericConstraints) {
         List<String> numericConditions = Arrays.asList("min", "max", "divisible");
-        System.out.println(generator.objectAttributesTable);
 
         for (String numericCondition : numericConditions) {
 
@@ -142,7 +140,6 @@ public class ParameterNode extends ASTNode {
                 value[0] = parseNumericComparisons(valueNode.get("comparison"));
             } else {
                 try {
-                    System.out.println("As text: " + valueNode.asText());
                     value[0] = Long.parseLong(valueNode.asText());
                 } catch (NumberFormatException e) {
                     value[0] = Long.parseLong(parentList.getParameter(valueNode.asText()));
@@ -157,7 +154,6 @@ public class ParameterNode extends ASTNode {
 
             switch (numericCondition) {
                 case "min":
-                    System.out.println("setting min as " + value[0]);
                     numericConstraints.setMin(value[0]);
                     break;
                 case "max":
@@ -172,7 +168,6 @@ public class ParameterNode extends ASTNode {
 
     private void parseNumericConstraints(JsonNode valueNode, long[] value) {
         JsonNode constraintsNode = valueNode.get("constraints");
-        System.out.println("parsing numeric constraints" + valueNode.asText());
 
         constraintsNode.fieldNames().forEachRemaining(fieldName -> {
             String flagValue = parentList.getParameter(fieldName);
@@ -180,12 +175,10 @@ public class ParameterNode extends ASTNode {
             JsonNode constraintNode = constraintsNode.get(fieldName);
             if (constraintNode.has(flagValue)) {
                 JsonNode constraintValue = constraintNode.get(flagValue);
-                System.out.println(constraintValue);
                 try {
                     value[0] = Long.parseLong(constraintValue.asText());
                 } catch(NumberFormatException e) {
                     // Stored as a variable
-                    System.out.println(constraintValue.asText());
                     value[0] = Long.parseLong(parentList.getParameter(constraintValue.asText()));
                 }
 
@@ -195,19 +188,16 @@ public class ParameterNode extends ASTNode {
     }
 
     private long parseNumericComparisons(JsonNode comparisonNode) {
-        System.out.println("parsing comparisons");
         ObjectMapper mapper = new ObjectMapper();
         List<String> otherFieldNames;
         try {
             otherFieldNames = mapper.readValue(comparisonNode.get("otherParams").toString(), new TypeReference<ArrayList<String>>(){});
-            System.out.println(otherFieldNames);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
 
         long parameterTotal = 0;
         String fieldToCompareTo = comparisonNode.get("comparedTo").asText();
-        System.out.println(fieldToCompareTo);
         long valueToCompareTo = Long.parseLong(parentList.getParameter(fieldToCompareTo));
 
         String parametersOperator = comparisonNode.get("operator").asText();
@@ -215,7 +205,6 @@ public class ParameterNode extends ASTNode {
             case "+":
                 for (String otherFieldName : otherFieldNames) {
                      parameterTotal += Long.parseLong(parentList.getParameter(otherFieldName));
-                     System.out.println("the parameter total for " + otherFieldName + " is " + parameterTotal);
                 }
                 break;
         }
@@ -223,10 +212,8 @@ public class ParameterNode extends ASTNode {
         String comparisonOperator = comparisonNode.get("comparisonOperator").asText();
         switch (comparisonOperator) {
             case "<=":
-                System.out.println(valueToCompareTo + " , " + parameterTotal);
                 return valueToCompareTo - parameterTotal;
             default: // ">="
-                System.out.println("somehow in here " + valueToCompareTo + " , " + parameterTotal);
                 return valueToCompareTo + parameterTotal;
         }
     }

@@ -20,6 +20,7 @@ public class ParamGenerator {
     public static Number generateRandNumber(String paramType, NumericConstraints numericConstraints) {
         long maxValue = numericConstraints.getMax();
         long minValue = numericConstraints.getMin();
+        System.out.println("MIN: " + minValue + " , " + maxValue);
 
         Long divisibility = numericConstraints.getDivisibility();
         if (divisibility != null) {
@@ -33,6 +34,7 @@ public class ParamGenerator {
         if (maxValue == minValue) {
             return maxValue;
         }
+
 
         return rand.nextLong(minValue, maxValue);
     }
@@ -51,9 +53,11 @@ public class ParamGenerator {
                 }
 
                 String dimension = parent.getParameter("dimension");
+
+                // Needs to find from itself first, then go looking for Global Attributes table
                 int width = Integer.parseInt(parent.getParameter("size.width"));
                 int height = Integer.parseInt(parent.getParameter("size.height"));
-                int depthOrArrayLayer = Integer.parseInt(parent.getParameter("size.depthOrArrayLayer"));
+                int depthOrArrayLayer = Integer.parseInt(parent.getParameter("size.depthOrArrayLayers"));
 
                 // Formula from documentation
                 int maxDimensionValue;

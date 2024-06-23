@@ -41,6 +41,7 @@
                   "dimension": {
                     "1d": 1,
                     "2d": 1,
+                    "2d-array": 1,
                     "cube": 1,
                     "cube-array": 6,
                     "3d": 1
@@ -52,7 +53,9 @@
                   "dimension": {
                     "1d": 1,
                     "2d": 1,
+                    "2d-array": "GPUTexture.size.depthOrArrayLayers",
                     "cube": 6,
+                    "cube-array": "GPUTexture.size.depthOrArrayLayers",
                     "3d": 1
                   }
                 }
@@ -77,7 +80,7 @@
                   "otherParams": [
                     "arrayLayerCount"
                   ],
-                  "comparedTo": "depthOrArrayLayers"
+                  "comparedTo": "GPUTexture.size.depthOrArrayLayers"
                 }
               }
             }
@@ -88,9 +91,7 @@
             "conditions": {
               "constraints": true,
               "min": 1,
-              "max": {
-                "customValidation": "mipLevelCount"
-              }
+              "max": "GPUTexture.mipLevelCount"
             }
           },
           "baseMipLevel": {
@@ -107,6 +108,7 @@
                   "comparedTo": "GPUTexture.mipLevelCount"
                 }
               }
+            }
           },
           "format": {
             "type": "gpuTextureFormat",

@@ -73,7 +73,18 @@
               "<=": {
                 "operator": "+",
                 "otherParams": ["arrayLayerCount"],
-                "comparedTo": "this.depthOrArrayLayers"
+                "comparedTo": "depthOrArrayLayers"
+              }
+            }
+          },
+          "mipLevelCount": {
+            "type": "uint",
+            "optional": true,
+            "conditions": {
+              "constraints": true,
+              "min": 1,
+              "max": {
+                "customValidation": "mipLevelCount"
               }
             }
           },
@@ -82,13 +93,6 @@
             "optional": true,
             "conditions": {
               "mipLevelCountMax": true
-            }
-          },
-          "mipLevelCount": {
-            "type": "uint",
-            "optional": true,
-            "conditions": {
-              "min": 1
             }
           },
           "format": {

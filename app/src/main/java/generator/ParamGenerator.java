@@ -50,9 +50,28 @@ public class ParamGenerator {
                     return MAX_MIP_COUNT_IF_MULTI_SAMPLING;
                 }
 
+                String dimension = parent.getParameter("dimension");
                 int width = Integer.parseInt(parent.getParameter("size.width"));
                 int height = Integer.parseInt(parent.getParameter("size.height"));
-                int max = (int) (Math.floor(Math.log(Math.min(width, height)) / Math.log(2)) + 1);
+                int depthOrArrayLayer = Integer.parseInt(parent.getParameter("size.depthOrArrayLayer"));
+
+                // Formula from documentation
+                int maxDimensionValue;
+
+                switch (dimension) {
+                    case "1d":
+                        maxDimensionValue = 1;
+                        break;
+                    case "2d":
+                        maxDimensionValue = Math.max(width, height);
+                        break;
+                    default: // 3d
+                        maxDimensionValue = Math.max(Math.max(width, height), depthOrArrayLayer);
+                        break;
+                }
+
+                int max = (int) (Math.floor(Math.log(maxDimensionValue) / Math.log(2)) + 1);
+//                int max = (int) (Math.floor(Math.log(Math.min(width, height)) / Math.log(2)) + 1);
                 return String.valueOf(max);
         }
 

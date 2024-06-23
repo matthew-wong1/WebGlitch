@@ -70,10 +70,15 @@
             "type": "uint",
             "optional": true,
             "conditions": {
-              "<=": {
-                "operator": "+",
-                "otherParams": ["arrayLayerCount"],
-                "comparedTo": "depthOrArrayLayers"
+              "max": {
+                "comparison": {
+                  "comparisonOperator": "<=",
+                  "operator": "+",
+                  "otherParams": [
+                    "arrayLayerCount"
+                  ],
+                  "comparedTo": "depthOrArrayLayers"
+                }
               }
             }
           },
@@ -92,10 +97,15 @@
             "type": "uint",
             "optional": true,
             "conditions": {
-              "<=": {
-                "operator": "+",
-                "otherParams": ["mipLevelCount"],
-                "comparedTo": "GPUTexture.mipLevelCount"
+              "max": {
+                "comparison": {
+                  "comparisonOperator": "<=",
+                  "operator": "+",
+                  "otherParams": [
+                    "mipLevelCount"
+                  ],
+                  "comparedTo": "GPUTexture.mipLevelCount"
+                }
               }
           },
           "format": {

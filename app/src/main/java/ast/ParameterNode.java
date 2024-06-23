@@ -1,5 +1,6 @@
 package ast;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -118,6 +119,7 @@ public class ParameterNode extends ASTNode {
 
     private void parseNumericConditions(JsonNode conditions, NumericConstraints numericConstraints) {
         List<String> numericConditions = Arrays.asList("min", "max", "divisible");
+        List<String> comparisonOperators = Arrays.asList("<=", "<", ">", ">=");
 
         for (String numericCondition : numericConditions) {
 
@@ -146,6 +148,8 @@ public class ParameterNode extends ASTNode {
                     }
 
                 });
+            } else if (valueNode.has("comparison")) {
+                value[0] = parseNumericComparisons(valueNode.get("comparison"));
             } else {
                 value[0] = valueNode.asLong();
             }
@@ -166,6 +170,37 @@ public class ParameterNode extends ASTNode {
                     numericConstraints.setDivisibility(value[0]);
                     break;
             }
+        }
+    }
+
+    private long parseNumericComparisons(JsonNode comparisonNode) {
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList<String> otherFieldNames;
+        try {
+            otherFieldNames = mapper.readValue(comparisonNode.get("otherParams").asText(), ArrayList.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        long parameterTotal = 0;
+        String fieldToCompareTo = comparisonNode.get("comparedTo").asText();
+        long valueToCompareTo = Long.parseLong(parentList.getParameter(fieldToCompareTo));
+
+        String parametersOperator = comparisonNode.get("operator").asText();
+        switch(parametersOperator) {
+            case "+":
+                for (String otherFieldName : otherFieldNames) {
+                     parameterTotal += Long.parseLong(parentList.getParameter(fieldToCompareTo));
+                }
+                break;
+        }
+
+        String comparisonOperator = comparisonNode.get("comparisonOperator").asText();
+        switch (comparisonOperator) {
+            case "<=":
+                return valueToCompareTo - parameterTotal;
+            default: // ">="
+                return valueToCompareTo + parameterTotal;
         }
     }
 

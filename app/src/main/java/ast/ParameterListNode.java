@@ -57,6 +57,11 @@ public class ParameterListNode extends ASTNode {
     // Returning NULL because it's being stored on another object. You need to hard code for textureFormatCompatible to go looking from ObjectAttributes on generator
     public String getParameter(String fieldName) {
 
+        if (fieldName.contains(".")) {
+            String[] splitFieldName = fieldName.split("\\.", 2);
+            return callNode.getGenerator().getObjectAttributes(callNode.getReceiver(), splitFieldName[1]);
+        }
+
         List<Parameter> parameter = allParameters.get(fieldName);
 
         if (parameter == null || parameter.isEmpty()) {

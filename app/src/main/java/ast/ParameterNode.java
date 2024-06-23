@@ -32,10 +32,10 @@ public class ParameterNode extends ASTNode {
 
     private final List<Parameter> parameters = new ArrayList<>();
 
-    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parent) {
+    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList) {
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
-        this.parentList = parent;
+        this.parentList = parentList;
         this.fieldName = fieldName;
         this.isRoot = isRoot;
         this.isArray = details.has("array");

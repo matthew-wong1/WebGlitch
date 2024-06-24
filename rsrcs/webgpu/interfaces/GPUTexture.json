@@ -125,7 +125,8 @@
             "inFile": true,
             "optional": true,
             "conditions": {
-              "textureAspectCompatible": true
+              "textureAspectCompatible": true,
+              "textureViewFormatsCompatible": true
             }
           },
           "label": {

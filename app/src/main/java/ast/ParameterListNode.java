@@ -72,6 +72,21 @@ public class ParameterListNode extends ASTNode {
         return parameter.getFirst().getValue();
     }
 
+    public List<String> getAllParameters(String fieldName) {
+        List<Parameter> parameters = allParameters.get(fieldName);
+        if (parameters == null || parameters.isEmpty()) {
+            if (Character.isUpperCase(fieldName.charAt(0))) {
+                String[] splitFieldName = fieldName.split("\\.", 2);
+                return callNode.getGenerator().getAllObjectAttributes(callNode.getReceiver(), splitFieldName[1]);
+            }
+
+            return callNode.getGenerator().getAllObjectAttributes(callNode.getReceiver(), fieldName);
+
+        }
+
+        return parameters.stream().map(Parameter::getValue).collect(Collectors.toList());
+    }
+
     public void addParameters(String fieldName, List<Parameter> parametersList) {
 
         allParameters.put(fieldName, parametersList);

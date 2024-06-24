@@ -407,8 +407,7 @@ public class ParameterNode extends ASTNode {
         }
 
         if (conditions.has("textureAspectCompatible")) {
-            ensureTextureAspectCompatible(enumValues);
-
+            ensureTextureAspectCompatible(enumValues, conditions.has("textureViewFormatsCompatible"));
         }
 
         if (conditions.has("textureUsageCompatible")) {
@@ -425,7 +424,7 @@ public class ParameterNode extends ASTNode {
         enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
     }
 
-    private void ensureTextureAspectCompatible(List<String> enumValues) {
+    private void ensureTextureAspectCompatible(List<String> enumValues, boolean hasViewFormatsCompatible) {
         String currentAspect = parentList.getParameter("aspect");
 
         // WORK IN PROGRESS IMPLEMENTATION
@@ -439,6 +438,14 @@ public class ParameterNode extends ASTNode {
             enumValues.removeIf(flag -> !((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
         } else {
             enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
+        }
+
+        if (hasViewFormatsCompatible) {
+            List<String> compatibleTextures = new ArrayList<>();
+            compatibleTextures.add(parentList.getParameter("GPUTexture.format"));
+            compatibleTextures.addAll(parentList.getAllParameters("GPUTexture.viewFormats"));
+            enumValues.retainAll(compatibleTextures);
+
         }
     }
 

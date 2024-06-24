@@ -43,6 +43,7 @@ public class ParameterNode extends ASTNode {
 
         // Only generate parameters if is a method call (don't generate for attributes)
         if (details.has("type")) {
+            System.out.println("generating for param " + fieldName);
             String paramType = details.get("type").asText();
             this.isString = paramType.equals("string");
             generateParam(fieldName, details, paramType);
@@ -188,17 +189,24 @@ public class ParameterNode extends ASTNode {
     }
 
     private long parseNumericComparisons(JsonNode comparisonNode) {
-        ObjectMapper mapper = new ObjectMapper();
-        List<String> otherFieldNames;
-        try {
-            otherFieldNames = mapper.readValue(comparisonNode.get("otherParams").toString(), new TypeReference<ArrayList<String>>(){});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+
+        List<String> otherFieldNames = getListFromJson(comparisonNode.get("otherParams").toString());
+        List<String> otherConstraints = new ArrayList<>();
+        if (comparisonNode.has("otherConstraints")) {
+            otherConstraints = getListFromJson(comparisonNode.get("otherConstraints").toString());
         }
+
 
         long parameterTotal = 0;
         String fieldToCompareTo = comparisonNode.get("comparedTo").asText();
         long valueToCompareTo = Long.parseLong(parentList.getParameter(fieldToCompareTo));
+
+        if (!otherConstraints.isEmpty()) {
+            for (String otherConstraintName : otherConstraints) {
+                long constraintValue = Long.parseLong(parentList.getParameter(otherConstraintName));
+                valueToCompareTo = Math.min(valueToCompareTo, constraintValue);
+            }
+        }
 
         String parametersOperator = comparisonNode.get("operator").asText();
         switch(parametersOperator) {
@@ -212,10 +220,22 @@ public class ParameterNode extends ASTNode {
         String comparisonOperator = comparisonNode.get("comparisonOperator").asText();
         switch (comparisonOperator) {
             case "<=":
+                System.out.println("value to compare to: " + valueToCompareTo + " , parametertotal: " + parameterTotal);
                 return valueToCompareTo - parameterTotal;
             default: // ">="
                 return valueToCompareTo + parameterTotal;
         }
+    }
+
+    private List<String> getListFromJson(String jsonList) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> otherFieldNames;
+        try {
+            otherFieldNames = mapper.readValue(jsonList, new TypeReference<ArrayList<String>>(){});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return otherFieldNames;
     }
 
     private void generateParamAsJson(String paramType) {
@@ -458,10 +478,32 @@ public class ParameterNode extends ASTNode {
 
     private void parseConstraints(JsonNode conditions, List<String> enumValues) {
         JsonNode newEnumNode = conditions.get("enum");
-        String value = parentList.getParameter(newEnumNode.get("name").asText());
-        newEnumNode = newEnumNode.get(value);
+        // LOOP THROUGH ALL ENUM SPECIFIED, THEN MAKE THE INTERSECTION BETWEEN THE 2 VALUES
 
-        extractNodeAsList(newEnumNode, enumValues);
+        List<List<String>> constraintsList = new ArrayList<>();
+        JsonNode finalNewEnumNode = newEnumNode;
+        newEnumNode.fieldNames().forEachRemaining(fieldName -> {
+            String constraintValue = parentList.getParameter(fieldName);
+            JsonNode constraintNode = finalNewEnumNode.get(fieldName);
+            JsonNode constraintValuesNode = constraintNode.get(constraintValue);
+            List<String> values = new ArrayList<>();
+            extractNodeAsList(constraintValuesNode, values);
+            constraintsList.add(values);
+        });
+
+        Set<String> resultantSet = new HashSet<>(constraintsList.getFirst());
+        for (List<String> constraint : constraintsList) {
+            resultantSet.retainAll(constraint);
+        }
+
+        ArrayList<String> resultantSetAsList = new ArrayList<>(resultantSet);
+        System.out.println("Resultant set: " + resultantSetAsList);
+        enumValues.addAll(resultantSetAsList);
+
+
+//        String value = parentList.getParameter(newEnumNode.get("name").asText());
+//        newEnumNode = newEnumNode.get(value);
+//        extractNodeAsList(newEnumNode, enumValues);
     }
 
     private String findCompatibleTexture(String compatibleTexture) {

@@ -119,10 +119,11 @@
             "conditions": {
               "constraints": true,
               "enum": {
-                "name": "dimension",
-                "1d": [1],
-                "2d": [1, 4],
-                "3d": [1]
+                "dimension": {
+                  "1d": [1],
+                  "2d": [1, 4],
+                  "3d": [1]
+                }
               }
             },
             "optional": true

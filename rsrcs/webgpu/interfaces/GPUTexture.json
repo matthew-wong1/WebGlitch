@@ -22,14 +22,22 @@
           },
           "dimension": {
             "type": "string",
-            "enum": [
-              "1d",
-              "2d",
-              "2d-array",
-              "cube",
-              "cube-array",
-              "3d"
-            ],
+            "enum": true,
+            "conditions": {
+              "constraints": true,
+              "enum": {
+                "GPUTexture.dimension": {
+                  "1d": ["1d"],
+                  "2d": ["2d", "2d-array", "cube", "cube-array"],
+                  "3d": ["3d"]
+                },
+                "GPUTexture.sampleCount": {
+                  "1": ["1d", "2d", "2d-array", "cube", "cube-array", "3d"],
+                  "4": ["2d"]
+                }
+              }
+            },
+
             "optional": true
           },
           "arrayLayerCount": {
@@ -75,6 +83,7 @@
             "conditions": {
               "max": {
                 "comparison": {
+                  "otherConstraints": ["arrayLayerCount"],
                   "comparisonOperator": "<=",
                   "operator": "+",
                   "otherParams": [

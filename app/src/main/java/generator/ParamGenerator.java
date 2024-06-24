@@ -20,6 +20,7 @@ public class ParamGenerator {
     public static Number generateRandNumber(String paramType, NumericConstraints numericConstraints) {
         long maxValue = numericConstraints.getMax();
         long minValue = numericConstraints.getMin();
+        System.out.println("MIN: " + minValue + " " + maxValue);
 
         Long divisibility = numericConstraints.getDivisibility();
         if (divisibility != null) {

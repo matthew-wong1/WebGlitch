@@ -144,5 +144,9 @@
     "rg8snorm",
     "rgba8snorm",
     "rg11b10ufloat"
+  ],
+
+  "compressedFormats": [
+    "rgb9e5ufloat"
   ]
 }

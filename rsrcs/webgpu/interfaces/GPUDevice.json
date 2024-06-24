@@ -107,7 +107,10 @@
           "format": {
             "type": "gpuTextureFormat",
             "enum": true,
-            "inFile": true
+            "inFile": true,
+            "conditions": {
+              "textureDimensionCompatible": true
+            }
           },
           "label": {
             "type": "string",

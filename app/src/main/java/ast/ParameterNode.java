@@ -402,6 +402,10 @@ public class ParameterNode extends ASTNode {
 
         }
 
+        if (conditions.has("textureDimensionCompatible")) {
+            ensureTextureDimensionCompatible(enumValues);
+        }
+
         if (conditions.has("textureFormatCompatible")) {
             ensureTextureFormatCompatible(enumValues);
         }
@@ -417,6 +421,40 @@ public class ParameterNode extends ASTNode {
         if (conditions.has("constraints")) {
             parseConstraints(conditions, enumValues);
         }
+    }
+
+    private void ensureTextureDimensionCompatible(List<String> enumValues) {
+        String dimension = parentList.getParameter("dimension");
+
+        // Format cannot be euqal to compressed format or depth-or-stencil format
+        // Compressed format includes all the optional ones and the compressed formats enum
+        if (dimension.equals("2d")) {
+            return;
+        }
+
+        JsonNode texturesEnumNode = parseJsonFromFile("gpuTextureFormat");
+        List<String> defaultTextures = new ArrayList<>();
+        extractNodeAsList(texturesEnumNode.get("type"), defaultTextures);
+        defaultTextures.removeIf(texture -> !(texture.startsWith("stencil") || texture.startsWith("depth")));
+
+        List<String> compressedTextures = new ArrayList<>();
+        extractNodeAsList(texturesEnumNode.get("compressedFormats"), compressedTextures);
+
+        JsonNode optionalTextures = texturesEnumNode.get("features");
+        List<String> optionalTexturesList = new ArrayList<>();
+        optionalTextures.fieldNames().forEachRemaining(fieldName -> {
+            List<String> formats = new ArrayList<>();
+            extractNodeAsList(optionalTextures.get(fieldName), formats);
+            optionalTexturesList.addAll(formats);
+        });
+
+        List<String> incompatibleTextures = new ArrayList<>();
+        incompatibleTextures.addAll(defaultTextures);
+        incompatibleTextures.addAll(compressedTextures);
+        incompatibleTextures.addAll(optionalTexturesList);
+
+        enumValues.removeAll(incompatibleTextures);
+
     }
 
     private void ensureTextureCompatible(JsonNode conditions, List<String> enumValues) {
@@ -452,9 +490,12 @@ public class ParameterNode extends ASTNode {
     private void ensureTextureFormatCompatible(List<String> enumValues) {
         String currentTexture = parentList.getParameter("format");
 
-        JsonNode incompatibleTexturesForStorageNode = parseJsonFromFile("gpuTextureFormat");
+        JsonNode texturesNode = parseJsonFromFile("gpuTextureFormat");
         List<String> incompatibleTexturesForStorage = new ArrayList<>();
-        extractNodeAsList(incompatibleTexturesForStorageNode.get("storageBindingIncompatible"), incompatibleTexturesForStorage);
+        extractNodeAsList(texturesNode.get("storageBindingIncompatible"), incompatibleTexturesForStorage);
+
+        List<String> incompatibleTexturesForRender = new ArrayList<>();
+        extractNodeAsList(texturesNode.get("renderAttachmentIncompatible"), incompatibleTexturesForRender);
 
         if (currentTexture == null) {
             currentTexture = generator.getObjectAttributes(parentList.getReceiver(), "format");
@@ -466,6 +507,10 @@ public class ParameterNode extends ASTNode {
 
         if (incompatibleTexturesForStorage.contains(currentTexture)) {
             enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.STORAGE_BINDING"));
+        }
+
+        if (incompatibleTexturesForRender.contains(currentTexture)) {
+            enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.RENDER_ATTACHMENT"));
         }
 
         if (currentTexture.startsWith("stencil") || currentTexture.startsWith("depth")) { // Remove aspect enums

@@ -148,5 +148,20 @@
 
   "compressedFormats": [
     "rgb9e5ufloat"
+  ],
+
+  "multiSamplingIncompatible": [
+    "r8snorm",
+    "rg8snorm",
+    "rgba8snorm",
+    "r32uint",
+    "r32sint",
+    "rg32uint",
+    "rg32sint",
+    "rg32float",
+    "rgba32uint",
+    "rgba32sint",
+    "rgba32float",
+    "rg11b10ufloat"
   ]
 }

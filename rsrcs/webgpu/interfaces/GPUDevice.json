@@ -104,18 +104,6 @@
             ],
             "optional": true
           },
-          "format": {
-            "type": "gpuTextureFormat",
-            "enum": true,
-            "inFile": true,
-            "conditions": {
-              "textureDimensionCompatible": true
-            }
-          },
-          "label": {
-            "type": "string",
-            "optional": true
-          },
           "sampleCount": {
             "type": "int",
             "enum": true,
@@ -129,6 +117,18 @@
                 }
               }
             },
+            "optional": true
+          },
+          "format": {
+            "type": "gpuTextureFormat",
+            "enum": true,
+            "inFile": true,
+            "conditions": {
+              "textureDimensionAndSampleCompatible": true
+            }
+          },
+          "label": {
+            "type": "string",
             "optional": true
           },
           "size": {
@@ -151,7 +151,8 @@
             "inFile": true,
             "conditions": {
               "textureFormatCompatible": true,
-              "textureUsageCompatible": "dimension"
+              "textureUsageCompatible": "dimension",
+              "multiSamplingCompatible": true
             }
           },
           "viewFormats": {

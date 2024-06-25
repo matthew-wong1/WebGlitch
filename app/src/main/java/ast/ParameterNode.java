@@ -301,7 +301,7 @@ public class ParameterNode extends ASTNode {
             extractNodeAsList(enumNode, enumValues);
         }
 
-        parseEnumConditions(conditions, enumValues);
+        List<String> mandatoryEnums = parseEnumConditions(conditions, enumValues);
 
         Collections.shuffle(enumValues);
         List<String> chosenEnumValues;
@@ -316,6 +316,7 @@ public class ParameterNode extends ASTNode {
             chosenEnumValues = pickARandomEnumValue(enumValues);
         }
 
+        chosenEnumValues.addAll(mandatoryEnums);
         addParametersFromList(chosenEnumValues);
     }
 
@@ -408,10 +409,11 @@ public class ParameterNode extends ASTNode {
 
     }
 
-    private void parseEnumConditions(JsonNode conditions, List<String> enumValues) {
+    private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) {
+        List<String> mandatoryEnums = new ArrayList<>();
 
         if (conditions == null) {
-            return;
+            return mandatoryEnums;
         }
 
         if (conditions.has("textureCompatible")) {
@@ -419,8 +421,8 @@ public class ParameterNode extends ASTNode {
 
         }
 
-        if (conditions.has("textureDimensionCompatible")) {
-            ensureTextureDimensionCompatible(enumValues);
+        if (conditions.has("textureDimensionAndSampleCompatible")) {
+            ensureTextureDimensionAndSampleCompatible(enumValues);
         }
 
         if (conditions.has("textureFormatCompatible")) {
@@ -435,12 +437,27 @@ public class ParameterNode extends ASTNode {
             ensureTextureUsageCompatible(conditions, enumValues);
         }
 
+        if(conditions.has("multiSamplingCompatible")) {
+            ensureMultiSamplingCompatible(enumValues, mandatoryEnums);
+        }
+
         if (conditions.has("constraints")) {
             parseConstraints(conditions, enumValues);
         }
+
+        return mandatoryEnums;
     }
 
-    private void ensureTextureDimensionCompatible(List<String> enumValues) {
+    private void ensureMultiSamplingCompatible(List<String> enumValues, List<String> mandatoryEnums) {
+        if (!parentList.getParameter("sampleCount").equals("4")) {
+            return;
+        }
+
+        enumValues.removeIf(usage -> usage.contains("STORAGE_BINDING"));
+        mandatoryEnums.add("GPUTextureUsage.RENDER_ATTACHMENT");
+    }
+
+    private void ensureTextureDimensionAndSampleCompatible(List<String> enumValues) {
         String dimension = parentList.getParameter("dimension");
 
         // Format cannot be euqal to compressed format or depth-or-stencil format
@@ -449,10 +466,11 @@ public class ParameterNode extends ASTNode {
             return;
         }
 
+        // Depth/Stencil formats can only be for a dimension of 2D
         JsonNode texturesEnumNode = parseJsonFromFile("gpuTextureFormat");
-        List<String> defaultTextures = new ArrayList<>();
-        extractNodeAsList(texturesEnumNode.get("type"), defaultTextures);
-        defaultTextures.removeIf(texture -> !(texture.startsWith("stencil") || texture.startsWith("depth")));
+        List<String> incompatibleBaseTextures = new ArrayList<>();
+        extractNodeAsList(texturesEnumNode.get("enum"), incompatibleBaseTextures);
+        incompatibleBaseTextures.removeIf(texture -> !(texture.startsWith("stencil") || texture.startsWith("depth")));
 
         List<String> compressedTextures = new ArrayList<>();
         extractNodeAsList(texturesEnumNode.get("compressedFormats"), compressedTextures);
@@ -466,17 +484,32 @@ public class ParameterNode extends ASTNode {
         });
 
         List<String> incompatibleTextures = new ArrayList<>();
-        incompatibleTextures.addAll(defaultTextures);
+        incompatibleTextures.addAll(incompatibleBaseTextures);
         incompatibleTextures.addAll(compressedTextures);
         incompatibleTextures.addAll(optionalTexturesList);
+
+        // Ensure all textures are multisampling compatible
+        if (parentList.getParameter("sampleCount").equals("4")) {
+            List<String> multiSamplingIncompatibleTextures = new ArrayList<>();
+            JsonNode multiSamplingIncompatibleTexturesNode = texturesEnumNode.get("multiSamplingIncompatible");
+            extractNodeAsList(multiSamplingIncompatibleTexturesNode, multiSamplingIncompatibleTextures);
+            incompatibleTextures.addAll(multiSamplingIncompatibleTextures);
+        }
+
+
+
 
         enumValues.removeAll(incompatibleTextures);
 
     }
 
     private void ensureTextureCompatible(JsonNode conditions, List<String> enumValues) {
+        Map<String, String> exceptions = new HashMap<>();
+        exceptions.put("depth24plus-stencil8", "depth24plus");
+        exceptions.put("depth24plus", "depth24plus-stencil8");
+
         String compatibleTexture = findCompatibleTexture(parentList.getParameter(conditions.get("textureCompatible").asText()));
-        enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)));
+        enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)) || (exceptions.containsKey(compatibleTexture) && exceptions.get(compatibleTexture).equals(flag)));
     }
 
     private void ensureTextureAspectCompatible(List<String> enumValues, boolean hasViewFormatsCompatible) {
@@ -513,6 +546,9 @@ public class ParameterNode extends ASTNode {
 
         List<String> incompatibleTexturesForRender = new ArrayList<>();
         extractNodeAsList(texturesNode.get("renderAttachmentIncompatible"), incompatibleTexturesForRender);
+
+        List<String> incompatibleTexturesForMultiSampling = new ArrayList<>();
+        extractNodeAsList(texturesNode.get("multiSamplingIncompatible"), incompatibleTexturesForMultiSampling);
 
         if (currentTexture == null) {
             currentTexture = generator.getObjectAttributes(parentList.getReceiver(), "format");

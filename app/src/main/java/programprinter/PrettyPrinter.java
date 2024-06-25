@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 public class PrettyPrinter {
     private final String OUT_DIRECTORY_PATH = "./output/";
     private final String SKELETON_SRC_PATH = "./rsrcs/js/nodeSkeleton.js";
+    private final String HEADER = "\n\nasync function main() {";
     private final String FOOTER = "\n}main().catch(console.error);";
 
     public void printToFile(ASTNode root, Integer fileNum) {
@@ -31,7 +32,7 @@ public class PrettyPrinter {
             // Set to append mode
             FileWriter fileWriter = new FileWriter(outFile, true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.println(root.toString() + FOOTER);
+            printWriter.println(HEADER + root.toString() + FOOTER);
             printWriter.close();
 
         } catch (FileNotFoundException e) {

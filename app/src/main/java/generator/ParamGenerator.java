@@ -19,23 +19,27 @@ public class ParamGenerator {
 
     public static Number generateRandNumber(String paramType, NumericConstraints numericConstraints) {
         long maxValue = numericConstraints.getMax();
+
         long minValue = numericConstraints.getMin();
         System.out.println("MIN: " + minValue + " " + maxValue);
 
         Long divisibility = numericConstraints.getDivisibility();
-        if (divisibility != null) {
-            long ceilMax = (maxValue + divisibility - 1) / divisibility;
-            return rand.nextLong(minValue / divisibility, ceilMax) * divisibility;
-        }
-
-        if (paramType.equals("double") || paramType.equals("rgba")) {
-            return rand.nextDouble(minValue, maxValue);
-        }
 
         if (maxValue == minValue) {
             return maxValue;
         }
 
+        // Because Json specification provides it as an inclusvie range
+        maxValue += 1;
+        if (divisibility != null) {
+            long ceilMax = (maxValue + divisibility - 1) / divisibility;
+            return rand.nextLong(minValue / divisibility, ceilMax) * divisibility;
+        }
+
+
+        if (paramType.equals("double") || paramType.equals("rgba")) {
+            return rand.nextDouble(minValue, maxValue);
+        }
 
         return rand.nextLong(minValue, maxValue);
     }

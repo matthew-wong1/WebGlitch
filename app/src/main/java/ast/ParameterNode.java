@@ -190,55 +190,65 @@ public class ParameterNode extends ASTNode {
 
     private long parseNumericComparisons(JsonNode comparisonNode) {
 
-        List<String> otherFieldNames = getListFromJson(comparisonNode.get("otherParams").toString());
-        List<String> otherConstraints = new ArrayList<>();
-        if (comparisonNode.has("otherConstraints")) {
-            System.out.println("other constraints");
-            otherConstraints = getListFromJson(comparisonNode.get("otherConstraints").toString());
-            System.out.println(otherConstraints);
-        }
+        // If mixture of greater than or less than, then modify to append to ar ecord with the comparison oeprator
+        List<Long> limits = new ArrayList<>();
+        comparisonNode.fieldNames().forEachRemaining(fieldName -> {
+            JsonNode subNode = comparisonNode.get(fieldName);
+            limits.add(getIndividualLimit(subNode, fieldName));
+        });
 
+        return Collections.min(limits);
+    }
 
-        long parameterTotal = 0;
-        String fieldToCompareTo = comparisonNode.get("comparedTo").asText();
+    private Long getIndividualLimit(JsonNode subNode, String fieldToCompareTo) {
+        System.out.println(fieldToCompareTo);
+        System.out.println(parentList.getParameter(fieldToCompareTo));
         long valueToCompareTo = Long.parseLong(parentList.getParameter(fieldToCompareTo));
+        long parameterTotal = 0;
 
-        if (!otherConstraints.isEmpty()) {
-            for (String otherConstraintName : otherConstraints) {
-                long constraintValue = Long.parseLong(parentList.getParameter(otherConstraintName));
-                System.out.println("constraint value: " + constraintValue + " new value to compare " + valueToCompareTo);
-                valueToCompareTo = Math.min(valueToCompareTo, constraintValue);
+        if (subNode.has("otherParams")) {
+            List<String> otherFieldNames = getListFromJson(subNode.get("otherParams").toString());
+            String parametersOperator = subNode.get("operator").asText();
+            switch(parametersOperator) {
+                case "+":
+                    for (String otherFieldName : otherFieldNames) {
+                        parameterTotal += Long.parseLong(parentList.getParameter(otherFieldName));
+                    }
+                    break;
             }
         }
 
-        String parametersOperator = comparisonNode.get("operator").asText();
-        switch(parametersOperator) {
-            case "+":
-                for (String otherFieldName : otherFieldNames) {
-                     parameterTotal += Long.parseLong(parentList.getParameter(otherFieldName));
-                }
-                break;
-        }
 
-        String comparisonOperator = comparisonNode.get("comparisonOperator").asText();
+        String comparisonOperator = subNode.get("comparisonOperator").asText();
+        long finalLimit;
         switch (comparisonOperator) {
+            case "<":
+                // if <, then -1 because max value is inclusve
+                valueToCompareTo -= 1;
             case "<=":
                 System.out.println("value to compare to: " + valueToCompareTo + " , parametertotal: " + parameterTotal);
-                return valueToCompareTo - parameterTotal;
+                finalLimit = valueToCompareTo - parameterTotal;
+                break;
             default: // ">="
-                return valueToCompareTo + parameterTotal;
+                finalLimit = valueToCompareTo + parameterTotal;
         }
+
+        if (finalLimit < 0) {
+            return valueToCompareTo;
+        }
+
+        return finalLimit;
     }
 
     private List<String> getListFromJson(String jsonList) {
         ObjectMapper mapper = new ObjectMapper();
-        List<String> otherFieldNames;
+        List<String> listValues;
         try {
-            otherFieldNames = mapper.readValue(jsonList, new TypeReference<ArrayList<String>>(){});
+            listValues = mapper.readValue(jsonList, new TypeReference<ArrayList<String>>(){});
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        return otherFieldNames;
+        return listValues;
     }
 
     private void generateParamAsJson(String paramType) {

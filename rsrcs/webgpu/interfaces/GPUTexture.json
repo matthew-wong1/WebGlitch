@@ -36,7 +36,11 @@
                   "4": ["2d"]
                 },
                 "GPUTexture.size.depthOrArrayLayers": {
-                  "1": ["1d", "2d", "2d-array", "cube", "3d"]
+                  "1": ["1d", "2d", "2d-array", "cube", "3d"],
+                  "2": ["1d", "2d", "2d-array", "cube", "3d"],
+                  "3": ["1d", "2d", "2d-array", "cube", "3d"],
+                  "4": ["1d", "2d", "2d-array", "cube", "3d"],
+                  "5": ["1d", "2d", "2d-array", "cube", "3d"]
                 }
               }
             },
@@ -86,13 +90,14 @@
             "conditions": {
               "max": {
                 "comparison": {
-                  "otherConstraints": ["arrayLayerCount"],
-                  "comparisonOperator": "<=",
-                  "operator": "+",
-                  "otherParams": [
-                    "arrayLayerCount"
-                  ],
-                  "comparedTo": "GPUTexture.size.depthOrArrayLayers"
+                  "GPUTexture.size.depthOrArrayLayers": {
+                    "otherParams": ["arrayLayerCount"],
+                    "comparisonOperator": "<=",
+                    "operator": "+"
+                  },
+                  "arrayLayerCount": {
+                    "comparisonOperator": "<"
+                  }
                 }
               }
             }
@@ -112,12 +117,13 @@
             "conditions": {
               "max": {
                 "comparison": {
-                  "comparisonOperator": "<=",
-                  "operator": "+",
-                  "otherParams": [
-                    "mipLevelCount"
-                  ],
-                  "comparedTo": "GPUTexture.mipLevelCount"
+                  "GPUTexture.mipLevelCount": {
+                    "comparisonOperator": "<=",
+                    "operator": "+",
+                    "otherParams": [
+                      "mipLevelCount"
+                    ]
+                  }
                 }
               }
             }

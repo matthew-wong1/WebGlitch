@@ -24,7 +24,8 @@ public class ParamGenerator {
 
         Long divisibility = numericConstraints.getDivisibility();
         if (divisibility != null) {
-            return rand.nextLong(minValue / divisibility, maxValue / divisibility) * divisibility;
+            long ceilMax = (maxValue + divisibility - 1) / divisibility;
+            return rand.nextLong(minValue / divisibility, ceilMax) * divisibility;
         }
 
         if (paramType.equals("double") || paramType.equals("rgba")) {

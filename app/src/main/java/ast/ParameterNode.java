@@ -193,7 +193,9 @@ public class ParameterNode extends ASTNode {
         List<String> otherFieldNames = getListFromJson(comparisonNode.get("otherParams").toString());
         List<String> otherConstraints = new ArrayList<>();
         if (comparisonNode.has("otherConstraints")) {
+            System.out.println("other constraints");
             otherConstraints = getListFromJson(comparisonNode.get("otherConstraints").toString());
+            System.out.println(otherConstraints);
         }
 
 
@@ -204,6 +206,7 @@ public class ParameterNode extends ASTNode {
         if (!otherConstraints.isEmpty()) {
             for (String otherConstraintName : otherConstraints) {
                 long constraintValue = Long.parseLong(parentList.getParameter(otherConstraintName));
+                System.out.println("constraint value: " + constraintValue + " new value to compare " + valueToCompareTo);
                 valueToCompareTo = Math.min(valueToCompareTo, constraintValue);
             }
         }
@@ -326,6 +329,10 @@ public class ParameterNode extends ASTNode {
 
     private void extractNodeAsList(JsonNode enumNode, List<String> enumValues) {
         enumValues.clear();
+        if (enumNode == null) {
+            return;
+        }
+
         enumNode.forEach(
                 enumValue -> {
                     enumValues.add(enumValue.asText());
@@ -535,12 +542,19 @@ public class ParameterNode extends ASTNode {
         List<List<String>> constraintsList = new ArrayList<>();
         JsonNode finalNewEnumNode = newEnumNode;
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
+            System.out.println(fieldName);
             String constraintValue = parentList.getParameter(fieldName);
+            System.out.println("constraint value: " + constraintValue);
             JsonNode constraintNode = finalNewEnumNode.get(fieldName);
             JsonNode constraintValuesNode = constraintNode.get(constraintValue);
             List<String> values = new ArrayList<>();
+            System.out.println("values : " + values);
             extractNodeAsList(constraintValuesNode, values);
-            constraintsList.add(values);
+
+            if (!values.isEmpty()) {
+                constraintsList.add(values);
+            }
+
         });
 
         Set<String> resultantSet = new HashSet<>(constraintsList.getFirst());

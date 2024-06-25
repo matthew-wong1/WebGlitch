@@ -34,6 +34,9 @@
                 "GPUTexture.sampleCount": {
                   "1": ["1d", "2d", "2d-array", "cube", "cube-array", "3d"],
                   "4": ["2d"]
+                },
+                "GPUTexture.size.depthOrArrayLayers": {
+                  "1": ["1d", "2d", "2d-array", "cube", "3d"]
                 }
               }
             },

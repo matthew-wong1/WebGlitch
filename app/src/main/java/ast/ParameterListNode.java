@@ -1,6 +1,7 @@
 package ast;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import generator.Generator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,12 +14,14 @@ public class ParameterListNode extends ASTNode {
     private final boolean isArray;
     public final HashMap<String, List<Parameter>> allParameters = new HashMap<>();
     private final CallNode callNode;
+    private final Generator generator;
 
     public ParameterListNode(CallNode callNode, JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray) {
         this.jsonParams = isJsonParams;
         this.paramsJsonNode = paramsJsonNode;
         this.isArray = isArray;
         this.callNode = callNode;
+        this.generator = callNode.getGenerator();
     }
 
     @Override
@@ -49,7 +52,7 @@ public class ParameterListNode extends ASTNode {
 //                if (paramDetails.has("optional")) {
 //
 //                }
-                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, callNode.getGenerator(), this));
+                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this));
             });
         }
     }
@@ -60,12 +63,19 @@ public class ParameterListNode extends ASTNode {
         List<Parameter> parameter = allParameters.get(fieldName);
 
         if (parameter == null || parameter.isEmpty()) {
-            if (Character.isUpperCase(fieldName.charAt(0))) {
+
+            if (fieldName.startsWith("this")) {
+                // 0: 'this', 1: 'parameter name', 2: attributeName
+                String[] splitFieldNames = fieldName.split("\\.", 3);
+
+                String variableName = this.getParameter(splitFieldNames[1]);
+                return generator.getObjectAttributes(variableName, splitFieldNames[2]);
+            } else if (Character.isUpperCase(fieldName.charAt(0))) {
                 String[] splitFieldName = fieldName.split("\\.", 2);
-                return callNode.getGenerator().getObjectAttributes(callNode.getReceiver(), splitFieldName[1]);
+                return generator.getObjectAttributes(callNode.getReceiver(), splitFieldName[1]);
             }
 
-            return callNode.getGenerator().getObjectAttributes(callNode.getReceiver(), fieldName);
+            return generator.getObjectAttributes(callNode.getReceiver(), fieldName);
 
         }
 
@@ -77,10 +87,10 @@ public class ParameterListNode extends ASTNode {
         if (parameters == null || parameters.isEmpty()) {
             if (Character.isUpperCase(fieldName.charAt(0))) {
                 String[] splitFieldName = fieldName.split("\\.", 2);
-                return callNode.getGenerator().getAllObjectAttributes(callNode.getReceiver(), splitFieldName[1]);
+                return generator.getAllObjectAttributes(callNode.getReceiver(), splitFieldName[1]);
             }
 
-            return callNode.getGenerator().getAllObjectAttributes(callNode.getReceiver(), fieldName);
+            return generator.getAllObjectAttributes(callNode.getReceiver(), fieldName);
 
         }
 

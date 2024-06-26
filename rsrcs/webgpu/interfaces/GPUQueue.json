@@ -1,0 +1,39 @@
+{
+  "receiverType": "GPUQueue",
+  "requirements": ["GPUQueue"],
+  "methods": [
+    {
+      "name": "writeBuffer",
+      "returnType": "none",
+      "properties": [
+        {
+          "buffer": {
+            "type": "GPUBuffer",
+            "conditions": {
+              "withAttributes": {
+                "usage": ["GPUBufferUsage.COPY_DST"]
+              }
+            }
+          },
+          "bufferOffset": {
+            "type": "uint",
+            "conditions": {
+              "min": 0,
+              "max": "GPUBuffer.size",
+              "divisible": 4
+            }
+          },
+          "data": {
+            "type": "typedArray"
+          }
+        }
+      ]
+    }
+  ],
+  "attributes": [
+    {
+      "name": "label",
+      "returnType": "string"
+    }
+  ]
+}

@@ -64,7 +64,7 @@ public class ParameterNode extends ASTNode {
             String arrayVariableName = generator.generateTopLevelStatement("typedArray");
             this.parameters.add(new Parameter(arrayVariableName));
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
-            this.parameters.add(new Parameter(generator.getRandomReceiver(paramType)));
+            this.parameters.add(this.findWebGPUInterface(paramType, details));
         } else { // Requires WebGPU Type
             generateParamAsJson(paramType);
         }
@@ -86,6 +86,23 @@ public class ParameterNode extends ASTNode {
 //        if (!isNested) { fix this later when fix json structure
 
 //        }
+    }
+
+    private Parameter findWebGPUInterface(String paramType, JsonNode details) {
+        if (!details.has("conditions")) {
+            return new Parameter(generator.getRandomReceiver(paramType));
+        }
+
+        // Need a specific object with certain attributes
+        Map<String, List<String>> requirements = new HashMap<>();
+        JsonNode requiredAttributesNode = details.get("conditions").get("withAttributes");
+
+        requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {
+            List<String> values = getListFromJson(requiredAttributesNode.get(fieldName).toString());
+            requirements.put(fieldName, values);
+        });
+
+        return new Parameter(generator.getRandomReceiver(paramType, requirements));
     }
 
     private void addAllSubParamsToParent() {

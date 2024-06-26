@@ -245,22 +245,10 @@ public class Generator {
     }
 
     public String generateTopLevelStatement(String type) {
-        ASTNode astNodeToPrepend = null; 
-        String varName = "";
-        
-        switch (type) {
-            case "typedArray":
-                AssignmentNode assignmentNode = new AssignmentNode("const", false);
-                TypedArray typedArray = new TypedArray();
-                assignmentNode.addNode(typedArray);
-                varName = assignmentNode.getVarName();
-                astNodeToPrepend = assignmentNode;
-        }
-        
-        this.programNode.addNodeToFront(astNodeToPrepend);
-        
-        return varName;
+        return null;
+    }
 
+    public String getRandomReceiver(String paramType, Map<String, List<String>> requirements) {
     }
 
     public record FileNameCallProbPair(String fileName, Double callProbability) {

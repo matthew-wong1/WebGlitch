@@ -19,7 +19,7 @@
             "type": "uint",
             "conditions": {
               "min": 0,
-              "max": "GPUBuffer.size",
+              "max": "this.buffer.size",
               "divisible": 4
             }
           },

@@ -60,6 +60,9 @@ public class ParameterNode extends ASTNode {
             generateNumber(details, paramType);
         } else if (paramType.equals("boolean")) {
             this.parameters.add(new Parameter(String.valueOf(rand.nextBoolean())));
+        } else if (paramType.equals("typedArray")) {
+            String arrayVariableName = generator.generateTopLevelStatement("typedArray");
+            this.parameters.add(new Parameter(arrayVariableName));
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
             this.parameters.add(new Parameter(generator.getRandomReceiver(paramType)));
         } else { // Requires WebGPU Type

@@ -3,6 +3,8 @@ package generator;
 import ast.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javascript.JavaScriptStatement;
+import javascript.TypedArray;
 import programprinter.PrettyPrinter;
 
 import java.io.File;
@@ -13,6 +15,9 @@ public class Generator {
     private static final Random rand = new Random();
     private static final PrettyPrinter printer = new PrettyPrinter();
     private static final String DEFAULT_CONTEXT_NAME = "context";
+    private final String HEADER = "\nasync function main() {";
+    private final String FOOTER = "\n}main().catch(console.error);";
+
     // Hash map to keep track of state
     // Key: Type of object eg adapter, device
     // Value: Reference to that objet that currently exists
@@ -101,6 +106,7 @@ public class Generator {
 
     public void generateProgram(int fileNum) {
         this.programNode = new ProgramNode();
+        programNode.addNode(new JavaScriptStatement(HEADER));
 
         for (int i = 0; i < maxCalls; i++) {
             ReceiverNameCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverNameCallNameCallType[0]);
@@ -115,6 +121,7 @@ public class Generator {
             }
         }
 
+        programNode.addNode(new JavaScriptStatement(FOOTER));
         printer.printToFile(this.programNode, fileNum);
     }
 
@@ -235,6 +242,25 @@ public class Generator {
 
     public void removeFromCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
         callState.remove(receiverNameCallNameCallType);
+    }
+
+    public String generateTopLevelStatement(String type) {
+        ASTNode astNodeToPrepend = null; 
+        String varName = "";
+        
+        switch (type) {
+            case "typedArray":
+                AssignmentNode assignmentNode = new AssignmentNode("const", false);
+                TypedArray typedArray = new TypedArray();
+                assignmentNode.addNode(typedArray);
+                varName = assignmentNode.getVarName();
+                astNodeToPrepend = assignmentNode;
+        }
+        
+        this.programNode.addNodeToFront(astNodeToPrepend);
+        
+        return varName;
+
     }
 
     public record FileNameCallProbPair(String fileName, Double callProbability) {

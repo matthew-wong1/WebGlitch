@@ -4,7 +4,6 @@ import ast.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javascript.JavaScriptStatement;
-import javascript.TypedArray;
 import programprinter.PrettyPrinter;
 
 import java.io.File;
@@ -194,21 +193,61 @@ public class Generator {
     }
 
     public String getRandomReceiver(String receiverType) {
-        if (!symbolTable.containsKey(receiverType)) {
-            FileNameReceiverNameCallNameCallType initInfo = receiverInits.get(receiverType);
-            String initMethodName = initInfo.callName;
-            String initReceiverType = initInfo.receiverName;
-            boolean initIsMethod = initInfo.methodCall;
 
-            generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod));
-        }
+        return getRandomReceiver(receiverType, null);
 
-        List<String> variables = symbolTable.get(receiverType);
-        int randIdx = rand.nextInt(variables.size());
-        return variables.get(randIdx);
+
     }
 
-    public void generateCall(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
+    public String getRandomReceiver(String receiverType, Map<String, List<String>> requirements) {
+        // Maybe getRandomReceiver calls this one method, passing null for requirements
+        // Then this one passes requirements into generateCall
+        if (!symbolTable.containsKey(receiverType)) {
+            parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements);
+        }
+
+        List<String> allVariables = symbolTable.get(receiverType);
+        List<String> variablesThatMeetReqs = new ArrayList<>();
+
+        if (requirements != null) {
+            // Filter out those that don't meet the requirement,
+            // And then need to generate one with the requirement
+            findVariablesThatMeetReqs(allVariables, variablesThatMeetReqs, requirements);
+
+            if (variablesThatMeetReqs.isEmpty()) {
+                // What to return.... can't do return CallIfno becasue ned to return the variable Name
+            }
+        } else {
+            variablesThatMeetReqs.addAll(allVariables);
+        }
+
+        int randIdx = rand.nextInt(variablesThatMeetReqs.size());
+        return variablesThatMeetReqs.get(randIdx);
+
+    }
+
+    private void findVariablesThatMeetReqs(List<String> allVariables, List<String> variablesThatMeetReqs, Map<String, List<String>> requirements) {
+        for (String variableName : allVariables) {
+            for (Map.Entry<String, List<String>> requirement : requirements.entrySet()) {
+                List<String> attributes = this.getAllObjectAttributes(variableName, requirement.getKey());
+                if (new HashSet<>(attributes).containsAll(requirement.getValue())) {
+                    variablesThatMeetReqs.add(variableName);
+                }
+            }
+        }
+
+    }
+
+    private void parseCallInfoFromReceiverTypeAndGenerateCall(String receiverType, Map<String, List<String>> requirements) {
+        FileNameReceiverNameCallNameCallType initInfo = receiverInits.get(receiverType);
+        String initMethodName = initInfo.callName;
+        String initReceiverType = initInfo.receiverName;
+        boolean initIsMethod = initInfo.methodCall;
+
+        generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements);
+    }
+
+    public void generateCall(ReceiverNameCallNameCallType receiverNameCallNameCallType, Map<String, List<String>> requirements) {
         if (callState.contains(receiverNameCallNameCallType)) {
             return;
         }
@@ -248,8 +287,7 @@ public class Generator {
         return null;
     }
 
-    public String getRandomReceiver(String paramType, Map<String, List<String>> requirements) {
-    }
+
 
     public record FileNameCallProbPair(String fileName, Double callProbability) {
     }

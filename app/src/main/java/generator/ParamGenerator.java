@@ -21,7 +21,6 @@ public class ParamGenerator {
         long maxValue = numericConstraints.getMax();
 
         long minValue = numericConstraints.getMin();
-        System.out.println("MIN: " + minValue + " " + maxValue);
 
         Long divisibility = numericConstraints.getDivisibility();
 

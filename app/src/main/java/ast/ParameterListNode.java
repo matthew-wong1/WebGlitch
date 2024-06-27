@@ -12,16 +12,18 @@ public class ParameterListNode extends ASTNode {
     private final boolean jsonParams;
     private final JsonNode paramsJsonNode;
     private final boolean isArray;
-    public final HashMap<String, List<Parameter>> allParameters = new HashMap<>();
+    public final Map<String, List<Parameter>> allParameters = new HashMap<>();
     private final CallNode callNode;
     private final Generator generator;
+    private final Map<String, List<String>> requirements;
 
-    public ParameterListNode(CallNode callNode, JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray) {
+    public ParameterListNode(CallNode callNode, JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray, Map<String, List<String>> requirements) {
         this.jsonParams = isJsonParams;
         this.paramsJsonNode = paramsJsonNode;
         this.isArray = isArray;
         this.callNode = callNode;
         this.generator = callNode.getGenerator();
+        this.requirements = requirements;
     }
 
     @Override
@@ -49,10 +51,15 @@ public class ParameterListNode extends ASTNode {
             param.fieldNames().forEachRemaining(fieldName -> {
                 JsonNode paramDetails = param.get(fieldName);
 
+                // Possible bug in future here if eg requirement stored as size.width but parameter called size
+                // Setting parameters has only been developed for enums
+                // Setting parameters does not currently support changing an earlier one to make it work
+                List<String> parameterRequirements = requirements == null ? null : requirements.get(fieldName);
+
 //                if (paramDetails.has("optional")) {
 //
 //                }
-                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this));
+                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this, parameterRequirements));
             });
         }
     }

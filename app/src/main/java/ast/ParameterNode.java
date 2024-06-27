@@ -32,18 +32,20 @@ public class ParameterNode extends ASTNode {
     private final ParameterListNode parentList;
 
     private final List<Parameter> parameters = new ArrayList<>();
+    private final List<String> requirements;
 
-    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList) {
+    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) {
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parentList = parentList;
         this.fieldName = fieldName;
         this.isRoot = isRoot;
         this.isArray = details.has("array");
+        this.requirements = parameterRequirements;
 
         // Only generate parameters if is a method call (don't generate for attributes)
         if (details.has("type")) {
-            System.out.println("generating for param " + fieldName);
+
             String paramType = details.get("type").asText();
             this.isString = paramType.equals("string");
             generateParam(fieldName, details, paramType);
@@ -221,8 +223,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private Long getIndividualLimit(JsonNode subNode, String fieldToCompareTo) {
-        System.out.println(fieldToCompareTo);
-        System.out.println(parentList.getParameter(fieldToCompareTo));
+
         long valueToCompareTo = Long.parseLong(parentList.getParameter(fieldToCompareTo));
         long parameterTotal = 0;
 
@@ -246,7 +247,6 @@ public class ParameterNode extends ASTNode {
                 // if <, then -1 because max value is inclusve
                 valueToCompareTo -= 1;
             case "<=":
-                System.out.println("value to compare to: " + valueToCompareTo + " , parametertotal: " + parameterTotal);
                 finalLimit = valueToCompareTo - parameterTotal;
                 break;
             default: // ">="
@@ -291,7 +291,7 @@ public class ParameterNode extends ASTNode {
 //
 //                }
 
-                ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, generator, parentList);
+                ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, generator, parentList, requirements);
                 this.addNode(nestedParameterNode);
 
 
@@ -324,7 +324,7 @@ public class ParameterNode extends ASTNode {
         List<String> mandatoryEnums = parseEnumConditions(conditions, enumValues);
 
         Collections.shuffle(enumValues);
-        List<String> chosenEnumValues;
+        List<String> chosenEnumValues = new ArrayList<>();
 
         if (paramType.equals("bitwiseFlag")) {
             // Random int between 1 and end of list
@@ -332,7 +332,7 @@ public class ParameterNode extends ASTNode {
             chosenEnumValues = pickEnumValuesAsBitwiseFlags(enumValues, mutexNode);
         } else if (isArray) {
             chosenEnumValues = pickEnumValuesAsArray(enumValues);
-        } else {
+        } else if (mandatoryEnums.isEmpty()) {
             chosenEnumValues = pickARandomEnumValue(enumValues);
         }
 
@@ -431,6 +431,10 @@ public class ParameterNode extends ASTNode {
 
     private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) {
         List<String> mandatoryEnums = new ArrayList<>();
+
+        if (requirements != null) {
+            mandatoryEnums.addAll(requirements);
+        }
 
         if (conditions == null) {
             return mandatoryEnums;
@@ -608,13 +612,13 @@ public class ParameterNode extends ASTNode {
         List<List<String>> constraintsList = new ArrayList<>();
         JsonNode finalNewEnumNode = newEnumNode;
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
-            System.out.println(fieldName);
+
             String constraintValue = parentList.getParameter(fieldName);
-            System.out.println("constraint value: " + constraintValue);
+
             JsonNode constraintNode = finalNewEnumNode.get(fieldName);
             JsonNode constraintValuesNode = constraintNode.get(constraintValue);
             List<String> values = new ArrayList<>();
-            System.out.println("values : " + values);
+
             extractNodeAsList(constraintValuesNode, values);
 
             if (!values.isEmpty()) {
@@ -629,7 +633,7 @@ public class ParameterNode extends ASTNode {
         }
 
         ArrayList<String> resultantSetAsList = new ArrayList<>(resultantSet);
-        System.out.println("Resultant set: " + resultantSetAsList);
+
         enumValues.addAll(resultantSetAsList);
 
 

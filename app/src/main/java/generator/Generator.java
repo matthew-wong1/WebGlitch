@@ -4,6 +4,7 @@ import ast.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javascript.JavaScriptStatement;
+import javascript.TypedArray;
 import programprinter.PrettyPrinter;
 
 import java.io.File;
@@ -202,23 +203,13 @@ public class Generator {
     public String getRandomReceiver(String receiverType, Map<String, List<String>> requirements) {
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
-        if (!symbolTable.containsKey(receiverType)) {
-            parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements);
-        }
-
-        List<String> allVariables = symbolTable.get(receiverType);
         List<String> variablesThatMeetReqs = new ArrayList<>();
 
-        if (requirements != null) {
-            // Filter out those that don't meet the requirement,
-            // And then need to generate one with the requirement
-            findVariablesThatMeetReqs(allVariables, variablesThatMeetReqs, requirements);
+        findAllVariablesThatMeetReqs(receiverType, requirements, variablesThatMeetReqs);
 
-            if (variablesThatMeetReqs.isEmpty()) {
-                // What to return.... can't do return CallIfno becasue ned to return the variable Name
-            }
-        } else {
-            variablesThatMeetReqs.addAll(allVariables);
+        if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
+            parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements);
+            return getRandomReceiver(receiverType, requirements);
         }
 
         int randIdx = rand.nextInt(variablesThatMeetReqs.size());
@@ -226,7 +217,24 @@ public class Generator {
 
     }
 
-    private void findVariablesThatMeetReqs(List<String> allVariables, List<String> variablesThatMeetReqs, Map<String, List<String>> requirements) {
+    private void findAllVariablesThatMeetReqs(String receiverType, Map<String, List<String>> requirements, List<String> variablesThatMeetReqs) {
+        List<String> allVariables = symbolTable.get(receiverType);
+        if (allVariables == null) {
+            return;
+        }
+
+        if (requirements != null) {
+            // Filter out those that don't meet the requirement,
+            // And then need to generate one with the requirement
+            addVariablesThatMeetReqsToList(allVariables, variablesThatMeetReqs, requirements);
+
+        } else {
+            variablesThatMeetReqs.addAll(allVariables);
+        }
+
+    }
+
+    private void addVariablesThatMeetReqsToList(List<String> allVariables, List<String> variablesThatMeetReqs, Map<String, List<String>> requirements) {
         for (String variableName : allVariables) {
             for (Map.Entry<String, List<String>> requirement : requirements.entrySet()) {
                 List<String> attributes = this.getAllObjectAttributes(variableName, requirement.getKey());
@@ -260,12 +268,28 @@ public class Generator {
         ASTNode receiver = null;
 
         try {
-            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverName, isMethod);
+            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverName, isMethod, requirements);
         } catch (IOException e) {
             System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }
 
         this.programNode.addNode(receiver);
+    }
+
+    public ASTNode generateDeclaration(JsonNode methodJsonNode, CallNode rootASTNode) {
+        String varName = ParamGenerator.generateRandVarName();
+        String returnType = methodJsonNode.get("returnType").asText();
+        boolean isAsync = methodJsonNode.has("async");
+
+        // Create the ASTNode
+        ASTNode newRootNode = new AssignmentNode("const", isAsync, varName);
+        newRootNode.addNode(rootASTNode);
+
+        this.addToSymbolTable(returnType, varName);
+
+        this.addToObjectAttributesTable(varName, rootASTNode.getParameters());
+
+        return newRootNode;
     }
 
     public String determineReceiver(String receiverType, boolean hasRequirements) {
@@ -284,7 +308,21 @@ public class Generator {
     }
 
     public String generateTopLevelStatement(String type) {
-        return null;
+        ASTNode astNodeToPrepend = null;
+        String varName = "";
+
+        switch (type) {
+            case "typedArray":
+                AssignmentNode assignmentNode = new AssignmentNode("const", false);
+                TypedArray typedArray = new TypedArray();
+                assignmentNode.addNode(typedArray);
+                varName = assignmentNode.getVarName();
+                astNodeToPrepend = assignmentNode;
+        }
+
+        this.programNode.addNodeToFront(astNodeToPrepend);
+
+        return varName;
     }
 
 

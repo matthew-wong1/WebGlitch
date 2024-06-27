@@ -7,10 +7,7 @@ import generator.ParamGenerator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Parser {
 
@@ -57,28 +54,14 @@ public class Parser {
         String receiverType = rootJsonNode.get("receiverType").asText();
         String callName = methodJsonNode.get("name").asText(); // Required field
 
-        return parseAndBuildCall(filePath, callName, receiverType, option.equals("methods"));
+        return parseAndBuildCall(filePath, callName, receiverType, option.equals("methods"), null);
 
     }
 
-    private ASTNode generateDeclaration(JsonNode methodJsonNode, CallNode rootASTNode) {
-        String varName = ParamGenerator.generateRandVarName();
-        String returnType = methodJsonNode.get("returnType").asText();
-        boolean isAsync = methodJsonNode.has("async");
-
-        // Create the ASTNode
-        ASTNode newRootNode = new AssignmentNode("const", isAsync, varName);
-        newRootNode.addNode(rootASTNode);
-
-        generator.addToSymbolTable(returnType, varName);
-
-        generator.addToObjectAttributesTable(varName, rootASTNode.getParameters());
-
-        return newRootNode;
-    }
 
 
-    public ASTNode parseAndBuildCall(String filePath, String callName, String currentReceiverType, boolean isMethod) throws IOException {
+
+    public ASTNode parseAndBuildCall(String filePath, String callName, String currentReceiverType, boolean isMethod, Map<String, List<String>> requirements) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootJsonNode = mapper.readTree(new File(filePath));
 
@@ -115,10 +98,10 @@ public class Parser {
         boolean jsonParams = callJsonNode.path("paramType").asText("csv").equals("object");
         boolean isArray = callJsonNode.has("array");
         JsonNode paramsJsonNode = callJsonNode.path("properties");
-        CallNode rootASTNode = new CallNode(receiver, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode);
+        CallNode rootASTNode = new CallNode(receiver, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode, requirements);
 
         if (!returnType.equals("none")) {
-            return generateDeclaration(callJsonNode, rootASTNode);
+            return generator.generateDeclaration(callJsonNode, rootASTNode);
         } else {
             generator.addToObjectAttributesTable(receiver, rootASTNode.getParameters());
         }

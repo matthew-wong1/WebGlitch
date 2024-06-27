@@ -14,14 +14,14 @@ public class CallNode extends ASTNode {
     private ParameterListNode parameterListNode = null;
     private final Generator generator;
 
-    public CallNode(String receiver, String callName, boolean jsonParams, boolean isArray, boolean isMethod, Generator generator, JsonNode paramsJsonNode) {
+    public CallNode(String receiver, String callName, boolean jsonParams, boolean isArray, boolean isMethod, Generator generator, JsonNode paramsJsonNode, Map<String, List<String>> requirements) {
         this.receiver = receiver;
         this.fullCallName = receiver + "." + callName;
         this.isMethod = isMethod;
         this.generator = generator;
 
         if (isMethod) {
-            this.parameterListNode = new ParameterListNode(this, paramsJsonNode, jsonParams, isArray);
+            this.parameterListNode = new ParameterListNode(this, paramsJsonNode, jsonParams, isArray, requirements);
             parameterListNode.generateParams();
             this.addNode(parameterListNode);
         }

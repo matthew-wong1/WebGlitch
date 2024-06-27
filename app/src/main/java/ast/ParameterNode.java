@@ -336,8 +336,12 @@ public class ParameterNode extends ASTNode {
             chosenEnumValues = pickARandomEnumValue(enumValues);
         }
 
-        chosenEnumValues.addAll(mandatoryEnums);
-        addParametersFromList(chosenEnumValues);
+        // Add mandatory enums uniquely
+        Set<String> uniqueElements = new HashSet<>(mandatoryEnums);
+        uniqueElements.addAll(chosenEnumValues);
+        List<String> finalSetOfValues = new ArrayList<>(uniqueElements);
+
+        addParametersFromList(finalSetOfValues);
     }
 
     private void addParametersFromList(List<String> chosenEnumValues) {

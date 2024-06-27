@@ -17,11 +17,37 @@ public class TypedArray extends ASTNode {
     public TypedArray() {
         this.type = TYPES.get(rand.nextInt(TYPES.size()));
 
-        int numValues = rand.nextInt(MAX_SIZE - MIN_SIZE) + MIN_SIZE;
+        // SIZE OF DATA WHEN CONVERTED TO BYTES IS MULTIPEL OF 4
+
+        int elementSizeInBytes = getElementSizeInBytes() / 8;
+        int numValues = generateForSizeThatIsMultipleOf4Bytes(elementSizeInBytes);
+
 
         for (int i = 0; i < numValues; i++) {
             values.add(rand.nextInt(RANGE * 2 + 1) - RANGE);
         }
+    }
+
+    private int generateForSizeThatIsMultipleOf4Bytes(int elementSizeInBytes) {
+        int numValues = rand.nextInt(MAX_SIZE - MIN_SIZE) + MIN_SIZE;
+        int totalBytes = numValues * elementSizeInBytes;
+        System.out.println(elementSizeInBytes);
+
+        while (totalBytes % 4 != 0) {
+            numValues++;
+            totalBytes = numValues * elementSizeInBytes;
+        }
+
+
+        return numValues;
+    }
+
+    private int getElementSizeInBytes() {
+        int i = this.type.length() - 1;
+        while (i >= 0 && Character.isDigit(this.type.charAt(i))) {
+            i--;
+        }
+        return Integer.parseInt(this.type.substring(i + 1));
     }
 
     @Override

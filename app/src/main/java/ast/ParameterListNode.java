@@ -126,6 +126,12 @@ public class ParameterListNode extends ASTNode {
 
     // Clears all currently set values for the given fieldName, replacing it with 1 value
     public void setParamValue(String fieldName, String value) {
+        List<Parameter> parameters = findAllParameters(fieldName);
+        parameters.clear();
+        parameters.add(new Parameter(value));
+    }
+
+    private List<Parameter> findAllParameters(String fieldName) {
         List<Parameter> parameters = allParameters.get(fieldName);
 
         if (parameters == null || parameters.isEmpty()) {
@@ -139,18 +145,17 @@ public class ParameterListNode extends ASTNode {
             parameters = generator.getAllObjectAttributesAsParameters(callNode.getReceiver(), fieldToSearchFor);
         }
 
-        parameters.clear();
-        parameters.add(new Parameter(value));
+        return parameters;
     }
 
     public void appendParamValue(String fieldName, String value) {
-        List<Parameter> parameters = allParameters.get(fieldName);
+        List<Parameter> parameters = findAllParameters(fieldName);
         parameters.add(new Parameter(value));
     }
 
     // Removes the parameter with a given value if it exists eg 1 element of an array
     public void removeParamValue(String fieldName, String value) {
-        List<Parameter> parameters = allParameters.get(fieldName);
+        List<Parameter> parameters = findAllParameters(fieldName);
         parameters.remove(new Parameter(value));
     }
 }

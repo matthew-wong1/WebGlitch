@@ -23,7 +23,8 @@ public class Generator {
     // Value: Reference to that objet that currently exists
     private final Map<String, List<String>> symbolTable = new HashMap<>();
     public final Map<String, Map<String, List<Parameter>>> objectAttributesTable = new HashMap<>();
-    private final Map<String, String> variableToReceiver = new HashMap<>();
+    private final Map<String, String> variableToReceiverType = new HashMap<>();
+    private final Map<String, String> variableToReceiverName = new HashMap<>();
 
     private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
     // Maps method call name to File it's located in and Probability (double)
@@ -184,7 +185,7 @@ public class Generator {
         }
 
         symbolTable.get(returnedObjectType).add(variableName);
-        variableToReceiver.put(variableName, returnedObjectType);
+        variableToReceiverType.put(variableName, returnedObjectType);
 
     }
 
@@ -193,6 +194,8 @@ public class Generator {
         removeFromObjectAttributesTable(variableName);
         if (symbolTable.get(returnedObjectType).isEmpty()) {
             symbolTable.remove(returnedObjectType);
+            variableToReceiverType.remove(variableName);
+            variableToReceiverName.remove(variableName);
         }
     }
 
@@ -268,8 +271,8 @@ public class Generator {
     private String findBaseReceiver(String variableName, String objectType) {
         String currentVariable = variableName;
 
-        while (variableToReceiver.containsKey(currentVariable) && !variableToReceiver.get(currentVariable).equals(objectType)) {
-            currentVariable = variableToReceiver.get(currentVariable);
+        while (variableToReceiverName.containsKey(currentVariable) && !variableToReceiverType.get(currentVariable).equals(objectType)) {
+            currentVariable = variableToReceiverName.get(currentVariable);
         }
 
         return currentVariable;
@@ -297,6 +300,7 @@ public class Generator {
         String initReceiverType = initInfo.receiverName;
         boolean initIsMethod = initInfo.methodCall;
 
+        System.out.println(sameObjectsReqs);
         generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs);
     }
 
@@ -331,6 +335,7 @@ public class Generator {
         newRootNode.addNode(rootASTNode);
 
         this.addToSymbolTable(returnType, varName);
+        this.addToVariableToReceiverNameTable(varName, rootASTNode.getReceiver());
 
         this.addToObjectAttributesTable(varName, rootASTNode.getParameters());
 
@@ -340,9 +345,21 @@ public class Generator {
         return newRootNode;
     }
 
+    private void addToVariableToReceiverNameTable(String varName, String receiver) {
+        this.variableToReceiverName.put(varName, receiver);
+    }
+
+    private void removeFromVariableToReceiverNameTable(String varName) {
+        this.variableToReceiverName.remove(varName);
+    }
+
     public String determineReceiver(String receiverType, boolean hasRequirements, Map<String, String> sameObjectsReqs) {
         if (hasRequirements) {
-            String requiredReceiver = sameObjectsReqs.get(receiverType);
+            String requiredReceiver = null;
+            if (sameObjectsReqs != null) {
+                requiredReceiver = sameObjectsReqs.get(receiverType);
+            }
+
             if (requiredReceiver == null) {
                 return getRandomReceiver(receiverType);
             }

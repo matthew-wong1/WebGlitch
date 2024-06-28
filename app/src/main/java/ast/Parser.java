@@ -1,5 +1,7 @@
 package ast;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
@@ -54,14 +56,14 @@ public class Parser {
         String receiverType = rootJsonNode.get("receiverType").asText();
         String callName = methodJsonNode.get("name").asText(); // Required field
 
-        return parseAndBuildCall(filePath, callName, receiverType, option.equals("methods"), null);
+        return parseAndBuildCall(filePath, callName, receiverType, option.equals("methods"), null, null);
 
     }
 
 
 
 
-    public ASTNode parseAndBuildCall(String filePath, String callName, String currentReceiverType, boolean isMethod, Map<String, List<String>> requirements) throws IOException {
+    public ASTNode parseAndBuildCall(String filePath, String callName, String currentReceiverType, boolean isMethod, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootJsonNode = mapper.readTree(new File(filePath));
 
@@ -87,13 +89,13 @@ public class Parser {
             JsonNode prerequisiteMethodsJsonNode = callJsonNode.get("prerequisiteMethods");
             for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
 
-                generator.generateCall(new Generator.ReceiverNameCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true), null);
+                generator.generateCall(new Generator.ReceiverNameCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true), null, sameObjectsReqs);
             }
         }
 
         String returnType = callJsonNode.get("returnType").asText();
         String parentReceiverType = rootJsonNode.get("receiverType").asText();
-        String receiver = generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements"));
+        String receiver = generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements"), sameObjectsReqs);
 
         boolean jsonParams = callJsonNode.path("paramType").asText("csv").equals("object");
         boolean isArray = callJsonNode.has("array");
@@ -122,5 +124,14 @@ public class Parser {
         return rootASTNode;
     }
 
-
+    public static List<String> getListFromJson(String jsonList) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> listValues;
+        try {
+            listValues = mapper.readValue(jsonList, new TypeReference<ArrayList<String>>(){});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return listValues;
+    }
 }

@@ -100,11 +100,11 @@ public class ParameterNode extends ASTNode {
         JsonNode requiredAttributesNode = details.get("conditions").get("withAttributes");
 
         requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {
-            List<String> values = getListFromJson(requiredAttributesNode.get(fieldName).toString());
+            List<String> values = Parser.getListFromJson(requiredAttributesNode.get(fieldName).toString());
             requirements.put(fieldName, values);
         });
 
-        List<String> sameObjectRequirements = details.get("conditions").has("same") ? getListFromJson(details.get("conditions").get("same").toString()) : null;
+        List<String> sameObjectRequirements = details.get("conditions").has("same") ? Parser.getListFromJson(details.get("conditions").get("same").toString()) : null;
         return new Parameter(generator.getRandomReceiver(paramType, requirements, sameObjectRequirements, parentList.getReceiver()));
     }
 
@@ -229,7 +229,7 @@ public class ParameterNode extends ASTNode {
         long parameterTotal = 0;
 
         if (subNode.has("otherParams")) {
-            List<String> otherFieldNames = getListFromJson(subNode.get("otherParams").toString());
+            List<String> otherFieldNames = Parser.getListFromJson(subNode.get("otherParams").toString());
             String parametersOperator = subNode.get("operator").asText();
             switch(parametersOperator) {
                 case "+":
@@ -259,17 +259,6 @@ public class ParameterNode extends ASTNode {
         }
 
         return finalLimit;
-    }
-
-    private List<String> getListFromJson(String jsonList) {
-        ObjectMapper mapper = new ObjectMapper();
-        List<String> listValues;
-        try {
-            listValues = mapper.readValue(jsonList, new TypeReference<ArrayList<String>>(){});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        return listValues;
     }
 
     private void generateParamAsJson(String paramType) {

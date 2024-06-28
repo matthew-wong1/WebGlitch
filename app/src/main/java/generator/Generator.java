@@ -208,11 +208,11 @@ public class Generator {
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
 
-        findAllVariablesThatMeetReqs(receiverType, requirements, sameObjects, variablesThatMeetReqs, receiverName);
+        Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, requirements, sameObjects, variablesThatMeetReqs, receiverName);
 
         if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
             // pass in same objects here
-            parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements);
+            parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
             return getRandomReceiver(receiverType, requirements, sameObjects, receiverName);
         }
 
@@ -221,45 +221,48 @@ public class Generator {
 
     }
 
-    private void findAllVariablesThatMeetReqs(String receiverType, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName) {
+    private Map<String, String> findAllVariablesThatMeetReqs(String receiverType, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName) {
         List<String> allVariables = symbolTable.get(receiverType);
         if (allVariables == null) {
-            return;
+            return null;
         }
 
+        Map<String, String> sameObjectsReqs = null;
         if (requirements != null || sameObjects != null) {
             // Filter out those that don't meet the requirement,
             // And then need to generate one with the requirement
             addVariablesThatMeetReqsToList(allVariables, variablesThatMeetReqs, requirements);
-            ensureSameObjectRequirementsMet(variablesThatMeetReqs, sameObjects, receiverName);
+            sameObjectsReqs = ensureSameObjectRequirementsMet(variablesThatMeetReqs, sameObjects, receiverName);
         } else {
             variablesThatMeetReqs.addAll(allVariables);
         }
 
+        return sameObjectsReqs;
+
     }
 
-    private void ensureSameObjectRequirementsMet(List<String> variablesThatMeetReqs, List<String> sameObjects, String receiverName) {
+    private Map<String, String> ensureSameObjectRequirementsMet(List<String> variablesThatMeetReqs, List<String> sameObjects, String receiverName) {
         if (variablesThatMeetReqs.isEmpty() || sameObjects == null) {
-            return;
+            return null;
         }
+
+        Map<String, String> sameObjectsReqs = new HashMap<>();
 
         List<String> toRemove = new ArrayList<>();
         for (String variableName : variablesThatMeetReqs) {
             for (String objectType : sameObjects) {
-                if (!isFromSameObject(variableName, objectType, receiverName)) {
+                String baseCallReceiver = findBaseReceiver(receiverName, objectType);
+                sameObjectsReqs.put(objectType, baseCallReceiver);
+
+                if(!findBaseReceiver(variableName, objectType).equals(baseCallReceiver)) {
                     toRemove.add(variableName);
                 }
+
             }
         }
 
         variablesThatMeetReqs.removeAll(toRemove);
-    }
-
-    private boolean isFromSameObject(String variableName, String objectType, String receiverName) {
-        String baseCallReceiver = findBaseReceiver(receiverName, objectType);
-        String baseVariableReceiver = findBaseReceiver(variableName, objectType);
-
-        return baseCallReceiver.equals(baseVariableReceiver);
+        return sameObjectsReqs;
     }
 
     private String findBaseReceiver(String variableName, String objectType) {
@@ -288,16 +291,16 @@ public class Generator {
 
     }
 
-    private void parseCallInfoFromReceiverTypeAndGenerateCall(String receiverType, Map<String, List<String>> requirements) {
+    private void parseCallInfoFromReceiverTypeAndGenerateCall(String receiverType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
         FileNameReceiverNameCallNameCallType initInfo = receiverInits.get(receiverType);
         String initMethodName = initInfo.callName;
         String initReceiverType = initInfo.receiverName;
         boolean initIsMethod = initInfo.methodCall;
 
-        generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements);
+        generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs);
     }
 
-    public void generateCall(ReceiverNameCallNameCallType receiverNameCallNameCallType, Map<String, List<String>> requirements) {
+    public void generateCall(ReceiverNameCallNameCallType receiverNameCallNameCallType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
         if (callState.contains(receiverNameCallNameCallType)) {
             return;
         }
@@ -310,7 +313,7 @@ public class Generator {
         ASTNode receiver = null;
 
         try {
-            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverName, isMethod, requirements);
+            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverName, isMethod, requirements, sameObjectsReqs);
         } catch (IOException e) {
             System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }
@@ -337,9 +340,14 @@ public class Generator {
         return newRootNode;
     }
 
-    public String determineReceiver(String receiverType, boolean hasRequirements) {
+    public String determineReceiver(String receiverType, boolean hasRequirements, Map<String, String> sameObjectsReqs) {
         if (hasRequirements) {
-            return getRandomReceiver(receiverType);
+            String requiredReceiver = sameObjectsReqs.get(receiverType);
+            if (requiredReceiver == null) {
+                return getRandomReceiver(receiverType);
+            }
+
+            return requiredReceiver;
         }
         return receiverType;
     }

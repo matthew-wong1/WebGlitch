@@ -300,7 +300,6 @@ public class Generator {
         String initReceiverType = initInfo.receiverName;
         boolean initIsMethod = initInfo.methodCall;
 
-        System.out.println(sameObjectsReqs);
         generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs);
     }
 

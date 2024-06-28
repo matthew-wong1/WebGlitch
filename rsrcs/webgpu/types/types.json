@@ -23,7 +23,6 @@
         "optional": true
       },
       "loadOp": {
-        "fieldName": "",
         "type": "string",
         "enum": [
           "clear",

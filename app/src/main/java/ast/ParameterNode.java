@@ -477,45 +477,49 @@ public class ParameterNode extends ASTNode {
 
     private void ensureTextureDimensionAndSampleCompatible(List<String> enumValues) {
         String dimension = parentList.getParameter("dimension");
+        List<String> incompatibleTextures = new ArrayList<>();
+        JsonNode texturesEnumNode = parseJsonFromFile("gpuTextureFormat");
 
         // Format cannot be euqal to compressed format or depth-or-stencil format
         // Compressed format includes all the optional ones and the compressed formats enum
-        if (dimension.equals("2d")) {
-            return;
+        if (!dimension.equals("2d")) {
+
+            List<String> incompatibleBaseTextures = new ArrayList<>();
+            extractNodeAsList(texturesEnumNode.get("enum"), incompatibleBaseTextures);
+            incompatibleBaseTextures.removeIf(texture -> !(texture.startsWith("stencil") || texture.startsWith("depth")));
+
+            List<String> compressedTextures = new ArrayList<>();
+            extractNodeAsList(texturesEnumNode.get("compressedFormats"), compressedTextures);
+
+            JsonNode optionalTextures = texturesEnumNode.get("features");
+            List<String> optionalTexturesList = new ArrayList<>();
+            optionalTextures.fieldNames().forEachRemaining(fieldName -> {
+                List<String> formats = new ArrayList<>();
+                extractNodeAsList(optionalTextures.get(fieldName), formats);
+                optionalTexturesList.addAll(formats);
+            });
+
+
+            incompatibleTextures.addAll(incompatibleBaseTextures);
+            incompatibleTextures.addAll(compressedTextures);
+            incompatibleTextures.addAll(optionalTexturesList);
         }
 
         // Depth/Stencil formats can only be for a dimension of 2D
-        JsonNode texturesEnumNode = parseJsonFromFile("gpuTextureFormat");
-        List<String> incompatibleBaseTextures = new ArrayList<>();
-        extractNodeAsList(texturesEnumNode.get("enum"), incompatibleBaseTextures);
-        incompatibleBaseTextures.removeIf(texture -> !(texture.startsWith("stencil") || texture.startsWith("depth")));
 
-        List<String> compressedTextures = new ArrayList<>();
-        extractNodeAsList(texturesEnumNode.get("compressedFormats"), compressedTextures);
-
-        JsonNode optionalTextures = texturesEnumNode.get("features");
-        List<String> optionalTexturesList = new ArrayList<>();
-        optionalTextures.fieldNames().forEachRemaining(fieldName -> {
-            List<String> formats = new ArrayList<>();
-            extractNodeAsList(optionalTextures.get(fieldName), formats);
-            optionalTexturesList.addAll(formats);
-        });
-
-        List<String> incompatibleTextures = new ArrayList<>();
-        incompatibleTextures.addAll(incompatibleBaseTextures);
-        incompatibleTextures.addAll(compressedTextures);
-        incompatibleTextures.addAll(optionalTexturesList);
 
         // Ensure all textures are multisampling compatible
+        System.out.println(parentList.getParameter("sampleCount"));
         if (parentList.getParameter("sampleCount").equals("4")) {
+            System.out.println("sample count was 4 for " + parentList.getReceiver());
             List<String> multiSamplingIncompatibleTextures = new ArrayList<>();
             JsonNode multiSamplingIncompatibleTexturesNode = texturesEnumNode.get("multiSamplingIncompatible");
+
             extractNodeAsList(multiSamplingIncompatibleTexturesNode, multiSamplingIncompatibleTextures);
+            System.out.println(multiSamplingIncompatibleTextures);
             incompatibleTextures.addAll(multiSamplingIncompatibleTextures);
+
         }
-
-
-
 
         enumValues.removeAll(incompatibleTextures);
 

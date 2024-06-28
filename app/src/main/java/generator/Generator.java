@@ -23,6 +23,8 @@ public class Generator {
     // Value: Reference to that objet that currently exists
     private final Map<String, List<String>> symbolTable = new HashMap<>();
     public final Map<String, Map<String, List<Parameter>>> objectAttributesTable = new HashMap<>();
+    private final Map<String, String> variableToReceiver = new HashMap<>();
+
     private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
     // Maps method call name to File it's located in and Probability (double)
     private final Map<ReceiverNameCallNameCallType, FileNameCallProbPair> callProbabilities = new HashMap<>();
@@ -182,6 +184,7 @@ public class Generator {
         }
 
         symbolTable.get(returnedObjectType).add(variableName);
+        variableToReceiver.put(variableName, returnedObjectType);
 
     }
 
@@ -195,21 +198,22 @@ public class Generator {
 
     public String getRandomReceiver(String receiverType) {
 
-        return getRandomReceiver(receiverType, null);
+        return getRandomReceiver(receiverType, null, null, null);
 
 
     }
 
-    public String getRandomReceiver(String receiverType, Map<String, List<String>> requirements) {
+    public String getRandomReceiver(String receiverType, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName) {
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
 
-        findAllVariablesThatMeetReqs(receiverType, requirements, variablesThatMeetReqs);
+        findAllVariablesThatMeetReqs(receiverType, requirements, sameObjects, variablesThatMeetReqs, receiverName);
 
         if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
+            // pass in same objects here
             parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements);
-            return getRandomReceiver(receiverType, requirements);
+            return getRandomReceiver(receiverType, requirements, sameObjects, receiverName);
         }
 
         int randIdx = rand.nextInt(variablesThatMeetReqs.size());
@@ -217,24 +221,62 @@ public class Generator {
 
     }
 
-    private void findAllVariablesThatMeetReqs(String receiverType, Map<String, List<String>> requirements, List<String> variablesThatMeetReqs) {
+    private void findAllVariablesThatMeetReqs(String receiverType, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName) {
         List<String> allVariables = symbolTable.get(receiverType);
         if (allVariables == null) {
             return;
         }
 
-        if (requirements != null) {
+        if (requirements != null || sameObjects != null) {
             // Filter out those that don't meet the requirement,
             // And then need to generate one with the requirement
             addVariablesThatMeetReqsToList(allVariables, variablesThatMeetReqs, requirements);
-
+            ensureSameObjectRequirementsMet(variablesThatMeetReqs, sameObjects, receiverName);
         } else {
             variablesThatMeetReqs.addAll(allVariables);
         }
 
     }
 
+    private void ensureSameObjectRequirementsMet(List<String> variablesThatMeetReqs, List<String> sameObjects, String receiverName) {
+        if (variablesThatMeetReqs.isEmpty() || sameObjects == null) {
+            return;
+        }
+
+        List<String> toRemove = new ArrayList<>();
+        for (String variableName : variablesThatMeetReqs) {
+            for (String objectType : sameObjects) {
+                if (!isFromSameObject(variableName, objectType, receiverName)) {
+                    toRemove.add(variableName);
+                }
+            }
+        }
+
+        variablesThatMeetReqs.removeAll(toRemove);
+    }
+
+    private boolean isFromSameObject(String variableName, String objectType, String receiverName) {
+        String baseCallReceiver = findBaseReceiver(receiverName, objectType);
+        String baseVariableReceiver = findBaseReceiver(variableName, objectType);
+
+        return baseCallReceiver.equals(baseVariableReceiver);
+    }
+
+    private String findBaseReceiver(String variableName, String objectType) {
+        String currentVariable = variableName;
+
+        while (variableToReceiver.containsKey(currentVariable) && !variableToReceiver.get(currentVariable).equals(objectType)) {
+            currentVariable = variableToReceiver.get(currentVariable);
+        }
+
+        return currentVariable;
+    }
+
     private void addVariablesThatMeetReqsToList(List<String> allVariables, List<String> variablesThatMeetReqs, Map<String, List<String>> requirements) {
+        if (requirements == null) {
+            return;
+        }
+
         for (String variableName : allVariables) {
             for (Map.Entry<String, List<String>> requirement : requirements.entrySet()) {
                 List<String> attributes = this.getAllObjectAttributes(variableName, requirement.getKey());
@@ -288,6 +330,9 @@ public class Generator {
         this.addToSymbolTable(returnType, varName);
 
         this.addToObjectAttributesTable(varName, rootASTNode.getParameters());
+
+        // Add to device tracker. What's the best way to search? maybe coyuld add as an object attribute
+        // or could add as receiver attribute. Then recursive search
 
         return newRootNode;
     }

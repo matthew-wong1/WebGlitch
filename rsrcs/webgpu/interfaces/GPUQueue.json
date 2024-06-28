@@ -10,6 +10,7 @@
           "buffer": {
             "type": "GPUBuffer",
             "conditions": {
+              "same": ["GPUDevice"],
               "withAttributes": {
                 "usage": ["GPUBufferUsage.COPY_DST"]
               }

@@ -104,7 +104,8 @@ public class ParameterNode extends ASTNode {
             requirements.put(fieldName, values);
         });
 
-        return new Parameter(generator.getRandomReceiver(paramType, requirements));
+        List<String> sameObjectRequirements = details.get("conditions").has("same") ? getListFromJson(details.get("conditions").get("same").toString()) : null;
+        return new Parameter(generator.getRandomReceiver(paramType, requirements, sameObjectRequirements, parentList.getReceiver()));
     }
 
     private void addAllSubParamsToParent() {

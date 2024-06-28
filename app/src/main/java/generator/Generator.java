@@ -179,6 +179,10 @@ public class Generator {
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 
+    public List<Parameter> getAllObjectAttributesAsParameters(String variableName, String fieldName) {
+        return objectAttributesTable.get(variableName).get(fieldName);
+    }
+
     public void addToSymbolTable(String returnedObjectType, String variableName) {
         if (!symbolTable.containsKey(returnedObjectType)) {
             symbolTable.put(returnedObjectType, new ArrayList<>());

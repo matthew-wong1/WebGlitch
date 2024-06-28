@@ -135,7 +135,8 @@
             "optional": true,
             "conditions": {
               "textureAspectCompatible": true,
-              "textureViewFormatsCompatible": true
+              "textureViewFormatsCompatible": true,
+              "cubeCompatible": true
             }
           },
           "label": {

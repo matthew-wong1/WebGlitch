@@ -463,7 +463,26 @@ public class ParameterNode extends ASTNode {
             parseConstraints(conditions, enumValues);
         }
 
+        if (conditions.has("cubeCompatible")) {
+            ensureCubeCompatibility();
+        }
+
         return mandatoryEnums;
+    }
+
+    private void ensureCubeCompatibility() {
+        List<String> CUBE_TEXTURES = Arrays.asList("cube", "cube-array");
+
+
+        String dimension = parentList.getParameter("dimension");
+
+        if (!CUBE_TEXTURES.contains(dimension)) {
+            return;
+        }
+
+        // GPUTexture.width must be equal to GPUTexture.height for cube and cube-array
+        String width = parentList.getParameter("GPUTexture.size.width");
+        parentList.setParamValue("GPUTexture.size.height", width);
     }
 
     private void ensureMultiSamplingCompatible(List<String> enumValues, List<String> mandatoryEnums) {

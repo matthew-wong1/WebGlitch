@@ -70,6 +70,7 @@ public class ParameterListNode extends ASTNode {
         List<Parameter> parameter = allParameters.get(fieldName);
 
         if (parameter == null || parameter.isEmpty()) {
+            String fieldToSearchFor = fieldName;
 
             if (fieldName.startsWith("this")) {
                 // 0: 'this', 1: 'parameter name', 2: attributeName
@@ -79,10 +80,10 @@ public class ParameterListNode extends ASTNode {
                 return generator.getObjectAttributes(variableName, splitFieldNames[2]);
             } else if (Character.isUpperCase(fieldName.charAt(0))) {
                 String[] splitFieldName = fieldName.split("\\.", 2);
-                return generator.getObjectAttributes(callNode.getReceiver(), splitFieldName[1]);
+                fieldToSearchFor = splitFieldName[1];
             }
 
-            return generator.getObjectAttributes(callNode.getReceiver(), fieldName);
+            return generator.getObjectAttributes(callNode.getReceiver(), fieldToSearchFor);
 
         }
 
@@ -92,12 +93,14 @@ public class ParameterListNode extends ASTNode {
     public List<String> getAllParameters(String fieldName) {
         List<Parameter> parameters = allParameters.get(fieldName);
         if (parameters == null || parameters.isEmpty()) {
+            String fieldToSearchFor = fieldName;
+
             if (Character.isUpperCase(fieldName.charAt(0))) {
                 String[] splitFieldName = fieldName.split("\\.", 2);
-                return generator.getAllObjectAttributes(callNode.getReceiver(), splitFieldName[1]);
+                fieldToSearchFor = splitFieldName[1];
             }
 
-            return generator.getAllObjectAttributes(callNode.getReceiver(), fieldName);
+            return generator.getAllObjectAttributes(callNode.getReceiver(), fieldToSearchFor);
 
         }
 
@@ -124,6 +127,18 @@ public class ParameterListNode extends ASTNode {
     // Clears all currently set values for the given fieldName, replacing it with 1 value
     public void setParamValue(String fieldName, String value) {
         List<Parameter> parameters = allParameters.get(fieldName);
+
+        if (parameters == null || parameters.isEmpty()) {
+            String fieldToSearchFor = fieldName;
+
+            if (Character.isUpperCase(fieldName.charAt(0))) {
+                String[] splitFieldName = fieldName.split("\\.", 2);
+                fieldToSearchFor = splitFieldName[1];
+            }
+
+            parameters = generator.getAllObjectAttributesAsParameters(callNode.getReceiver(), fieldToSearchFor);
+        }
+
         parameters.clear();
         parameters.add(new Parameter(value));
     }

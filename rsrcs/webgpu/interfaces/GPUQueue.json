@@ -13,10 +13,8 @@
             "conditions": {
               "same": ["GPUDevice"],
               "withAttributes": {
-                "usage": ["GPUBufferUsage.COPY_DST"]
-              },
-              "setUnavailable": {
-                "buffer": ["GPUQueue.writeBuffer"]
+                "usage": ["GPUBufferUsage.COPY_DST"],
+                "mappedAtCreation": ["false"]
               }
             }
           },

@@ -1,6 +1,5 @@
 package ast;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +31,7 @@ public class ParameterNode extends ASTNode {
     private final ParameterListNode parentList;
 
     private final List<Parameter> parameters = new ArrayList<>();
-    private final List<String> requirements;
+    private final List<String> parameterRequirements;
 
     public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) {
         this.isJsonFormat = isJsonFormat;
@@ -41,7 +40,7 @@ public class ParameterNode extends ASTNode {
         this.fieldName = fieldName;
         this.isRoot = isRoot;
         this.isArray = details.has("array");
-        this.requirements = parameterRequirements;
+        this.parameterRequirements = parameterRequirements;
 
         // Only generate parameters if is a method call (don't generate for attributes)
         if (details.has("type")) {
@@ -58,6 +57,8 @@ public class ParameterNode extends ASTNode {
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
+        } else if (this.parameterRequirements != null && !this.parameterRequirements.isEmpty()) {
+            this.parameters.add(new Parameter(parameterRequirements.getFirst()));
         } else if (isString) {
             this.parameters.add(new Parameter(ParamGenerator.generateRandVarName()));
         } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
@@ -323,7 +324,7 @@ public class ParameterNode extends ASTNode {
 //
 //                }
 
-                ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, generator, parentList, requirements);
+                ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, generator, parentList, parameterRequirements);
                 this.addNode(nestedParameterNode);
 
 
@@ -468,8 +469,8 @@ public class ParameterNode extends ASTNode {
     private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) {
         List<String> mandatoryEnums = new ArrayList<>();
 
-        if (requirements != null) {
-            mandatoryEnums.addAll(requirements);
+        if (parameterRequirements != null) {
+            mandatoryEnums.addAll(parameterRequirements);
         }
 
         if (conditions == null) {

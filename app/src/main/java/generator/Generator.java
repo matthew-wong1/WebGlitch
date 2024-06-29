@@ -419,11 +419,13 @@ public class Generator {
     }
 
     public void addToCallUnavailability(String variableName, Set<String> callName) {
+
         if (!callUnavailability.containsKey(variableName)) {
             callUnavailability.put(variableName, new HashSet<>());
         }
 
         callUnavailability.get(variableName).addAll(callName);
+
     }
 
     public void removeFromCallUnavailability(String variableName, Set<String> callName) {

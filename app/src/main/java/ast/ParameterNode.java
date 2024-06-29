@@ -140,7 +140,6 @@ public class ParameterNode extends ASTNode {
 
         availabilityNode.fieldNames().forEachRemaining(fieldName -> {
             List<String> affectedCalls = Parser.getListFromJson(availabilityNode.get(fieldName).toString());
-            System.out.println("fieldName " + fieldName);
             String variableName = parentList.getParameter(fieldName);
             allCalls.put(variableName, new HashSet<>(affectedCalls));
         });
@@ -571,14 +570,11 @@ public class ParameterNode extends ASTNode {
 
 
         // Ensure all textures are multisampling compatible
-        System.out.println(parentList.getParameter("sampleCount"));
         if (parentList.getParameter("sampleCount").equals("4")) {
-            System.out.println("sample count was 4 for " + parentList.getReceiver());
             List<String> multiSamplingIncompatibleTextures = new ArrayList<>();
             JsonNode multiSamplingIncompatibleTexturesNode = texturesEnumNode.get("multiSamplingIncompatible");
 
             extractNodeAsList(multiSamplingIncompatibleTexturesNode, multiSamplingIncompatibleTextures);
-            System.out.println(multiSamplingIncompatibleTextures);
             incompatibleTextures.addAll(multiSamplingIncompatibleTextures);
 
         }

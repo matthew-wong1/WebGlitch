@@ -149,8 +149,7 @@ public class Generator {
     }
 
     public String getObjectAttributes(String variableName, String fieldName) {
-        System.out.println("getting variable " + variableName);
-        System.out.println(objectAttributesTable);
+
         List<Parameter> parameters = objectAttributesTable.get(variableName).get(fieldName);
 
         if (parameters == null || parameters.isEmpty()) {

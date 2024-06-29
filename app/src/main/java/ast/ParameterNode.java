@@ -97,15 +97,44 @@ public class ParameterNode extends ASTNode {
 
         // Need a specific object with certain attributes
         Map<String, List<String>> requirements = new HashMap<>();
-        JsonNode requiredAttributesNode = details.get("conditions").get("withAttributes");
+        JsonNode conditionsNode = details.get("conditions");
+        JsonNode requiredAttributesNode = conditionsNode.get("withAttributes");
 
         requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {
             List<String> values = Parser.getListFromJson(requiredAttributesNode.get(fieldName).toString());
             requirements.put(fieldName, values);
         });
 
-        List<String> sameObjectRequirements = details.get("conditions").has("same") ? Parser.getListFromJson(details.get("conditions").get("same").toString()) : null;
-        return new Parameter(generator.getRandomReceiver(paramType, requirements, sameObjectRequirements, parentList.getReceiver()));
+        List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
+
+        Parameter newParameter = new Parameter(generator.getRandomReceiver(paramType, requirements, sameObjectRequirements, parentList.getReceiver()));
+
+        // Set unavailabillity
+        if (conditionsNode.has("setUnavailable")) {
+            setCallAvailability(conditionsNode.get("setUnavailable"), false);
+        }
+
+        if (conditionsNode.has("setAvailable")) {
+            setCallAvailability(conditionsNode.get("setAvailable"), true);
+        }
+
+        return newParameter;
+    }
+
+    private void setCallAvailability(JsonNode availabilityNode, boolean isAvailable) {
+
+        Map<String, Set<String>> allCalls = new HashMap<>();
+
+        availabilityNode.fieldNames().forEachRemaining(fieldName -> {
+            List<String> affectedCalls = Parser.getListFromJson(availabilityNode.get(fieldName).toString());
+            String variableName = parentList.getParameter(fieldName);
+            allCalls.put(variableName, new HashSet<>(affectedCalls));
+        });
+
+        for (Map.Entry<String, Set<String>> entry : allCalls.entrySet()) {
+            generator.setCallAvailability(entry.getKey(), entry.getValue(), isAvailable);
+        }
+
     }
 
     private void addAllSubParamsToParent() {

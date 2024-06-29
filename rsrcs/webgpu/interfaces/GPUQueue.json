@@ -5,6 +5,7 @@
     {
       "name": "writeBuffer",
       "returnType": "none",
+
       "properties": [
         {
           "buffer": {
@@ -13,6 +14,9 @@
               "same": ["GPUDevice"],
               "withAttributes": {
                 "usage": ["GPUBufferUsage.COPY_DST"]
+              },
+              "setUnavailable": {
+                "this.buffer": ["GPUQueue.writeBuffer"]
               }
             }
           },

@@ -25,6 +25,7 @@ public class Generator {
     public final Map<String, Map<String, List<Parameter>>> objectAttributesTable = new HashMap<>();
     private final Map<String, String> variableToReceiverType = new HashMap<>();
     private final Map<String, String> variableToReceiverName = new HashMap<>();
+    private final Map<String, Set<String>> callUnavailability = new HashMap<>();
 
     private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
     // Maps method call name to File it's located in and Probability (double)
@@ -398,7 +399,28 @@ public class Generator {
         return varName;
     }
 
+    public void setCallAvailability(String variableName, Set<String> callName, boolean isAvailable) {
+        if (isAvailable) {
+            removeFromCallUnavailability(variableName, callName);
+            return;
+        }
 
+        addToCallUnavailability(variableName, callName);
+    }
+
+    public void addToCallUnavailability(String variableName, Set<String> callName) {
+        if (!callUnavailability.containsKey(variableName)) {
+            callUnavailability.put(variableName, new HashSet<>());
+        }
+
+        callUnavailability.get(variableName).addAll(callName);
+    }
+
+    public void removeFromCallUnavailability(String variableName, Set<String> callName) {
+        if (callUnavailability.containsKey(variableName)) {
+            callUnavailability.get(variableName).removeAll(callName);
+        }
+    }
 
     public record FileNameCallProbPair(String fileName, Double callProbability) {
     }

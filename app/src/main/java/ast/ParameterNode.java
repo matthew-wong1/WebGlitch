@@ -68,6 +68,8 @@ public class ParameterNode extends ASTNode {
         } else if (paramType.equals("typedArray")) {
             String arrayVariableName = generator.generateTopLevelStatement("typedArray");
             this.parameters.add(new Parameter(arrayVariableName));
+        } else if (paramType.equals("shader")) {
+            this.parameters.add(new Parameter(this.chooseRandomShader()));
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
             additionalConditionsNode = findAndSetWebGPUInterface(paramType, details);
         } else { // Requires WebGPU Type
@@ -97,6 +99,19 @@ public class ParameterNode extends ASTNode {
         if (additionalConditionsNode != null) {
             this.parseAndSetCallAvailability(additionalConditionsNode);
         }
+
+    }
+
+    private String chooseRandomShader() {
+
+        // Add import statement, remembering the shader variable name. Will be in format type.actualName
+        String shaderImportName = generator.generateTopLevelStatement("shader");
+        String[] splitNames = shaderImportName.split("\\.");
+
+        // Set label as 'compute' or 'graphics' based on folder in which found the shader
+        parentList.setParamValue("label", splitNames[0]);
+
+        return splitNames[1];
 
     }
 

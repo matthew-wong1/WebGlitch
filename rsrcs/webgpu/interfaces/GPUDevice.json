@@ -167,6 +167,22 @@
           }
         }
       ]
+    },
+    {
+      "name": "createShaderModule",
+      "paramType": "object",
+      "returnType": "GPUShaderModule",
+      "properties": [
+        {
+          "label": {
+            "type": "string",
+            "optional": true
+          },
+          "code": {
+            "type": "shader"
+          }
+        }
+      ]
     }
   ],
   "attributes": [

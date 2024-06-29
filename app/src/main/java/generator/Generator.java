@@ -149,7 +149,8 @@ public class Generator {
     }
 
     public String getObjectAttributes(String variableName, String fieldName) {
-
+        System.out.println("getting variable " + variableName);
+        System.out.println(objectAttributesTable);
         List<Parameter> parameters = objectAttributesTable.get(variableName).get(fieldName);
 
         if (parameters == null || parameters.isEmpty()) {
@@ -204,24 +205,24 @@ public class Generator {
         }
     }
 
-    public String getRandomReceiver(String receiverType) {
+    public String getRandomReceiver(String receiverType, String callName) {
 
-        return getRandomReceiver(receiverType, null, null, null);
+        return getRandomReceiver(receiverType, callName, null, null, null);
 
 
     }
 
-    public String getRandomReceiver(String receiverType, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName) {
+    public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName) {
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
 
-        Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, requirements, sameObjects, variablesThatMeetReqs, receiverName);
+        Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, callName, requirements, sameObjects, variablesThatMeetReqs, receiverName);
 
         if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
             // pass in same objects here
             parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
-            return getRandomReceiver(receiverType, requirements, sameObjects, receiverName);
+            return getRandomReceiver(receiverType, callName, requirements, sameObjects, receiverName);
         }
 
         int randIdx = rand.nextInt(variablesThatMeetReqs.size());
@@ -229,7 +230,7 @@ public class Generator {
 
     }
 
-    private Map<String, String> findAllVariablesThatMeetReqs(String receiverType, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName) {
+    private Map<String, String> findAllVariablesThatMeetReqs(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName) {
         List<String> allVariables = symbolTable.get(receiverType);
         if (allVariables == null) {
             return null;
@@ -244,6 +245,16 @@ public class Generator {
         } else {
             variablesThatMeetReqs.addAll(allVariables);
         }
+
+        // Remove variables if call is unavailable to them
+        List<String> unavailableVariables = new ArrayList<>();
+        for (String variableThatMeetsReqs : variablesThatMeetReqs) {
+            if (callUnavailability.containsKey(variableThatMeetsReqs) && callUnavailability.get(variableThatMeetsReqs).contains(receiverType + "." + callName)) {
+                unavailableVariables.add(variableThatMeetsReqs);
+            }
+        }
+
+        variablesThatMeetReqs.removeAll(unavailableVariables);
 
         return sameObjectsReqs;
 
@@ -357,7 +368,7 @@ public class Generator {
         this.variableToReceiverName.remove(varName);
     }
 
-    public String determineReceiver(String receiverType, boolean hasRequirements, Map<String, String> sameObjectsReqs) {
+    public String determineReceiver(String receiverType, String callName, boolean hasRequirements, Map<String, String> sameObjectsReqs) {
         if (hasRequirements) {
             String requiredReceiver = null;
             if (sameObjectsReqs != null) {
@@ -365,7 +376,7 @@ public class Generator {
             }
 
             if (requiredReceiver == null) {
-                return getRandomReceiver(receiverType);
+                return getRandomReceiver(receiverType, callName);
             }
 
             return requiredReceiver;

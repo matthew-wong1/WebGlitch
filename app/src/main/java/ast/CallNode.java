@@ -9,6 +9,7 @@ import java.util.Map;
 public class CallNode extends ASTNode {
 
     private final String fullCallName;
+    private final String callName;
     private final boolean isMethod;
     private final String receiver;
     private ParameterListNode parameterListNode = null;
@@ -16,6 +17,7 @@ public class CallNode extends ASTNode {
 
     public CallNode(String receiver, String callName, boolean jsonParams, boolean isArray, boolean isMethod, Generator generator, JsonNode paramsJsonNode, Map<String, List<String>> requirements) {
         this.receiver = receiver;
+        this.callName = callName;
         this.fullCallName = receiver + "." + callName;
         this.isMethod = isMethod;
         this.generator = generator;
@@ -53,5 +55,9 @@ public class CallNode extends ASTNode {
 
     public String getReceiver() {
         return receiver;
+    }
+
+    public String getCallName() {
+        return this.callName;
     }
 }

@@ -54,6 +54,8 @@ public class ParameterNode extends ASTNode {
 
     private void generateParam(String fieldName, JsonNode details, String paramType) {
 
+        JsonNode additionalConditionsNode = null;
+
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
         } else if (isString) {
@@ -66,7 +68,7 @@ public class ParameterNode extends ASTNode {
             String arrayVariableName = generator.generateTopLevelStatement("typedArray");
             this.parameters.add(new Parameter(arrayVariableName));
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
-            this.parameters.add(this.findWebGPUInterface(paramType, details));
+            additionalConditionsNode = findAndSetWebGPUInterface(paramType, details);
         } else { // Requires WebGPU Type
             generateParamAsJson(paramType);
         }
@@ -88,11 +90,29 @@ public class ParameterNode extends ASTNode {
 //        if (!isNested) { fix this later when fix json structure
 
 //        }
+
+        // Set call availabiltiy
+        // Set unavailabillity
+        if (additionalConditionsNode != null) {
+            this.parseAndSetCallAvailability(additionalConditionsNode);
+        }
+
     }
 
-    private Parameter findWebGPUInterface(String paramType, JsonNode details) {
+    private void parseAndSetCallAvailability(JsonNode conditionsNode) {
+        if (conditionsNode.has("setUnavailable")) {
+            setCallAvailability(conditionsNode.get("setUnavailable"), false);
+        }
+
+        if (conditionsNode.has("setAvailable")) {
+            setCallAvailability(conditionsNode.get("setAvailable"), true);
+        }
+    }
+
+    private JsonNode findAndSetWebGPUInterface(String paramType, JsonNode details) {
         if (!details.has("conditions")) {
-            return new Parameter(generator.getRandomReceiver(paramType));
+            this.parameters.add(new Parameter(generator.getRandomReceiver(paramType, parentList.getCallName())));
+            return null;
         }
 
         // Need a specific object with certain attributes
@@ -107,18 +127,11 @@ public class ParameterNode extends ASTNode {
 
         List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
 
-        Parameter newParameter = new Parameter(generator.getRandomReceiver(paramType, requirements, sameObjectRequirements, parentList.getReceiver()));
+        Parameter newParameter = new Parameter(generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver()));
+        this.parameters.add(newParameter);
 
-        // Set unavailabillity
-        if (conditionsNode.has("setUnavailable")) {
-            setCallAvailability(conditionsNode.get("setUnavailable"), false);
-        }
+        return conditionsNode;
 
-        if (conditionsNode.has("setAvailable")) {
-            setCallAvailability(conditionsNode.get("setAvailable"), true);
-        }
-
-        return newParameter;
     }
 
     private void setCallAvailability(JsonNode availabilityNode, boolean isAvailable) {
@@ -127,6 +140,7 @@ public class ParameterNode extends ASTNode {
 
         availabilityNode.fieldNames().forEachRemaining(fieldName -> {
             List<String> affectedCalls = Parser.getListFromJson(availabilityNode.get(fieldName).toString());
+            System.out.println("fieldName " + fieldName);
             String variableName = parentList.getParameter(fieldName);
             allCalls.put(variableName, new HashSet<>(affectedCalls));
         });

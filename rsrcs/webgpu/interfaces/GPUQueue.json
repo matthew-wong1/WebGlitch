@@ -16,7 +16,7 @@
                 "usage": ["GPUBufferUsage.COPY_DST"]
               },
               "setUnavailable": {
-                "this.buffer": ["GPUQueue.writeBuffer"]
+                "buffer": ["GPUQueue.writeBuffer"]
               }
             }
           },

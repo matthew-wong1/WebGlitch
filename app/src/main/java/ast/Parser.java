@@ -95,7 +95,7 @@ public class Parser {
 
         String returnType = callJsonNode.get("returnType").asText();
         String parentReceiverType = rootJsonNode.get("receiverType").asText();
-        String receiver = generator.determineReceiver(parentReceiverType, rootJsonNode.has("requirements"), sameObjectsReqs);
+        String receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), sameObjectsReqs);
 
         boolean jsonParams = callJsonNode.path("paramType").asText("csv").equals("object");
         boolean isArray = callJsonNode.has("array");

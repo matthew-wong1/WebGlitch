@@ -18,7 +18,8 @@ public class Generator {
     private static final String DEFAULT_CONTEXT_NAME = "context";
     private final String HEADER = "\nasync function main() {";
     private final String FOOTER = "\n}main().catch(console.error);";
-    private final String SHADERS_PATH = "./rsrcs/shaders/";
+    private final String SHADERS_PATH = "/rsrcs/shaders/";
+    private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/interfaces/";
 
     // Hash map to keep track of state
     // Key: Type of object eg adapter, device
@@ -35,7 +36,7 @@ public class Generator {
     private final Map<ReceiverNameCallNameCallType, FileNameCallProbPair> callProbabilities = new HashMap<>();
     // Tracks call histories
     private final Set<ReceiverNameCallNameCallType> callState = new HashSet<>();
-    private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/interfaces/";
+
     private final Parser parser = new Parser(this);
     private final int maxCalls;
     private final boolean allowOptParams;
@@ -413,12 +414,12 @@ public class Generator {
                 List<String> GRAPHIC_SHADER_TYPES = Arrays.asList("vertex", "fragment");
 
                 String chosenShaderType = SHADER_TYPES.get(rand.nextInt(SHADER_TYPES.size()));
-                File shadersDirectory = new File(SHADERS_PATH + chosenShaderType);
+                File shadersDirectory = new File("." + SHADERS_PATH + chosenShaderType);
                 File[] files = shadersDirectory.listFiles();
                 assert files != null;
                 String chosenFileName = files[rand.nextInt(files.length)].getName();
 
-                String fullPath = "." + SHADERS_PATH + chosenShaderType + "/" + chosenFileName;
+                String fullPath = "../WebGlitch" + SHADERS_PATH + chosenShaderType + "/" + chosenFileName;
 
                 if (chosenShaderType.equals("graphics")) {
                     chosenShaderType = GRAPHIC_SHADER_TYPES.get(rand.nextInt(GRAPHIC_SHADER_TYPES.size()));
@@ -426,7 +427,7 @@ public class Generator {
                 }
 
                 assignmentNode = new AssignmentNode("const", false);
-                Require requireStatement = new Require(fullPath);
+                Require requireStatement = new Require(fullPath, true);
                 assignmentNode.addNode(requireStatement);
                 String importName = assignmentNode.getVarName();
                 astNodeToPrepend = assignmentNode;

@@ -3,7 +3,7 @@ package generator;
 import ast.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javascript.Import;
+import javascript.Require;
 import javascript.JavaScriptStatement;
 import javascript.TypedArray;
 import programprinter.PrettyPrinter;
@@ -396,11 +396,12 @@ public class Generator {
 
     public String generateTopLevelStatement(String type) {
         ASTNode astNodeToPrepend = null;
+        AssignmentNode assignmentNode = null;
         String varName = "";
 
         switch (type) {
             case "typedArray":
-                AssignmentNode assignmentNode = new AssignmentNode("const", false);
+                assignmentNode = new AssignmentNode("const", false);
                 TypedArray typedArray = new TypedArray();
                 assignmentNode.addNode(typedArray);
                 varName = assignmentNode.getVarName();
@@ -408,7 +409,7 @@ public class Generator {
                 break;
             case "shader":
                 // Go to shaders folder, pick between compute or graphics, noting down which
-                List<String> SHADER_TYPES = Arrays.asList("graphics", "computes");
+                List<String> SHADER_TYPES = Arrays.asList("graphics", "compute");
                 List<String> GRAPHIC_SHADER_TYPES = Arrays.asList("vertex", "fragment");
 
                 String chosenShaderType = SHADER_TYPES.get(rand.nextInt(SHADER_TYPES.size()));
@@ -417,21 +418,22 @@ public class Generator {
                 assert files != null;
                 String chosenFileName = files[rand.nextInt(files.length)].getName();
 
-                String fullPath = SHADERS_PATH + chosenShaderType + "/" + chosenFileName;
+                String fullPath = "." + SHADERS_PATH + chosenShaderType + "/" + chosenFileName;
 
                 if (chosenShaderType.equals("graphics")) {
                     chosenShaderType = GRAPHIC_SHADER_TYPES.get(rand.nextInt(GRAPHIC_SHADER_TYPES.size()));
                     fullPath += "/" + chosenShaderType + ".wgsl";
                 }
 
-                String importName = ParamGenerator.generateRandVarName();
-                astNodeToPrepend = new Import(fullPath, importName);
+                assignmentNode = new AssignmentNode("const", false);
+                Require requireStatement = new Require(fullPath);
+                assignmentNode.addNode(requireStatement);
+                String importName = assignmentNode.getVarName();
+                astNodeToPrepend = assignmentNode;
 
                 varName += chosenShaderType + "." + importName;
 
-                // Update a HashMap in generator, pointing shader variable name to part of file system eg graphics/helloTriangle/
-                // Maybe want path, type (eg fragment or vertex or compute)
-                // also your earlier code doesn't work. you need to find all files with extension .wgsl
+                // Later on, add available objects eg for improting JS objects
                 this.addToShaderProperties(importName, chosenShaderType, fullPath);
                 break;
         }

@@ -207,7 +207,16 @@
         }
       },
       "targets": {
-        "type": "targets"
+        "type": "targets",
+        "array": true
+      }
+    }
+  ],
+  "targets": [
+    {
+      "blend": {
+        "type": "blend",
+        "optional": true
       },
       "format": {
         "type": "gpuTextureFormat"
@@ -221,14 +230,6 @@
           "GPUFlagsConstant.ALPHA",
           "GPUFlagsConstant.ALL"
         ],
-        "optional": true
-      }
-    }
-  ],
-  "targets": [
-    {
-      "blend": {
-        "type": "blend",
         "optional": true
       }
     }

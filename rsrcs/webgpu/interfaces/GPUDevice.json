@@ -195,10 +195,11 @@
             "optional": true
           },
           "label": {
+            "type": "string",
             "optional": true
           },
           "layout": {
-
+            "type": "gpuLayout"
           },
           "primitive": {
             "type": "primitive",

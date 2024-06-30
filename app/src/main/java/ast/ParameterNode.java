@@ -70,7 +70,9 @@ public class ParameterNode extends ASTNode {
             String arrayVariableName = generator.generateTopLevelStatement("typedArray");
             this.parameters.add(new Parameter(arrayVariableName));
         } else if (paramType.equals("shaderEntryPoint")) {
-            this.parameters.add(new Parameter(SHADER_ENTRY_POINT));
+            this.parameters.add(new Parameter(encodeAsString(SHADER_ENTRY_POINT)));
+        } else if (paramType.equals("gpuLayout")) {
+            this.parameters.add(new Parameter(encodeAsString("auto")));
         } else if (paramType.equals("shader")) {
             this.parameters.add(new Parameter(this.chooseRandomShader()));
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object

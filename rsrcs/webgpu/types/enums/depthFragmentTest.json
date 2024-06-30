@@ -1,0 +1,13 @@
+{
+  "type": "string",
+  "enum": [
+    "never",
+    "less",
+    "equal",
+    "less-equal",
+    "greater",
+    "not-equal",
+    "greater-equal",
+    "always"
+  ]
+}

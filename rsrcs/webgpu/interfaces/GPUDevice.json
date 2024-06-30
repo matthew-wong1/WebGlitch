@@ -190,10 +190,6 @@
       "returnType": "GPURenderPipeline",
       "properties": [
         {
-          "depthStencil": {
-            "type": "depthStencil",
-            "optional": true
-          },
           "fragment": {
             "type": "fragment",
             "optional": true
@@ -203,10 +199,6 @@
           },
           "layout": {
 
-          },
-          "multisample": {
-            "type": "multisample",
-            "optional": true
           },
           "primitive": {
             "type": "primitive",

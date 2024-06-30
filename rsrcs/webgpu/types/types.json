@@ -150,5 +150,103 @@
         }
       }
     }
+  ],
+  "depthStencil": [
+    {
+      "depthBias": {
+        "type": "ufloat",
+        "optional": true
+      },
+      "depthBiasClamp": {
+        "type": "ufloat",
+        "optional": true
+      },
+      "depthBiasSlopeScale": {
+        "type": "ufloat",
+        "optional": true
+      },
+      "depthCompare": {
+        "type": "depthFragmentTest",
+        "enum": true,
+        "inFile": true
+      },
+      "depthWriteEnabled": {
+        "type": "boolean"
+      },
+      "format": {
+        "type": "gpuTextureFormat",
+        "conditions": {
+          "depthOrStencil": true
+        }
+      },
+      "stencilBack": {
+        "type": "stencilBack"
+      },
+      "stencilFront": {
+        "type": "stencilBack"
+      },
+      "stencilReadMask": {
+        "type": "bitmask"
+      },
+      "stencilWriteMask": {
+        "type": "bitmask"
+      }
+    }
+  ],
+  "fragment": [
+    {
+      "entryPoint": {
+        "type": "shaderEntryPoint"
+      },
+      "module": {
+        "type": "GPUShaderModule",
+        "conditions": {
+
+        }
+      }
+    }
+  ],
+  "multisample": [
+    {
+
+    }
+  ],
+  "primitive": [
+    {
+
+    }
+  ],
+  "vertex": [
+    {
+
+    }
+  ],
+  "stencilBack": [
+    {
+      "compare": {
+        "type": "depthFragmentTest",
+        "enum": true,
+        "inFile": true,
+        "optional": true
+      },
+      "depthFailOp": {
+        "type": "depthFailOp",
+        "enum": true,
+        "inFile": true,
+        "optional": true
+      },
+      "failOp": {
+        "type": "depthFailOp",
+        "enum": true,
+        "inFile": true,
+        "optional": true
+      },
+      "passOp": {
+        "type": "depthFailOp",
+        "enum": true,
+        "inFile": true,
+        "optional": true
+      }
+    }
   ]
 }

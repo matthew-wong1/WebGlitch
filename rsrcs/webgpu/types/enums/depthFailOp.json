@@ -1,0 +1,13 @@
+{
+  "type": "string",
+  "enum": [
+    "decrement-clamp",
+    "decrement-wrap",
+    "invert",
+    "increment-clamp",
+    "increment-wrap",
+    "keep",
+    "replace",
+    "zero"
+  ]
+}

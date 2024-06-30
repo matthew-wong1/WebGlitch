@@ -183,6 +183,40 @@
           }
         }
       ]
+    },
+    {
+      "name": "createRenderPipeline",
+      "paramType": "object",
+      "returnType": "GPURenderPipeline",
+      "properties": [
+        {
+          "depthStencil": {
+            "type": "depthStencil",
+            "optional": true
+          },
+          "fragment": {
+            "type": "fragment",
+            "optional": true
+          },
+          "label": {
+            "optional": true
+          },
+          "layout": {
+
+          },
+          "multisample": {
+            "type": "multisample",
+            "optional": true
+          },
+          "primitive": {
+            "type": "primitive",
+            "optional": true
+          },
+          "vertex": {
+            "type": "vertex"
+          }
+        }
+      ]
     }
   ],
   "attributes": [

@@ -1,0 +1,18 @@
+{
+  "type": "string",
+  "enum": [
+    "constant",
+    "dst",
+    "dst-alpha",
+    "one",
+    "one-minus-dst",
+    "one-minus-src",
+    "one-minus-src-alpha",
+    "one-minus-dst-alpha",
+    "one-minus-constant",
+    "src",
+    "src-alpha",
+    "src-alpha-saturated",
+    "zero"
+  ]
+}

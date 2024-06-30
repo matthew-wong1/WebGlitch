@@ -201,8 +201,72 @@
       "module": {
         "type": "GPUShaderModule",
         "conditions": {
-
+          "withAttributes": {
+            "label": "fragment"
+          }
         }
+      },
+      "targets": {
+        "type": "targets"
+      },
+      "format": {
+        "type": "gpuTextureFormat"
+      },
+      "writeMask": {
+        "type": "bitwiseFlags",
+        "enum": [
+          "GPUFlagsConstant.RED",
+          "GPUFlagsConstant.GREEN",
+          "GPUFlagsConstant.BLUE",
+          "GPUFlagsConstant.ALPHA",
+          "GPUFlagsConstant.ALL"
+        ],
+        "optional": true
+      }
+    }
+  ],
+  "targets": [
+    {
+      "blend": {
+        "type": "blend",
+        "optional": true
+      }
+    }
+  ],
+  "blend": [
+    {
+      "alpha": {
+        "type": "blendFactor"
+      },
+      "color": {
+        "type": "blendFactor"
+      }
+    }
+  ],
+  "blendFactor": [
+    {
+      "dstFactor": {
+        "type": "blendFactorOperation",
+        "enum": true,
+        "inFile": true,
+        "optional": true
+      },
+      "operation": {
+        "type": "string",
+        "optional": true,
+        "enum": [
+          "add",
+          "max",
+          "min",
+          "reverse-subtract",
+          "subtract"
+        ]
+      },
+      "srcFactor": {
+        "type": "blendFactorOperation",
+        "enum": true,
+        "inFile": true,
+        "optional": true
       }
     }
   ],

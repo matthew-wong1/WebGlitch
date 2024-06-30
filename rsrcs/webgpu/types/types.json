@@ -175,6 +175,8 @@
       },
       "format": {
         "type": "gpuTextureFormat",
+        "enum": true,
+        "inFile": true,
         "conditions": {
           "depthOrStencil": true
         }
@@ -230,7 +232,7 @@
         "type": "GPUShaderModule",
         "conditions": {
           "withAttributes": {
-            "label": "fragment"
+            "label": ["fragment"]
           }
         }
       },
@@ -247,10 +249,12 @@
         "optional": true
       },
       "format": {
-        "type": "gpuTextureFormat"
+        "type": "gpuTextureFormat",
+        "enum": true,
+        "inFile": true
       },
       "writeMask": {
-        "type": "bitwiseFlags",
+        "type": "bitwiseFlag",
         "enum": [
           "GPUFlagsConstant.RED",
           "GPUFlagsConstant.GREEN",
@@ -376,7 +380,7 @@
         "type": "GPUShaderModule",
         "conditions": {
           "withAttributes": {
-            "label": "vertex"
+            "label": ["vertex"]
           }
         }
       }

@@ -34,7 +34,7 @@ public class ParameterNode extends ASTNode {
     private final List<Parameter> parameters = new ArrayList<>();
     private final List<String> parameterRequirements;
 
-    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) {
+    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) throws Exception {
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parentList = parentList;
@@ -52,7 +52,7 @@ public class ParameterNode extends ASTNode {
         }
     }
 
-    private void generateParam(String fieldName, JsonNode details, String paramType) {
+    private void generateParam(String fieldName, JsonNode details, String paramType) throws Exception {
 
         JsonNode additionalConditionsNode = null;
 
@@ -329,6 +329,7 @@ public class ParameterNode extends ASTNode {
         ObjectMapper mapper = new ObjectMapper();
 
         JsonNode details = null;
+
         try {
             details = mapper.readTree(new File(TYPES_PATH)).get(paramType);
         } catch (IOException e) {
@@ -344,16 +345,19 @@ public class ParameterNode extends ASTNode {
 //
 //                }
 
-                ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, generator, parentList, parameterRequirements);
-                this.addNode(nestedParameterNode);
+                try {
+                    ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, generator, parentList, parameterRequirements);
+                    this.addNode(nestedParameterNode);
+                } catch (Exception ignored) {
 
+                }
 
             });
         }
 
     }
 
-    private void generateEnumVal(JsonNode details, String paramType) {
+    private void generateEnumVal(JsonNode details, String paramType) throws Exception {
         JsonNode mutexNode = details.get("mutex");
         JsonNode conditions = null;
         if (details.has("conditions")) {
@@ -486,7 +490,7 @@ public class ParameterNode extends ASTNode {
 
     }
 
-    private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) {
+    private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) throws Exception {
         List<String> mandatoryEnums = new ArrayList<>();
 
         if (parameterRequirements != null) {
@@ -682,11 +686,12 @@ public class ParameterNode extends ASTNode {
         }
     }
 
-    private void parseConstraints(JsonNode conditions, List<String> enumValues) {
+    private void parseConstraints(JsonNode conditions, List<String> enumValues) throws Exception {
         JsonNode newEnumNode = conditions.get("enum");
         // LOOP THROUGH ALL ENUM SPECIFIED, THEN MAKE THE INTERSECTION BETWEEN THE 2 VALUES
 
         List<List<String>> constraintsList = new ArrayList<>();
+        System.out.println(newEnumNode);
         JsonNode finalNewEnumNode = newEnumNode;
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
 
@@ -703,6 +708,12 @@ public class ParameterNode extends ASTNode {
             }
 
         });
+        System.out.println(constraintsList);
+
+        // ie do not generate this parameter (keep it optional)
+        if (constraintsList.isEmpty()) {
+            throw new Exception("Optional parameter must be skipped");
+        }
 
         Set<String> resultantSet = new HashSet<>(constraintsList.getFirst());
         for (List<String> constraint : constraintsList) {

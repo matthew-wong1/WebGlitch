@@ -3,6 +3,7 @@ package ast;
 import com.fasterxml.jackson.databind.JsonNode;
 import generator.Generator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,9 +60,15 @@ public class ParameterListNode extends ASTNode {
 //                if (paramDetails.has("optional")) {
 //
 //                }
-                this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this, parameterRequirements));
+                try {
+                    this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this, parameterRequirements));
+                } catch (Exception ignored) {
+
+                }
+
             });
         }
+
     }
 
     // Returning NULL because it's being stored on another object. You need to hard code for textureFormatCompatible to go looking from ObjectAttributes on generator
@@ -161,4 +168,5 @@ public class ParameterListNode extends ASTNode {
     public String getCallName() {
         return callNode.getCallName();
     }
+
 }

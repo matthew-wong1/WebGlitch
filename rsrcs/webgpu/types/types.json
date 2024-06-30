@@ -256,11 +256,11 @@
       "writeMask": {
         "type": "bitwiseFlag",
         "enum": [
-          "GPUFlagsConstant.RED",
-          "GPUFlagsConstant.GREEN",
-          "GPUFlagsConstant.BLUE",
-          "GPUFlagsConstant.ALPHA",
-          "GPUFlagsConstant.ALL"
+          "GPUColorWrite.RED",
+          "GPUColorWrite.GREEN",
+          "GPUColorWrite.BLUE",
+          "GPUColorWrite.ALPHA",
+          "GPUColorWrite.ALL"
         ],
         "optional": true
       }

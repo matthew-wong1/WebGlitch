@@ -292,7 +292,51 @@
   ],
   "primitive": [
     {
-
+      "cullMode": {
+        "type": "string",
+        "enum": [
+          "back",
+          "front",
+          "none"
+        ],
+        "optional": true
+      },
+      "frontFace": {
+        "type": "string",
+        "enum": [
+          "ccw",
+          "cw"
+        ],
+        "optional": true
+      },
+      "topology": {
+        "type": "string",
+        "optional": true,
+        "enum": [
+          "line-list",
+          "line-strip",
+          "point-list",
+          "triangle-list",
+          "triangle-strip"
+        ]
+      },
+      "stripIndexFormat": {
+        "type": "string",
+        "enum": true,
+        "conditions": {
+          "constraints": true,
+          "enum": {
+            "topology": {
+              "line-list": [],
+              "point-list": [],
+              "triangle-list": [],
+              "line-strip": ["uint16", "uint32"],
+              "triangle-strip": ["uint16", "uint32"]
+            }
+          }
+        },
+        "optional": true
+      }
     }
   ],
   "vertex": [

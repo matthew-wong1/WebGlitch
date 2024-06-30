@@ -193,6 +193,34 @@
       }
     }
   ],
+  "stencilBack": [
+    {
+      "compare": {
+        "type": "depthFragmentTest",
+        "enum": true,
+        "inFile": true,
+        "optional": true
+      },
+      "depthFailOp": {
+        "type": "depthFailOp",
+        "enum": true,
+        "inFile": true,
+        "optional": true
+      },
+      "failOp": {
+        "type": "depthFailOp",
+        "enum": true,
+        "inFile": true,
+        "optional": true
+      },
+      "passOp": {
+        "type": "depthFailOp",
+        "enum": true,
+        "inFile": true,
+        "optional": true
+      }
+    }
+  ],
   "fragment": [
     {
       "entryPoint": {
@@ -341,34 +369,16 @@
   ],
   "vertex": [
     {
-
-    }
-  ],
-  "stencilBack": [
-    {
-      "compare": {
-        "type": "depthFragmentTest",
-        "enum": true,
-        "inFile": true,
-        "optional": true
+      "entryPoint": {
+        "type": "shaderEntryPoint"
       },
-      "depthFailOp": {
-        "type": "depthFailOp",
-        "enum": true,
-        "inFile": true,
-        "optional": true
-      },
-      "failOp": {
-        "type": "depthFailOp",
-        "enum": true,
-        "inFile": true,
-        "optional": true
-      },
-      "passOp": {
-        "type": "depthFailOp",
-        "enum": true,
-        "inFile": true,
-        "optional": true
+      "module": {
+        "type": "GPUShaderModule",
+        "conditions": {
+          "withAttributes": {
+            "label": "vertex"
+          }
+        }
       }
     }
   ]

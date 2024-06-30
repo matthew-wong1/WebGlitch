@@ -273,7 +273,21 @@
   ],
   "multisample": [
     {
-
+      "alphaToCoverageEnabled": {
+        "optional": true,
+        "type": "boolean"
+      },
+      "count": {
+        "type": "uint",
+        "conditions": {
+          "attachmentTextureCompatible": true
+        },
+        "optional": true
+      },
+      "mask": {
+        "type": "bitmask",
+        "optional": true
+      }
     }
   ],
   "primitive": [

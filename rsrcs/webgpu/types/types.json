@@ -282,12 +282,6 @@
   ],
   "blendFactor": [
     {
-      "dstFactor": {
-        "type": "blendFactorOperation",
-        "enum": true,
-        "inFile": true,
-        "optional": true
-      },
       "operation": {
         "type": "string",
         "optional": true,
@@ -299,12 +293,24 @@
           "subtract"
         ]
       },
+      "dstFactor": {
+        "type": "blendFactorOperation",
+        "enum": true,
+        "inFile": true,
+        "optional": true,
+        "conditions": {
+          "blendOperationCompatible": true
+        }
+      },
       "srcFactor": {
         "type": "blendFactorOperation",
         "enum": true,
         "inFile": true,
         "optional": true,
-        "blendOperationCompatible": true
+        "conditions": {
+          "blendOperationCompatible": true
+        }
+
       }
     }
   ],

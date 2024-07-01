@@ -551,7 +551,7 @@ public class ParameterNode extends ASTNode {
         }
 
         if (conditions.has("blendOperationCompatible")) {
-            // When BlendOperation is Max, blend ource must be One
+
             ensureBlendOperationCompatible(enumValues);
         }
 
@@ -564,6 +564,11 @@ public class ParameterNode extends ASTNode {
     }
 
     private void ensureBlendFormatCompatible(List<String> enumValues) {
+        if (parentList.getParameter("fragment.targets.blend") == null ) {
+            // SKip blend compatibiltiy checking if field was left blank
+            return;
+        }
+
         JsonNode texturesEnumNode = parseJsonFromFile("gpuTextureFormat");
         List<String> incompatibleBlendFormats = new ArrayList<>();
         extractNodeAsList(texturesEnumNode.get("blendIncompatible"), incompatibleBlendFormats);
@@ -571,6 +576,21 @@ public class ParameterNode extends ASTNode {
     }
 
     private void ensureBlendOperationCompatible(List<String> enumValues) {
+        // When BlendOperation is Max, blend ource must be One
+        String PATH = "fragments.targets.blend";
+        String blendOperationAlpha = parentList.getParameter(PATH + "alpha.operation");
+        String blendOperationColor = parentList.getParameter(PATH + "color.operation");
+
+        // Must be generating alpha
+        if (blendOperationColor == null) {
+            if (blendOperationAlpha.equals("max")) {
+                enumValues.removeIf(field -> !field.equals("one"));
+            }
+        } else {
+            if (blendOperationColor.equals("max")) {
+                enumValues.removeIf(field -> !field.equals("one"));
+            }
+        }
     }
 
     private void ensureCubeCompatibility() {

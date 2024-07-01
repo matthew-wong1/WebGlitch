@@ -252,7 +252,10 @@
       "format": {
         "type": "gpuTextureFormat",
         "enum": true,
-        "inFile": true
+        "inFile": true,
+        "conditions": {
+          "blendFormatCompatible": true
+        }
       },
       "writeMask": {
         "type": "bitwiseFlag",
@@ -300,7 +303,8 @@
         "type": "blendFactorOperation",
         "enum": true,
         "inFile": true,
-        "optional": true
+        "optional": true,
+        "blendOperationCompatible": true
       }
     }
   ],

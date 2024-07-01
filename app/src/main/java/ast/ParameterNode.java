@@ -550,7 +550,27 @@ public class ParameterNode extends ASTNode {
             ensureCubeCompatibility();
         }
 
+        if (conditions.has("blendOperationCompatible")) {
+            // When BlendOperation is Max, blend ource must be One
+            ensureBlendOperationCompatible(enumValues);
+        }
+
+        if (conditions.has("blendFormatCompatible")) {
+            // Format must be blendable
+            ensureBlendFormatCompatible(enumValues);
+        }
+
         return mandatoryEnums;
+    }
+
+    private void ensureBlendFormatCompatible(List<String> enumValues) {
+        JsonNode texturesEnumNode = parseJsonFromFile("gpuTextureFormat");
+        List<String> incompatibleBlendFormats = new ArrayList<>();
+        extractNodeAsList(texturesEnumNode.get("blendIncompatible"), incompatibleBlendFormats);
+        enumValues.removeAll(incompatibleBlendFormats);
+    }
+
+    private void ensureBlendOperationCompatible(List<String> enumValues) {
     }
 
     private void ensureCubeCompatibility() {

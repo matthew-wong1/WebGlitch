@@ -163,5 +163,34 @@
     "rgba32sint",
     "rgba32float",
     "rg11b10ufloat"
+  ],
+
+  "blendIncompatible": [
+    "r8snorm",
+    "r8uint",
+    "r8sint",
+    "rg8snorm",
+    "rg8uint",
+    "rg8sint",
+    "rgba8snorm",
+    "rgba8uint",
+    "rgba8sint",
+    "r16uint",
+    "r16sint",
+    "rg16uint",
+    "rg16sint",
+    "rgba16uint",
+    "rgba16sint",
+    "r32uint",
+    "r32sint",
+    "r32float",
+    "rg32uint",
+    "rg32sint",
+    "rg32float",
+    "rgba32uint",
+    "rgba32sint",
+    "rgba32float",
+    "rgb10a2uint",
+    "rg11b10ufloat"
   ]
 }

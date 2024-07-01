@@ -3,10 +3,7 @@ package ast;
 import com.fasterxml.jackson.databind.JsonNode;
 import generator.Generator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ParameterListNode extends ASTNode {
@@ -62,8 +59,13 @@ public class ParameterListNode extends ASTNode {
 //                }
                 try {
                     this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this, parameterRequirements));
-                } catch (Exception e) {
+                } catch (SkipParameterException e) {
+                    List<String> allowedFieldSkips = Arrays.asList("stripIndexFormat");
                     System.out.println("Skipped generation of parameter for field " + fieldName);
+                    if(!allowedFieldSkips.contains(fieldName)) {
+                        System.err.println("Skipped unskippable parameter");
+                        System.exit(1);
+                    }
                 }
 
             });
@@ -96,6 +98,12 @@ public class ParameterListNode extends ASTNode {
         return parameter.getFirst().getValue();
     }
 
+    public void printAllParametersAsStrings() {
+        allParameters.forEach((fieldName, parameters) -> {
+            System.out.print(fieldName + ": ");
+            parameters.forEach(p -> System.out.println(p.getValue()));
+        });
+    }
     public List<String> getAllParameters(String fieldName) {
         List<Parameter> parameters = allParameters.get(fieldName);
         if (parameters == null || parameters.isEmpty()) {

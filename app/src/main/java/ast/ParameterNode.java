@@ -376,6 +376,8 @@ public class ParameterNode extends ASTNode {
     private void generateEnumVal(JsonNode details, String paramType) throws SkipParameterException {
         JsonNode mutexNode = details.get("mutex");
         JsonNode conditions = null;
+
+
         if (details.has("conditions")) {
             conditions = details.get("conditions");
         }
@@ -386,6 +388,10 @@ public class ParameterNode extends ASTNode {
 
             paramType = details.get("type").asText();
             this.isString = paramType.equals("string");
+        }
+
+        if (paramType.equals("bitwiseFlag")) {
+            this.isBitwiseFlags = true;
         }
 
         List<String> enumValues = new ArrayList<>();
@@ -399,9 +405,8 @@ public class ParameterNode extends ASTNode {
         Collections.shuffle(enumValues);
         List<String> chosenEnumValues = new ArrayList<>();
 
-        if (paramType.equals("bitwiseFlag")) {
+        if (this.isBitwiseFlags) {
             // Random int between 1 and end of list
-            this.isBitwiseFlags = true;
             chosenEnumValues = pickEnumValuesAsBitwiseFlags(enumValues, mutexNode);
         } else if (isArray) {
             chosenEnumValues = pickEnumValuesAsArray(enumValues);
@@ -474,7 +479,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private List<String> pickEnumValuesAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode) {
-
+        System.out.println("curr values " + enumValues.toString());
         int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
 
         List<String> chosenFlags = enumValues.subList(0, randIdx);
@@ -509,6 +514,8 @@ public class ParameterNode extends ASTNode {
     private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) throws SkipParameterException {
         List<String> mandatoryEnums = new ArrayList<>();
 
+        parentList.printAllParametersAsStrings();
+        System.out.println("original enum vals " + enumValues.toString());
         if (parameterRequirements != null) {
             mandatoryEnums.addAll(parameterRequirements);
         }
@@ -526,9 +533,11 @@ public class ParameterNode extends ASTNode {
             ensureTextureDimensionAndSampleCompatible(enumValues);
         }
 
+
         if (conditions.has("textureFormatCompatible")) {
             ensureTextureFormatCompatible(enumValues);
         }
+        System.out.println("after format compatible " + enumValues.toString());
 
         if (conditions.has("textureAspectCompatible")) {
             ensureTextureAspectCompatible(enumValues, conditions.has("textureViewFormatsCompatible"));
@@ -537,10 +546,13 @@ public class ParameterNode extends ASTNode {
         if (conditions.has("textureUsageCompatible")) {
             ensureTextureUsageCompatible(conditions, enumValues);
         }
+        System.out.println("after usage compatible " + enumValues.toString());
 
         if(conditions.has("multiSamplingCompatible")) {
             ensureMultiSamplingCompatible(enumValues, mandatoryEnums);
         }
+
+        System.out.println("after multisampling compatible " + enumValues.toString());
 
         if (conditions.has("constraints")) {
             parseConstraints(conditions, enumValues);
@@ -572,25 +584,27 @@ public class ParameterNode extends ASTNode {
         JsonNode texturesEnumNode = parseJsonFromFile("gpuTextureFormat");
         List<String> incompatibleBlendFormats = new ArrayList<>();
         extractNodeAsList(texturesEnumNode.get("blendIncompatible"), incompatibleBlendFormats);
+        System.out.println("incompatible formats: " + incompatibleBlendFormats);
         enumValues.removeAll(incompatibleBlendFormats);
     }
 
     private void ensureBlendOperationCompatible(List<String> enumValues) {
         // When BlendOperation is Max, blend ource must be One
-        String PATH = "fragments.targets.blend";
-        String blendOperationAlpha = parentList.getParameter(PATH + "alpha.operation");
-        String blendOperationColor = parentList.getParameter(PATH + "color.operation");
 
-        // Must be generating alpha
-        if (blendOperationColor == null) {
-            if (blendOperationAlpha.equals("max")) {
+        // Need to search parent nodes because fragment hasn't been added to parentList node yet as it's still generating subparams
+
+        ASTNode currParent = this.parent;
+        String paramValue;
+        while (currParent != null) {
+            paramValue = currParent.toString();
+            System.out.println("the param value: " + paramValue);
+            if (paramValue.contains("max")) {
                 enumValues.removeIf(field -> !field.equals("one"));
+                break;
             }
-        } else {
-            if (blendOperationColor.equals("max")) {
-                enumValues.removeIf(field -> !field.equals("one"));
-            }
+            currParent = currParent.parent;
         }
+
     }
 
     private void ensureCubeCompatibility() {
@@ -708,8 +722,6 @@ public class ParameterNode extends ASTNode {
         List<String> incompatibleTexturesForRender = new ArrayList<>();
         extractNodeAsList(texturesNode.get("renderAttachmentIncompatible"), incompatibleTexturesForRender);
 
-        List<String> incompatibleTexturesForMultiSampling = new ArrayList<>();
-        extractNodeAsList(texturesNode.get("multiSamplingIncompatible"), incompatibleTexturesForMultiSampling);
 
         if (currentTexture == null) {
             currentTexture = generator.getObjectAttributes(parentList.getReceiver(), "format");
@@ -727,6 +739,13 @@ public class ParameterNode extends ASTNode {
             enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.RENDER_ATTACHMENT"));
         }
 
+        System.out.println(enumValues.toString());
+        System.out.println(this.isBitwiseFlags);
+        if (this.isBitwiseFlags) {
+            return;
+        }
+
+        // This check not for bitwise flags
         if (currentTexture.startsWith("stencil") || currentTexture.startsWith("depth")) { // Remove aspect enums
             enumValues.remove("all");
             if (currentTexture.startsWith("stencil")) {

@@ -34,7 +34,7 @@ public class ParameterNode extends ASTNode {
     private final List<Parameter> parameters = new ArrayList<>();
     private final List<String> parameterRequirements;
 
-    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) throws Exception {
+    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) throws SkipParameterException {
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parentList = parentList;
@@ -52,7 +52,7 @@ public class ParameterNode extends ASTNode {
         }
     }
 
-    private void generateParam(String fieldName, JsonNode details, String paramType) throws Exception {
+    private void generateParam(String fieldName, JsonNode details, String paramType) throws SkipParameterException {
 
         JsonNode additionalConditionsNode = null;
 
@@ -363,7 +363,8 @@ public class ParameterNode extends ASTNode {
                 try {
                     ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, generator, parentList, parameterRequirements);
                     this.addNode(nestedParameterNode);
-                } catch (Exception e) {
+                } catch (SkipParameterException e) {
+                    // make your new exception. throw a custom exception. let other excpetions fails
                     System.out.println("Skipped generation of paramter for field " + nestedFieldName);
                 }
 
@@ -372,7 +373,7 @@ public class ParameterNode extends ASTNode {
 
     }
 
-    private void generateEnumVal(JsonNode details, String paramType) throws Exception {
+    private void generateEnumVal(JsonNode details, String paramType) throws SkipParameterException {
         JsonNode mutexNode = details.get("mutex");
         JsonNode conditions = null;
         if (details.has("conditions")) {
@@ -505,7 +506,7 @@ public class ParameterNode extends ASTNode {
 
     }
 
-    private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) throws Exception {
+    private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) throws SkipParameterException {
         List<String> mandatoryEnums = new ArrayList<>();
 
         if (parameterRequirements != null) {
@@ -701,7 +702,7 @@ public class ParameterNode extends ASTNode {
         }
     }
 
-    private void parseConstraints(JsonNode conditions, List<String> enumValues) throws Exception {
+    private void parseConstraints(JsonNode conditions, List<String> enumValues) throws SkipParameterException {
         JsonNode newEnumNode = conditions.get("enum");
         // LOOP THROUGH ALL ENUM SPECIFIED, THEN MAKE THE INTERSECTION BETWEEN THE 2 VALUES
 
@@ -725,7 +726,7 @@ public class ParameterNode extends ASTNode {
 
         // ie do not generate this parameter (keep it optional)
         if (constraintsList.isEmpty()) {
-            throw new Exception("Optional parameter must be skipped");
+            throw new SkipParameterException("Optional parameter must be skipped");
         }
 
         Set<String> resultantSet = new HashSet<>(constraintsList.getFirst());

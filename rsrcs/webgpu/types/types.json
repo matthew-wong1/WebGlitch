@@ -231,6 +231,7 @@
       "module": {
         "type": "GPUShaderModule",
         "conditions": {
+          "same": ["GPUDevice"],
           "withAttributes": {
             "label": ["fragment"]
           }
@@ -379,6 +380,7 @@
       "module": {
         "type": "GPUShaderModule",
         "conditions": {
+          "same": ["GPUDevice"],
           "withAttributes": {
             "label": ["vertex"]
           }

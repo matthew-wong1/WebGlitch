@@ -62,8 +62,8 @@ public class ParameterListNode extends ASTNode {
 //                }
                 try {
                     this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this, parameterRequirements));
-                } catch (Exception ignored) {
-
+                } catch (Exception e) {
+                    System.out.println("Skipped generation of parameter for field " + fieldName);
                 }
 
             });

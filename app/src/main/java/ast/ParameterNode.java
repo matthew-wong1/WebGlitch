@@ -55,6 +55,7 @@ public class ParameterNode extends ASTNode {
     private void generateParam(String fieldName, JsonNode details, String paramType) throws Exception {
 
         JsonNode additionalConditionsNode = null;
+        System.out.println(this.parameterRequirements);
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
@@ -107,16 +108,32 @@ public class ParameterNode extends ASTNode {
 
     }
 
-    private String chooseRandomShader() {
-
-        // Add import statement, remembering the shader variable name. Will be in format type.actualName
-        String shaderImportName = generator.generateTopLevelStatement("shader");
+    private String chooseShaderOfType(String type) {
+        // expects type of shader.subtype where subtype is compute, vertex, or fragment
+        String shaderImportName = generator.generateTopLevelStatement("shader."  + type);
         String[] splitNames = shaderImportName.split("\\.");
+        System.out.println("returned variable name " + splitNames[1]);
 
         // Set label as 'compute' or 'graphics' based on folder in which found the shader
         parentList.setParamValue("label", splitNames[0]);
 
         return splitNames[1];
+
+    }
+
+    private String chooseRandomShader() {
+        List<String> SHADER_TYPES = Arrays.asList("vertex", "fragment", "compute");
+        String preDeterminedType = parentList.getParameter("label");
+        String chosenShaderType;
+
+        if (SHADER_TYPES.contains(preDeterminedType)) {
+            chosenShaderType = preDeterminedType;
+        } else {
+            chosenShaderType = SHADER_TYPES.get(rand.nextInt(SHADER_TYPES.size()));
+        }
+
+        // Add import statement, remembering the shader variable name. Will be in format type.actualName
+        return chooseShaderOfType(chosenShaderType);
 
     }
 
@@ -348,8 +365,8 @@ public class ParameterNode extends ASTNode {
                 try {
                     ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, generator, parentList, parameterRequirements);
                     this.addNode(nestedParameterNode);
-                } catch (Exception ignored) {
-
+                } catch (Exception e) {
+                    System.out.println("Skipped generation of paramter for field " + nestedFieldName);
                 }
 
             });

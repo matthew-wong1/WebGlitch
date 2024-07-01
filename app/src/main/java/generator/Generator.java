@@ -229,6 +229,7 @@ public class Generator {
         }
 
         int randIdx = rand.nextInt(variablesThatMeetReqs.size());
+
         return variablesThatMeetReqs.get(randIdx);
 
     }
@@ -399,6 +400,11 @@ public class Generator {
         ASTNode astNodeToPrepend = null;
         AssignmentNode assignmentNode = null;
         String varName = "";
+        String[] splitNames = new String[0];
+        if (type.contains(".")) {
+            splitNames = type.split("\\.");
+            type = splitNames[0];
+        }
 
         switch (type) {
             case "typedArray":
@@ -410,20 +416,25 @@ public class Generator {
                 break;
             case "shader":
                 // Go to shaders folder, pick between compute or graphics, noting down which
-                List<String> SHADER_TYPES = Arrays.asList("graphics", "compute");
-                List<String> GRAPHIC_SHADER_TYPES = Arrays.asList("vertex", "fragment");
+                String chosenBaseShaderType;
+                String shaderSubType = splitNames[1];
+                switch (shaderSubType) {
+                    case "compute":
+                        chosenBaseShaderType = "compute";
+                        break;
+                    default:
+                        chosenBaseShaderType = "graphics";
+                }
 
-                String chosenShaderType = SHADER_TYPES.get(rand.nextInt(SHADER_TYPES.size()));
-                File shadersDirectory = new File("." + SHADERS_PATH + chosenShaderType);
+                File shadersDirectory = new File("." + SHADERS_PATH + chosenBaseShaderType);
                 File[] files = shadersDirectory.listFiles();
                 assert files != null;
                 String chosenFileName = files[rand.nextInt(files.length)].getName();
 
-                String fullPath = "../WebGlitch" + SHADERS_PATH + chosenShaderType + "/" + chosenFileName;
+                String fullPath = "../WebGlitch" + SHADERS_PATH + chosenBaseShaderType + "/" + chosenFileName;
 
-                if (chosenShaderType.equals("graphics")) {
-                    chosenShaderType = GRAPHIC_SHADER_TYPES.get(rand.nextInt(GRAPHIC_SHADER_TYPES.size()));
-                    fullPath += "/" + chosenShaderType + ".wgsl";
+                if (chosenBaseShaderType.equals("graphics")) {
+                    fullPath += "/" + shaderSubType + ".wgsl";
                 }
 
                 assignmentNode = new AssignmentNode("const", false);
@@ -432,11 +443,14 @@ public class Generator {
                 String importName = assignmentNode.getVarName();
                 astNodeToPrepend = assignmentNode;
 
-                varName += chosenShaderType + "." + importName;
+                varName += shaderSubType + "." + importName;
 
                 // Later on, add available objects eg for improting JS objects
-                this.addToShaderProperties(importName, chosenShaderType, fullPath);
+                this.addToShaderProperties(importName, chosenBaseShaderType, fullPath);
                 break;
+            default:
+                System.out.println(type);
+                System.out.println("reached here somehow");
         }
 
         this.programNode.addNodeToFront(astNodeToPrepend);

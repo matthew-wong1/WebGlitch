@@ -729,6 +729,9 @@ public class ParameterNode extends ASTNode {
 
         if (currentTexture.startsWith("stencil") || currentTexture.startsWith("depth")) { // Remove aspect enums
             enumValues.remove("all");
+            if (currentTexture.startsWith("stencil")) {
+                enumValues.removeIf(flag -> !flag.contains("stencil"));
+            }
         } else {
             enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
         }

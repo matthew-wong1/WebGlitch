@@ -303,12 +303,20 @@ public class Generator {
             return;
         }
 
+        System.out.println("requirements: " + requirements);
         for (String variableName : allVariables) {
+            boolean meetsAllRequirements = true;
+
             for (Map.Entry<String, List<String>> requirement : requirements.entrySet()) {
                 List<String> attributes = this.getAllObjectAttributes(variableName, requirement.getKey());
-                if (new HashSet<>(attributes).containsAll(requirement.getValue())) {
-                    variablesThatMeetReqs.add(variableName);
+                System.out.println("attributes: " + attributes);
+                if (!new HashSet<>(attributes).containsAll(requirement.getValue())) {
+                    meetsAllRequirements = false;
                 }
+            }
+
+            if (meetsAllRequirements) {
+                variablesThatMeetReqs.add(variableName);
             }
         }
 
@@ -449,7 +457,6 @@ public class Generator {
                 this.addToShaderProperties(importName, chosenBaseShaderType, fullPath);
                 break;
             default:
-                System.out.println(type);
                 System.out.println("reached here somehow");
         }
 

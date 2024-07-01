@@ -55,7 +55,6 @@ public class ParameterNode extends ASTNode {
     private void generateParam(String fieldName, JsonNode details, String paramType) throws Exception {
 
         JsonNode additionalConditionsNode = null;
-        System.out.println(this.parameterRequirements);
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
@@ -112,7 +111,6 @@ public class ParameterNode extends ASTNode {
         // expects type of shader.subtype where subtype is compute, vertex, or fragment
         String shaderImportName = generator.generateTopLevelStatement("shader."  + type);
         String[] splitNames = shaderImportName.split("\\.");
-        System.out.println("returned variable name " + splitNames[1]);
 
         // Set label as 'compute' or 'graphics' based on folder in which found the shader
         parentList.setParamValue("label", splitNames[0]);
@@ -708,7 +706,6 @@ public class ParameterNode extends ASTNode {
         // LOOP THROUGH ALL ENUM SPECIFIED, THEN MAKE THE INTERSECTION BETWEEN THE 2 VALUES
 
         List<List<String>> constraintsList = new ArrayList<>();
-        System.out.println(newEnumNode);
         JsonNode finalNewEnumNode = newEnumNode;
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
 
@@ -725,7 +722,6 @@ public class ParameterNode extends ASTNode {
             }
 
         });
-        System.out.println(constraintsList);
 
         // ie do not generate this parameter (keep it optional)
         if (constraintsList.isEmpty()) {

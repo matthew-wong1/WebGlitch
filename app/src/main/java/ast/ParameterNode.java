@@ -428,19 +428,16 @@ public class ParameterNode extends ASTNode {
 
         if (this.isBitwiseFlags) {
             // Random int between 1 and end of list
-            chosenEnumValues = pickEnumValuesAsBitwiseFlags(enumValues, mutexNode);
+            chosenEnumValues = pickEnumValuesAsBitwiseFlags(enumValues, mutexNode, mandatoryEnums);
         } else if (isArray) {
-            chosenEnumValues = pickEnumValuesAsArray(enumValues);
+            chosenEnumValues = pickEnumValuesAsArray(enumValues, mandatoryEnums);
         } else if (mandatoryEnums.isEmpty()) {
-            chosenEnumValues = pickARandomEnumValue(enumValues);
+            chosenEnumValues = pickARandomEnumValue(enumValues, mandatoryEnums);
         }
 
         // Add mandatory enums uniquely
-        Set<String> uniqueElements = new HashSet<>(mandatoryEnums);
-        uniqueElements.addAll(chosenEnumValues);
-        List<String> finalSetOfValues = new ArrayList<>(uniqueElements);
 
-        addParametersFromList(finalSetOfValues);
+        addParametersFromList(chosenEnumValues);
     }
 
     private void addParametersFromList(List<String> chosenEnumValues) {
@@ -473,7 +470,11 @@ public class ParameterNode extends ASTNode {
                 });
     }
 
-    private List<String> pickARandomEnumValue(List<String> enumValues) {
+    private List<String> pickARandomEnumValue(List<String> enumValues, List<String> mandatoryEnums) {
+        if (mandatoryEnums != null && !mandatoryEnums.isEmpty()) {
+            return mandatoryEnums;
+        }
+
         int enumValuesSize = enumValues.size();
         List<String> chosenFlag = new ArrayList<>();
 
@@ -487,7 +488,7 @@ public class ParameterNode extends ASTNode {
         return chosenFlag;
     }
 
-    private List<String> pickEnumValuesAsArray(List<String> enumValues) {
+    private List<String> pickEnumValuesAsArray(List<String> enumValues, List<String> mandatoryEnums) {
         int randIdx;
         if (enumValues.size() == 1) {
             randIdx = 1;
@@ -495,14 +496,21 @@ public class ParameterNode extends ASTNode {
             randIdx = rand.nextInt(enumValues.size() - 1) + 1;
         }
 
-        return enumValues.subList(0, randIdx);
+        Set<String> uniqueValues = new HashSet<>();
+        uniqueValues.addAll(mandatoryEnums);
+        uniqueValues.addAll(enumValues.subList(0, randIdx));
+        return new ArrayList<>(uniqueValues);
 
     }
 
-    private List<String> pickEnumValuesAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode) {
+    private List<String> pickEnumValuesAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode, List<String> mandatoryEnums) {
         int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
 
-        List<String> chosenFlags = enumValues.subList(0, randIdx);
+        Set<String> uniqueValues = new HashSet<>();
+        uniqueValues.addAll(mandatoryEnums);
+        uniqueValues.addAll(enumValues.subList(0, randIdx));
+        List<String> chosenFlags = new ArrayList<>(uniqueValues);
+        // Maybe could prepend mandatory since alway subList from 0?
         List<String> toRemove = new ArrayList<>();
 
         // Post pass to remove mutually exclusive values
@@ -533,6 +541,7 @@ public class ParameterNode extends ASTNode {
 
     private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) throws SkipParameterException {
         List<String> mandatoryEnums = new ArrayList<>();
+
 
         if (parameterRequirements != null) {
             mandatoryEnums.addAll(parameterRequirements);
@@ -819,6 +828,8 @@ public class ParameterNode extends ASTNode {
 
         List<List<String>> constraintsList = new ArrayList<>();
         JsonNode finalNewEnumNode = newEnumNode;
+
+
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
 
             String constraintValue = parentList.getParameter(fieldName);

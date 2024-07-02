@@ -143,6 +143,7 @@
     "r8snorm",
     "rg8snorm",
     "rgba8snorm",
+    "rgb9e5ufloat",
     "rg11b10ufloat"
   ],
 

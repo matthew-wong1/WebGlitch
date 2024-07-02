@@ -23,6 +23,7 @@ public class ParameterNode extends ASTNode {
     private final boolean isRoot;
     private final boolean isJsonFormat;
     private final boolean isArray;
+    private final ParameterNode rootParameterNode;
     private boolean isString;
     private boolean isBitwiseFlags;
 
@@ -31,10 +32,15 @@ public class ParameterNode extends ASTNode {
     private final Random rand = new Random();
     private final ParameterListNode parentList;
 
+    private final Map<String, ParameterNode> parameterNodeMap = new HashMap<>();
     private final List<Parameter> parameters = new ArrayList<>();
     private final List<String> parameterRequirements;
 
     public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) throws SkipParameterException {
+        this(fieldName, details, isJsonFormat, isRoot, null, generator, parentList, parameterRequirements);
+    }
+
+    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, ParameterNode parentParameterNode, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) throws SkipParameterException {
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parentList = parentList;
@@ -43,6 +49,17 @@ public class ParameterNode extends ASTNode {
         this.isArray = details.has("array");
         this.parameterRequirements = parameterRequirements;
 
+        if (this.isRoot) {
+            this.rootParameterNode = this;
+        } else {
+            this.rootParameterNode = parentParameterNode.getRootParameterNode();
+        }
+
+        if (parentParameterNode != null) {
+            parentParameterNode.parameterNodeMap.put(fieldName, this);
+        }
+        // STILL HAVE PROBEM OF GETTING TO THE ROOT PARMATERNODE
+
         // Only generate parameters if is a method call (don't generate for attributes)
         if (details.has("type")) {
 
@@ -50,6 +67,10 @@ public class ParameterNode extends ASTNode {
             this.isString = paramType.equals("string");
             generateParam(fieldName, details, paramType);
         }
+    }
+
+    private ParameterNode getRootParameterNode() {
+        return rootParameterNode;
     }
 
     private void generateParam(String fieldName, JsonNode details, String paramType) throws SkipParameterException {
@@ -361,7 +382,7 @@ public class ParameterNode extends ASTNode {
 //                }
 
                 try {
-                    ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, generator, parentList, parameterRequirements);
+                    ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, this, generator, parentList, parameterRequirements);
                     this.addNode(nestedParameterNode);
                 } catch (SkipParameterException e) {
                     // make your new exception. throw a custom exception. let other excpetions fails
@@ -599,20 +620,39 @@ public class ParameterNode extends ASTNode {
         enumValues.removeAll(incompatibleBlendFormats);
     }
 
-    private void ensureBlendOperationCompatible(List<String> enumValues) {
-        // When BlendOperation is Max, blend ource must be One
+    // If fragment is the top level one, then it expects it in the format nested.nestednested.nestednestednested
+    private ParameterNode findNestedParameterNode(String fieldName) {
 
-        // Need to search parent nodes because fragment hasn't been added to parentList node yet as it's still generating subparams
 
-        ASTNode currParent = this.parent;
-        String paramValue;
-        while (currParent != null) {
-            paramValue = currParent.toString();
-            if (paramValue.contains("max")) {
-                enumValues.removeIf(field -> !field.equals("one"));
-                break;
+        if (fieldName.contains(".")) {
+            String[] split = fieldName.split("\\.", 2);
+            ParameterNode nestedParameterNode = this.parameterNodeMap.get(split[0]);
+
+            if (nestedParameterNode != null) {
+                return nestedParameterNode.findNestedParameterNode(split[1]);
             }
-            currParent = currParent.parent;
+
+            return null;
+        }
+
+        return this.parameterNodeMap.get(fieldName);
+    }
+
+    private void ensureBlendOperationCompatible(List<String> enumValues) {
+        // When BlendOperation is Max or Min, blend ource must be One
+        // BlendOperation is an optional paramter so posisble doesn't exist
+        ParameterNode blendNode = rootParameterNode.findNestedParameterNode("targets.blend");
+        if (blendNode == null) {
+            return;
+        }
+
+        ParameterNode alphaNode = blendNode.findNestedParameterNode("alpha.operation");
+        ParameterNode colorNode = blendNode.findNestedParameterNode("color.operation");
+        ParameterNode finalValueNode = colorNode == null ? alphaNode : colorNode;
+
+        String operationValue = finalValueNode.toString();
+        if (operationValue.contains("max") || operationValue.contains("min")) {
+            enumValues.removeIf(value -> !value.equals("one"));
         }
 
     }
@@ -749,8 +789,6 @@ public class ParameterNode extends ASTNode {
             enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.RENDER_ATTACHMENT"));
         }
 
-        System.out.println(enumValues.toString());
-        System.out.println(this.isBitwiseFlags);
         if (this.isBitwiseFlags) {
             return;
         }

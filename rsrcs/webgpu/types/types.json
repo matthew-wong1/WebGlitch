@@ -254,7 +254,8 @@
         "enum": true,
         "inFile": true,
         "conditions": {
-          "blendFormatCompatible": true
+          "blendFormatCompatible": true,
+          "colorRenderable": true
         }
       },
       "writeMask": {

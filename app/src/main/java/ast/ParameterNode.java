@@ -479,7 +479,6 @@ public class ParameterNode extends ASTNode {
     }
 
     private List<String> pickEnumValuesAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode) {
-        System.out.println("curr values " + enumValues.toString());
         int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
 
         List<String> chosenFlags = enumValues.subList(0, randIdx);
@@ -514,8 +513,6 @@ public class ParameterNode extends ASTNode {
     private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) throws SkipParameterException {
         List<String> mandatoryEnums = new ArrayList<>();
 
-        parentList.printAllParametersAsStrings();
-        System.out.println("original enum vals " + enumValues.toString());
         if (parameterRequirements != null) {
             mandatoryEnums.addAll(parameterRequirements);
         }
@@ -537,7 +534,6 @@ public class ParameterNode extends ASTNode {
         if (conditions.has("textureFormatCompatible")) {
             ensureTextureFormatCompatible(enumValues);
         }
-        System.out.println("after format compatible " + enumValues.toString());
 
         if (conditions.has("textureAspectCompatible")) {
             ensureTextureAspectCompatible(enumValues, conditions.has("textureViewFormatsCompatible"));
@@ -546,13 +542,11 @@ public class ParameterNode extends ASTNode {
         if (conditions.has("textureUsageCompatible")) {
             ensureTextureUsageCompatible(conditions, enumValues);
         }
-        System.out.println("after usage compatible " + enumValues.toString());
 
         if(conditions.has("multiSamplingCompatible")) {
             ensureMultiSamplingCompatible(enumValues, mandatoryEnums);
         }
 
-        System.out.println("after multisampling compatible " + enumValues.toString());
 
         if (conditions.has("constraints")) {
             parseConstraints(conditions, enumValues);
@@ -572,10 +566,28 @@ public class ParameterNode extends ASTNode {
             ensureBlendFormatCompatible(enumValues);
         }
 
+        if (conditions.has("colorRenderable")) {
+            ensureColorRenderable(enumValues);
+        }
+
         return mandatoryEnums;
     }
 
+    private void ensureColorRenderable(List<String> enumValues) {
+        JsonNode texturesEnumNode = parseJsonFromFile("gpuTextureFormat");
+        List<String> renderIncompatible = new ArrayList<>();
+        List<String> depthOrStencil = new ArrayList<>();
+
+        extractNodeAsList(texturesEnumNode.get("renderAttachmentIncompatible"), renderIncompatible);
+        extractNodeAsList(texturesEnumNode.get("depthOrStencil"), depthOrStencil);
+
+        enumValues.removeAll(renderIncompatible);
+        enumValues.removeAll(depthOrStencil);
+    }
+
     private void ensureBlendFormatCompatible(List<String> enumValues) {
+
+        // THIS IS ALWAYS NULL
         if (parentList.getParameter("fragment.targets.blend") == null ) {
             // SKip blend compatibiltiy checking if field was left blank
             return;
@@ -584,7 +596,6 @@ public class ParameterNode extends ASTNode {
         JsonNode texturesEnumNode = parseJsonFromFile("gpuTextureFormat");
         List<String> incompatibleBlendFormats = new ArrayList<>();
         extractNodeAsList(texturesEnumNode.get("blendIncompatible"), incompatibleBlendFormats);
-        System.out.println("incompatible formats: " + incompatibleBlendFormats);
         enumValues.removeAll(incompatibleBlendFormats);
     }
 
@@ -597,7 +608,6 @@ public class ParameterNode extends ASTNode {
         String paramValue;
         while (currParent != null) {
             paramValue = currParent.toString();
-            System.out.println("the param value: " + paramValue);
             if (paramValue.contains("max")) {
                 enumValues.removeIf(field -> !field.equals("one"));
                 break;

@@ -608,9 +608,8 @@ public class ParameterNode extends ASTNode {
 
     private void ensureBlendFormatCompatible(List<String> enumValues) {
 
-        // THIS IS ALWAYS NULL
-        if (parentList.getParameter("fragment.targets.blend") == null ) {
-            // SKip blend compatibiltiy checking if field was left blank
+        // SKip blend compatibiltiy checking if field was left blank
+        if (this.rootParameterNode.findNestedParameterNode("targets.blend") == null) {
             return;
         }
 

@@ -115,13 +115,7 @@ public class Parser {
         }
 
         generator.setCallState(receiver, callName, isMethod);
-//        generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName, isMethod));
-//        if (callJsonNode.has("resets")) {
-//            JsonNode resetMethodsJsonNode = callJsonNode.get("resets");
-//            for (JsonNode resetMethod : resetMethodsJsonNode) {
-//                generator.removeFromCallState(new Generator.ReceiverNameCallNameCallType(resetMethod.get("receiverType").asText(), resetMethod.get("name").asText(), true));
-//            }
-//        }
+
 
         // Delete object
         if (callJsonNode.has("deletes")) {
@@ -157,11 +151,11 @@ public class Parser {
 
         if (conditionsNode.has("commandEncodingFinished")) {
             // Check child ComputePassEncoder or GPURenderPassEncoder not been end()
-            // how has this been tracekd? - has it been overwritten?
-            // need track all. and then if want to get most up to date one, do getLast() in the list
-            System.out.println(generator.objectAttributesTable);
             // all child GPUComputePassencoder or GPURenderPassEncoders have all had end() called on it
             // 1) Get all variables for GPUComputePassEncoder and GPURenderPassEncoder
+            Set<String> allChildPassEncoders = new HashSet<>();
+            allChildPassEncoders.addAll(generator.);
+
             // 2) Check their callState - what methods have been called on them (ie add this tracking)
             // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that call
         }

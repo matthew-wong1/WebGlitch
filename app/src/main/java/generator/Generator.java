@@ -33,7 +33,6 @@ public class Generator {
     private final Map<String, String> availableCallsToInterface = new HashMap<>();
     private final HashMap<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
     private final HashMap<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new HashMap<>();
-    private final Map<String, String> variableNameToVariableThatGeneratedIt = new HashMap<>();
 
     private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
     // Maps method call name to File it's located in and Probability (double)
@@ -116,7 +115,7 @@ public class Generator {
         availableCallsToInterface.put(callName, receiverType);
     }
 
-    private void addToMapOfGeneratedVariables(String receiverVariable, String newlyGeneratedVariable, String newlyGeneratedVariableType) {
+    public void addToMapOfGeneratedVariables(String receiverVariable, String newlyGeneratedVariable, String newlyGeneratedVariableType) {
         if (!variableNameToTypeAndGeneratedVariableNames.containsKey(receiverVariable)) {
             variableNameToTypeAndGeneratedVariableNames.put(receiverVariable, new HashMap<>());
         }
@@ -127,13 +126,20 @@ public class Generator {
         }
 
         allGeneratedVariables.get(newlyGeneratedVariable).add(newlyGeneratedVariableType);
-        variableNameToVariableThatGeneratedIt.put(newlyGeneratedVariable, receiverVariable);
+    }
+
+    public Set<String> getFromMapOfGeneratedVariables(String receiverVariable, String generatedVariableType) {
+        if (!variableNameToTypeAndGeneratedVariableNames.containsKey(receiverVariable)) {
+            return Collections.emptySet();
+        }
+
+        return variableNameToTypeAndGeneratedVariableNames.get(receiverVariable).get(generatedVariableType);
     }
 
     private void removeFromMapOfGeneratedVariables(String newlyGeneratedVariable, String newlyGeneratedVariableType) {
-        String receiverVariable = variableNameToVariableThatGeneratedIt.get(newlyGeneratedVariable);
+        String receiverVariable = variableToReceiverName.get(newlyGeneratedVariable);
         variableNameToTypeAndGeneratedVariableNames.get(receiverVariable).get(newlyGeneratedVariableType).remove(newlyGeneratedVariable);
-        variableNameToVariableThatGeneratedIt.remove(newlyGeneratedVariable);
+        removeFromVariableToReceiverNameTable(newlyGeneratedVariable);
     }
 
     private void addToInterfacesAvailableCalls(String receiverType, String callName) {
@@ -397,8 +403,8 @@ public class Generator {
 
         this.addToSymbolTable(returnType, varName);
         this.addToVariableToReceiverNameTable(varName, rootASTNode.getReceiver());
-
         this.addToObjectAttributesTable(varName, rootASTNode.getParameters());
+        addToMapOfGeneratedVariables(rootASTNode.getReceiver(), varName, returnType);
 
         // Add to device tracker. What's the best way to search? maybe coyuld add as an object attribute
         // or could add as receiver attribute. Then recursive search
@@ -543,6 +549,14 @@ public class Generator {
             callState.put(receiver, new HashSet<>());
         }
         callState.get(receiver).add(callName);
+
+        //        generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName, isMethod));
+//        if (callJsonNode.has("resets")) {
+//            JsonNode resetMethodsJsonNode = callJsonNode.get("resets");
+//            for (JsonNode resetMethod : resetMethodsJsonNode) {
+//                generator.removeFromCallState(new Generator.ReceiverNameCallNameCallType(resetMethod.get("receiverType").asText(), resetMethod.get("name").asText(), true));
+//            }
+//        }
     }
 
     public record FileNameCallProbPair(String fileName, Double callProbability) {

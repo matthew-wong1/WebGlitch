@@ -1,0 +1,26 @@
+{
+  "receiverType": "GPURenderPassEncoder",
+  "requirements": ["GPURenderPassEncoder"],
+  "methods": [
+    {
+      "name": "setPipeline",
+      "returnType": "none",
+      "properties": [
+        {
+          "pipeline": {
+            "type": "GPURenderPipeline",
+            "conditions": {
+              "renderPassCompatible": true
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "attributes": [
+    {
+      "name": "label",
+      "returnType": "string"
+    }
+  ]
+}

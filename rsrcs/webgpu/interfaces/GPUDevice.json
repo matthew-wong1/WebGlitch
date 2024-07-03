@@ -210,19 +210,6 @@
           }
         }
       ]
-    },
-    {
-      "name": "createCommandEncoder",
-      "paramType": "object",
-      "returnType": "GPUCommandEncoder",
-      "properties": [
-        {
-          "label": {
-            "type": "string",
-            "optional": true
-          }
-        }
-      ]
     }
   ],
   "attributes": [

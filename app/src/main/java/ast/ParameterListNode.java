@@ -43,7 +43,10 @@ public class ParameterListNode extends ASTNode {
     }
 
     public void generateParams() {
-
+        // ie this call takes no parameters
+        if (paramsJsonNode.isMissingNode()) {
+            System.out.println("is missing node");
+        }
 
         for (JsonNode param : paramsJsonNode) {
             param.fieldNames().forEachRemaining(fieldName -> {

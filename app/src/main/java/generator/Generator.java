@@ -29,6 +29,7 @@ public class Generator {
     private final Map<String, String> variableToReceiverType = new HashMap<>();
     private final Map<String, String> variableToReceiverName = new HashMap<>();
     private final Map<String, Set<String>> callUnavailability = new HashMap<>();
+    private final Map<String, Set<String>> interfaceToAvailableCalls = new HashMap<>();
     private final HashMap<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
 
     private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
@@ -107,6 +108,15 @@ public class Generator {
 
         // READ FROM CONFIG FILE HERE
         callProbabilities.put(new ReceiverNameCallNameCallType(receiverType, callName, isMethod), new FileNameCallProbPair(fileName, 0.0));
+        addToInterfacesAvailableCalls(receiverType, callName);
+    }
+
+    private void addToInterfacesAvailableCalls(String receiverType, String callName) {
+        if (!interfaceToAvailableCalls.containsKey(receiverType)) {
+            interfaceToAvailableCalls.put(receiverType, new HashSet<>());
+        }
+
+        interfaceToAvailableCalls.get(receiverType).add(callName);
     }
 
     // ASSIGN PROBABILTIES BY FIRST LOADING ALL METHODS FROM ALL FILES INTO SOME MAP, INITIALIZE PROBABILITIES

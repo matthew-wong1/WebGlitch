@@ -41,6 +41,13 @@
           }
         }
       ]
+    },
+    {
+      "name": "finish",
+      "returnType": "GPUCommandBuffer",
+      "conditions": {
+        "commandEncodingFinished": true
+      }
     }
   ],
   "attributes": [

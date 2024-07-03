@@ -114,7 +114,8 @@ public class Parser {
             nodeToReturn = rootASTNode;
         }
 
-        generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName, isMethod));
+        generator.setCallState(receiver, callName, isMethod);
+//        generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName, isMethod));
 //        if (callJsonNode.has("resets")) {
 //            JsonNode resetMethodsJsonNode = callJsonNode.get("resets");
 //            for (JsonNode resetMethod : resetMethodsJsonNode) {
@@ -139,7 +140,7 @@ public class Parser {
         }
 
         JsonNode unavailabilityNode = callJsonNode.get("setUnavailability");
-        // need to entirely move set unavailabilty to generator
+        // need to entirely move set unavailabilty to generator. Then add special parsing for "this" and "all"
     }
 
     private void ensureConditionsForReceiverAreMet(String receiver, JsonNode callJsonNode) {
@@ -159,6 +160,10 @@ public class Parser {
             // how has this been tracekd? - has it been overwritten?
             // need track all. and then if want to get most up to date one, do getLast() in the list
             System.out.println(generator.objectAttributesTable);
+            // all child GPUComputePassencoder or GPURenderPassEncoders have all had end() called on it
+            // 1) Get all variables for GPUComputePassEncoder and GPURenderPassEncoder
+            // 2) Check their callState - what methods have been called on them (ie add this tracking)
+            // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that call
         }
     }
 

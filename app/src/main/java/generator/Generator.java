@@ -39,7 +39,8 @@ public class Generator {
     // Maps method call name to File it's located in and Probability (double)
     private final Map<ReceiverNameCallNameCallType, FileNameCallProbPair> callProbabilities = new HashMap<>();
     // Tracks call histories
-    private final Set<ReceiverNameCallNameCallType> callState = new HashSet<>();
+//    private final Set<ReceiverNameCallNameCallType> callState = new HashSet<>();
+    private final Map<String, Set<String>> callState = new HashMap<>();
 
     private final Parser parser = new Parser(this);
     private final int maxCalls;
@@ -429,13 +430,13 @@ public class Generator {
         return receiverType;
     }
 
-    public void addToCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
-        callState.add(receiverNameCallNameCallType);
-    }
-
-    public void removeFromCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
-        callState.remove(receiverNameCallNameCallType);
-    }
+//    public void addToCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
+//        callState.add(receiverNameCallNameCallType);
+//    }
+//
+//    public void removeFromCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
+//        callState.remove(receiverNameCallNameCallType);
+//    }
 
     public String generateTopLevelStatement(String type) {
         ASTNode astNodeToPrepend = null;
@@ -531,6 +532,17 @@ public class Generator {
         if (callUnavailability.containsKey(variableName)) {
             callUnavailability.get(variableName).removeAll(callName);
         }
+    }
+
+    public void setCallState(String receiver, String callName, boolean isMethod) {
+        if (!isMethod) {
+            return;
+        }
+
+        if (!callState.containsKey(receiver)) {
+            callState.put(receiver, new HashSet<>());
+        }
+        callState.get(receiver).add(callName);
     }
 
     public record FileNameCallProbPair(String fileName, Double callProbability) {

@@ -319,7 +319,7 @@ public class Generator {
                 String baseCallReceiver = findBaseReceiver(receiverName, objectType);
                 sameObjectsReqs.put(objectType, baseCallReceiver);
 
-                if(!findBaseReceiver(variableName, objectType).equals(baseCallReceiver)) {
+                if (!findBaseReceiver(variableName, objectType).equals(baseCallReceiver)) {
                     toRemove.add(variableName);
                 }
 
@@ -557,6 +557,53 @@ public class Generator {
 //                generator.removeFromCallState(new Generator.ReceiverNameCallNameCallType(resetMethod.get("receiverType").asText(), resetMethod.get("name").asText(), true));
 //            }
 //        }
+    }
+
+    // This one for when top level (ie no params). right now only supports setting it on yourself
+    public void parseAndSetCallAvailability(String receiver, JsonNode conditionsNode) {
+        if (conditionsNode.has("setUnavailable")) {
+            setCallAvailability(receiver, conditionsNode.get("setUnavailable"), false);
+        }
+
+        if (conditionsNode.has("setAvailable")) {
+            setCallAvailability(receiver, conditionsNode.get("setAvailable"), true);
+        }
+    }
+
+    public void parseAndSetCallAvailability(JsonNode conditionsNode, ParameterListNode parentList) {
+        if (conditionsNode.has("setUnavailable")) {
+            setCallAvailability(conditionsNode.get("setUnavailable"), false, parentList);
+        }
+
+        if (conditionsNode.has("setAvailable")) {
+            setCallAvailability(conditionsNode.get("setAvailable"), true, parentList);
+        }
+    }
+
+    private void setCallAvailability(String receiver, JsonNode availabilityNode, boolean isAvailable) {
+        List<String> callsToChangeAvailabilityOf = new ArrayList<>();
+        if (availabilityNode.has("this")) {
+            Parser.extractNodeAsList(availabilityNode.get("this"), callsToChangeAvailabilityOf);
+        }
+
+        this.setCallAvailability(receiver, new HashSet<>(callsToChangeAvailabilityOf), isAvailable);
+    }
+
+    private void setCallAvailability(JsonNode availabilityNode, boolean isAvailable, ParameterListNode parentList) {
+
+        Map<String, Set<String>> allCalls = new HashMap<>();
+
+
+        availabilityNode.fieldNames().forEachRemaining(fieldName -> {
+            List<String> affectedCalls = Parser.getListFromJson(availabilityNode.get(fieldName).toString());
+            String variableName = parentList.getParameter(fieldName);
+            allCalls.put(variableName, new HashSet<>(affectedCalls));
+        });
+
+        for (Map.Entry<String, Set<String>> entry : allCalls.entrySet()) {
+            this.setCallAvailability(entry.getKey(), entry.getValue(), isAvailable);
+        }
+
     }
 
     public Set<String> getFromCallState(String receiverName) {

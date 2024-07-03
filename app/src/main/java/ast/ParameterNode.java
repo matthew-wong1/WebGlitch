@@ -125,7 +125,7 @@ public class ParameterNode extends ASTNode {
         // Set call availabiltiy
         // Set unavailabillity
         if (additionalConditionsNode != null) {
-            this.parseAndSetCallAvailability(additionalConditionsNode);
+            generator.parseAndSetCallAvailability(additionalConditionsNode, parentList);
         }
 
     }
@@ -158,16 +158,6 @@ public class ParameterNode extends ASTNode {
 
     }
 
-    private void parseAndSetCallAvailability(JsonNode conditionsNode) {
-        if (conditionsNode.has("setUnavailable")) {
-            setCallAvailability(conditionsNode.get("setUnavailable"), false);
-        }
-
-        if (conditionsNode.has("setAvailable")) {
-            setCallAvailability(conditionsNode.get("setAvailable"), true);
-        }
-    }
-
     private JsonNode findAndSetWebGPUInterface(String paramType, JsonNode details) {
         if (!details.has("conditions")) {
             this.parameters.add(new Parameter(generator.getRandomReceiver(paramType, parentList.getCallName())));
@@ -193,21 +183,7 @@ public class ParameterNode extends ASTNode {
 
     }
 
-    private void setCallAvailability(JsonNode availabilityNode, boolean isAvailable) {
 
-        Map<String, Set<String>> allCalls = new HashMap<>();
-
-        availabilityNode.fieldNames().forEachRemaining(fieldName -> {
-            List<String> affectedCalls = Parser.getListFromJson(availabilityNode.get(fieldName).toString());
-            String variableName = parentList.getParameter(fieldName);
-            allCalls.put(variableName, new HashSet<>(affectedCalls));
-        });
-
-        for (Map.Entry<String, Set<String>> entry : allCalls.entrySet()) {
-            generator.setCallAvailability(entry.getKey(), entry.getValue(), isAvailable);
-        }
-
-    }
 
     private void addAllSubParamsToParent() {
         depthFirstTraverseSubnodes(this, this.fieldName);
@@ -420,7 +396,7 @@ public class ParameterNode extends ASTNode {
         List<String> enumValues = new ArrayList<>();
         JsonNode enumNode = details.get("enum");
         if (!enumNode.isBoolean()) {
-            extractNodeAsList(enumNode, enumValues);
+            Parser.extractNodeAsList(enumNode, enumValues);
         }
 
         List<String> mandatoryEnums = parseEnumConditions(conditions, enumValues);
@@ -460,17 +436,6 @@ public class ParameterNode extends ASTNode {
         return node;
     }
 
-    private void extractNodeAsList(JsonNode enumNode, List<String> enumValues) {
-        enumValues.clear();
-        if (enumNode == null) {
-            return;
-        }
-
-        enumNode.forEach(
-                enumValue -> {
-                    enumValues.add(enumValue.asText());
-                });
-    }
 
     private List<String> pickARandomEnumValue(List<String> enumValues, List<String> mandatoryEnums) {
         if (mandatoryEnums != null && !mandatoryEnums.isEmpty()) {
@@ -610,8 +575,8 @@ public class ParameterNode extends ASTNode {
         List<String> renderIncompatible = new ArrayList<>();
         List<String> depthOrStencil = new ArrayList<>();
 
-        extractNodeAsList(texturesEnumNode.get("renderAttachmentIncompatible"), renderIncompatible);
-        extractNodeAsList(texturesEnumNode.get("depthOrStencil"), depthOrStencil);
+        Parser.extractNodeAsList(texturesEnumNode.get("renderAttachmentIncompatible"), renderIncompatible);
+        Parser.extractNodeAsList(texturesEnumNode.get("depthOrStencil"), depthOrStencil);
 
         enumValues.removeAll(renderIncompatible);
         enumValues.removeAll(depthOrStencil);
@@ -626,7 +591,7 @@ public class ParameterNode extends ASTNode {
 
         JsonNode texturesEnumNode = parseJsonFromFile("gpuTextureFormat");
         List<String> incompatibleBlendFormats = new ArrayList<>();
-        extractNodeAsList(texturesEnumNode.get("blendIncompatible"), incompatibleBlendFormats);
+        Parser.extractNodeAsList(texturesEnumNode.get("blendIncompatible"), incompatibleBlendFormats);
         enumValues.removeAll(incompatibleBlendFormats);
     }
 
@@ -701,17 +666,17 @@ public class ParameterNode extends ASTNode {
         if (!dimension.equals("2d")) {
 
             List<String> incompatibleBaseTextures = new ArrayList<>();
-            extractNodeAsList(texturesEnumNode.get("enum"), incompatibleBaseTextures);
+            Parser.extractNodeAsList(texturesEnumNode.get("enum"), incompatibleBaseTextures);
             incompatibleBaseTextures.removeIf(texture -> !(texture.startsWith("stencil") || texture.startsWith("depth")));
 
             List<String> compressedTextures = new ArrayList<>();
-            extractNodeAsList(texturesEnumNode.get("compressedFormats"), compressedTextures);
+            Parser.extractNodeAsList(texturesEnumNode.get("compressedFormats"), compressedTextures);
 
             JsonNode optionalTextures = texturesEnumNode.get("features");
             List<String> optionalTexturesList = new ArrayList<>();
             optionalTextures.fieldNames().forEachRemaining(fieldName -> {
                 List<String> formats = new ArrayList<>();
-                extractNodeAsList(optionalTextures.get(fieldName), formats);
+                Parser.extractNodeAsList(optionalTextures.get(fieldName), formats);
                 optionalTexturesList.addAll(formats);
             });
 
@@ -729,7 +694,7 @@ public class ParameterNode extends ASTNode {
             List<String> multiSamplingIncompatibleTextures = new ArrayList<>();
             JsonNode multiSamplingIncompatibleTexturesNode = texturesEnumNode.get("multiSamplingIncompatible");
 
-            extractNodeAsList(multiSamplingIncompatibleTexturesNode, multiSamplingIncompatibleTextures);
+            Parser.extractNodeAsList(multiSamplingIncompatibleTexturesNode, multiSamplingIncompatibleTextures);
             incompatibleTextures.addAll(multiSamplingIncompatibleTextures);
 
         }
@@ -777,10 +742,10 @@ public class ParameterNode extends ASTNode {
 
         JsonNode texturesNode = parseJsonFromFile("gpuTextureFormat");
         List<String> incompatibleTexturesForStorage = new ArrayList<>();
-        extractNodeAsList(texturesNode.get("storageBindingIncompatible"), incompatibleTexturesForStorage);
+        Parser.extractNodeAsList(texturesNode.get("storageBindingIncompatible"), incompatibleTexturesForStorage);
 
         List<String> incompatibleTexturesForRender = new ArrayList<>();
-        extractNodeAsList(texturesNode.get("renderAttachmentIncompatible"), incompatibleTexturesForRender);
+        Parser.extractNodeAsList(texturesNode.get("renderAttachmentIncompatible"), incompatibleTexturesForRender);
 
 
         if (currentTexture == null) {
@@ -840,7 +805,7 @@ public class ParameterNode extends ASTNode {
             JsonNode constraintValuesNode = constraintNode.get(constraintValue);
             List<String> values = new ArrayList<>();
 
-            extractNodeAsList(constraintValuesNode, values);
+            Parser.extractNodeAsList(constraintValuesNode, values);
 
             if (!values.isEmpty()) {
                 constraintsList.add(values);

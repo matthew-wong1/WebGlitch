@@ -122,19 +122,10 @@ public class Parser {
             generator.removeFromSymbolTable(parentReceiverType, receiver);
         }
 
-        parseAndSetUnavailability(callJsonNode);
+        generator.parseAndSetCallAvailability(receiver, callJsonNode);
 
 
         return nodeToReturn;
-    }
-
-    private void parseAndSetUnavailability(JsonNode callJsonNode) {
-        if (!callJsonNode.has("setUnavailable")) {
-            return;
-        }
-
-        JsonNode unavailabilityNode = callJsonNode.get("setUnavailability");
-        // need to entirely move set unavailabilty to generator. Then add special parsing for "this" and "all"
     }
 
     private void ensureConditionsForReceiverAreMet(String receiverName, JsonNode callJsonNode) {
@@ -183,5 +174,17 @@ public class Parser {
             throw new RuntimeException(e);
         }
         return listValues;
+    }
+
+    public static void extractNodeAsList(JsonNode enumNode, List<String> enumValues) {
+        enumValues.clear();
+        if (enumNode == null) {
+            return;
+        }
+
+        enumNode.forEach(
+                enumValue -> {
+                    enumValues.add(enumValue.asText());
+                });
     }
 }

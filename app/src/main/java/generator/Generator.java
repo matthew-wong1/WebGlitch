@@ -32,6 +32,8 @@ public class Generator {
     private final Map<String, Set<String>> interfaceToAvailableCalls = new HashMap<>();
     private final Map<String, String> availableCallsToInterface = new HashMap<>();
     private final HashMap<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
+    private final HashMap<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new HashMap<>();
+    private final Map<String, String> variableNameToVariableThatGeneratedIt = new HashMap<>();
 
     private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
     // Maps method call name to File it's located in and Probability (double)
@@ -111,6 +113,26 @@ public class Generator {
         callProbabilities.put(new ReceiverNameCallNameCallType(receiverType, callName, isMethod), new FileNameCallProbPair(fileName, 0.0));
         addToInterfacesAvailableCalls(receiverType, callName);
         availableCallsToInterface.put(callName, receiverType);
+    }
+
+    private void addToMapOfGeneratedVariables(String receiverVariable, String newlyGeneratedVariable, String newlyGeneratedVariableType) {
+        if (!variableNameToTypeAndGeneratedVariableNames.containsKey(receiverVariable)) {
+            variableNameToTypeAndGeneratedVariableNames.put(receiverVariable, new HashMap<>());
+        }
+
+        Map<String, Set<String>> allGeneratedVariables = variableNameToTypeAndGeneratedVariableNames.get(receiverVariable);
+        if (!allGeneratedVariables.containsKey(newlyGeneratedVariable)) {
+            allGeneratedVariables.put(newlyGeneratedVariable, new HashSet<>());
+        }
+
+        allGeneratedVariables.get(newlyGeneratedVariable).add(newlyGeneratedVariableType);
+        variableNameToVariableThatGeneratedIt.put(newlyGeneratedVariable, receiverVariable);
+    }
+
+    private void removeFromMapOfGeneratedVariables(String newlyGeneratedVariable, String newlyGeneratedVariableType) {
+        String receiverVariable = variableNameToVariableThatGeneratedIt.get(newlyGeneratedVariable);
+        variableNameToTypeAndGeneratedVariableNames.get(receiverVariable).get(newlyGeneratedVariableType).remove(newlyGeneratedVariable);
+        variableNameToVariableThatGeneratedIt.remove(newlyGeneratedVariable);
     }
 
     private void addToInterfacesAvailableCalls(String receiverType, String callName) {
@@ -213,10 +235,11 @@ public class Generator {
     public void removeFromSymbolTable(String returnedObjectType, String variableName) {
         symbolTable.get(returnedObjectType).remove(variableName);
         removeFromObjectAttributesTable(variableName);
+
         if (symbolTable.get(returnedObjectType).isEmpty()) {
             symbolTable.remove(returnedObjectType);
             variableToReceiverType.remove(variableName);
-            variableToReceiverName.remove(variableName);
+            removeFromMapOfGeneratedVariables(variableName, returnedObjectType);
         }
     }
 

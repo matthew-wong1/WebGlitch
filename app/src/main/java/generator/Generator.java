@@ -559,6 +559,10 @@ public class Generator {
 //        }
     }
 
+    public Set<String> getFromCallState(String receiverName) {
+        return callState.get(receiverName);
+    }
+
     public record FileNameCallProbPair(String fileName, Double callProbability) {
     }
 

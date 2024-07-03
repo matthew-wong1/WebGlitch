@@ -137,7 +137,7 @@ public class Parser {
         // need to entirely move set unavailabilty to generator. Then add special parsing for "this" and "all"
     }
 
-    private void ensureConditionsForReceiverAreMet(String receiver, JsonNode callJsonNode) {
+    private void ensureConditionsForReceiverAreMet(String receiverName, JsonNode callJsonNode) {
         if (!callJsonNode.has("conditions")) {
             return;
         }
@@ -153,11 +153,24 @@ public class Parser {
             // Check child ComputePassEncoder or GPURenderPassEncoder not been end()
             // all child GPUComputePassencoder or GPURenderPassEncoders have all had end() called on it
             // 1) Get all variables for GPUComputePassEncoder and GPURenderPassEncoder
+            List<String> TYPES_TO_CHECK = Arrays.asList("GPUComputePassEncoder", "GPURenderPassEncoder");
             Set<String> allChildPassEncoders = new HashSet<>();
-            allChildPassEncoders.addAll(generator.);
+
+            for (String type : TYPES_TO_CHECK) {
+                allChildPassEncoders.addAll(generator.getFromMapOfGeneratedVariables(receiverName, type));
+            }
 
             // 2) Check their callState - what methods have been called on them (ie add this tracking)
-            // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that call
+            for (String childPassEncoder : allChildPassEncoders) {
+                Set<String> callHistory = generator.getFromCallState(childPassEncoder);
+
+                // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that call
+                if (!callHistory.contains("end")) {
+                    generator.generateCall(new Generator.ReceiverNameCallNameCallType(childPassEncoder, "end", true), null, null);
+                }
+            }
+
+
         }
     }
 

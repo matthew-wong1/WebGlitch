@@ -12,6 +12,20 @@
           }
         }
       ]
+    },
+    {
+      "name": "setVertexBuffer",
+      "returnType": "none",
+      "properties": [
+        {
+          "slot": {
+            "type": "bufferSlot"
+          },
+          "buffer": {
+            "type": "GPUBuffer"
+          }
+        }
+      ]
     }
   ],
   "attributes": [

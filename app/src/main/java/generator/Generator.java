@@ -396,6 +396,7 @@ public class Generator {
 
     public void addToCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
         callState.add(receiverNameCallNameCallType);
+        System.out.println(callState);
     }
 
     public void removeFromCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {

@@ -26,6 +26,21 @@
           }
         }
       ]
+    },
+    {
+      "name": "draw",
+      "returnType": "none",
+      "properties": [
+        {
+          "vertexCount": {
+            "type": "uint",
+            "conditions": {
+              "min": 1,
+              "max": 10
+            }
+          }
+        }
+      ]
     }
   ],
   "attributes": [

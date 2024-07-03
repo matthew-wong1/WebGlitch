@@ -96,6 +96,8 @@ public class ParameterNode extends ASTNode {
             this.parameters.add(new Parameter(encodeAsString("auto")));
         } else if (paramType.equals("shader")) {
             this.parameters.add(new Parameter(this.chooseRandomShader()));
+        } else if (paramType.equals("bufferSlot")) {
+            this.parameters.add(new Parameter("0"));
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
             additionalConditionsNode = findAndSetWebGPUInterface(paramType, details);
         } else { // Requires WebGPU Type

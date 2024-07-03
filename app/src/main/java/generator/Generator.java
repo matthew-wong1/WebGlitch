@@ -30,6 +30,7 @@ public class Generator {
     private final Map<String, String> variableToReceiverName = new HashMap<>();
     private final Map<String, Set<String>> callUnavailability = new HashMap<>();
     private final Map<String, Set<String>> interfaceToAvailableCalls = new HashMap<>();
+    private final Map<String, String> availableCallsToInterface = new HashMap<>();
     private final HashMap<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
 
     private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
@@ -109,6 +110,7 @@ public class Generator {
         // READ FROM CONFIG FILE HERE
         callProbabilities.put(new ReceiverNameCallNameCallType(receiverType, callName, isMethod), new FileNameCallProbPair(fileName, 0.0));
         addToInterfacesAvailableCalls(receiverType, callName);
+        availableCallsToInterface.put(callName, receiverType);
     }
 
     private void addToInterfacesAvailableCalls(String receiverType, String callName) {
@@ -340,9 +342,9 @@ public class Generator {
     }
 
     public void generateCall(ReceiverNameCallNameCallType receiverNameCallNameCallType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
-        if (callState.contains(receiverNameCallNameCallType)) {
-            return;
-        }
+//        if (callState.contains(receiverNameCallNameCallType)) {
+//            return;
+//        }
 
         String receiverName = receiverNameCallNameCallType.receiverName;
         String callName = receiverNameCallNameCallType.callName;
@@ -406,7 +408,6 @@ public class Generator {
 
     public void addToCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {
         callState.add(receiverNameCallNameCallType);
-        System.out.println(callState);
     }
 
     public void removeFromCallState(ReceiverNameCallNameCallType receiverNameCallNameCallType) {

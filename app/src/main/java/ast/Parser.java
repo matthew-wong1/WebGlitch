@@ -97,31 +97,69 @@ public class Parser {
         String parentReceiverType = rootJsonNode.get("receiverType").asText();
         String receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), sameObjectsReqs);
 
+        // Ensure prequisite conditions for receiver are met:
+        ensureConditionsForReceiverAreMet(receiver, callJsonNode);
+
         boolean jsonParams = callJsonNode.path("paramType").asText("csv").equals("object");
         boolean isArray = callJsonNode.has("array");
         JsonNode paramsJsonNode = callJsonNode.path("properties");
         CallNode rootASTNode = new CallNode(receiver, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode, requirements);
+        ASTNode nodeToReturn;
 
         if (!returnType.equals("none")) {
-            return generator.generateDeclaration(callJsonNode, rootASTNode);
+            // THIS WONT WORK
+            nodeToReturn = generator.generateDeclaration(callJsonNode, rootASTNode);
         } else {
             generator.addToObjectAttributesTable(receiver, rootASTNode.getParameters());
+            nodeToReturn = rootASTNode;
         }
 
         generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName, isMethod));
-        if (callJsonNode.has("resets")) {
-            JsonNode resetMethodsJsonNode = callJsonNode.get("resets");
-            for (JsonNode resetMethod : resetMethodsJsonNode) {
-                generator.removeFromCallState(new Generator.ReceiverNameCallNameCallType(resetMethod.get("receiverType").asText(), resetMethod.get("name").asText(), true));
-            }
-        }
+//        if (callJsonNode.has("resets")) {
+//            JsonNode resetMethodsJsonNode = callJsonNode.get("resets");
+//            for (JsonNode resetMethod : resetMethodsJsonNode) {
+//                generator.removeFromCallState(new Generator.ReceiverNameCallNameCallType(resetMethod.get("receiverType").asText(), resetMethod.get("name").asText(), true));
+//            }
+//        }
 
         // Delete object
         if (callJsonNode.has("deletes")) {
             generator.removeFromSymbolTable(parentReceiverType, receiver);
         }
 
-        return rootASTNode;
+        parseAndSetUnavailability(callJsonNode);
+
+
+        return nodeToReturn;
+    }
+
+    private void parseAndSetUnavailability(JsonNode callJsonNode) {
+        if (!callJsonNode.has("setUnavailable")) {
+            return;
+        }
+
+        JsonNode unavailabilityNode = callJsonNode.get("setUnavailability");
+        // need to entirely move set unavailabilty to generator
+    }
+
+    private void ensureConditionsForReceiverAreMet(String receiver, JsonNode callJsonNode) {
+        if (!callJsonNode.has("conditions")) {
+            return;
+        }
+
+        JsonNode conditionsNode = callJsonNode.get("conditions");
+
+        if (conditionsNode.has("renderPassEncodingFinished")) {
+            // WIP
+            return;
+        }
+
+        if (conditionsNode.has("commandEncodingFinished")) {
+            // Check child ComputePassEncoder or GPURenderPassEncoder not been end()
+            // how has this been tracekd? - has it been overwritten?
+            // need track all. and then if want to get most up to date one, do getLast() in the list
+            System.out.println(generator.objectAttributesTable);
+        }
     }
 
     public static List<String> getListFromJson(String jsonList) {

@@ -21,6 +21,8 @@ public class Generator {
     private final String FOOTER = "\n}main().catch(console.error);";
     private final String SHADERS_PATH = "/rsrcs/shaders/";
     private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/interfaces/";
+    private final int MAX_DEVICES = 5;
+    private final int numDevices;
 
     // Hash map to keep track of state
     // Key: Type of object eg adapter, device
@@ -37,7 +39,7 @@ public class Generator {
 
     private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
     // Maps method call name to File it's located in and Probability (double)
-    private final Map<ReceiverNameCallNameCallType, FileNameCallProbPair> callProbabilities = new HashMap<>();
+    private final Map<ReceiverTypeCallNameCallType, FileNameCallProbPair> callProbabilities = new HashMap<>();
     // Tracks call histories
 //    private final Set<ReceiverNameCallNameCallType> callState = new HashSet<>();
     private final Map<String, Set<String>> callState = new HashMap<>();
@@ -50,6 +52,7 @@ public class Generator {
     public Generator(int maxCalls, boolean allowOptParams) {
         this.maxCalls = maxCalls;
         this.allowOptParams = allowOptParams;
+        this.numDevices = 0;
 
         try {
             this.initializeReceiverInitsAndCallProbs();
@@ -111,7 +114,7 @@ public class Generator {
         }
 
         // READ FROM CONFIG FILE HERE
-        callProbabilities.put(new ReceiverNameCallNameCallType(receiverType, callName, isMethod), new FileNameCallProbPair(fileName, 0.0));
+        callProbabilities.put(new ReceiverTypeCallNameCallType(receiverType, callName, isMethod), new FileNameCallProbPair(fileName, 0.0));
         addToInterfacesAvailableCalls(receiverType, callName);
         availableCallsToInterface.put(callName, receiverType);
     }
@@ -164,13 +167,14 @@ public class Generator {
         programNode.addNode(new JavaScriptStatement(HEADER));
 
         for (int i = 0; i < maxCalls; i++) {
-            ReceiverNameCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverNameCallNameCallType[0]);
+            ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
             int randIdx = rand.nextInt(methods.length);
-            ReceiverNameCallNameCallType randMethod = methods[randIdx];
+            ReceiverTypeCallNameCallType randMethod = methods[randIdx];
+            System.out.println(randMethod);
             String fileName = callProbabilities.get(randMethod).fileName;
 
             try {
-                this.programNode.addNode(parser.parseAndBuildRandCall(JSON_DIRECTORY_PATH + fileName));
+                this.programNode.addNode(parser.parseAndBuildRandCall(JSON_DIRECTORY_PATH + fileName, randMethod));
             } catch (IOException e) {
                 System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
             }
@@ -242,6 +246,15 @@ public class Generator {
 
         symbolTable.get(returnedObjectType).add(variableName);
         variableToReceiverType.put(variableName, returnedObjectType);
+
+        // Limit number of devices that can be generated
+        System.out.println(symbolTable.get("GPUDevice"));
+        if (symbolTable.get("GPUDevice") != null && symbolTable.get("GPUDevice").size() == MAX_DEVICES) {
+            System.out.println("limiting number of devices");
+            System.out.println(callProbabilities.keySet());
+            callProbabilities.remove(new ReceiverTypeCallNameCallType("GPUAdapter", "requestDevice", true));
+            interfaceToAvailableCalls.get("GPUAdapter").remove("requestDevice");
+        }
 
     }
 
@@ -378,18 +391,18 @@ public class Generator {
         String initReceiverType = initInfo.receiverName;
         boolean initIsMethod = initInfo.methodCall;
 
-        generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs, null);
+        generateCall(new ReceiverTypeCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs, null);
     }
 
-    public void generateCall(ReceiverNameCallNameCallType receiverNameCallNameCallType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs, String specificReceiver) {
+    public void generateCall(ReceiverTypeCallNameCallType receiverTypeCallNameCallType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs, String specificReceiver) {
 //        if (callState.contains(receiverNameCallNameCallType)) {
 //            return;
 //        }
 
-        String receiverName = receiverNameCallNameCallType.receiverName;
-        String callName = receiverNameCallNameCallType.callName;
-        boolean isMethod = receiverNameCallNameCallType.isMethod;
-        String fileName = callProbabilities.get(receiverNameCallNameCallType).fileName;
+        String receiverName = receiverTypeCallNameCallType.receiverName;
+        String callName = receiverTypeCallNameCallType.callName;
+        boolean isMethod = receiverTypeCallNameCallType.isMethod;
+        String fileName = callProbabilities.get(receiverTypeCallNameCallType).fileName;
 
         ASTNode receiver = null;
 
@@ -590,12 +603,7 @@ public class Generator {
                 Parser.extractNodeAsList(childNodeCalls, callsToChangeAvailabilityOf);
 
                 Set<String> generatedChildren = getFromMapOfGeneratedVariables(receiver, fieldName);
-                System.out.println(variableNameToTypeAndGeneratedVariableNames);
-                System.out.println("down here");
-                System.out.println(variableNameToTypeAndGeneratedVariableNames.get(receiver));
-                System.out.println(fieldName);
                 if (generatedChildren != null) {
-                    System.out.println("in the child variable");
                     for (String generatedChild : generatedChildren) {
                         setCallAvailability(callsToChangeAvailabilityOf, generatedChild, setAvailable);
                     }
@@ -630,7 +638,6 @@ public class Generator {
         }
 
         this.setCallAvailability(receiver, new HashSet<>(callsToChangeAvailabilityOf), isAvailable);
-        System.out.println(callUnavailability);
     }
 
     private void setCallAvailability(JsonNode availabilityNode, boolean isAvailable, ParameterListNode parentList) {
@@ -660,7 +667,7 @@ public class Generator {
     public record FileNameReceiverNameCallNameCallType(String fileName, String receiverName, String callName, boolean methodCall) {
     }
 
-    public record ReceiverNameCallNameCallType(String receiverName, String callName, boolean isMethod) {
+    public record ReceiverTypeCallNameCallType(String receiverName, String callName, boolean isMethod) {
     }
 
 }

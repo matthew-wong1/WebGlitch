@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
-import generator.ParamGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,33 +29,32 @@ public class Parser {
     //                System.err.println("Failed to find file: " + e.getMessage());
     //            }
     //        }
-    public ASTNode parseAndBuildRandCall(String filePath) throws IOException {
+    public ASTNode parseAndBuildRandCall(String filePath, Generator.ReceiverTypeCallNameCallType callDetails) throws IOException {
 
         // Open file
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootJsonNode = mapper.readTree(new File(filePath));
 
-        List<String> options = new ArrayList<>(Arrays.asList("methods", "attributes"));
-        JsonNode callsJsonNode;
-        String option;
+//        List<String> options = new ArrayList<>(Arrays.asList("methods", "attributes"));
+//        String option;
+//
+//        if (!rootJsonNode.has("attributes")) {
+//            option = options.getFirst();
+//        } else if (!rootJsonNode.has("methods")) {
+//            option = options.getLast();
+//        } else {
+//            option = options.get(rand.nextInt(options.size()));
+//        }
 
-        if (!rootJsonNode.has("attributes")) {
-            option = options.getFirst();
-        } else if (!rootJsonNode.has("methods")) {
-            option = options.getLast();
-        } else {
-            option = options.get(rand.nextInt(options.size()));
-        }
-
-        callsJsonNode = rootJsonNode.get(option);
         // Pick a random method from the length of 'methods'
-        int randIdx = rand.nextInt(callsJsonNode.size());
-        JsonNode methodJsonNode = callsJsonNode.get(randIdx);
+//        int randIdx = rand.nextInt(callsJsonNode.size());
+//        JsonNode methodJsonNode = callsJsonNode.get(randIdx);
+//
+//        String receiverType = rootJsonNode.get("receiverType").asText();
+//        String callName = methodJsonNode.get("name").asText(); // Required field
 
-        String receiverType = rootJsonNode.get("receiverType").asText();
-        String callName = methodJsonNode.get("name").asText(); // Required field
 
-        return parseAndBuildCall(filePath, callName, receiverType, option.equals("methods"), null, null, null);
+        return parseAndBuildCall(filePath, callDetails.callName(), callDetails.receiverName(), callDetails.isMethod(), null, null, null);
 
     }
 
@@ -89,7 +87,7 @@ public class Parser {
             JsonNode prerequisiteMethodsJsonNode = callJsonNode.get("prerequisiteMethods");
             for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
 
-                generator.generateCall(new Generator.ReceiverNameCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true), null, sameObjectsReqs, null);
+                generator.generateCall(new Generator.ReceiverTypeCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true), null, sameObjectsReqs, null);
             }
         }
 
@@ -164,12 +162,11 @@ public class Parser {
             // 2) Check their callState - what methods have been called on them (ie add this tracking)
             for (String childPassEncoder : allChildPassEncoders) {
                 Set<String> callHistory = generator.getFromCallState(childPassEncoder);
-                System.out.println(childPassEncoder);
 
                 // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that call
                 if (callHistory == null || !callHistory.contains("end")) {
                     String receiverType = generator.getVariableType(childPassEncoder);
-                    generator.generateCall(new Generator.ReceiverNameCallNameCallType(receiverType, "end", true), null, null, childPassEncoder);
+                    generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "end", true), null, null, childPassEncoder);
                 }
             }
 

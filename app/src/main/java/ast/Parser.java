@@ -148,7 +148,11 @@ public class Parser {
             Set<String> allChildPassEncoders = new HashSet<>();
 
             for (String type : TYPES_TO_CHECK) {
-                allChildPassEncoders.addAll(generator.getFromMapOfGeneratedVariables(receiverName, type));
+                Set<String> setToAdd = generator.getFromMapOfGeneratedVariables(receiverName, type);
+                if (setToAdd == null) {
+                    continue;
+                }
+                allChildPassEncoders.addAll(setToAdd);
             }
 
             // 2) Check their callState - what methods have been called on them (ie add this tracking)

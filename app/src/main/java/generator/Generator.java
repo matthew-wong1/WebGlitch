@@ -138,7 +138,12 @@ public class Generator {
 
     private void removeFromMapOfGeneratedVariables(String newlyGeneratedVariable, String newlyGeneratedVariableType) {
         String receiverVariable = variableToReceiverName.get(newlyGeneratedVariable);
-        variableNameToTypeAndGeneratedVariableNames.get(receiverVariable).get(newlyGeneratedVariableType).remove(newlyGeneratedVariable);
+
+
+        Set<String> generatedVariables = variableNameToTypeAndGeneratedVariableNames.get(receiverVariable).get(newlyGeneratedVariableType);
+        if (generatedVariables != null) {
+            generatedVariables.remove(newlyGeneratedVariable);
+        }
         removeFromVariableToReceiverNameTable(newlyGeneratedVariable);
     }
 

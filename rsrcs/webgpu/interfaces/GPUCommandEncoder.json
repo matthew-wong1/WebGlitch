@@ -38,7 +38,11 @@
         "commandEncodingFinished": true
       },
       "setUnavailable": {
-        "this": ["all"]
+        "this": ["all"],
+        "children": {
+          "GPURenderPassEncoder": ["all"],
+          "GPUComputePassEncoder": ["all"]
+        }
       }
     }
   ],

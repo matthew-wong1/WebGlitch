@@ -56,14 +56,14 @@ public class Parser {
         String receiverType = rootJsonNode.get("receiverType").asText();
         String callName = methodJsonNode.get("name").asText(); // Required field
 
-        return parseAndBuildCall(filePath, callName, receiverType, option.equals("methods"), null, null);
+        return parseAndBuildCall(filePath, callName, receiverType, option.equals("methods"), null, null, null);
 
     }
 
 
 
 
-    public ASTNode parseAndBuildCall(String filePath, String callName, String currentReceiverType, boolean isMethod, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) throws IOException {
+    public ASTNode parseAndBuildCall(String filePath, String callName, String currentReceiverType, boolean isMethod, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs, String specificReceiver) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootJsonNode = mapper.readTree(new File(filePath));
 
@@ -89,13 +89,19 @@ public class Parser {
             JsonNode prerequisiteMethodsJsonNode = callJsonNode.get("prerequisiteMethods");
             for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
 
-                generator.generateCall(new Generator.ReceiverNameCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true), null, sameObjectsReqs);
+                generator.generateCall(new Generator.ReceiverNameCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true), null, sameObjectsReqs, null);
             }
         }
 
         String returnType = callJsonNode.get("returnType").asText();
         String parentReceiverType = rootJsonNode.get("receiverType").asText();
-        String receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), sameObjectsReqs);
+        String receiver;
+        if (specificReceiver == null) {
+            receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), sameObjectsReqs);
+        } else {
+            receiver = specificReceiver;
+        }
+
 
         // Ensure prequisite conditions for receiver are met:
         ensureConditionsForReceiverAreMet(receiver, callJsonNode);
@@ -158,10 +164,12 @@ public class Parser {
             // 2) Check their callState - what methods have been called on them (ie add this tracking)
             for (String childPassEncoder : allChildPassEncoders) {
                 Set<String> callHistory = generator.getFromCallState(childPassEncoder);
+                System.out.println(childPassEncoder);
 
                 // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that call
-                if (!callHistory.contains("end")) {
-                    generator.generateCall(new Generator.ReceiverNameCallNameCallType(childPassEncoder, "end", true), null, null);
+                if (callHistory == null || !callHistory.contains("end")) {
+                    String receiverType = generator.getVariableType(childPassEncoder);
+                    generator.generateCall(new Generator.ReceiverNameCallNameCallType(receiverType, "end", true), null, null, childPassEncoder);
                 }
             }
 

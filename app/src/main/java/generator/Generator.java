@@ -122,11 +122,11 @@ public class Generator {
         }
 
         Map<String, Set<String>> allGeneratedVariables = variableNameToTypeAndGeneratedVariableNames.get(receiverVariable);
-        if (!allGeneratedVariables.containsKey(newlyGeneratedVariable)) {
-            allGeneratedVariables.put(newlyGeneratedVariable, new HashSet<>());
+        if (!allGeneratedVariables.containsKey(newlyGeneratedVariableType)) {
+            allGeneratedVariables.put(newlyGeneratedVariableType, new HashSet<>());
         }
 
-        allGeneratedVariables.get(newlyGeneratedVariable).add(newlyGeneratedVariableType);
+        allGeneratedVariables.get(newlyGeneratedVariableType).add(newlyGeneratedVariable);
     }
 
     public Set<String> getFromMapOfGeneratedVariables(String receiverVariable, String generatedVariableType) {
@@ -243,6 +243,10 @@ public class Generator {
         symbolTable.get(returnedObjectType).add(variableName);
         variableToReceiverType.put(variableName, returnedObjectType);
 
+    }
+
+    public String getVariableType(String variableName) {
+        return variableToReceiverType.get(variableName);
     }
 
     public void removeFromSymbolTable(String returnedObjectType, String variableName) {
@@ -374,10 +378,10 @@ public class Generator {
         String initReceiverType = initInfo.receiverName;
         boolean initIsMethod = initInfo.methodCall;
 
-        generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs);
+        generateCall(new ReceiverNameCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs, null);
     }
 
-    public void generateCall(ReceiverNameCallNameCallType receiverNameCallNameCallType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
+    public void generateCall(ReceiverNameCallNameCallType receiverNameCallNameCallType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs, String specificReceiver) {
 //        if (callState.contains(receiverNameCallNameCallType)) {
 //            return;
 //        }
@@ -390,7 +394,7 @@ public class Generator {
         ASTNode receiver = null;
 
         try {
-            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverName, isMethod, requirements, sameObjectsReqs);
+            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverName, isMethod, requirements, sameObjectsReqs, specificReceiver);
         } catch (IOException e) {
             System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }
@@ -566,13 +570,41 @@ public class Generator {
 
     // This one for when top level (ie no params). right now only supports setting it on yourself
     public void parseAndSetCallAvailability(String receiver, JsonNode conditionsNode) {
-        if (conditionsNode.has("setUnavailable")) {
-            setCallAvailability(receiver, conditionsNode.get("setUnavailable"), false);
+        List<String> callsToChangeAvailabilityOf = new ArrayList<>();
+        if (!conditionsNode.has("setAvailable") && !conditionsNode.has("setUnavailable")) {
+            return;
         }
 
-        if (conditionsNode.has("setAvailable")) {
-            setCallAvailability(receiver, conditionsNode.get("setAvailable"), true);
+        boolean setAvailable = conditionsNode.has("setAvailable");
+        JsonNode availabilityNode = setAvailable ? conditionsNode.get("setAvailable") : conditionsNode.get("setUnavailable");
+
+        if (availabilityNode.has("this")) {
+            Parser.extractNodeAsList(availabilityNode.get("this"), callsToChangeAvailabilityOf);
+            setCallAvailability(callsToChangeAvailabilityOf, receiver, setAvailable);
         }
+
+        if (availabilityNode.has("children")) {
+            JsonNode childrenNode = availabilityNode.get("children");
+            childrenNode.fieldNames().forEachRemaining(fieldName -> {
+                JsonNode childNodeCalls = childrenNode.get(fieldName);
+                Parser.extractNodeAsList(childNodeCalls, callsToChangeAvailabilityOf);
+
+                Set<String> generatedChildren = getFromMapOfGeneratedVariables(receiver, fieldName);
+                System.out.println(variableNameToTypeAndGeneratedVariableNames);
+                System.out.println("down here");
+                System.out.println(variableNameToTypeAndGeneratedVariableNames.get(receiver));
+                System.out.println(fieldName);
+                if (generatedChildren != null) {
+                    System.out.println("in the child variable");
+                    for (String generatedChild : generatedChildren) {
+                        setCallAvailability(callsToChangeAvailabilityOf, generatedChild, setAvailable);
+                    }
+                }
+            });
+        }
+
+
+
     }
 
     public void parseAndSetCallAvailability(JsonNode conditionsNode, ParameterListNode parentList) {
@@ -585,11 +617,8 @@ public class Generator {
         }
     }
 
-    private void setCallAvailability(String receiver, JsonNode availabilityNode, boolean isAvailable) {
-        List<String> callsToChangeAvailabilityOf = new ArrayList<>();
-        if (availabilityNode.has("this")) {
-            Parser.extractNodeAsList(availabilityNode.get("this"), callsToChangeAvailabilityOf);
-        }
+    private void setCallAvailability(List<String> callsToChangeAvailabilityOf, String receiver, boolean isAvailable) {
+
 
         // Check if it contains the value 'all':
         if (callsToChangeAvailabilityOf.getFirst().equals("all")) {

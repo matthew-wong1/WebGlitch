@@ -11,6 +11,7 @@ import programprinter.PrettyPrinter;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Generator {
     private static final Random rand = new Random();
@@ -536,7 +537,6 @@ public class Generator {
         }
 
         callUnavailability.get(variableName).addAll(callName);
-
     }
 
     public void removeFromCallUnavailability(String variableName, Set<String> callName) {
@@ -591,7 +591,17 @@ public class Generator {
             Parser.extractNodeAsList(availabilityNode.get("this"), callsToChangeAvailabilityOf);
         }
 
+        // Check if it contains the value 'all':
+        if (callsToChangeAvailabilityOf.getFirst().equals("all")) {
+            callsToChangeAvailabilityOf.clear();
+            String receiverType = variableToReceiverType.get(receiver);
+            Set<String> allCalls = this.interfaceToAvailableCalls.get(receiverType);
+            allCalls = allCalls.stream().map(callName -> receiverType + "." +callName).collect(Collectors.toSet());
+            callsToChangeAvailabilityOf.addAll(allCalls);
+        }
+
         this.setCallAvailability(receiver, new HashSet<>(callsToChangeAvailabilityOf), isAvailable);
+        System.out.println(callUnavailability);
     }
 
     private void setCallAvailability(JsonNode availabilityNode, boolean isAvailable, ParameterListNode parentList) {

@@ -21,7 +21,7 @@ public class Generator {
     private final String FOOTER = "\n}main().catch(console.error);";
     private final String SHADERS_PATH = "/rsrcs/shaders/";
     private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/interfaces/";
-    private final int MAX_DEVICES = 5;
+    private final int MAX_DEVICES = 1;
     private final int numDevices;
 
     // Hash map to keep track of state
@@ -170,7 +170,6 @@ public class Generator {
             ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
             int randIdx = rand.nextInt(methods.length);
             ReceiverTypeCallNameCallType randMethod = methods[randIdx];
-            System.out.println(randMethod);
             String fileName = callProbabilities.get(randMethod).fileName;
 
             try {
@@ -232,6 +231,11 @@ public class Generator {
     }
 
     public List<String> getAllObjectAttributes(String variableName, String fieldName) {
+        System.out.println("the variableName is " + variableName);
+        System.out.println("the field name is " + fieldName);
+        System.out.println("the variable type is " + variableToReceiverType.get(variableName));
+        System.out.println(objectAttributesTable);
+        System.out.println(symbolTable);
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 
@@ -248,7 +252,6 @@ public class Generator {
         variableToReceiverType.put(variableName, returnedObjectType);
 
         // Limit number of devices that can be generated
-        System.out.println(symbolTable.get("GPUDevice"));
         if (symbolTable.get("GPUDevice") != null && symbolTable.get("GPUDevice").size() == MAX_DEVICES) {
             callProbabilities.remove(new ReceiverTypeCallNameCallType("GPUAdapter", "requestDevice", true));
             interfaceToAvailableCalls.get("GPUAdapter").remove("requestDevice");
@@ -262,12 +265,13 @@ public class Generator {
 
     public void removeFromSymbolTable(String returnedObjectType, String variableName) {
         symbolTable.get(returnedObjectType).remove(variableName);
-        removeFromObjectAttributesTable(variableName);
+//        removeFromObjectAttributesTable(variableName);
+        System.out.println("removed " + variableName);
 
         if (symbolTable.get(returnedObjectType).isEmpty()) {
             symbolTable.remove(returnedObjectType);
-            variableToReceiverType.remove(variableName);
-            removeFromMapOfGeneratedVariables(variableName, returnedObjectType);
+//            variableToReceiverType.remove(variableName);
+//            removeFromMapOfGeneratedVariables(variableName, returnedObjectType);
         }
     }
 
@@ -282,16 +286,11 @@ public class Generator {
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
-        System.out.println(requirements);
-        System.out.println("the receiver type is " + receiverType + " and the call name is " + callName);
         Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, callName, requirements, sameObjects, variablesThatMeetReqs, receiverName);
 
         if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
             // pass in same objects here
             return parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
-//            System.out.println("same object reqs");
-//            System.out.println(sameObjectReqs);
-//            return getRandomReceiver(receiverType, callName, requirements, sameObjects, receiverName);
         }
 
         int randIdx = rand.nextInt(variablesThatMeetReqs.size());
@@ -383,9 +382,21 @@ public class Generator {
         for (String variableName : allVariables) {
             boolean meetsAllRequirements = true;
 
+            // Only works for 1 level deep ie 1 dot
             for (Map.Entry<String, List<String>> requirement : requirements.entrySet()) {
-                List<String> attributes = this.getAllObjectAttributes(variableName, requirement.getKey());
-                if (!new HashSet<>(attributes).containsAll(requirement.getValue())) {
+                String variableToCheck = variableName;
+                String attributeNameToCheck = requirement.getKey();
+                List<String> attributeValuesToCheck = requirement.getValue();
+
+                if (requirement.getKey().contains(".")) {
+                    String[] split = requirement.getKey().split("\\.");
+                    variableToCheck = variableToReceiverName.get(variableName);
+                    attributeNameToCheck = split[1];
+                    System.out.println("was in here");
+                }
+
+                List<String> attributes = this.getAllObjectAttributes(variableToCheck, attributeNameToCheck);
+                if (!new HashSet<>(attributes).containsAll(attributeValuesToCheck)) {
                     meetsAllRequirements = false;
                 }
             }

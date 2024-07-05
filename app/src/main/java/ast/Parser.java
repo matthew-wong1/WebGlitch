@@ -107,7 +107,7 @@ public class Parser {
         boolean jsonParams = callJsonNode.path("paramType").asText("csv").equals("object");
         boolean isArray = callJsonNode.has("array");
         JsonNode paramsJsonNode = callJsonNode.path("properties");
-        CallNode rootASTNode = new CallNode(receiver, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode, requirements);
+        CallNode rootASTNode = new CallNode(receiver, parentReceiverType, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode, requirements);
         ASTNode nodeToReturn;
 
         if (!returnType.equals("none")) {

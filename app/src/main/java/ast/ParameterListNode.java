@@ -21,7 +21,30 @@ public class ParameterListNode extends ASTNode {
         this.isArray = isArray;
         this.callNode = callNode;
         this.generator = callNode.getGenerator();
-        this.requirements = requirements;
+        this.requirements = parseRequirements(requirements);
+    }
+
+    private Map<String, List<String>> parseRequirements(Map<String, List<String>> requirements) {
+        // Filter out requirements by the ones that have a dot. Removing the . from the name.
+        // This assumes everything in withAttributes is same nested level
+        if (requirements == null || requirements.isEmpty()) {
+            return null;
+        }
+
+        Map<String, List<String>> finalisedRequirements = new HashMap<>();
+        for (Map.Entry<String, List<String>> requirementsEntry : requirements.entrySet()) {
+            if (!requirementsEntry.getKey().contains(".")) {
+                finalisedRequirements.put(requirementsEntry.getKey(), requirementsEntry.getValue());
+                continue;
+            }
+
+            String[] split = requirementsEntry.getKey().split("\\.");
+            if (split[0].equals(callNode.getReceiverType())) {
+                finalisedRequirements.put(split[1], requirementsEntry.getValue());
+            }
+        }
+
+        return finalisedRequirements;
     }
 
     @Override

@@ -46,7 +46,14 @@
       "view": {
         "type": "GPUTextureView",
         "conditions": {
-          "same": ["GPUDevice"]
+          "same": [
+            "GPUDevice"
+          ],
+          "withAttributes": {
+            "GPUTexture.usage": [
+              "GPUBufferUsage.RENDER_ATTACHMENT"
+            ]
+          }
         }
       }
     }

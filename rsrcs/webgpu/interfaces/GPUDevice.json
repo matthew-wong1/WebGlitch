@@ -19,7 +19,7 @@
           "size": {
             "type": "uint",
             "conditions": {
-              "max": 2684354,
+              "max": 268435456,
               "divisible": 4
             }
           },

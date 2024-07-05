@@ -231,11 +231,6 @@ public class Generator {
     }
 
     public List<String> getAllObjectAttributes(String variableName, String fieldName) {
-        System.out.println("the variableName is " + variableName);
-        System.out.println("the field name is " + fieldName);
-        System.out.println("the variable type is " + variableToReceiverType.get(variableName));
-        System.out.println(objectAttributesTable);
-        System.out.println(symbolTable);
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 
@@ -392,7 +387,6 @@ public class Generator {
                     String[] split = requirement.getKey().split("\\.");
                     variableToCheck = variableToReceiverName.get(variableName);
                     attributeNameToCheck = split[1];
-                    System.out.println("was in here");
                 }
 
                 List<String> attributes = this.getAllObjectAttributes(variableToCheck, attributeNameToCheck);

@@ -39,8 +39,12 @@ public class ParameterListNode extends ASTNode {
             }
 
             String[] split = requirementsEntry.getKey().split("\\.");
-            if (split[0].equals(callNode.getReceiverType())) {
-                finalisedRequirements.put(split[1], requirementsEntry.getValue());
+            System.out.println(split[0] + " " + split[1]);
+            System.out.println(callNode.getReturnType());
+            if (split[0].equals(callNode.getReturnType())) {
+                finalisedRequirements.put(split[1], new ArrayList<>());
+                finalisedRequirements.get(split[1]).addAll(requirementsEntry.getValue());
+                System.out.println("finalized reqs " + finalisedRequirements);
             }
         }
 
@@ -74,6 +78,9 @@ public class ParameterListNode extends ASTNode {
                 // Setting parameters has only been developed for enums
                 // Setting parameters does not currently support changing an earlier one to make it work
                 List<String> parameterRequirements = requirements == null ? null : requirements.get(fieldName);
+                System.out.println("param reqs here " + parameterRequirements);
+                System.out.println("the requirements: " + this.requirements);
+                System.out.println("the field name " + fieldName);
 
 //                if (paramDetails.has("optional")) {
 //

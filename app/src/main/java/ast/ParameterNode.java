@@ -48,6 +48,7 @@ public class ParameterNode extends ASTNode {
         this.isRoot = isRoot;
         this.isArray = details.has("array");
         this.parameterRequirements = parameterRequirements;
+        System.out.println("parameter requirements " + parameterRequirements);
 
         if (this.isRoot) {
             this.rootParameterNode = this;
@@ -519,6 +520,8 @@ public class ParameterNode extends ASTNode {
         if (parameterRequirements != null) {
             mandatoryEnums.addAll(parameterRequirements);
         }
+
+        System.out.println("mandatory enums " + mandatoryEnums);
 
         if (conditions == null) {
             return mandatoryEnums;

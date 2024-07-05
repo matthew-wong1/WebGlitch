@@ -12,17 +12,17 @@ public class CallNode extends ASTNode {
     private final String callName;
     private final boolean isMethod;
     private final String receiver;
-    private final String receiverType;
+    private final String returnType;
     private ParameterListNode parameterListNode = null;
     private final Generator generator;
 
-    public CallNode(String receiver, String receiverType, String callName, boolean jsonParams, boolean isArray, boolean isMethod, Generator generator, JsonNode paramsJsonNode, Map<String, List<String>> requirements) {
+    public CallNode(String receiver, String returnType, String callName, boolean jsonParams, boolean isArray, boolean isMethod, Generator generator, JsonNode paramsJsonNode, Map<String, List<String>> requirements) {
         this.receiver = receiver;
         this.callName = callName;
         this.fullCallName = receiver + "." + callName;
         this.isMethod = isMethod;
         this.generator = generator;
-        this.receiverType = receiverType;
+        this.returnType = returnType;
 
         if (isMethod) {
             this.parameterListNode = new ParameterListNode(this, paramsJsonNode, jsonParams, isArray, requirements);
@@ -51,7 +51,7 @@ public class CallNode extends ASTNode {
         return this.fullCallName;
     }
 
-    public String getReceiverType() { return receiverType; }
+    public String getReturnType() { return returnType; }
 
     public Generator getGenerator() {
         return generator;

@@ -51,7 +51,7 @@
           ],
           "withAttributes": {
             "GPUTexture.usage": [
-              "GPUBufferUsage.RENDER_ATTACHMENT"
+              "GPUTextureUsage.RENDER_ATTACHMENT"
             ]
           }
         }

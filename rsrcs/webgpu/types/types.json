@@ -38,10 +38,16 @@
       },
       "resolveTarget": {
         "type": "GPUTextureView",
+        "conditions": {
+          "same": ["GPUDevice"]
+        },
         "optional": true
       },
       "view": {
-        "type": "GPUTextureView"
+        "type": "GPUTextureView",
+        "conditions": {
+          "same": ["GPUDevice"]
+        }
       }
     }
   ],
@@ -93,7 +99,10 @@
         ]
       },
       "view": {
-        "type": "GPUTextureView"
+        "type": "GPUTextureView",
+        "conditions": {
+          "same": ["GPUDevice"]
+        }
       }
     }
   ],

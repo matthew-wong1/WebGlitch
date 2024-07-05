@@ -37,7 +37,7 @@ public class Generator {
     private final HashMap<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
     private final HashMap<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new HashMap<>();
 
-    private final Map<String, FileNameReceiverNameCallNameCallType> receiverInits = new HashMap<>();
+    private final Map<String, FileNameReceiverTypeCallNameCallType> receiverInits = new HashMap<>();
     // Maps method call name to File it's located in and Probability (double)
     private final Map<ReceiverTypeCallNameCallType, FileNameCallProbPair> callProbabilities = new HashMap<>();
     // Tracks call histories
@@ -110,7 +110,7 @@ public class Generator {
         List<String> ignoredTypes = new ArrayList<>(Arrays.asList("string", "none", "boolean"));
 
         if (!ignoredTypes.contains(returnType)) {
-            receiverInits.put(returnType, new FileNameReceiverNameCallNameCallType(fileName, receiverType, callName, isMethod));
+            receiverInits.put(returnType, new FileNameReceiverTypeCallNameCallType(fileName, receiverType, callName, isMethod, returnType));
         }
 
         // READ FROM CONFIG FILE HERE
@@ -250,8 +250,6 @@ public class Generator {
         // Limit number of devices that can be generated
         System.out.println(symbolTable.get("GPUDevice"));
         if (symbolTable.get("GPUDevice") != null && symbolTable.get("GPUDevice").size() == MAX_DEVICES) {
-            System.out.println("limiting number of devices");
-            System.out.println(callProbabilities.keySet());
             callProbabilities.remove(new ReceiverTypeCallNameCallType("GPUAdapter", "requestDevice", true));
             interfaceToAvailableCalls.get("GPUAdapter").remove("requestDevice");
         }
@@ -284,13 +282,16 @@ public class Generator {
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
-
+        System.out.println(requirements);
+        System.out.println("the receiver type is " + receiverType + " and the call name is " + callName);
         Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, callName, requirements, sameObjects, variablesThatMeetReqs, receiverName);
 
         if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
             // pass in same objects here
-            parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
-            return getRandomReceiver(receiverType, callName, requirements, sameObjects, receiverName);
+            return parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
+//            System.out.println("same object reqs");
+//            System.out.println(sameObjectReqs);
+//            return getRandomReceiver(receiverType, callName, requirements, sameObjects, receiverName);
         }
 
         int randIdx = rand.nextInt(variablesThatMeetReqs.size());
@@ -301,6 +302,7 @@ public class Generator {
 
     private Map<String, String> findAllVariablesThatMeetReqs(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName) {
         List<String> allVariables = symbolTable.get(receiverType);
+
         if (allVariables == null) {
             return null;
         }
@@ -330,11 +332,21 @@ public class Generator {
     }
 
     private Map<String, String> ensureSameObjectRequirementsMet(List<String> variablesThatMeetReqs, List<String> sameObjects, String receiverName) {
-        if (variablesThatMeetReqs.isEmpty() || sameObjects == null) {
+        if (sameObjects == null) {
+            // this fails when cant find a variable but still ned same object reqs to be genrated
             return null;
         }
-
         Map<String, String> sameObjectsReqs = new HashMap<>();
+
+        if (variablesThatMeetReqs.isEmpty()) {
+            for (String sameObjectRequirement : sameObjects) {
+                String baseReceiver = findBaseReceiver(receiverName, sameObjectRequirement);
+                sameObjectsReqs.put(sameObjectRequirement, baseReceiver);
+            }
+            return sameObjectsReqs;
+        }
+
+
 
         List<String> toRemove = new ArrayList<>();
         for (String variableName : variablesThatMeetReqs) {
@@ -385,16 +397,26 @@ public class Generator {
 
     }
 
-    private void parseCallInfoFromReceiverTypeAndGenerateCall(String receiverType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
-        FileNameReceiverNameCallNameCallType initInfo = receiverInits.get(receiverType);
+    private String parseCallInfoFromReceiverTypeAndGenerateCall(String receiverType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
+        FileNameReceiverTypeCallNameCallType initInfo = receiverInits.get(receiverType);
+
         String initMethodName = initInfo.callName;
-        String initReceiverType = initInfo.receiverName;
+        String initReceiverType = initInfo.receiverType;
         boolean initIsMethod = initInfo.methodCall;
 
-        generateCall(new ReceiverTypeCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs, null);
+        // need a loop. Go to receiverInit that matches sameobjectReqs. Then back track, pass in new sameobject reqs for the level above and so forth
+        if (sameObjectsReqs != null && !sameObjectsReqs.isEmpty()) {
+            while (!sameObjectsReqs.containsKey(initInfo.receiverType)) {
+                String newVariableRequirement = parseCallInfoFromReceiverTypeAndGenerateCall(initInfo.receiverType, requirements, sameObjectsReqs);
+                sameObjectsReqs.clear();
+                sameObjectsReqs.put(initInfo.receiverType, newVariableRequirement);
+            }
+        }
+
+        return generateCall(new ReceiverTypeCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs, null);
     }
 
-    public void generateCall(ReceiverTypeCallNameCallType receiverTypeCallNameCallType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs, String specificReceiver) {
+    public String generateCall(ReceiverTypeCallNameCallType receiverTypeCallNameCallType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs, String specificReceiver) {
 //        if (callState.contains(receiverNameCallNameCallType)) {
 //            return;
 //        }
@@ -413,6 +435,12 @@ public class Generator {
         }
 
         this.programNode.addNode(receiver);
+
+        if (receiver instanceof AssignmentNode) {
+            return ((AssignmentNode) receiver).getVarName();
+        } else {
+            return null;
+        }
     }
 
     public ASTNode generateDeclaration(JsonNode methodJsonNode, CallNode rootASTNode) {
@@ -664,7 +692,7 @@ public class Generator {
     public record FileNameCallProbPair(String fileName, Double callProbability) {
     }
 
-    public record FileNameReceiverNameCallNameCallType(String fileName, String receiverName, String callName, boolean methodCall) {
+    public record FileNameReceiverTypeCallNameCallType(String fileName, String receiverType, String callName, boolean methodCall, String returnType) {
     }
 
     public record ReceiverTypeCallNameCallType(String receiverName, String callName, boolean isMethod) {

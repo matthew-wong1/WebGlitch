@@ -167,12 +167,18 @@ public class ParameterNode extends ASTNode {
         // Need a specific object with certain attributes
         Map<String, List<String>> requirements = new HashMap<>();
         JsonNode conditionsNode = details.get("conditions");
-        JsonNode requiredAttributesNode = conditionsNode.get("withAttributes");
 
-        requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {
-            List<String> values = Parser.getListFromJson(requiredAttributesNode.get(fieldName).toString());
-            requirements.put(fieldName, values);
-        });
+        if (conditionsNode.has("withAttributes")) {
+            JsonNode requiredAttributesNode = conditionsNode.get("withAttributes");
+
+            Map<String, List<String>> finalRequirements = requirements;
+            requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {
+                List<String> values = Parser.getListFromJson(requiredAttributesNode.get(fieldName).toString());
+                finalRequirements.put(fieldName, values);
+            });
+        } else {
+            requirements = null;
+        }
 
         List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
 

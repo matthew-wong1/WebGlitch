@@ -1,6 +1,8 @@
 package generator;
 
 import ast.ParameterListNode;
+import ast.ParameterNode;
+import ast.SkipParameterException;
 import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.Random;
@@ -44,7 +46,7 @@ public class ParamGenerator {
     }
 
 
-    public static String generateCustomConstraint(String customValidation, ParameterListNode parent) {
+    public static String generateCustomConstraint(String customValidation, ParameterListNode parent, ParameterNode parameterNode, Generator generator) {
         switch (customValidation) {
             case "mipLevelCount":
                 String MULTI_SAMPLING_FLAG = "4";
@@ -81,6 +83,21 @@ public class ParamGenerator {
                 int max = (int) (Math.floor(Math.log(maxDimensionValue) / Math.log(2)) + 1);
 //                int max = (int) (Math.floor(Math.log(Math.min(width, height)) / Math.log(2)) + 1);
                 return String.valueOf(max);
+            case "depthSlice": {
+
+                String textureViewVariableName = parameterNode.getRootParameterNode().findNestedParameterNode("view").getParameter().getValue();
+                System.out.println(textureViewVariableName);
+                String viewDimensionValue = generator.getObjectAttributes(textureViewVariableName, "dimension");
+                if (!viewDimensionValue.equals("3d")) {
+                    throw new SkipParameterException("Skipping depth slice because dimension is not 3d");
+                }
+
+                String textureViewParentName = generator.getParentVariable(textureViewVariableName);
+                int parentDepthOrArrayLayersValue = Integer.parseInt(generator.getObjectAttributes(textureViewParentName, "size.depthOrArrayLayers"));
+
+                // -1 since max value is inclusvie
+                return String.valueOf(parentDepthOrArrayLayersValue - 1);
+            }
         }
 
         return null;

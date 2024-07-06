@@ -48,7 +48,6 @@ public class ParameterNode extends ASTNode {
         this.isRoot = isRoot;
         this.isArray = details.has("array");
         this.parameterRequirements = parameterRequirements;
-        System.out.println("parameter requirements " + parameterRequirements);
 
         checkImplementationSpecificCalls(details);
 
@@ -75,12 +74,12 @@ public class ParameterNode extends ASTNode {
     private void checkImplementationSpecificCalls(JsonNode details) throws SkipParameterException {
         String platform = generator.getPlatform();
 
-        if ((details.has("dawnOnly") && !platform.equals("dawn")) || (details.has("wgpuOnly") && !platform.equals("wgpu")))) {
+        if ((details.has("dawnOnly") && !platform.equals("dawn")) || (details.has("wgpuOnly") && !platform.equals("wgpu"))) {
             throw new SkipParameterException("Platform incompatible parameters are skipped");
         }
     }
 
-    private ParameterNode getRootParameterNode() {
+    public ParameterNode getRootParameterNode() {
         return rootParameterNode;
     }
 
@@ -251,7 +250,7 @@ public class ParameterNode extends ASTNode {
 
             if (valueNode.has("customValidation")) {
 
-                value[0] = Long.parseLong(ParamGenerator.generateCustomConstraint(valueNode.get("customValidation").asText(), parentList));
+                value[0] = Long.parseLong(ParamGenerator.generateCustomConstraint(valueNode.get("customValidation").asText(), parentList, this, generator));
             } else if (valueNode.has("constraints")) {
                 parseNumericConstraints(valueNode, value);
             } else if (valueNode.has("comparison")) {
@@ -531,7 +530,6 @@ public class ParameterNode extends ASTNode {
             mandatoryEnums.addAll(parameterRequirements);
         }
 
-        System.out.println("mandatory enums " + mandatoryEnums);
 
         if (conditions == null) {
             return mandatoryEnums;
@@ -615,8 +613,8 @@ public class ParameterNode extends ASTNode {
     }
 
     // If fragment is the top level one, then it expects it in the format nested.nestednested.nestednestednested
-    private ParameterNode findNestedParameterNode(String fieldName) {
-
+    // needs to be called on root parameter node
+    public ParameterNode findNestedParameterNode(String fieldName) {
 
         if (fieldName.contains(".")) {
             String[] split = fieldName.split("\\.", 2);
@@ -909,4 +907,11 @@ public class ParameterNode extends ASTNode {
 
     private record ParamsAndFormattingPair(List<Parameter> parameters, ParamFormatting paramFormatting) {}
 
+    public List<Parameter> getParameters() {
+        return parameters;
+    }
+
+    public Parameter getParameter() {
+        return parameters.getFirst();
+    }
 }

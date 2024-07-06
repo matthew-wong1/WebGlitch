@@ -7,6 +7,7 @@ import static java.lang.Integer.parseInt;
 public class WebGlitch {
 
     private static final String DEFAULT_MAX_CALLS = "1000";
+    private static final String DEFAULT_PLATFORM = "dawn";
 
     public static void main(String[] args) {
         Options options = new Options();
@@ -45,7 +46,7 @@ public class WebGlitch {
         int maxCalls = parseInt(cmd.getOptionValue("l", DEFAULT_MAX_CALLS));
         boolean allowOptionalParams = cmd.hasOption("o");
 
-        Generator generator = new Generator(maxCalls, allowOptionalParams);
+        Generator generator = new Generator(maxCalls, allowOptionalParams, DEFAULT_PLATFORM);
 
 
         for (int i = 0; i < numPrograms; i++) {

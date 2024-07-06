@@ -61,7 +61,11 @@
         "optional": true,
         "dawnOnly": true,
         "conditions": {
-          "depthSliceCompatible": true
+          "constraints": true,
+          "max": {
+            "customValidation": "depthSlice"
+          },
+          "min": 0
         }
       }
     }

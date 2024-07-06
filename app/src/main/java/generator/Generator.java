@@ -70,6 +70,10 @@ public class Generator {
         generator.generateProgram(1);
     }
 
+    public String getParentVariable(String childVariable) {
+        return variableToReceiverName.get(childVariable);
+    }
+
     public String getPlatform() {
         return platform;
     }

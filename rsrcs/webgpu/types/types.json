@@ -52,7 +52,14 @@
           "withAttributes": {
             "GPUTexture.usage": [
               "GPUTextureUsage.RENDER_ATTACHMENT"
-            ]
+            ],
+            "GPUTextureView.mipLevelCount": [
+              1
+            ],
+            "GPUTextureView.arrayLayerCount": [
+              1
+            ],
+            "GPUTextureView.dimension": ["2d", "2d-array", "3d"]
           }
         }
       },
@@ -261,7 +268,7 @@
         "conditions": {
           "same": ["GPUDevice"],
           "withAttributes": {
-            "label": ["fragment"]
+            "GPUShaderModule.label": ["fragment"]
           }
         }
       },
@@ -421,7 +428,7 @@
         "conditions": {
           "same": ["GPUDevice"],
           "withAttributes": {
-            "label": ["vertex"]
+            "GPUShaderModule.label": ["vertex"]
           }
         }
       }

@@ -84,13 +84,21 @@ public class ParameterNode extends ASTNode {
     }
 
     private void generateParam(String fieldName, JsonNode details, String paramType) throws SkipParameterException {
-
+        System.out.println("inside the parameter node, the requirements for " + fieldName + " are " + this.parameterRequirements);
         JsonNode additionalConditionsNode = null;
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
         } else if (this.parameterRequirements != null && !this.parameterRequirements.isEmpty()) {
-            this.parameters.add(new Parameter(parameterRequirements.getFirst()));
+            // Also if are multiple choices and since it's not an enum, pick one of them at random
+            // ITS NOT WORKING FOR DIMENSION BECAUSE IT IS AN ENUM!!!
+            String parameterValue = parameterRequirements.get(rand.nextInt(0, parameterRequirements.size()));
+            System.out.println("the parameter value is " + parameterValue);
+            if (paramType.equals("string")) {
+                parameterValue = encodeAsString(parameterValue);
+            }
+
+            this.parameters.add(new Parameter(parameterValue));
         } else if (isString) {
             this.parameters.add(new Parameter(ParamGenerator.generateRandVarName()));
         } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
@@ -427,6 +435,8 @@ public class ParameterNode extends ASTNode {
             chosenEnumValues = pickEnumValuesAsArray(enumValues, mandatoryEnums);
         } else if (mandatoryEnums.isEmpty()) {
             chosenEnumValues = pickARandomEnumValue(enumValues, mandatoryEnums);
+        } else { // pick one randomly from the mandatory enums
+            chosenEnumValues.add(mandatoryEnums.get(rand.nextInt(mandatoryEnums.size())));
         }
 
         // Add mandatory enums uniquely
@@ -826,10 +836,11 @@ public class ParameterNode extends ASTNode {
         List<List<String>> constraintsList = new ArrayList<>();
         JsonNode finalNewEnumNode = newEnumNode;
 
-
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
 
             String constraintValue = parentList.getParameter(fieldName);
+            System.out.println(parentList.allParameters);
+            System.out.println(constraintValue);
 
             JsonNode constraintNode = finalNewEnumNode.get(fieldName);
             JsonNode constraintValuesNode = constraintNode.get(constraintValue);

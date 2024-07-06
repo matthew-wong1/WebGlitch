@@ -13,8 +13,8 @@
             "conditions": {
               "same": ["GPUDevice"],
               "withAttributes": {
-                "usage": ["GPUBufferUsage.COPY_DST"],
-                "mappedAtCreation": ["false"]
+                "GPUBuffer.usage": ["GPUBufferUsage.COPY_DST"],
+                "GPUBuffer.mappedAtCreation": ["false"]
               }
             }
           },

@@ -241,6 +241,7 @@ public class Generator {
     }
 
     public List<String> getAllObjectAttributes(String variableName, String fieldName) {
+        System.out.println("the variable name is " + variableName + " and the fieldName is " + fieldName);
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 
@@ -315,7 +316,7 @@ public class Generator {
         if (requirements != null || sameObjects != null) {
             // Filter out those that don't meet the requirement,
             // And then need to generate one with the requirement
-            addVariablesThatMeetReqsToList(allVariables, variablesThatMeetReqs, requirements);
+            addVariablesThatMeetReqsToList(receiverType, allVariables, variablesThatMeetReqs, requirements);
             sameObjectsReqs = ensureSameObjectRequirementsMet(variablesThatMeetReqs, sameObjects, receiverName);
         } else {
             variablesThatMeetReqs.addAll(allVariables);
@@ -379,7 +380,7 @@ public class Generator {
         return currentVariable;
     }
 
-    private void addVariablesThatMeetReqsToList(List<String> allVariables, List<String> variablesThatMeetReqs, Map<String, List<String>> requirements) {
+    private void addVariablesThatMeetReqsToList(String paramType, List<String> allVariables, List<String> variablesThatMeetReqs, Map<String, List<String>> requirements) {
         if (requirements == null) {
             return;
         }
@@ -390,13 +391,13 @@ public class Generator {
             // Only works for 1 level deep ie 1 dot
             for (Map.Entry<String, List<String>> requirement : requirements.entrySet()) {
                 String variableToCheck = variableName;
-                String attributeNameToCheck = requirement.getKey();
+                String[] split = requirement.getKey().split("\\.");
+                String attributeNameToCheck = split[1];
+
                 List<String> attributeValuesToCheck = requirement.getValue();
 
-                if (requirement.getKey().contains(".")) {
-                    String[] split = requirement.getKey().split("\\.");
+                if (!requirement.getKey().startsWith(paramType)) {
                     variableToCheck = variableToReceiverName.get(variableName);
-                    attributeNameToCheck = split[1];
                 }
 
                 List<String> attributes = this.getAllObjectAttributes(variableToCheck, attributeNameToCheck);
@@ -427,6 +428,9 @@ public class Generator {
                 sameObjectsReqs.put(initInfo.receiverType, newVariableRequirement);
             }
         }
+
+        // PArse requirements to filter out those that are relevant
+
 
         return generateCall(new ReceiverTypeCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs, null);
     }

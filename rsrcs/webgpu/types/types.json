@@ -121,6 +121,12 @@
         },
         "optional": true
       },
+      "view": {
+        "type": "GPUTextureView",
+        "conditions": {
+          "same": ["GPUDevice"]
+        }
+      },
       "depthReadOnly": {
         "type": "boolean",
         "optional": true
@@ -131,6 +137,14 @@
         "enum": [
           "discard",
           "store"
+        ]
+      },
+      "depthLoadOp": {
+        "type": "string",
+        "optional": true,
+        "enum": [
+          "clear",
+          "load"
         ]
       },
       "stencilClearValue": {
@@ -156,12 +170,6 @@
           "discard",
           "store"
         ]
-      },
-      "view": {
-        "type": "GPUTextureView",
-        "conditions": {
-          "same": ["GPUDevice"]
-        }
       }
     }
   ],

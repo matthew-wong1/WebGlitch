@@ -387,7 +387,7 @@ public class ParameterNode extends ASTNode {
                     this.addNode(nestedParameterNode);
                 } catch (SkipParameterException e) {
                     // make your new exception. throw a custom exception. let other excpetions fails
-                    System.out.println("Skipped generation of paramter for field " + nestedFieldName);
+//                    System.out.println("Skipped generation of paramter for field " + nestedFieldName);
                 }
 
             });
@@ -435,7 +435,8 @@ public class ParameterNode extends ASTNode {
         } else if (mandatoryEnums.isEmpty()) {
             chosenEnumValues = pickARandomEnumValue(enumValues, mandatoryEnums);
         } else { // pick one randomly from the mandatory enums
-            chosenEnumValues.add(mandatoryEnums.get(rand.nextInt(mandatoryEnums.size())));
+            enumValues.removeIf(value -> !mandatoryEnums.contains(value));
+            chosenEnumValues.add(enumValues.getFirst());
         }
 
         // Add mandatory enums uniquely
@@ -467,6 +468,7 @@ public class ParameterNode extends ASTNode {
             return mandatoryEnums;
         }
 
+        // ITS ALREADY BEEN SHUFFLED!
         int enumValuesSize = enumValues.size();
         List<String> chosenFlag = new ArrayList<>();
 
@@ -692,7 +694,10 @@ public class ParameterNode extends ASTNode {
         }
 
         enumValues.removeIf(usage -> usage.contains("STORAGE_BINDING"));
-        mandatoryEnums.add("GPUTextureUsage.RENDER_ATTACHMENT");
+        if (!mandatoryEnums.contains("GPUTextureUsage.RENDER_ATTACHMENT")) {
+            mandatoryEnums.add("GPUTextureUsage.RENDER_ATTACHMENT");
+        }
+
     }
 
     private void ensureTextureDimensionAndSampleCompatible(List<String> enumValues) {

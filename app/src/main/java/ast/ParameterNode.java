@@ -89,7 +89,7 @@ public class ParameterNode extends ASTNode {
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
-        } else if (this.parameterRequirements != null && !this.parameterRequirements.isEmpty()) {
+        } else if (this.parameterRequirements != null && !this.parameterRequirements.isEmpty() && !fieldName.equals("label")) {
             // Also if are multiple choices and since it's not an enum, pick one of them at random
             String parameterValue = parameterRequirements.get(rand.nextInt(0, parameterRequirements.size()));
 
@@ -166,6 +166,7 @@ public class ParameterNode extends ASTNode {
 
         if (SHADER_TYPES.contains(preDeterminedType)) {
             chosenShaderType = preDeterminedType;
+
         } else {
             chosenShaderType = SHADER_TYPES.get(rand.nextInt(SHADER_TYPES.size()));
         }

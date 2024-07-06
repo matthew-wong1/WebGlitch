@@ -479,20 +479,33 @@ public class ParameterNode extends ASTNode {
             randIdx = rand.nextInt(enumValues.size() - 1) + 1;
         }
 
-        Set<String> uniqueValues = new HashSet<>();
-        uniqueValues.addAll(mandatoryEnums);
-        uniqueValues.addAll(enumValues.subList(0, randIdx));
-        return new ArrayList<>(uniqueValues);
 
+        return chooseFinalFlags(enumValues, mandatoryEnums, randIdx);
+
+    }
+
+    private List<String> chooseFinalFlags(List<String> enumValues, List<String> mandatoryEnums, int randIdx) {
+        List<String> chosenFlags = new ArrayList<>(mandatoryEnums);
+        List<String> randomlyChosenFlags = enumValues.subList(0, randIdx);
+        for (String randomlyChosenFlag : randomlyChosenFlags) {
+            if (!chosenFlags.contains(randomlyChosenFlag)) {
+                chosenFlags.add(randomlyChosenFlag);
+            }
+        }
+        return chosenFlags;
     }
 
     private List<String> pickEnumValuesAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode, List<String> mandatoryEnums) {
         int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
 
-        Set<String> uniqueValues = new HashSet<>();
-        uniqueValues.addAll(mandatoryEnums);
-        uniqueValues.addAll(enumValues.subList(0, randIdx));
-        List<String> chosenFlags = new ArrayList<>(uniqueValues);
+//        Set<String> uniqueValues = new HashSet<>();
+//        uniqueValues.addAll(mandatoryEnums);
+//        uniqueValues.addAll(enumValues.subList(0, randIdx));
+//        List<String> chosenFlags = new ArrayList<>(uniqueValues);
+
+
+        List<String> chosenFlags = chooseFinalFlags(enumValues, mandatoryEnums, randIdx);
+
         // Maybe could prepend mandatory since alway subList from 0?
         List<String> toRemove = new ArrayList<>();
 

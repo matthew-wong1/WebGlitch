@@ -66,7 +66,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(1000, false, "dawn");
+        Generator generator = new Generator(500, false, "dawn");
         generator.generateProgram(1);
     }
 

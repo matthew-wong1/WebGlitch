@@ -50,6 +50,8 @@ public class ParameterNode extends ASTNode {
         this.parameterRequirements = parameterRequirements;
         System.out.println("parameter requirements " + parameterRequirements);
 
+        checkImplementationSpecificCalls(details);
+
         if (this.isRoot) {
             this.rootParameterNode = this;
         } else {
@@ -67,6 +69,14 @@ public class ParameterNode extends ASTNode {
             String paramType = details.get("type").asText();
             this.isString = paramType.equals("string");
             generateParam(fieldName, details, paramType);
+        }
+    }
+
+    private void checkImplementationSpecificCalls(JsonNode details) throws SkipParameterException {
+        String platform = generator.getPlatform();
+
+        if ((details.has("dawnOnly") && !platform.equals("dawn")) || (details.has("wgpuOnly") && !platform.equals("wgpu")))) {
+            throw new SkipParameterException("Platform incompatible parameters are skipped");
         }
     }
 

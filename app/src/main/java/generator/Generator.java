@@ -47,12 +47,14 @@ public class Generator {
     private final Parser parser = new Parser(this);
     private final int maxCalls;
     private final boolean allowOptParams;
+    private final String platform;
     private ASTNode programNode;
 
-    public Generator(int maxCalls, boolean allowOptParams) {
+    public Generator(int maxCalls, boolean allowOptParams, String platform) {
         this.maxCalls = maxCalls;
         this.allowOptParams = allowOptParams;
         this.numDevices = 0;
+        this.platform = platform;
 
         try {
             this.initializeReceiverInitsAndCallProbs();
@@ -64,8 +66,12 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(1000, false);
+        Generator generator = new Generator(1000, false, "dawn");
         generator.generateProgram(1);
+    }
+
+    public String getPlatform() {
+        return platform;
     }
 
     private void initializeReceiverInitsAndCallProbs() throws IOException {

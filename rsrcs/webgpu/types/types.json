@@ -55,6 +55,14 @@
             ]
           }
         }
+      },
+      "depthSlice": {
+        "type": "uint",
+        "optional": true,
+        "dawnOnly": true,
+        "conditions": {
+          "depthSliceCompatible": true
+        }
       }
     }
   ],

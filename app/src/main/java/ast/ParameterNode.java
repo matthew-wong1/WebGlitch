@@ -84,16 +84,15 @@ public class ParameterNode extends ASTNode {
     }
 
     private void generateParam(String fieldName, JsonNode details, String paramType) throws SkipParameterException {
-        System.out.println("inside the parameter node, the requirements for " + fieldName + " are " + this.parameterRequirements);
+
         JsonNode additionalConditionsNode = null;
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
         } else if (this.parameterRequirements != null && !this.parameterRequirements.isEmpty()) {
             // Also if are multiple choices and since it's not an enum, pick one of them at random
-            // ITS NOT WORKING FOR DIMENSION BECAUSE IT IS AN ENUM!!!
             String parameterValue = parameterRequirements.get(rand.nextInt(0, parameterRequirements.size()));
-            System.out.println("the parameter value is " + parameterValue);
+
             if (paramType.equals("string")) {
                 parameterValue = encodeAsString(parameterValue);
             }
@@ -839,8 +838,7 @@ public class ParameterNode extends ASTNode {
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
 
             String constraintValue = parentList.getParameter(fieldName);
-            System.out.println(parentList.allParameters);
-            System.out.println(constraintValue);
+
 
             JsonNode constraintNode = finalNewEnumNode.get(fieldName);
             JsonNode constraintValuesNode = constraintNode.get(constraintValue);

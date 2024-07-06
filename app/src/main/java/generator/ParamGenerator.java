@@ -86,9 +86,9 @@ public class ParamGenerator {
             case "depthSlice": {
 
                 String textureViewVariableName = parameterNode.getRootParameterNode().findNestedParameterNode("view").getParameter().getValue();
-                System.out.println(textureViewVariableName);
+
                 String viewDimensionValue = generator.getObjectAttributes(textureViewVariableName, "dimension");
-                System.out.println(generator.objectAttributesTable.get(textureViewVariableName));
+
                 if (!viewDimensionValue.equals("3d")) {
                     throw new SkipParameterException("Skipping depth slice because dimension is not 3d");
                 }

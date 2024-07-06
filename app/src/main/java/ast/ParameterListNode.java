@@ -68,7 +68,7 @@ public class ParameterListNode extends ASTNode {
     }
 
     public void generateParams() {
-        System.out.println("the parameter requirements " + requirements);
+
         for (JsonNode param : paramsJsonNode) {
             param.fieldNames().forEachRemaining(fieldName -> {
                 JsonNode paramDetails = param.get(fieldName);
@@ -82,11 +82,9 @@ public class ParameterListNode extends ASTNode {
 //
 //                }
                 try {
-                    System.out.println("the requirements for " + fieldName + " are " + parameterRequirements);
                     this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this, parameterRequirements));
                 } catch (SkipParameterException e) {
                     List<String> allowedFieldSkips = Arrays.asList("stripIndexFormat", "depthSlice");
-                    System.out.println("Skipped generation of parameter for field " + fieldName);
                     if(!allowedFieldSkips.contains(fieldName)) {
                         System.err.println("Skipped unskippable parameter for field " + fieldName);
                         System.exit(1);

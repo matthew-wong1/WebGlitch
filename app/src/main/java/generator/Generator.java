@@ -241,7 +241,6 @@ public class Generator {
     }
 
     public List<String> getAllObjectAttributes(String variableName, String fieldName) {
-        System.out.println("the variable name is " + variableName + " and the fieldName is " + fieldName);
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 
@@ -272,7 +271,6 @@ public class Generator {
     public void removeFromSymbolTable(String returnedObjectType, String variableName) {
         symbolTable.get(returnedObjectType).remove(variableName);
 //        removeFromObjectAttributesTable(variableName);
-        System.out.println("removed " + variableName);
 
         if (symbolTable.get(returnedObjectType).isEmpty()) {
             symbolTable.remove(returnedObjectType);

@@ -146,7 +146,7 @@
           "store"
         ],
         "conditions": {
-          "readCompatible": true
+          "readCompatible": "depth"
         }
       },
       "depthLoadOp": {
@@ -176,7 +176,7 @@
         "type": "boolean",
         "optional": true,
         "conditions": {
-          "readCompatible": "depth"
+          "readCompatible": true
         }
       },
       "stencilLoadOp": {

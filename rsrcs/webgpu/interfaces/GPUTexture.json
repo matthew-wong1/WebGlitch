@@ -16,7 +16,7 @@
               "stencil-only"
             ],
             "conditions": {
-              "textureFormatCompatible": true
+              "textureAspectCompatible": true
             },
             "optional": true
           },

@@ -647,10 +647,14 @@ public class ParameterNode extends ASTNode {
         String readOnlyParameter = formatName + PARAMETER_SUFFIX;
 
 
-        String format = this.rootParameterNode.findNestedParameterNode("view").getParameter().getValue();
+        String viewName = this.rootParameterNode.findNestedParameterNode("view").getParameter().getValue();
+        String format = generator.getObjectAttributes(viewName, "format");
 
+        System.out.println("the format was " + format);
+        System.out.println("the format type was " + formatName);
         if (format.contains(formatName)) {
             String readOnlyValue = this.rootParameterNode.findNestedParameterNode(readOnlyParameter).getParameter().getValue();
+
             if (readOnlyValue.equals("true")) {
                 throw new SkipParameterException("Not providing load or store operations when readOnly is true");
             }
@@ -803,28 +807,43 @@ public class ParameterNode extends ASTNode {
     }
 
     private void ensureTextureAspectCompatible(List<String> enumValues, boolean hasViewFormatsCompatible) {
-        String currentAspect = parentList.getParameter("aspect");
 
-        // WORK IN PROGRESS IMPLEMENTATION
-        if (currentAspect.equals("non-stencil-or-depth")) {
-            enumValues.removeIf(flag -> ((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
-            parentList.setParamValue("aspect", "all");
-            return;
-        }
 
-        if (!currentAspect.equals("all")) {
-            enumValues.removeIf(flag -> !((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
-        } else {
-            enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
-        }
+
+//        else {
+//            enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
+//        }
 
         if (hasViewFormatsCompatible) {
+
             List<String> compatibleTextures = new ArrayList<>();
             compatibleTextures.add(parentList.getParameter("GPUTexture.format"));
             compatibleTextures.addAll(parentList.getAllParameters("GPUTexture.viewFormats"));
             enumValues.retainAll(compatibleTextures);
-
+            return;
         }
+
+        String currentTexture = generator.getObjectAttributes(parentList.getReceiver(), "format");
+        if ((currentTexture.contains("depth") && currentTexture.contains("stencil")) ||
+        (!currentTexture.contains("depth") && !currentTexture.contains("stencil"))) {
+            enumValues.removeIf(value -> value.startsWith("depth") || value.startsWith("stencil"));
+        } else if (currentTexture.contains("depth")) {
+            enumValues.removeIf(value -> value.startsWith("stencil"));
+        } else if (currentTexture.contains("stencil")) {
+            enumValues.removeIf(value -> value.startsWith("depth"));
+        }
+
+        // WORK IN PROGRESS IMPLEMENTATION
+//        String currentAspect = parentList.getParameter("aspect");
+//        if (currentAspect.equals("non-stencil-or-depth")) {
+//            enumValues.removeIf(flag -> ((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
+//            parentList.setParamValue("aspect", "all");
+//            return;
+//        }
+//
+//        if (!currentAspect.equals("all")) {
+//            enumValues.removeIf(flag -> !((flag.startsWith("stencil")) || (flag.startsWith("depth"))));
+//        }
     }
 
     private void ensureTextureFormatCompatible(List<String> enumValues) {
@@ -859,16 +878,18 @@ public class ParameterNode extends ASTNode {
         }
 
         // This check not for bitwise flags
-        if (currentTexture.startsWith("stencil") || currentTexture.startsWith("depth")) { // Remove aspect enums
-            enumValues.remove("all");
-            if (currentTexture.startsWith("stencil")) {
-                enumValues.removeIf(flag -> !flag.contains("stencil"));
-            } else { // depth only so remove all the stencil ones
-                enumValues.removeIf(flag -> flag.contains("stencil"));
-            }
+//        if (currentTexture.startsWith("stencil") || currentTexture.startsWith("depth")) { // Remove aspect enums
+//            enumValues.remove("all");
+        if (currentTexture.startsWith("stencil")) {
+            enumValues.removeIf(flag -> !flag.contains("stencil"));
+        } else if (currentTexture.startsWith("depth")) { // depth only so remove all the stencil ones
+            enumValues.removeIf(flag -> !flag.contains("depth"));
         } else {
             enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
         }
+//        } else {
+//
+//        }
     }
 
     private void ensureTextureUsageCompatible(JsonNode conditions, List<String> enumValues) {

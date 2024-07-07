@@ -79,12 +79,7 @@
               "rgba16float",
               "rgba32uint",
               "rgba32sint",
-              "rgba32float",
-              "stencil8",
-              "depth16unorm",
-              "depth24plus",
-              "depth24plus-stencil8",
-              "depth32float"
+              "rgba32float"
             ],
             "GPUTextureView.mipLevelCount": [
               1
@@ -113,18 +108,30 @@
 
   "depthStencilAttachment": [
     {
-      "depthClearValue": {
-        "type": "double",
-        "conditions": {
-          "min": 0,
-          "max": 1
-        },
-        "optional": true
-      },
       "view": {
         "type": "GPUTextureView",
         "conditions": {
-          "same": ["GPUDevice"]
+          "same": ["GPUDevice"],
+          "withAttributes": {
+            "GPUTexture.usage": [
+              "GPUTextureUsage.RENDER_ATTACHMENT"
+            ],
+            "GPUTexture.dimension": ["2d"],
+            "GPUTexture.format": [
+              "stencil8",
+              "depth16unorm",
+              "depth24plus",
+              "depth24plus-stencil8",
+              "depth32float"
+            ],
+            "GPUTextureView.mipLevelCount": [
+              1
+            ],
+            "GPUTextureView.arrayLayerCount": [
+              1
+            ],
+            "GPUTextureView.dimension": ["2d", "2d-array"]
+          }
         }
       },
       "depthReadOnly": {
@@ -137,7 +144,10 @@
         "enum": [
           "discard",
           "store"
-        ]
+        ],
+        "conditions": {
+          "readCompatible": true
+        }
       },
       "depthLoadOp": {
         "type": "string",
@@ -145,11 +155,29 @@
         "enum": [
           "clear",
           "load"
-        ]
+        ],
+        "conditions": {
+          "readCompatible": "depth"
+        }
+      },
+      "depthClearValue": {
+        "type": "double",
+        "conditions": {
+          "min": 0,
+          "max": 1
+        },
+        "optional": true
       },
       "stencilClearValue": {
         "type": "uint",
         "optional": true
+      },
+      "stencilReadOnly": {
+        "type": "boolean",
+        "optional": true,
+        "conditions": {
+          "readCompatible": "depth"
+        }
       },
       "stencilLoadOp": {
         "type": "string",
@@ -157,11 +185,10 @@
         "enum": [
           "clear",
           "load"
-        ]
-      },
-      "stencilReadOnly": {
-        "type": "boolean",
-        "optional": true
+        ],
+        "conditions": {
+          "readCompatible": "stencil"
+        }
       },
       "stencilStoreOp": {
         "type": "string",
@@ -169,7 +196,10 @@
         "enum": [
           "discard",
           "store"
-        ]
+        ],
+        "conditions": {
+          "readCompatible": "stencil"
+        }
       }
     }
   ],

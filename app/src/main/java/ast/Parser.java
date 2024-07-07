@@ -95,7 +95,7 @@ public class Parser {
         String parentReceiverType = rootJsonNode.get("receiverType").asText();
         String receiver;
         if (specificReceiver == null) {
-            receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), sameObjectsReqs);
+            receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), requirements, sameObjectsReqs);
         } else {
             receiver = specificReceiver;
         }

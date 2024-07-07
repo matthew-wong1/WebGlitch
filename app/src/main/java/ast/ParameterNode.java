@@ -41,6 +41,7 @@ public class ParameterNode extends ASTNode {
     }
 
     public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, ParameterNode parentParameterNode, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) throws SkipParameterException {
+        System.out.println("generating parameter " + fieldName);
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parentList = parentList;
@@ -103,7 +104,7 @@ public class ParameterNode extends ASTNode {
         } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
             generateNumber(details, paramType);
         } else if (paramType.equals("boolean")) {
-            this.parameters.add(new Parameter(String.valueOf(rand.nextBoolean())));
+            generateBoolean(details);
         } else if (paramType.equals("typedArray")) {
             String arrayVariableName = generator.generateTopLevelStatement("typedArray");
             this.parameters.add(new Parameter(arrayVariableName));
@@ -145,6 +146,29 @@ public class ParameterNode extends ASTNode {
             generator.parseAndSetCallAvailability(additionalConditionsNode, parentList);
         }
 
+    }
+
+    private void generateBoolean(JsonNode details) {
+        String generatedValue;
+
+        if (details.has("conditions")) {
+            generatedValue = parseBooleanConditions(details.get("conditions"));
+        } else {
+            generatedValue = String.valueOf(rand.nextBoolean());
+        }
+
+        this.parameters.add(new Parameter(generatedValue));
+    }
+
+    private String parseBooleanConditions(JsonNode conditions) {
+        if (conditions.has("readCompatible")) {
+            String format = this.rootParameterNode.findNestedParameterNode("view").getParameter().getValue();
+            if (format.contains("depth") && format.contains("stencil")) {
+                return this.rootParameterNode.findNestedParameterNode("depthReadOnly").getParameter().getValue();
+            }
+        }
+
+        return String.valueOf(rand.nextBoolean());
     }
 
     private String chooseShaderOfType(String type) {
@@ -397,6 +421,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private void generateEnumVal(JsonNode details, String paramType) throws SkipParameterException {
+        System.out.println("For parameter " + fieldName + " , the requirements are " + this.parameterRequirements);
         JsonNode mutexNode = details.get("mutex");
         JsonNode conditions = null;
 
@@ -436,6 +461,8 @@ public class ParameterNode extends ASTNode {
         } else if (mandatoryEnums.isEmpty()) {
             chosenEnumValues = pickARandomEnumValue(enumValues, mandatoryEnums);
         } else { // pick one randomly from the mandatory enums
+            System.out.println("enum values: " + enumValues);
+            System.out.println("mandatory enums: " + mandatoryEnums);
             enumValues.removeIf(value -> !mandatoryEnums.contains(value));
             chosenEnumValues.add(enumValues.getFirst());
         }
@@ -609,7 +636,26 @@ public class ParameterNode extends ASTNode {
             ensureColorRenderable(enumValues);
         }
 
+        if (conditions.has("readCompatible")) {
+            ensureReadCompatible(conditions.get("readCompatible").asText());
+        }
+
         return mandatoryEnums;
+    }
+
+    private void ensureReadCompatible(String formatName) {
+        String PARAMETER_SUFFIX = "ReadOnly";
+        String readOnlyParameter = formatName + PARAMETER_SUFFIX;
+
+
+        String format = this.rootParameterNode.findNestedParameterNode("view").getParameter().getValue();
+
+        if (format.contains(formatName)) {
+            String readOnlyValue = this.rootParameterNode.findNestedParameterNode(readOnlyParameter).getParameter().getValue();
+            if (readOnlyValue.equals("true")) {
+                throw new SkipParameterException("Not providing load or store operations when readOnly is true");
+            }
+        }
     }
 
     private void ensureColorRenderable(List<String> enumValues) {
@@ -844,6 +890,7 @@ public class ParameterNode extends ASTNode {
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
 
             String constraintValue = parentList.getParameter(fieldName);
+            System.out.println("the constraint value is " + constraintValue + " from fieldname " + fieldName);
 
 
             JsonNode constraintNode = finalNewEnumNode.get(fieldName);

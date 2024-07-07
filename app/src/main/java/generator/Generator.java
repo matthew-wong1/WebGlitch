@@ -241,6 +241,9 @@ public class Generator {
     }
 
     public List<String> getAllObjectAttributes(String variableName, String fieldName) {
+        System.out.println("getting object attributes for " + variableName + " for field " + fieldName);
+        System.out.println("the variable type is " + variableToReceiverType.get(variableName));
+        System.out.println(objectAttributesTable.get(variableName));
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 
@@ -304,6 +307,7 @@ public class Generator {
     }
 
     private Map<String, String> findAllVariablesThatMeetReqs(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName) {
+        System.out.println("getting receiver type " + receiverType);
         List<String> allVariables = symbolTable.get(receiverType);
 
         if (allVariables == null) {
@@ -417,10 +421,12 @@ public class Generator {
         String initMethodName = initInfo.callName;
         String initReceiverType = initInfo.receiverType;
         boolean initIsMethod = initInfo.methodCall;
-
+        System.out.println("requirements for " + initInfo.receiverType + " : " + requirements);
         // need a loop. Go to receiverInit that matches sameobjectReqs. Then back track, pass in new sameobject reqs for the level above and so forth
         if (sameObjectsReqs != null && !sameObjectsReqs.isEmpty()) {
             while (!sameObjectsReqs.containsKey(initInfo.receiverType)) {
+
+                System.out.println("same object requirements: " + sameObjectsReqs);
                 String newVariableRequirement = parseCallInfoFromReceiverTypeAndGenerateCall(initInfo.receiverType, requirements, sameObjectsReqs);
                 sameObjectsReqs.clear();
                 sameObjectsReqs.put(initInfo.receiverType, newVariableRequirement);
@@ -488,7 +494,7 @@ public class Generator {
         this.variableToReceiverName.remove(varName);
     }
 
-    public String determineReceiver(String receiverType, String callName, boolean hasRequirements, Map<String, String> sameObjectsReqs) {
+    public String determineReceiver(String receiverType, String callName, boolean hasRequirements, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
         if (hasRequirements) {
             String requiredReceiver = null;
             if (sameObjectsReqs != null) {
@@ -496,7 +502,17 @@ public class Generator {
             }
 
             if (requiredReceiver == null) {
-                return getRandomReceiver(receiverType, callName);
+                Map<String, List<String>> finalisedRequirements = null;
+                if (requirements != null) {
+                    finalisedRequirements = new HashMap<>();
+                    for (Map.Entry<String, List<String>> entry : requirements.entrySet()) {
+                        if (entry.getKey().startsWith(receiverType)) {
+                            finalisedRequirements.put(entry.getKey(), entry.getValue());
+                        }
+                    }
+                }
+
+                return getRandomReceiver(receiverType, callName, finalisedRequirements, null, null);
             }
 
             return requiredReceiver;

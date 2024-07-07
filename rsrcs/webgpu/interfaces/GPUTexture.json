@@ -57,7 +57,7 @@
                     "1d": 1,
                     "2d": 1,
                     "2d-array": 1,
-                    "cube": 1,
+                    "cube": 6,
                     "cube-array": 6,
                     "3d": 1
                   }

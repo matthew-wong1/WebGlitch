@@ -650,11 +650,8 @@ public class ParameterNode extends ASTNode {
         String viewName = this.rootParameterNode.findNestedParameterNode("view").getParameter().getValue();
         String format = generator.getObjectAttributes(viewName, "format");
 
-        System.out.println("the format was " + format);
-        System.out.println("the format type was " + formatName);
-
         String readOnlyValue = this.rootParameterNode.findNestedParameterNode(readOnlyParameter).getParameter().getValue();
-        System.out.println("the readonlyvalue was " + readOnlyValue + " so will skip generation of " + fieldName);
+
         if (!format.contains(formatName) || readOnlyValue.equals("true")) {
             throw new SkipParameterException("Not providing load or store operations when readOnly is true");
 

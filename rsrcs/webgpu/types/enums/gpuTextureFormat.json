@@ -164,6 +164,7 @@
     "rgba32uint",
     "rgba32sint",
     "rgba32float",
+    "rgb9e5ufloat",
     "rg11b10ufloat"
   ],
 

@@ -27,7 +27,6 @@ public class ParameterListNode extends ASTNode {
     private Map<String, List<String>> parseRequirements(Map<String, List<String>> requirements) {
         // Filter out requirements by the ones that have a dot. Removing the . from the name.
         // This assumes everything in withAttributes is same nested level
-        System.out.println("for call " + callNode.getCallName() + ", the reuqirements prior to parse are " + requirements);
         if (requirements == null || requirements.isEmpty()) {
             return null;
         }
@@ -46,7 +45,6 @@ public class ParameterListNode extends ASTNode {
                 finalisedRequirements.get(split[1]).addAll(requirementsEntry.getValue());
             }
         }
-        System.out.println("the requirements after parse are " + finalisedRequirements);
         return finalisedRequirements;
     }
 

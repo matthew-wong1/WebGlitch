@@ -421,7 +421,6 @@ public class ParameterNode extends ASTNode {
     }
 
     private void generateEnumVal(JsonNode details, String paramType) throws SkipParameterException {
-        System.out.println("For parameter " + fieldName + " , the requirements are " + this.parameterRequirements);
         JsonNode mutexNode = details.get("mutex");
         JsonNode conditions = null;
 
@@ -461,8 +460,6 @@ public class ParameterNode extends ASTNode {
         } else if (mandatoryEnums.isEmpty()) {
             chosenEnumValues = pickARandomEnumValue(enumValues, mandatoryEnums);
         } else { // pick one randomly from the mandatory enums
-            System.out.println("enum values: " + enumValues);
-            System.out.println("mandatory enums: " + mandatoryEnums);
             enumValues.removeIf(value -> !mandatoryEnums.contains(value));
             chosenEnumValues.add(enumValues.getFirst());
         }
@@ -890,9 +887,6 @@ public class ParameterNode extends ASTNode {
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
 
             String constraintValue = parentList.getParameter(fieldName);
-            System.out.println("the constraint value is " + constraintValue + " from fieldname " + fieldName);
-
-
             JsonNode constraintNode = finalNewEnumNode.get(fieldName);
             JsonNode constraintValuesNode = constraintNode.get(constraintValue);
             List<String> values = new ArrayList<>();

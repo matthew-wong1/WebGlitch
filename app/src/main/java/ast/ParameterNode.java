@@ -41,7 +41,6 @@ public class ParameterNode extends ASTNode {
     }
 
     public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, ParameterNode parentParameterNode, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) throws SkipParameterException {
-        System.out.println("generating parameter " + fieldName);
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parentList = parentList;
@@ -173,11 +172,9 @@ public class ParameterNode extends ASTNode {
 
     private String chooseShaderOfType(String type) {
         // expects type of shader.subtype where subtype is compute, vertex, or fragment
-        System.out.println("chose shader of type " + type);
         String shaderImportName = generator.generateTopLevelStatement("shader."  + type);
         String[] splitNames = shaderImportName.split("\\.");
 
-        System.out.println("setting param value as type " + splitNames[0]);
         // Set label as 'compute' or 'graphics' based on folder in which found the shader
         parentList.setParamValue("label", splitNames[0]);
 
@@ -190,8 +187,7 @@ public class ParameterNode extends ASTNode {
 
         // THIS SHOULD BE FINDNESTEDPARAMETER
         String preDeterminedType = parentList.getParameter("label");
-        System.out.println(parentList.allParameters);
-        System.out.println("predetermined type: " + preDeterminedType);
+
         String chosenShaderType;
 
         if (SHADER_TYPES.contains(preDeterminedType)) {

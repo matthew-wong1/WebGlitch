@@ -22,7 +22,6 @@ public class ParameterListNode extends ASTNode {
         this.callNode = callNode;
         this.generator = callNode.getGenerator();
         this.requirements = parseRequirements(requirements);
-        System.out.println("requirements for " + callNode.getCallName() + " : " + requirements + ". Using receiver " + callNode.getReceiver());
     }
 
     private Map<String, List<String>> parseRequirements(Map<String, List<String>> requirements) {
@@ -31,8 +30,6 @@ public class ParameterListNode extends ASTNode {
         if (requirements == null || requirements.isEmpty()) {
             return null;
         }
-        System.out.println("generating parameters for call " + callNode.getCallName());
-        System.out.println("prior to parsing requirements: " + requirements);
         Map<String, List<String>> finalisedRequirements = new HashMap<>();
         for (Map.Entry<String, List<String>> requirementsEntry : requirements.entrySet()) {
             if (!requirementsEntry.getKey().contains(".")) {
@@ -47,7 +44,7 @@ public class ParameterListNode extends ASTNode {
                 finalisedRequirements.get(split[1]).addAll(requirementsEntry.getValue());
             }
         }
-        System.out.println("after parsing requirements: " + finalisedRequirements);
+
         return finalisedRequirements;
     }
 

@@ -11,11 +11,21 @@ public class Parameter {
     }
 
     public String getValue() {
+        // Remove double quotes if String
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+            return value.substring(1, value.length() - 1);
+        }
+
         return value;
     }
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 
     @Override

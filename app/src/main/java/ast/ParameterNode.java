@@ -90,7 +90,7 @@ public class ParameterNode extends ASTNode {
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
-        } else if (this.parameterRequirements != null && !this.parameterRequirements.isEmpty() && !fieldName.equals("label")) {
+        } else if (this.parameterRequirements != null && !this.parameterRequirements.isEmpty()) {
             // Also if are multiple choices and since it's not an enum, pick one of them at random
             String parameterValue = parameterRequirements.get(rand.nextInt(0, parameterRequirements.size()));
 
@@ -173,9 +173,11 @@ public class ParameterNode extends ASTNode {
 
     private String chooseShaderOfType(String type) {
         // expects type of shader.subtype where subtype is compute, vertex, or fragment
+        System.out.println("chose shader of type " + type);
         String shaderImportName = generator.generateTopLevelStatement("shader."  + type);
         String[] splitNames = shaderImportName.split("\\.");
 
+        System.out.println("setting param value as type " + splitNames[0]);
         // Set label as 'compute' or 'graphics' based on folder in which found the shader
         parentList.setParamValue("label", splitNames[0]);
 
@@ -185,7 +187,11 @@ public class ParameterNode extends ASTNode {
 
     private String chooseRandomShader() {
         List<String> SHADER_TYPES = Arrays.asList("vertex", "fragment", "compute");
+
+        // THIS SHOULD BE FINDNESTEDPARAMETER
         String preDeterminedType = parentList.getParameter("label");
+        System.out.println(parentList.allParameters);
+        System.out.println("predetermined type: " + preDeterminedType);
         String chosenShaderType;
 
         if (SHADER_TYPES.contains(preDeterminedType)) {
@@ -938,7 +944,7 @@ public class ParameterNode extends ASTNode {
                 valueToPrint = "[" + valueToPrint + "]";
             }
         } else {
-            List<String> parameterValues = this.parameters.stream().map(Parameter::getValue).toList();
+            List<String> parameterValues = this.parameters.stream().map(Parameter::toString).toList();
             valueToPrint = formatParam(parameterValues, new ParamFormatting(isArray, isString, isBitwiseFlags));
         }
 

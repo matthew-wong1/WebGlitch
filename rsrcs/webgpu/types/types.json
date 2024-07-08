@@ -16,7 +16,7 @@
     }
   ],
 
-  "colorAttachment": [
+  "colorAttachments": [
     {
       "clearValue": {
         "type": "clearValue",
@@ -124,6 +124,8 @@
               "depth24plus-stencil8",
               "depth32float"
             ],
+            "GPUTexture.size.width": ["parent.colorAttachments.view.GPUTexture.size.width"],
+            "GPUTexture.size.height": ["parent.colorAttachments.view.GPUTexture.size.height"],
             "GPUTextureView.mipLevelCount": [
               1
             ],

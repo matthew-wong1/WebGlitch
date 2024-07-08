@@ -75,15 +75,11 @@ public class ParameterListNode extends ASTNode {
 
                 // Possible bug in future here if eg requirement stored as size.width but parameter called size
 
-                Map<String, List<String>> parameterRequirements = requirements == null ? null : this.requirements;
-                System.out.println("parameter name " + fieldName);
-                System.out.println("parameter requirements " + parameterRequirements);
-
-//                if (paramDetails.has("optional")) {
+                //                if (paramDetails.has("optional")) {
 //
 //                }
                 try {
-                    this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this, parameterRequirements));
+                    this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this, this.requirements));
                 } catch (SkipParameterException e) {
                     System.out.println("Skipping parameter " + fieldName);
                     List<String> allowedFieldSkips = Arrays.asList("stripIndexFormat", "depthSlice", "depthLoadOp", "depthStoreOp", "stencilLoadOp", "stencilStoreOp");
@@ -115,11 +111,9 @@ public class ParameterListNode extends ASTNode {
             } else if (Character.isUpperCase(fieldName.charAt(0))) {
                 String[] splitFieldName = fieldName.split("\\.", 2);
                 fieldToSearchFor = splitFieldName[1];
-                System.out.println("field to search for " + fieldToSearchFor);
+
             }
-            System.out.println("in get parameter");
-            System.out.println(callNode.getReceiver());
-            System.out.println(generator.objectAttributesTable.get(callNode.getReceiver()));
+
             return generator.getObjectAttributes(callNode.getReceiver(), fieldToSearchFor);
 
         }

@@ -48,8 +48,11 @@ public class ParameterNode extends ASTNode {
         this.fieldName = fieldName;
         this.isRoot = isRoot;
         this.isArray = details.has("array");
-        this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
         System.out.println("generating parameter " + fieldName);
+        this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
+        System.out.println("after parsing. Individual requirements " + individualParameterRequirements);
+        System.out.println("nested requirements " + nestedParameterRequirements);
+
 
         checkImplementationSpecificCalls(details);
 
@@ -74,6 +77,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private List<String> parseParameterRequirements(Map<String, List<String>> parameterRequirements) {
+        System.out.println("before parsing parameter requirements " + parameterRequirements);
         if (parameterRequirements == null || parameterRequirements.isEmpty()) {
             return null;
         }
@@ -383,9 +387,6 @@ public class ParameterNode extends ASTNode {
     }
 
     private Long getIndividualLimit(JsonNode subNode, String fieldToCompareTo) {
-        System.out.println("generating field " + this.fieldName + " with requirements " + this.individualParameterRequirements);
-        System.out.println("field to compare to " + fieldToCompareTo);
-        System.out.println(parentList.allParameters);
         long valueToCompareTo = Long.parseLong(parentList.getParameter(fieldToCompareTo));
         long parameterTotal = 0;
 

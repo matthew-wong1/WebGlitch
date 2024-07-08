@@ -391,17 +391,17 @@ public class Generator {
                 String variableToCheck = variableName;
                 String[] split = requirement.getKey().split("\\.", 2);
                 String attributeNameToCheck = split[1];
+                System.out.println("attribute name to check " + attributeNameToCheck);
+                System.out.println(requirement.getKey());
+                System.out.println(requirement.getValue());
+                System.out.println("full requirements " + requirements);
 
                 List<String> attributeValuesToCheck = parseAttributeValue(requirement.getValue(), parameterNode);
-                System.out.println("requirements: " + requirements);
-
 
                 if (!requirement.getKey().startsWith(paramType)) {
                     variableToCheck = variableToReceiverName.get(variableName);
                 }
 
-                System.out.println("name to check: " + attributeNameToCheck);
-                System.out.println(objectAttributesTable.get(variableToCheck));
                 List<String> attributes = this.getAllObjectAttributes(variableToCheck, attributeNameToCheck);
 
                 if (!new HashSet<>(attributes).containsAll(attributeValuesToCheck)) {
@@ -418,7 +418,6 @@ public class Generator {
 
     private List<String> parseAttributeValue(List<String> valuesList, ParameterNode parameterNode) {
         String firstValue = valuesList.getFirst();
-        System.out.println("first value: " + firstValue);
         // This implementation assumes 1 single value, not multiple
         if (firstValue.startsWith("parent") || firstValue.startsWith("this")) {
             translateInnerRequirements(valuesList, parameterNode, firstValue);
@@ -429,21 +428,23 @@ public class Generator {
 
     private void translateInnerRequirements(List<String> valuesList, ParameterNode parameterNode, String firstValue) {
         String[] splitAttribute = firstValue.split("\\.", 2);
+        ParameterListNode parentList = parameterNode.getParentList();
         // Go through parnet List
 
         String actualParameterValue = "";
 
         // This splits eg colorAttachment.view.GPUTexture.size.width into colorAttachment.view & GPUTexture.size.width
-        String[] secondarySplit = splitAttribute[1].split("(?<=[a-z.])(?=[A-Z][A-Z])");
-        System.out.println("secondary split " + secondarySplit[0] + " " + secondarySplit[1]);
+        String[] secondarySplit = splitAttribute[1].split("(?=\\.[A-Z])");
+
         // Remove trailing dot
-        String attributeToCheck = secondarySplit[0].substring(0, secondarySplit[0].length() - 1);
+        String attributeToCheck = secondarySplit[0];
+        System.out.println("attribute to check " + attributeToCheck);
 
         if (firstValue.startsWith("parent")) {
-            ParameterListNode parentList = parameterNode.getParentList();
-            System.out.println("parent list parameters " + parentList.allParameters);
-            System.out.println("attribute to check: " + attributeToCheck);
+
             actualParameterValue = parentList.getParameter(attributeToCheck);
+
+            // hacky temporary fix
         } else if (firstValue.startsWith("this")) {
             ParameterNode rootNode = parameterNode.getRootParameterNode();
             actualParameterValue = rootNode.findNestedParameterNode(attributeToCheck).getParameter().getValue();
@@ -452,26 +453,36 @@ public class Generator {
         // Find the actual attribute value from objectAttributesTable
         if (secondarySplit.length > 1) {
             // Variable Name has been stored in actualParameterValue
-            System.out.println("variable name " + actualParameterValue);
+
             String variableName = actualParameterValue;
 
             // Since is a capital letter, means must find its parent
             String parentVariableName = getParentVariable(variableName);
-            System.out.println("parent variable Name: " + parentVariableName);
 
-            // Remove parent type from the attribute name
-            String[] tertiarySplit = secondarySplit[1].split("\\.", 2);
-            System.out.println("tertiary split " + tertiarySplit[1]);
-            System.out.println(objectAttributesTable.get(parentVariableName).get("size.height"));
 
-            actualParameterValue = this.getObjectAttributes(parentVariableName, tertiarySplit[1]);
+            // Remove leading dot and parent type from the attribute name
+            String[] tertiarySplit = secondarySplit[1].substring(1).split("\\.", 2);
+            System.out.println(secondarySplit[0]);
+            System.out.println(secondarySplit[1]);
+            System.out.println("tertiary split: " + tertiarySplit[0] + " " + tertiarySplit[1]);
 
+            if (tertiarySplit[0].equals("Inner")) {
+                // Fetch teh variable name first, then fetch its parameters
+                parentList = parameterNode.getParentList();
+                System.out.println("parameter to get " + secondarySplit[0]);
+                System.out.println(parentList.allParameters);
+                String innerVariableName = parentList.getParameter(secondarySplit[0]);
+                actualParameterValue = this.getObjectAttributes(innerVariableName, tertiarySplit[1]);
+
+            } else {
+                actualParameterValue = this.getObjectAttributes(parentVariableName, tertiarySplit[1]);
+            }
         }
 
 
         valuesList.clear();
         valuesList.add(actualParameterValue);
-        System.out.println("values list: " + valuesList);
+
         // modify valuesList
     }
 

@@ -34,20 +34,22 @@ public class ParameterNode extends ASTNode {
 
     private final Map<String, ParameterNode> parameterNodeMap = new HashMap<>();
     private final List<Parameter> parameters = new ArrayList<>();
-    private final List<String> parameterRequirements;
+    private final List<String> individualParameterRequirements;
+    private final Map<String, List<String>> nestedParameterRequirements = new HashMap<>();
 
-    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) throws SkipParameterException {
+    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, Map<String, List<String>> parameterRequirements) throws SkipParameterException {
         this(fieldName, details, isJsonFormat, isRoot, null, generator, parentList, parameterRequirements);
     }
 
-    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, ParameterNode parentParameterNode, Generator generator, ParameterListNode parentList, List<String> parameterRequirements) throws SkipParameterException {
+    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, ParameterNode parentParameterNode, Generator generator, ParameterListNode parentList, Map<String, List<String>> parameterRequirements) throws SkipParameterException {
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parentList = parentList;
         this.fieldName = fieldName;
         this.isRoot = isRoot;
         this.isArray = details.has("array");
-        this.parameterRequirements = parameterRequirements;
+        this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
+        System.out.println("generating parameter " + fieldName);
 
         checkImplementationSpecificCalls(details);
 
@@ -71,6 +73,32 @@ public class ParameterNode extends ASTNode {
         }
     }
 
+    private List<String> parseParameterRequirements(Map<String, List<String>> parameterRequirements) {
+        if (parameterRequirements == null || parameterRequirements.isEmpty()) {
+            return null;
+        }
+
+        for (Map.Entry<String, List<String>> entry : parameterRequirements.entrySet()) {
+            String currentKeyName = entry.getKey();
+            if (currentKeyName.startsWith(this.fieldName)) {
+                if (currentKeyName.contains(".")) {
+                    String[] split = currentKeyName.split("\\.", 2);
+                    String newKeyName = split[1];
+                    this.nestedParameterRequirements.put(newKeyName, entry.getValue());
+                } else {
+
+                    return entry.getValue();
+                }
+
+
+
+            }
+        }
+
+        return null;
+
+    }
+
     private void checkImplementationSpecificCalls(JsonNode details) throws SkipParameterException {
         String platform = generator.getPlatform();
 
@@ -89,9 +117,9 @@ public class ParameterNode extends ASTNode {
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
-        } else if (this.parameterRequirements != null && !this.parameterRequirements.isEmpty()) {
+        } else if (this.individualParameterRequirements != null && !this.individualParameterRequirements.isEmpty()) {
             // Also if are multiple choices and since it's not an enum, pick one of them at random
-            String parameterValue = parameterRequirements.get(rand.nextInt(0, parameterRequirements.size()));
+            String parameterValue = individualParameterRequirements.get(rand.nextInt(0, individualParameterRequirements.size()));
 
             if (paramType.equals("string")) {
                 parameterValue = encodeAsString(parameterValue);
@@ -226,7 +254,7 @@ public class ParameterNode extends ASTNode {
 
         List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
 
-        Parameter newParameter = new Parameter(generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver()));
+        Parameter newParameter = new Parameter(generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this));
         this.parameters.add(newParameter);
 
         return conditionsNode;
@@ -253,6 +281,10 @@ public class ParameterNode extends ASTNode {
 
     private String getFieldName() {
         return fieldName;
+    }
+
+    public ParameterListNode getParentList() {
+        return this.parentList;
     }
 
     private void generateNumber(JsonNode details, String paramType) {
@@ -351,7 +383,9 @@ public class ParameterNode extends ASTNode {
     }
 
     private Long getIndividualLimit(JsonNode subNode, String fieldToCompareTo) {
-
+        System.out.println("generating field " + this.fieldName + " with requirements " + this.individualParameterRequirements);
+        System.out.println("field to compare to " + fieldToCompareTo);
+        System.out.println(parentList.allParameters);
         long valueToCompareTo = Long.parseLong(parentList.getParameter(fieldToCompareTo));
         long parameterTotal = 0;
 
@@ -410,7 +444,7 @@ public class ParameterNode extends ASTNode {
 //                }
 
                 try {
-                    ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, this, generator, parentList, parameterRequirements);
+                    ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, this, generator, parentList, nestedParameterRequirements);
                     this.addNode(nestedParameterNode);
                 } catch (SkipParameterException e) {
                     // make your new exception. throw a custom exception. let other excpetions fails
@@ -577,8 +611,8 @@ public class ParameterNode extends ASTNode {
         List<String> mandatoryEnums = new ArrayList<>();
 
 
-        if (parameterRequirements != null) {
-            mandatoryEnums.addAll(parameterRequirements);
+        if (individualParameterRequirements != null) {
+            mandatoryEnums.addAll(individualParameterRequirements);
         }
 
 

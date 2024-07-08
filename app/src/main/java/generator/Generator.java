@@ -281,16 +281,16 @@ public class Generator {
 
     public String getRandomReceiver(String receiverType, String callName) {
 
-        return getRandomReceiver(receiverType, callName, null, null, null);
+        return getRandomReceiver(receiverType, callName, null, null, null, null);
 
 
     }
 
-    public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName) {
+    public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName, ParameterNode parameterNode) {
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
-        Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, callName, requirements, sameObjects, variablesThatMeetReqs, receiverName);
+        Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, callName, requirements, sameObjects, variablesThatMeetReqs, receiverName, parameterNode);
 
         if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
             // pass in same objects here
@@ -303,7 +303,7 @@ public class Generator {
 
     }
 
-    private Map<String, String> findAllVariablesThatMeetReqs(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName) {
+    private Map<String, String> findAllVariablesThatMeetReqs(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName, ParameterNode parameterNode) {
         List<String> allVariables = symbolTable.get(receiverType);
 
         if (allVariables == null) {
@@ -314,7 +314,7 @@ public class Generator {
         if (requirements != null || sameObjects != null) {
             // Filter out those that don't meet the requirement,
             // And then need to generate one with the requirement
-            addVariablesThatMeetReqsToList(receiverType, allVariables, variablesThatMeetReqs, requirements);
+            addVariablesThatMeetReqsToList(receiverType, allVariables, variablesThatMeetReqs, requirements, parameterNode);
             sameObjectsReqs = ensureSameObjectRequirementsMet(variablesThatMeetReqs, sameObjects, receiverName);
         } else {
             variablesThatMeetReqs.addAll(allVariables);
@@ -378,7 +378,7 @@ public class Generator {
         return currentVariable;
     }
 
-    private void addVariablesThatMeetReqsToList(String paramType, List<String> allVariables, List<String> variablesThatMeetReqs, Map<String, List<String>> requirements) {
+    private void addVariablesThatMeetReqsToList(String paramType, List<String> allVariables, List<String> variablesThatMeetReqs, Map<String, List<String>> requirements, ParameterNode parameterNode) {
         if (requirements == null) {
             return;
         }
@@ -389,16 +389,21 @@ public class Generator {
             // Only works for 1 level deep ie 1 dot
             for (Map.Entry<String, List<String>> requirement : requirements.entrySet()) {
                 String variableToCheck = variableName;
-                String[] split = requirement.getKey().split("\\.");
+                String[] split = requirement.getKey().split("\\.", 2);
                 String attributeNameToCheck = split[1];
 
-                List<String> attributeValuesToCheck = requirement.getValue();
+                List<String> attributeValuesToCheck = parseAttributeValue(requirement.getValue(), parameterNode);
+                System.out.println("requirements: " + requirements);
+
 
                 if (!requirement.getKey().startsWith(paramType)) {
                     variableToCheck = variableToReceiverName.get(variableName);
                 }
 
+                System.out.println("name to check: " + attributeNameToCheck);
+                System.out.println(objectAttributesTable.get(variableToCheck));
                 List<String> attributes = this.getAllObjectAttributes(variableToCheck, attributeNameToCheck);
+
                 if (!new HashSet<>(attributes).containsAll(attributeValuesToCheck)) {
                     meetsAllRequirements = false;
                 }
@@ -409,6 +414,65 @@ public class Generator {
             }
         }
 
+    }
+
+    private List<String> parseAttributeValue(List<String> valuesList, ParameterNode parameterNode) {
+        String firstValue = valuesList.getFirst();
+        System.out.println("first value: " + firstValue);
+        // This implementation assumes 1 single value, not multiple
+        if (firstValue.startsWith("parent") || firstValue.startsWith("this")) {
+            translateInnerRequirements(valuesList, parameterNode, firstValue);
+        }
+
+        return valuesList;
+    }
+
+    private void translateInnerRequirements(List<String> valuesList, ParameterNode parameterNode, String firstValue) {
+        String[] splitAttribute = firstValue.split("\\.", 2);
+        // Go through parnet List
+
+        String actualParameterValue = "";
+
+        // This splits eg colorAttachment.view.GPUTexture.size.width into colorAttachment.view & GPUTexture.size.width
+        String[] secondarySplit = splitAttribute[1].split("(?<=[a-z.])(?=[A-Z][A-Z])");
+        System.out.println("secondary split " + secondarySplit[0] + " " + secondarySplit[1]);
+        // Remove trailing dot
+        String attributeToCheck = secondarySplit[0].substring(0, secondarySplit[0].length() - 1);
+
+        if (firstValue.startsWith("parent")) {
+            ParameterListNode parentList = parameterNode.getParentList();
+            System.out.println("parent list parameters " + parentList.allParameters);
+            System.out.println("attribute to check: " + attributeToCheck);
+            actualParameterValue = parentList.getParameter(attributeToCheck);
+        } else if (firstValue.startsWith("this")) {
+            ParameterNode rootNode = parameterNode.getRootParameterNode();
+            actualParameterValue = rootNode.findNestedParameterNode(attributeToCheck).getParameter().getValue();
+        }
+
+        // Find the actual attribute value from objectAttributesTable
+        if (secondarySplit.length > 1) {
+            // Variable Name has been stored in actualParameterValue
+            System.out.println("variable name " + actualParameterValue);
+            String variableName = actualParameterValue;
+
+            // Since is a capital letter, means must find its parent
+            String parentVariableName = getParentVariable(variableName);
+            System.out.println("parent variable Name: " + parentVariableName);
+
+            // Remove parent type from the attribute name
+            String[] tertiarySplit = secondarySplit[1].split("\\.", 2);
+            System.out.println("tertiary split " + tertiarySplit[1]);
+            System.out.println(objectAttributesTable.get(parentVariableName).get("size.height"));
+
+            actualParameterValue = this.getObjectAttributes(parentVariableName, tertiarySplit[1]);
+
+        }
+
+
+        valuesList.clear();
+        valuesList.add(actualParameterValue);
+        System.out.println("values list: " + valuesList);
+        // modify valuesList
     }
 
     private String parseCallInfoFromReceiverTypeAndGenerateCall(String receiverType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
@@ -505,7 +569,7 @@ public class Generator {
                     }
                 }
 
-                return getRandomReceiver(receiverType, callName, finalisedRequirements, null, null);
+                return getRandomReceiver(receiverType, callName, finalisedRequirements, null, null, null);
             }
 
             return requiredReceiver;

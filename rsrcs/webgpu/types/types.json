@@ -124,8 +124,11 @@
               "depth24plus-stencil8",
               "depth32float"
             ],
-
+            "GPUTexture.size.depthOrArrayLayers": ["parent.colorAttachments.view.GPUTexture.size.depthOrArrayLayers"],
+            "GPUTexture.size.width": ["parent.colorAttachments.view.GPUTexture.size.width"],
+            "GPUTexture.size.height": ["parent.colorAttachments.view.GPUTexture.size.height"],
             "GPUTexture.sampleCount": ["parent.colorAttachments.view.GPUTexture.sampleCount"],
+            "GPUTexture.mipLevelCount": ["parent.colorAttachments.view.GPUTexture.mipLevelCount"],
             "GPUTextureView.baseMipLevel": ["parent.colorAttachments.view.Inner.baseMipLevel"],
             "GPUTextureView.mipLevelCount": [
               1

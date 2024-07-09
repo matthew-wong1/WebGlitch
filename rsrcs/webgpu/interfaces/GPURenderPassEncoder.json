@@ -22,7 +22,12 @@
             "type": "bufferSlot"
           },
           "buffer": {
-            "type": "GPUBuffer"
+            "type": "GPUBuffer",
+            "conditions": {
+              "withAttributes": {
+                "GPUBuffer.usage": ["GPUBufferUsage.VERTEX"]
+              }
+            }
           }
         }
       ]

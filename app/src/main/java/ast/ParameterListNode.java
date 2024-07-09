@@ -22,7 +22,6 @@ public class ParameterListNode extends ASTNode {
         this.callNode = callNode;
         this.generator = callNode.getGenerator();
         this.requirements = parseRequirements(requirements);
-        System.out.println("generating call " + getCallName() + " " + "with requirements " + requirements);
     }
 
     private Map<String, List<String>> parseRequirements(Map<String, List<String>> requirements) {

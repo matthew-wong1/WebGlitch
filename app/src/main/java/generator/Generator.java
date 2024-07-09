@@ -241,9 +241,6 @@ public class Generator {
     }
 
     public List<String> getAllObjectAttributes(String variableName, String fieldName) {
-        System.out.println("variable name: " + variableName);
-        System.out.println("fieldname: " + fieldName);
-        System.out.println(objectAttributesTable.get(variableName));
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 
@@ -394,10 +391,6 @@ public class Generator {
                 String variableToCheck = variableName;
                 String[] split = requirement.getKey().split("\\.", 2);
                 String attributeNameToCheck = split[1];
-                System.out.println("attribute name to check " + attributeNameToCheck);
-                System.out.println(requirement.getKey());
-                System.out.println(requirement.getValue());
-                System.out.println("full requirements " + requirements);
 
                 List<String> attributeValuesToCheck = parseAttributeValue(requirement.getValue(), parameterNode);
 
@@ -441,7 +434,6 @@ public class Generator {
 
         // Remove trailing dot
         String attributeToCheck = secondarySplit[0];
-        System.out.println("attribute to check " + attributeToCheck);
 
         if (firstValue.startsWith("parent")) {
 
@@ -465,15 +457,10 @@ public class Generator {
 
             // Remove leading dot and parent type from the attribute name
             String[] tertiarySplit = secondarySplit[1].substring(1).split("\\.", 2);
-            System.out.println(secondarySplit[0]);
-            System.out.println(secondarySplit[1]);
-            System.out.println("tertiary split: " + tertiarySplit[0] + " " + tertiarySplit[1]);
 
             if (tertiarySplit[0].equals("Inner")) {
                 // Fetch teh variable name first, then fetch its parameters
                 parentList = parameterNode.getParentList();
-                System.out.println("parameter to get " + secondarySplit[0]);
-                System.out.println(parentList.allParameters);
                 String innerVariableName = parentList.getParameter(secondarySplit[0]);
                 actualParameterValue = this.getObjectAttributes(innerVariableName, tertiarySplit[1]);
 

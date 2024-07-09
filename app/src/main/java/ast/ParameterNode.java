@@ -48,11 +48,10 @@ public class ParameterNode extends ASTNode {
         this.fieldName = fieldName;
         this.isRoot = isRoot;
         this.isArray = details.has("array");
-        System.out.println("generating parameter " + fieldName);
         this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
-        System.out.println("after parsing. Individual requirements " + individualParameterRequirements);
-        System.out.println("nested requirements " + nestedParameterRequirements);
-
+        System.out.println("generating parameter " + fieldName + " for call " + parentList.getCallName());
+        System.out.println("individual parameter requirements " + individualParameterRequirements);
+        System.out.println("before parsing: " + parameterRequirements);
 
         checkImplementationSpecificCalls(details);
 
@@ -77,7 +76,6 @@ public class ParameterNode extends ASTNode {
     }
 
     private List<String> parseParameterRequirements(Map<String, List<String>> parameterRequirements) {
-        System.out.println("before parsing parameter requirements " + parameterRequirements);
         if (parameterRequirements == null || parameterRequirements.isEmpty()) {
             return null;
         }
@@ -93,9 +91,6 @@ public class ParameterNode extends ASTNode {
 
                     return entry.getValue();
                 }
-
-
-
             }
         }
 
@@ -241,20 +236,9 @@ public class ParameterNode extends ASTNode {
         }
 
         // Need a specific object with certain attributes
-        Map<String, List<String>> requirements = new HashMap<>();
+
         JsonNode conditionsNode = details.get("conditions");
-
-        if (conditionsNode.has("withAttributes")) {
-            JsonNode requiredAttributesNode = conditionsNode.get("withAttributes");
-
-            Map<String, List<String>> finalRequirements = requirements;
-            requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {
-                List<String> values = Parser.getListFromJson(requiredAttributesNode.get(fieldName).toString());
-                finalRequirements.put(fieldName, values);
-            });
-        } else {
-            requirements = null;
-        }
+        Map<String, List<String>> requirements = parseInterfaceConditions(conditionsNode);
 
         List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
 
@@ -265,6 +249,37 @@ public class ParameterNode extends ASTNode {
 
     }
 
+    private Map<String, List<String>> parseInterfaceConditions(JsonNode conditionsNode) {
+        Map<String, List<String>> requirements = new HashMap<>();
+
+        if (conditionsNode.has("withAttributes")) {
+            JsonNode requiredAttributesNode = conditionsNode.get("withAttributes");
+
+            requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {
+                List<String> values = Parser.getListFromJson(requiredAttributesNode.get(fieldName).toString());
+                requirements.put(fieldName, values);
+            });
+
+            return requirements;
+        } else if (conditionsNode.has("renderPassCompatible")) {
+            // The receiver is GPUCommandEncoder
+            // Look at construction and check colorAttachments.view.format
+            List<String> requiredColorAttachmentValues = new ArrayList<>();
+
+            String receiver = parentList.getReceiver();
+            String colorAttachmentsView = generator.getObjectAttributes(receiver, "colorAttachments.view");
+            String colorAttachmentsFormat = generator.getObjectAttributes(colorAttachmentsView, "format");
+            requiredColorAttachmentValues.add(colorAttachmentsFormat);
+
+            // GPURenderPipeline must have fragment.targets.format
+            requirements.put("GPURenderPipeline.fragment.targets.format", requiredColorAttachmentValues);
+            return requirements;
+
+            // (Also look at depth stencil if it exists)
+        }
+
+        return null;
+    }
 
 
     private void addAllSubParamsToParent() {

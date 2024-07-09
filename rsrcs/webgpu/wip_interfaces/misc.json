@@ -1,4 +1,8 @@
 {
+  "depthStencilAttachment": {
+    "type": "depthStencilAttachment",
+    "optional": true
+  },
   "depthStencilAttachment": [
     {
       "view": {

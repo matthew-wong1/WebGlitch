@@ -8,7 +8,10 @@
       "properties": [
         {
           "pipeline": {
-            "type": "GPURenderPipeline"
+            "type": "GPURenderPipeline",
+            "conditions": {
+              "renderPassCompatible": true
+            }
           }
         }
       ]

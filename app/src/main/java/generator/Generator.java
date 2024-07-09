@@ -750,6 +750,7 @@ public class Generator {
 
 
         // Check if it contains the value 'all':
+        System.out.println("calls to change availability of " + callsToChangeAvailabilityOf);
         if (callsToChangeAvailabilityOf.getFirst().equals("all")) {
             callsToChangeAvailabilityOf.clear();
             String receiverType = variableToReceiverType.get(receiver);

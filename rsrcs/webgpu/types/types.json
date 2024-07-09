@@ -57,8 +57,7 @@
               "bgra8unorm",
               "bgra8unorm-srgb",
               "rgb10a2unorm",
-              "rgba16float",
-              "rgba32float"
+              "rgba16float"
             ],
             "GPUTextureView.mipLevelCount": [
               1

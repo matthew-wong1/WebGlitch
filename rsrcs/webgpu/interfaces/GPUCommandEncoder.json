@@ -25,7 +25,10 @@
             "optional": true
           }
         }
-      ]
+      ],
+      "setUnavailable": {
+        "this": ["GPUCommandEncoder.beginRenderPass"]
+      }
     },
     {
       "name": "finish",

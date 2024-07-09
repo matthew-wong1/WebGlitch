@@ -653,7 +653,7 @@ public class ParameterNode extends ASTNode {
         }
 
         if (conditions.has("cubeCompatible")) {
-            ensureCubeCompatibility();
+            ensureCubeCompatibility(enumValues);
         }
 
         if (conditions.has("blendOperationCompatible")) {
@@ -755,19 +755,16 @@ public class ParameterNode extends ASTNode {
 
     }
 
-    private void ensureCubeCompatibility() {
+    private void ensureCubeCompatibility(List<String> enumValues) {
         List<String> CUBE_TEXTURES = Arrays.asList("cube", "cube-array");
 
+        String width = parentList.getParameter("GPUTexture.size.width");
+        String height = parentList.getParameter("GPUTexture.size.height");
 
-        String dimension = parentList.getParameter("dimension");
-
-        if (!CUBE_TEXTURES.contains(dimension)) {
-            return;
+        if (!width.equals(height)) {
+            enumValues.removeIf(CUBE_TEXTURES::contains);
         }
 
-        // GPUTexture.width must be equal to GPUTexture.height for cube and cube-array
-        String width = parentList.getParameter("GPUTexture.size.width");
-        parentList.setParamValue("GPUTexture.size.height", width);
     }
 
     private void ensureMultiSamplingCompatible(List<String> enumValues, List<String> mandatoryEnums) {

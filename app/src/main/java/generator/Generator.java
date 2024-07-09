@@ -709,9 +709,18 @@ public class Generator {
             return;
         }
 
-        boolean setAvailable = conditionsNode.has("setAvailable");
-        JsonNode availabilityNode = setAvailable ? conditionsNode.get("setAvailable") : conditionsNode.get("setUnavailable");
+        if (conditionsNode.has("setAvailable")) {
+            JsonNode availabilityNode = conditionsNode.get("setAvailable");
+            parseCallAvailabilityInfo(receiver, availabilityNode, callsToChangeAvailabilityOf, true);
+        }
 
+        if (conditionsNode.has("setUnavailable")) {
+            JsonNode availabilityNode = conditionsNode.get("setUnavailable");
+            parseCallAvailabilityInfo(receiver, availabilityNode, callsToChangeAvailabilityOf, false);
+        }
+    }
+
+    private void parseCallAvailabilityInfo(String receiver, JsonNode availabilityNode, List<String> callsToChangeAvailabilityOf, boolean setAvailable) {
         if (availabilityNode.has("this")) {
             Parser.extractNodeAsList(availabilityNode.get("this"), callsToChangeAvailabilityOf);
             setCallAvailability(callsToChangeAvailabilityOf, receiver, setAvailable);
@@ -732,11 +741,20 @@ public class Generator {
             });
         }
 
+        if (availabilityNode.has("parents")) {
+            System.out.println("calls to change availabiltiy of in parents " + callsToChangeAvailabilityOf);
+            JsonNode parentsNode = availabilityNode.get("parents");
+            parentsNode.fieldNames().forEachRemaining(fieldName -> {
+                JsonNode parentNodeCalls = parentsNode.get(fieldName);
+                Parser.extractNodeAsList(parentNodeCalls, callsToChangeAvailabilityOf);
 
-
+                String parent = getParentVariable(receiver);
+                setCallAvailability(callsToChangeAvailabilityOf, parent, setAvailable);
+            });
+        }
     }
 
-    public void parseAndSetCallAvailability(JsonNode conditionsNode, ParameterListNode parentList) {
+    public void parseAndSetCallAvailabilityIfNoParameters(JsonNode conditionsNode, ParameterListNode parentList) {
         if (conditionsNode.has("setUnavailable")) {
             setCallAvailability(conditionsNode.get("setUnavailable"), false, parentList);
         }

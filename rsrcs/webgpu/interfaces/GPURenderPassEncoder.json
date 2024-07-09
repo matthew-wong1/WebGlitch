@@ -58,6 +58,11 @@
       },
       "setUnavailable": {
         "this": ["all"]
+      },
+      "setAvailable": {
+        "parents": {
+          "GPUCommandEncoder": ["GPUCommandEncoder.beginRenderPass"]
+        }
       }
     }
 

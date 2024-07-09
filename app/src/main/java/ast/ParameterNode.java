@@ -169,7 +169,7 @@ public class ParameterNode extends ASTNode {
         // Set call availabiltiy
         // Set unavailabillity
         if (additionalConditionsNode != null) {
-            generator.parseAndSetCallAvailability(additionalConditionsNode, parentList);
+            generator.parseAndSetCallAvailabilityIfNoParameters(additionalConditionsNode, parentList);
         }
 
     }

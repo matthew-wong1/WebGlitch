@@ -12,10 +12,6 @@
             "type": "colorAttachments",
             "array": true
           },
-          "depthStencilAttachment": {
-            "type": "depthStencilAttachment",
-            "optional": true
-          },
           "label": {
             "type": "string",
             "optional": true

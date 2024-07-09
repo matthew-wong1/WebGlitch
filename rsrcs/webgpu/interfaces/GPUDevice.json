@@ -201,6 +201,10 @@
           "layout": {
             "type": "gpuLayout"
           },
+          "multisample": {
+            "type": "multisample",
+            "optional": true
+          },
           "primitive": {
             "type": "primitive",
             "optional": true

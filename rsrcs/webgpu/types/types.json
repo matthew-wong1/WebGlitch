@@ -309,14 +309,8 @@
         "type": "boolean"
       },
       "count": {
-        "type": "uint",
-        "conditions": {
-          "attachmentTextureCompatible": true
-        },
-        "optional": true
-      },
-      "mask": {
-        "type": "bitmask",
+        "type": "int",
+        "enum": [1, 4],
         "optional": true
       }
     }

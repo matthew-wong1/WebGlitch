@@ -273,6 +273,14 @@ public class ParameterNode extends ASTNode {
 
             // GPURenderPipeline must have fragment.targets.format
             requirements.put("GPURenderPipeline.fragment.targets.format", requiredColorAttachmentValues);
+
+            String colorAttachmentsTexture = generator.getParentVariable(colorAttachmentsView);
+            String sampleCount = generator.getObjectAttributes(colorAttachmentsTexture, "sampleCount");
+
+            List<String> requiredSampleCount = new ArrayList<>();
+            requiredSampleCount.add(sampleCount);
+            requirements.put("GPURenderPipeline.multisample.count", requiredSampleCount);
+            System.out.println("required requirements " + requirements);
             return requirements;
 
             // (Also look at depth stencil if it exists)
@@ -691,6 +699,7 @@ public class ParameterNode extends ASTNode {
 
         return mandatoryEnums;
     }
+
 
     private void ensureReadCompatible(String formatName) {
         String PARAMETER_SUFFIX = "ReadOnly";

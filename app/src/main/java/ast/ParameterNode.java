@@ -280,6 +280,13 @@ public class ParameterNode extends ASTNode {
             List<String> requiredSampleCount = new ArrayList<>();
             requiredSampleCount.add(sampleCount);
             requirements.put("GPURenderPipeline.multisample.count", requiredSampleCount);
+
+//            if (sampleCount.equals("1")) {
+//                // Disable alphatoCoverage
+//                List<String> requiredAlphaCoverage = List.of("false");
+//                requirements.put("GPURenderPipeline.multisample.alphaToCoverageEnabled", requiredAlphaCoverage);
+//            }
+
             System.out.println("required requirements " + requirements);
             return requirements;
 
@@ -520,6 +527,8 @@ public class ParameterNode extends ASTNode {
         } else if (mandatoryEnums.isEmpty()) {
             chosenEnumValues = pickARandomEnumValue(enumValues, mandatoryEnums);
         } else { // pick one randomly from the mandatory enums
+            System.out.println("enum values " + enumValues);
+            System.out.println("mandatory enums " + mandatoryEnums);
             enumValues.removeIf(value -> !mandatoryEnums.contains(value));
             chosenEnumValues.add(enumValues.getFirst());
         }
@@ -961,8 +970,15 @@ public class ParameterNode extends ASTNode {
         JsonNode finalNewEnumNode = newEnumNode;
 
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
-
-            String constraintValue = parentList.getParameter(fieldName);
+            String constraintValue;
+            System.out.println("field name " + fieldName);
+            if (fieldName.startsWith("inner" )) {
+                String[] split = fieldName.split("\\.", 2);
+                constraintValue = this.getRootParameterNode().findNestedParameterNode(split[1]).getParameter().getValue();
+                System.out.println("constraint value " + constraintValue);
+            } else {
+                constraintValue = parentList.getParameter(fieldName);
+            }
             JsonNode constraintNode = finalNewEnumNode.get(fieldName);
             JsonNode constraintValuesNode = constraintNode.get(constraintValue);
             List<String> values = new ArrayList<>();

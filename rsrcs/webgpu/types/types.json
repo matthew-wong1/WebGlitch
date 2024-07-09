@@ -304,10 +304,6 @@
   ],
   "multisample": [
     {
-      "alphaToCoverageEnabled": {
-        "optional": true,
-        "type": "boolean"
-      },
       "count": {
         "type": "int",
         "enum": [1, 4],

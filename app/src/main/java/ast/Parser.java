@@ -145,32 +145,49 @@ public class Parser {
         }
 
         if (conditionsNode.has("commandEncodingFinished")) {
-            // Check child ComputePassEncoder or GPURenderPassEncoder not been end()
-            // all child GPUComputePassencoder or GPURenderPassEncoders have all had end() called on it
-            // 1) Get all variables for GPUComputePassEncoder and GPURenderPassEncoder
-            List<String> TYPES_TO_CHECK = Arrays.asList("GPUComputePassEncoder", "GPURenderPassEncoder");
-            Set<String> allChildPassEncoders = new HashSet<>();
+            ensureCommandEncodingFinished(receiverName);
+        }
 
-            for (String type : TYPES_TO_CHECK) {
-                Set<String> setToAdd = generator.getFromMapOfGeneratedVariables(receiverName, type);
-                if (setToAdd == null) {
-                    continue;
-                }
-                allChildPassEncoders.addAll(setToAdd);
+        if (conditionsNode.has("renderPipelineAvailable")) {
+            ensureRenderPipelineAvailable(receiverName);
+        }
+    }
+
+    private void ensureRenderPipelineAvailable(String receiverName) {
+        // To do .draw, need to have .setPipeline
+        Set<String> callHistory = generator.getFromCallState(receiverName);
+        if (callHistory != null && callHistory.contains("setPipeline")) {
+            return;
+        }
+
+        generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPURenderPassEncoder", "setPipeline", true), null, null, receiverName);
+
+    }
+
+    private void ensureCommandEncodingFinished(String receiverName) {
+        // Check child ComputePassEncoder or GPURenderPassEncoder not been end()
+        // all child GPUComputePassencoder or GPURenderPassEncoders have all had end() called on it
+        // 1) Get all variables for GPUComputePassEncoder and GPURenderPassEncoder
+        List<String> TYPES_TO_CHECK = Arrays.asList("GPUComputePassEncoder", "GPURenderPassEncoder");
+        Set<String> allChildPassEncoders = new HashSet<>();
+
+        for (String type : TYPES_TO_CHECK) {
+            Set<String> setToAdd = generator.getFromMapOfGeneratedVariables(receiverName, type);
+            if (setToAdd == null) {
+                continue;
             }
+            allChildPassEncoders.addAll(setToAdd);
+        }
 
-            // 2) Check their callState - what methods have been called on them (ie add this tracking)
-            for (String childPassEncoder : allChildPassEncoders) {
-                Set<String> callHistory = generator.getFromCallState(childPassEncoder);
+        // 2) Check their callState - what methods have been called on them (ie add this tracking)
+        for (String childPassEncoder : allChildPassEncoders) {
+            Set<String> callHistory = generator.getFromCallState(childPassEncoder);
 
-                // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that call
-                if (callHistory == null || !callHistory.contains("end")) {
-                    String receiverType = generator.getVariableType(childPassEncoder);
-                    generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "end", true), null, null, childPassEncoder);
-                }
+            // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that call
+            if (callHistory == null || !callHistory.contains("end")) {
+                String receiverType = generator.getVariableType(childPassEncoder);
+                generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "end", true), null, null, childPassEncoder);
             }
-
-
         }
     }
 

@@ -48,7 +48,10 @@
             }
           }
         }
-      ]
+      ],
+      "conditions": {
+        "renderPipelineAvailable": true
+      }
     },
     {
       "name": "end",

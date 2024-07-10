@@ -241,6 +241,7 @@ public class Generator {
     }
 
     public List<String> getAllObjectAttributes(String variableName, String fieldName) {
+        System.out.println("getting variable " + variableName + " with field name " + fieldName);
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 

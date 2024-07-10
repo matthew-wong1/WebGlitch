@@ -28,7 +28,8 @@
             "type": "GPUBuffer",
             "conditions": {
               "withAttributes": {
-                "GPUBuffer.usage": ["GPUBufferUsage.VERTEX"]
+                "GPUBuffer.usage": ["GPUBufferUsage.VERTEX"],
+                "GPUBuffer.mappedAtCreation": ["false"]
               }
             }
           }

@@ -145,11 +145,6 @@
           }
         }
       ]
-    },
-    {
-      "name": "destroy",
-      "returnType": "none",
-      "deletes": true
     }
   ]
 }

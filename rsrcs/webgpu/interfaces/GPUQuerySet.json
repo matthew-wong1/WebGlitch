@@ -1,13 +1,6 @@
 {
   "receiverType": "GPUQuerySet",
   "requirements": ["GPUQuerySet"],
-  "methods": [
-    {
-      "name": "destroy",
-      "returnType": "none",
-      "deletes": true
-    }
-  ],
   "attributes": [
     {
       "name": "count",

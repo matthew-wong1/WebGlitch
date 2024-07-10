@@ -107,15 +107,15 @@ public class Parser {
         boolean jsonParams = callJsonNode.path("paramType").asText("csv").equals("object");
         boolean isArray = callJsonNode.has("array");
         JsonNode paramsJsonNode = callJsonNode.path("properties");
-        CallNode rootASTNode = new CallNode(receiver, returnType, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode, requirements);
+        CallNode callNode = new CallNode(receiver, returnType, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode, requirements);
         ASTNode nodeToReturn;
 
         if (!returnType.equals("none")) {
             // THIS WONT WORK
-            nodeToReturn = generator.generateDeclaration(callJsonNode, rootASTNode);
+            nodeToReturn = generator.generateDeclaration(callJsonNode, callNode);
         } else {
-            generator.addToObjectAttributesTable(receiver, rootASTNode.getParameters());
-            nodeToReturn = rootASTNode;
+            generator.addToObjectAttributesTable(receiver, callNode.getParameters());
+            nodeToReturn = callNode;
         }
 
         generator.setCallState(receiver, callName, isMethod);
@@ -123,13 +123,30 @@ public class Parser {
 
         // Delete object
         if (callJsonNode.has("deletes")) {
-            generator.removeFromSymbolTable(parentReceiverType, receiver);
+            deleteRequirements(callJsonNode, parentReceiverType, receiver);
+
         }
 
         generator.parseAndSetCallAvailability(receiver, callJsonNode);
 
 
         return nodeToReturn;
+    }
+
+    private void deleteRequirements(JsonNode callJsonNode, String parentReceiverType, String variableName) {
+        String whatToDelete = callJsonNode.get("deletes").asText();
+
+        if (whatToDelete.equals("true")) {
+            generator.removeFromSymbolTable(parentReceiverType, variableName);
+            return;
+        }
+
+        // fetch the attribute
+        String objectToDelete = generator.getObjectAttributes(variableName, whatToDelete);
+        String objectType = generator.getVariableType(objectToDelete);
+        generator.removeFromSymbolTable(objectType, objectToDelete);
+
+
     }
 
     private void ensureConditionsForReceiverAreMet(String receiverName, JsonNode callJsonNode) {

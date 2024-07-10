@@ -42,7 +42,8 @@
             "array": true
           }
         }
-      ]
+      ],
+      "deletes": "commandBuffers"
     }
   ],
   "attributes": [

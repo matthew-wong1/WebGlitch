@@ -31,12 +31,25 @@
           }
         }
       ]
+    },
+    {
+      "name": "submit",
+      "returnType": "none",
+      "properties": {
+
+      }
     }
   ],
   "attributes": [
     {
       "name": "label",
-      "returnType": "string"
+      "returnType": "string",
+      "properties": {
+        "commandBuffers": {
+          "type": "GPUCommandBuffer",
+          "array": true
+        }
+      }
     }
   ]
 }

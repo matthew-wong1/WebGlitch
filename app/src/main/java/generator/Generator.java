@@ -241,8 +241,6 @@ public class Generator {
     }
 
     public List<String> getAllObjectAttributes(String variableName, String fieldName) {
-        System.out.println("getting fieldName " + fieldName);
-        System.out.println("variable name " + variableName);
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 
@@ -640,8 +638,6 @@ public class Generator {
                 // Later on, add available objects eg for improting JS objects
                 this.addToShaderProperties(importName, chosenBaseShaderType, fullPath);
                 break;
-            default:
-                System.out.println("reached here somehow");
         }
 
         this.programNode.addNodeToFront(astNodeToPrepend);
@@ -742,7 +738,6 @@ public class Generator {
         }
 
         if (availabilityNode.has("parents")) {
-            System.out.println("calls to change availabiltiy of in parents " + callsToChangeAvailabilityOf);
             JsonNode parentsNode = availabilityNode.get("parents");
             parentsNode.fieldNames().forEachRemaining(fieldName -> {
                 JsonNode parentNodeCalls = parentsNode.get(fieldName);
@@ -768,7 +763,6 @@ public class Generator {
 
 
         // Check if it contains the value 'all':
-        System.out.println("calls to change availability of " + callsToChangeAvailabilityOf);
         if (callsToChangeAvailabilityOf.getFirst().equals("all")) {
             callsToChangeAvailabilityOf.clear();
             String receiverType = variableToReceiverType.get(receiver);

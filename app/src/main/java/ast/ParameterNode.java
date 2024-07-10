@@ -49,9 +49,8 @@ public class ParameterNode extends ASTNode {
         this.isRoot = isRoot;
         this.isArray = details.has("array");
         this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
-        System.out.println("generating parameter " + fieldName + " for call " + parentList.getCallName());
-        System.out.println("individual parameter requirements " + individualParameterRequirements);
-        System.out.println("before parsing: " + parameterRequirements);
+
+        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName());
 
         checkImplementationSpecificCalls(details);
 
@@ -287,7 +286,6 @@ public class ParameterNode extends ASTNode {
 //                requirements.put("GPURenderPipeline.multisample.alphaToCoverageEnabled", requiredAlphaCoverage);
 //            }
 
-            System.out.println("required requirements " + requirements);
             return requirements;
 
             // (Also look at depth stencil if it exists)
@@ -527,8 +525,6 @@ public class ParameterNode extends ASTNode {
         } else if (mandatoryEnums.isEmpty()) {
             chosenEnumValues = pickARandomEnumValue(enumValues, mandatoryEnums);
         } else { // pick one randomly from the mandatory enums
-            System.out.println("enum values " + enumValues);
-            System.out.println("mandatory enums " + mandatoryEnums);
             enumValues.removeIf(value -> !mandatoryEnums.contains(value));
             chosenEnumValues.add(enumValues.getFirst());
         }
@@ -971,11 +967,9 @@ public class ParameterNode extends ASTNode {
 
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
             String constraintValue;
-            System.out.println("field name " + fieldName);
             if (fieldName.startsWith("inner" )) {
                 String[] split = fieldName.split("\\.", 2);
                 constraintValue = this.getRootParameterNode().findNestedParameterNode(split[1]).getParameter().getValue();
-                System.out.println("constraint value " + constraintValue);
             } else {
                 constraintValue = parentList.getParameter(fieldName);
             }

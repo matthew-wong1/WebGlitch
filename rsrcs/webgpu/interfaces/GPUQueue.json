@@ -35,21 +35,20 @@
     {
       "name": "submit",
       "returnType": "none",
-      "properties": {
-
-      }
+      "properties": [
+        {
+          "commandBuffers": {
+            "type": "GPUCommandBuffer",
+            "array": true
+          }
+        }
+      ]
     }
   ],
   "attributes": [
     {
       "name": "label",
-      "returnType": "string",
-      "properties": {
-        "commandBuffers": {
-          "type": "GPUCommandBuffer",
-          "array": true
-        }
-      }
+      "returnType": "string"
     }
   ]
 }

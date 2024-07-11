@@ -1,0 +1,42 @@
+{
+  "receiverType": "GPUComputePassEncoder",
+  "requirements": ["GPUComputePassEncoder"],
+  "methods": [
+    {
+      "name": "setPipeline",
+      "returnType": "none",
+      "properties": [
+        {
+          "pipeline": {
+            "type": "GPUComputePipeline",
+            "conditions": {
+              "renderPassCompatible": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "end",
+      "returnType": "none",
+      "conditions": {
+        "renderPassEncodingFinished": true
+      },
+      "setUnavailable": {
+        "this": ["all"]
+      },
+      "setAvailable": {
+        "parents": {
+          "GPUCommandEncoder": ["GPUCommandEncoder.beginRenderPass"]
+        }
+      }
+    }
+
+  ],
+  "attributes": [
+    {
+      "name": "label",
+      "returnType": "string"
+    }
+  ]
+}

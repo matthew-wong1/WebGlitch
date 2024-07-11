@@ -1,7 +1,7 @@
 const {
     create,
     globals
-} = require('../../dawn/out/Debug/Debug/dawn.node');
+} = require('../../dawn_no_asan/out/Debug/dawn.node');
 const fs = require('fs');
 Object.assign(globalThis, globals);
 let navigator = {
@@ -20,7 +20,7 @@ function loadShader(file) {
         console.error('Failed to load shader:', err);
     }
 }
-const computeShader = loadShader('../WebGlitch/rsrcs/shaders/compute/2.wgsl');
+const computeShader = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/2.wgsl');
 
 async function main() {
     const adapter = await navigator.gpu.requestAdapter({

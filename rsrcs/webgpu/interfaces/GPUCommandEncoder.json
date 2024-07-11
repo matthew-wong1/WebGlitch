@@ -41,7 +41,10 @@
             "optional": true
           }
         }
-      ]
+      ],
+      "setUnavailable": {
+        "this": ["GPUCommandEncoder.beginComputePass"]
+      }
     },
     {
       "name": "finish",

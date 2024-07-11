@@ -8,10 +8,7 @@
       "properties": [
         {
           "pipeline": {
-            "type": "GPUComputePipeline",
-            "conditions": {
-              "renderPassCompatible": true
-            }
+            "type": "GPUComputePipeline"
           }
         }
       ]
@@ -20,14 +17,14 @@
       "name": "end",
       "returnType": "none",
       "conditions": {
-        "renderPassEncodingFinished": true
+        "computePassEncodingFinished": true
       },
       "setUnavailable": {
         "this": ["all"]
       },
       "setAvailable": {
         "parents": {
-          "GPUCommandEncoder": ["GPUCommandEncoder.beginRenderPass"]
+          "GPUCommandEncoder": ["GPUCommandEncoder.beginComputePass"]
         }
       }
     }

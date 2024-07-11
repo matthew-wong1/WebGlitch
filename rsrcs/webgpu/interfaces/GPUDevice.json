@@ -214,6 +214,25 @@
           }
         }
       ]
+    },
+    {
+      "name": "createComputePipeline",
+      "paramType": "object",
+      "returnType": "GPUComputePipeline",
+      "properties": [
+        {
+          "compute": {
+            "type": "compute"
+          },
+          "label": {
+            "type": "string",
+            "optional": true
+          },
+          "layout": {
+            "type": "gpuLayout"
+          }
+        }
+      ]
     }
   ],
   "attributes": [

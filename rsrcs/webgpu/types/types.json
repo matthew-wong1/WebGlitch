@@ -374,5 +374,21 @@
         }
       }
     }
+  ],
+  "compute": [
+    {
+      "entryPoint": {
+        "type": "shaderEntryPoint"
+      },
+      "module": {
+        "type": "GPUShaderModule",
+        "conditions": {
+          "same": ["GPUDevice"],
+          "withAttributes": {
+            "GPUShaderModule.label": ["compute"]
+          }
+        }
+      }
+    }
   ]
 }

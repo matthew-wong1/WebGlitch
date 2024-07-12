@@ -156,7 +156,7 @@ public class Parser {
 
         JsonNode conditionsNode = callJsonNode.get("conditions");
 
-        if (conditionsNode.has("renderPassEncodingFinished")) {
+        if (conditionsNode.has("renderPassEncodingFinished") || conditionsNode.has("computePassEncodingFinished")) {
             // WIP
             return;
         }

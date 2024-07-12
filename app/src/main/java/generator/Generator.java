@@ -652,6 +652,10 @@ public class Generator {
         propertiesMap.put("path", fullPath);
     }
 
+    private String getShaderProperties(String shaderName, String fieldName) {
+        return shaderNameToProperties.get(shaderName).get(fieldName);
+    }
+
     public void setCallAvailability(String variableName, Set<String> callName, boolean isAvailable) {
         if (isAvailable) {
             removeFromCallUnavailability(variableName, callName);

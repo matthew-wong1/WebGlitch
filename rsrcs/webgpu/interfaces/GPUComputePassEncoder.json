@@ -27,6 +27,23 @@
           "GPUCommandEncoder": ["GPUCommandEncoder.beginComputePass"]
         }
       }
+    },
+    {
+      "name": "setBindGroup",
+      "returnType": "none",
+      "properties": [
+        {
+          "index": {
+            "type": "bindGroupIndex"
+          },
+          "bindGroup": {
+            "type": "GPUBindGroup",
+            "conditions": {
+              "bindGroupCompatible": true
+            }
+          }
+        }
+      ]
     }
 
   ],

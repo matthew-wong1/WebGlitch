@@ -390,5 +390,22 @@
         }
       }
     }
+  ],
+  "bindGroupEntry": [
+    {
+      "binding": {
+        "type": "uint"
+      },
+      "resource": {
+        "type": "gpuBufferBinding"
+      }
+    }
+  ],
+  "gpuBufferBinding": [
+    {
+      "buffer": {
+        "type": "GPUBuffer"
+      }
+    }
   ]
 }

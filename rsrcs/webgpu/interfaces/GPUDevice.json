@@ -233,6 +233,26 @@
           }
         }
       ]
+    },
+    {
+      "name": "createBindGroup",
+      "returnType": "GPUBindGroup",
+      "paramType": "object",
+      "properties": [
+        {
+          "label": {
+            "type": "string",
+            "optional": true
+          },
+          "layout": {
+            "type": "bindGroupLayout"
+          },
+          "entries": {
+            "type": "bindGroupEntry",
+            "array": true
+          }
+        }
+      ]
     }
   ],
   "attributes": [

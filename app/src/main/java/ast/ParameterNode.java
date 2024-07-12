@@ -141,6 +141,8 @@ public class ParameterNode extends ASTNode {
             this.parameters.add(new Parameter(this.chooseRandomShader()));
         } else if (paramType.equals("bufferSlot") || paramType.equals("bindGroupIndex")) {
             this.parameters.add(new Parameter("0"));
+        } else if (paramType.equals("bindGroupLayout")) {
+            generateBindGroupLayout(details);
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
             additionalConditionsNode = findAndSetWebGPUInterface(paramType, details);
         } else { // Requires WebGPU Type
@@ -170,6 +172,39 @@ public class ParameterNode extends ASTNode {
         if (additionalConditionsNode != null) {
             generator.parseAndSetCallAvailabilityIfNoParameters(additionalConditionsNode, parentList);
         }
+
+    }
+
+    private void generateBindGroupLayout(JsonNode details) {
+
+        JsonNode conditionsNode = details.has("conditions") ? details.get("conditions") : null;
+        List<String> sameObjectRequirements = null;
+        if (conditionsNode != null) {
+            sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
+        }
+
+        String pipelineVariableName = generator.getRandomReceiver("GPUComputePipeline", "getBindGroupLayout", null, sameObjectRequirements, parentList.getReceiver(), this);
+
+        // Label should be the first paramter to be generated
+        if (conditionsNode != null && conditionsNode.has("computeShaderCompatible")) {
+            String label = parentList.getParameter("label");
+
+            if (!label.contains(".")) {
+                // Pick a random pipeline variable
+                // Set the label
+                parentList.setParamValue("label", pipelineVariableName + ".bindGroup");
+            } else {
+                // If label contains a pipelineName.bindGroup then:
+                String[] split = label.split("\\.", 2);
+                pipelineVariableName = split[0];
+            }
+
+            // Find that pipeline variable, find its compute shader name
+            // Look up compute shader properties
+        }
+
+        // Generate the actual parameter
+        this.parameters.add(new Parameter(pipelineVariableName + ".getBindGroupLayout(0)"));
 
     }
 
@@ -305,10 +340,7 @@ public class ParameterNode extends ASTNode {
             List<String> requiredLabel = new ArrayList<>();
             requiredLabel.add(computePipelineName + ".bindGroup");
             requirements.put("GPUBindGroup.label", requiredLabel);
-            // Label should be the first paramter to be generated
-            // If label contains a . then:
-            // Find that pipeline variable, find its compute shader name
-            // Look up compute shader properties
+
         }
 
         return null;

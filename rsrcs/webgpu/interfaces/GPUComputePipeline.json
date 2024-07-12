@@ -1,0 +1,23 @@
+{
+  "receiverType": "GPUComputePipeline",
+  "requirements": ["GPUComputePipeline"],
+  "methods": [
+    {
+      "name": "getBindGroupLayout",
+      "returnType": "GPUBindGroupLayout",
+      "properties": [
+        {
+          "index": {
+            "type": "bindGroupIndex"
+          }
+        }
+      ]
+    }
+  ],
+  "attributes": [
+    {
+      "name": "label",
+      "returnType": "string"
+    }
+  ]
+}

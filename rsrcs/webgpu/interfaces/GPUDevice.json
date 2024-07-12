@@ -245,7 +245,10 @@
             "optional": true
           },
           "layout": {
-            "type": "bindGroupLayout"
+            "type": "bindGroupLayout",
+            "conditions": {
+              "computeShaderCompatible": true
+            }
           },
           "entries": {
             "type": "bindGroupEntry",

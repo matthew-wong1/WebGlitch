@@ -394,17 +394,26 @@
   "bindGroupEntry": [
     {
       "binding": {
-        "type": "uint"
+        "type": "uint",
+        "conditions": {
+          "computeShaderCompatible": true
+        }
       },
       "resource": {
-        "type": "gpuBufferBinding"
+        "type": "gpuBufferBinding",
+        "conditions": {
+          "computeShaderCompatible": true
+        }
       }
     }
   ],
   "gpuBufferBinding": [
     {
       "buffer": {
-        "type": "GPUBuffer"
+        "type": "GPUBuffer",
+        "conditions": {
+          "computeShaderCompatible": true
+        }
       }
     }
   ]

@@ -139,7 +139,7 @@ public class ParameterNode extends ASTNode {
             this.parameters.add(new Parameter(encodeAsString("auto")));
         } else if (paramType.equals("shader")) {
             this.parameters.add(new Parameter(this.chooseRandomShader()));
-        } else if (paramType.equals("bufferSlot")) {
+        } else if (paramType.equals("bufferSlot") || paramType.equals("bindGroupIndex")) {
             this.parameters.add(new Parameter("0"));
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
             additionalConditionsNode = findAndSetWebGPUInterface(paramType, details);
@@ -289,6 +289,26 @@ public class ParameterNode extends ASTNode {
             return requirements;
 
             // (Also look at depth stencil if it exists)
+        } else if (conditionsNode.has("bindGroupCompatible")) {
+            // Check have setPIpeline called already
+            String computePassEncoderName = parentList.getReceiver();
+            Set<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);
+
+            // If not, pick a random bindGroup (ie return)
+            if (computePassEncoderCallState.contains("setPipeline")) {
+                return null;
+            }
+
+            // If called already, use it as part of bind group
+            String computePipelineName = generator.getObjectAttributes(computePassEncoderName, "pipeline");
+
+            List<String> requiredLabel = new ArrayList<>();
+            requiredLabel.add(computePipelineName + ".bindGroup");
+            requirements.put("GPUBindGroup.label", requiredLabel);
+            // Label should be the first paramter to be generated
+            // If label contains a . then:
+            // Find that pipeline variable, find its compute shader name
+            // Look up compute shader properties
         }
 
         return null;

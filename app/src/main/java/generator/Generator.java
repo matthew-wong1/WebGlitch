@@ -588,6 +588,10 @@ public class Generator {
 //    }
 
     public String generateTopLevelStatement(String type) {
+        return generateTopLevelStatement(type, null);
+    }
+
+    public String generateTopLevelStatement(String type, List<String> values) {
         ASTNode astNodeToPrepend = null;
         AssignmentNode assignmentNode = null;
         String varName = "";
@@ -600,7 +604,7 @@ public class Generator {
         switch (type) {
             case "typedArray":
                 assignmentNode = new AssignmentNode("const", false);
-                TypedArray typedArray = new TypedArray();
+                TypedArray typedArray = new TypedArray(values);
                 assignmentNode.addNode(typedArray);
                 varName = assignmentNode.getVarName();
                 astNodeToPrepend = assignmentNode;
@@ -622,7 +626,8 @@ public class Generator {
                 assert files != null;
                 String chosenFolderName = files[rand.nextInt(files.length)].getName();
 
-                String fullPath = "../WebGlitch" + SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/" + shaderSubType + ".wgsl";
+                String folderPath = "../WebGlitch" + SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
+                String fullPath = folderPath + shaderSubType + ".wgsl";
 
                 assignmentNode = new AssignmentNode("const", false);
                 Require requireStatement = new Require(fullPath, true);
@@ -633,7 +638,7 @@ public class Generator {
                 varName += shaderSubType + "." + importName;
 
                 // Later on, add available objects eg for improting JS objects
-                this.addToShaderProperties(importName, chosenBaseShaderType, fullPath);
+                this.addToShaderProperties(importName, chosenBaseShaderType, folderPath);
                 break;
         }
 
@@ -642,17 +647,18 @@ public class Generator {
         return varName;
     }
 
-    private void addToShaderProperties(String importName, String chosenShaderType, String fullPath) {
+    private void addToShaderProperties(String importName, String chosenShaderType, String folderPath) {
         if (!shaderNameToProperties.containsKey(importName)) {
             shaderNameToProperties.put(importName, new HashMap<>());
         }
 
         Map<String, String> propertiesMap = shaderNameToProperties.get(importName);
         propertiesMap.put("type", chosenShaderType);
-        propertiesMap.put("path", fullPath);
+        propertiesMap.put("path", folderPath);
     }
 
-    private String getShaderProperties(String shaderName, String fieldName) {
+    // Path stored as the folder path, with a trailing '/'
+    public String getShaderProperties(String shaderName, String fieldName) {
         return shaderNameToProperties.get(shaderName).get(fieldName);
     }
 

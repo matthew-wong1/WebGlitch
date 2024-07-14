@@ -10,3 +10,5 @@
 # Exclude directories from GitHub's language calculations
 rsrcs/shaders/** linguist-generated
 output/* linguist-generated
+rsrcs/webgpu/wip_shaders/**
+wgpu_playground/**

@@ -183,8 +183,9 @@ public class ParameterNode extends ASTNode {
         switch (arrayType) {
             case "bindGroupEntry":
                 generateArrayOfBindGroupEntries(paramType, conditionsNode);
+                break;
             default:
-                System.err.println("reacheed unreachable area");
+                System.err.println("reacheed unreachable area with arrayType " + arrayType );
         }
 
     }
@@ -199,7 +200,7 @@ public class ParameterNode extends ASTNode {
         String label = parentList.getParameter("label");
         String[] split = label.split("\\.", 2);
         String computePipelineName = split[0];
-        String computeShaderModule = generator.getObjectAttributes(computePipelineName, "compute");
+        String computeShaderModule = generator.getObjectAttributes(computePipelineName, "compute.module");
         String computeShader = generator.getObjectAttributes(computeShaderModule, "code");
         String shaderFolderPath = generator.getShaderProperties(computeShader, "path");
 
@@ -420,7 +421,7 @@ public class ParameterNode extends ASTNode {
             Set<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);
 
             // If not, pick a random bindGroup (ie return)
-            if (computePassEncoderCallState.contains("setPipeline")) {
+            if (computePassEncoderCallState == null || computePassEncoderCallState.contains("setPipeline")) {
                 return null;
             }
 

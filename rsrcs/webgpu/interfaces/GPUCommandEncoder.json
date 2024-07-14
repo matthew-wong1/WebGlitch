@@ -27,7 +27,7 @@
         }
       ],
       "setUnavailable": {
-        "this": ["GPUCommandEncoder.beginRenderPass"]
+        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass"]
       }
     },
     {
@@ -43,7 +43,7 @@
         }
       ],
       "setUnavailable": {
-        "this": ["GPUCommandEncoder.beginComputePass"]
+        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass"]
       }
     },
     {

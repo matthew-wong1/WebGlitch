@@ -588,10 +588,10 @@ public class Generator {
 //    }
 
     public String generateTopLevelStatement(String type) {
-        return generateTopLevelStatement(type, null);
+        return generateTopLevelStatement(type, null,null);
     }
 
-    public String generateTopLevelStatement(String type, List<String> values) {
+    public String generateTopLevelStatement(String type, String subType, List<String> values) {
         ASTNode astNodeToPrepend = null;
         AssignmentNode assignmentNode = null;
         String varName = "";
@@ -604,7 +604,12 @@ public class Generator {
         switch (type) {
             case "typedArray":
                 assignmentNode = new AssignmentNode("const", false);
-                TypedArray typedArray = new TypedArray(values);
+                TypedArray typedArray = null;
+                if (values == null) {
+                    typedArray = new TypedArray();
+                } else {
+                    typedArray = new TypedArray(subType, values);
+                }
                 assignmentNode.addNode(typedArray);
                 varName = assignmentNode.getVarName();
                 astNodeToPrepend = assignmentNode;

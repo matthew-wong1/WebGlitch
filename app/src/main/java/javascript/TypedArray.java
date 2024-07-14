@@ -28,6 +28,11 @@ public class TypedArray extends ASTNode {
         }
     }
 
+    public TypedArray(String type, List<String> valuesToUse) {
+        this.type = type;
+        valuesToUse.forEach(v -> this.values.add(Integer.parseInt(v)));
+    }
+
     private int generateForSizeThatIsMultipleOf4Bytes(int elementSizeInBytes) {
         int numValues = rand.nextInt(MAX_SIZE - MIN_SIZE) + MIN_SIZE;
         int totalBytes = numValues * elementSizeInBytes;

@@ -44,6 +44,45 @@
           }
         }
       ]
+    },
+    {
+      "name": "dispatchWorkgroups",
+      "returnType": "none",
+      "prerequisiteMethods": [
+        {
+          "receiverType": "GPUComputePassEncoder",
+          "name": "setPipeline"
+        },
+        {
+          "receiverType": "GPUComputePassEncoder",
+          "name": "setBindGroup"
+        }
+      ],
+      "properties": [
+        {
+          "workgroupCountX": {
+            "type": "uint",
+            "conditions": {
+              "min": 1,
+              "max": 256
+            }
+          },
+          "workgroupCountY": {
+            "type": "uint",
+            "conditions": {
+              "min": 1,
+              "max": 256
+            }
+          },
+          "workgroupCountZ": {
+            "type": "uint",
+            "conditions": {
+              "min": 1,
+              "max": 64
+            }
+          }
+        }
+      ]
     }
 
   ],

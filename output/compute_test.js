@@ -62,7 +62,7 @@ async function main() {
     })
     computePass.setPipeline(computePipeline);
     computePass.setBindGroup(0, bindGroup) // doesnt matter if pipeline set or not
-    computePass.dispatchWorkgroups(1); // requires pipeline and bind group to be set
+    computePass.dispatchWorkgroups(256, 256, 64); // requires pipeline and bind group to be set
     computePass.end()
     const commandBuffer = commandEncoder.finish()
     device.queue.submit([commandBuffer])

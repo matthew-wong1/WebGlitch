@@ -86,7 +86,7 @@ public class ParameterNode extends ASTNode {
                     String[] split = currentKeyName.split("\\.", 2);
                     String newKeyName = split[1];
                     this.nestedParameterRequirements.put(newKeyName, entry.getValue());
-                } else {
+                } else if (currentKeyName.equals(this.fieldName)){
 
                     return entry.getValue();
                 }
@@ -227,7 +227,7 @@ public class ParameterNode extends ASTNode {
         // Input Usage: UNIFORM
         bufferRequirements.put("GPUBuffer.mappedAtCreation", List.of("false"));
         bufferRequirements.put("GPUBuffer.size", List.of(inputBufferSize));
-        bufferRequirements.put("GPUBuffer.usage", List.of("GPUBufferUsage.UNIFORM"));
+        bufferRequirements.put("GPUBuffer.usage", List.of("GPUBufferUsage.UNIFORM", "GPUBufferUsage.COPY_DST"));
 
         // ESSETNIALLY MAKE THE BUFFER
         String inputBufferName = generator.getRandomReceiver("GPUBuffer", "getMappedRange", bufferRequirements, List.of("GPUDevice"), parentList.getReceiver(), this);
@@ -256,9 +256,10 @@ public class ParameterNode extends ASTNode {
 
         // Make a writeBuffer call, copying input data into the buffer that was generated
         Map<String, List<String>> writeBufferRequirements = new HashMap<>();
+        System.out.println("input bufer name " + inputBufferName);
         writeBufferRequirements.put("buffer", List.of(inputBufferName));
         writeBufferRequirements.put("bufferOffset", List.of("0"));
-        writeBufferRequirements.put("data", List.of(inputBufferName));
+        writeBufferRequirements.put("data", List.of(inputValuesVariableName));
 
         Map<String, String> sameObjectReqs = new HashMap<>();
         String sameGPUDevice = generator.findBaseReceiver(inputBufferName, "GPUDevice");

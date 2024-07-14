@@ -24,6 +24,8 @@ public class ParameterNode extends ASTNode {
     private final boolean isJsonFormat;
     private final boolean isArray;
     private final ParameterNode rootParameterNode;
+    private final boolean isJsonArray;
+    private int numSubParams = 0;
     private boolean isString;
     private boolean isBitwiseFlags;
 
@@ -48,6 +50,7 @@ public class ParameterNode extends ASTNode {
         this.fieldName = fieldName;
         this.isRoot = isRoot;
         this.isArray = details.has("array");
+        this.isJsonArray = details.has("arrayType");
         this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
 
         System.out.println("generating " + fieldName + " for call " + getParentList().getCallName());
@@ -119,7 +122,8 @@ public class ParameterNode extends ASTNode {
             // Also if are multiple choices and since it's not an enum, pick one of them at random
             String parameterValue = individualParameterRequirements.get(rand.nextInt(0, individualParameterRequirements.size()));
 
-            if (paramType.equals("string")) {
+            // can't be a label otherwise generates qutoes twice
+            if (paramType.equals("string") && !fieldName.equals("label")) {
                 parameterValue = encodeAsString(parameterValue);
             }
 
@@ -219,6 +223,8 @@ public class ParameterNode extends ASTNode {
         String label = parentList.getParameter("label");
         String[] split = label.split("\\.", 2);
         String computePipelineName = split[0];
+        System.out.println("computePipelineName " + label);
+        System.out.println(generator.objectAttributesTable.get(computePipelineName));
         String computeShaderModule = generator.getObjectAttributes(computePipelineName, "compute.module");
         String computeShader = generator.getObjectAttributes(computeShaderModule, "code");
         String shaderFolderPath = generator.getShaderProperties(computeShader, "path");
@@ -440,16 +446,22 @@ public class ParameterNode extends ASTNode {
             Set<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);
 
             // If not, pick a random bindGroup (ie return)
-            if (computePassEncoderCallState == null || computePassEncoderCallState.contains("setPipeline")) {
+            if (computePassEncoderCallState == null) {
                 return null;
             }
 
-            // If called already, use it as part of bind group
-            String computePipelineName = generator.getObjectAttributes(computePassEncoderName, "pipeline");
+            if (!computePassEncoderCallState.contains("setPipeline")) {
+                return null;
+            }
 
+
+            String computePipelineName = generator.getObjectAttributes(computePassEncoderName, "pipeline");
+            System.out.println("in here, the comptue pipeline name is " + computePipelineName);
+            System.out.println(generator.objectAttributesTable.get(computePassEncoderName));
             List<String> requiredLabel = new ArrayList<>();
             requiredLabel.add(computePipelineName + ".bindGroup");
             requirements.put("GPUBindGroup.label", requiredLabel);
+            System.out.println("required label: " + requiredLabel);
             return requirements;
         }
 
@@ -614,7 +626,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private void generateParamAsJson(String paramType) {
-
+        this.numSubParams = 0;
         ObjectMapper mapper = new ObjectMapper();
 
         JsonNode details = null;
@@ -633,6 +645,7 @@ public class ParameterNode extends ASTNode {
                 try {
                     ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, this, generator, parentList, nestedParameterRequirements);
                     this.addNode(nestedParameterNode);
+                    this.numSubParams += 1;
                 } catch (SkipParameterException e) {
                     // make your new exception. throw a custom exception. let other excpetions fails
 //                    System.out.println("Skipped generation of paramter for field " + nestedFieldName);
@@ -1174,25 +1187,62 @@ public class ParameterNode extends ASTNode {
 
     @Override
     public String toString() {
-        String valueToPrint;
+        StringBuilder valueToPrint;
 
         if (!this.hasNoSubNodes()) {
-            valueToPrint = subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(",", "{", "}"));
+            if (isJsonArray) {
+                List<String> unformattedValuesToPrint = subnodes.stream().map(ASTNode::toString).toList();
+                valueToPrint = formatValuesAsJsonArray(unformattedValuesToPrint);
+
+
+            } else {
+                valueToPrint = new StringBuilder(subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(",", "{", "}")));
+            }
+
             if (isArray) {
-                valueToPrint = "[" + valueToPrint + "]";
+                valueToPrint = new StringBuilder("[" + valueToPrint + "]");
             }
         } else {
             List<String> parameterValues = this.parameters.stream().map(Parameter::toString).toList();
-            valueToPrint = formatParam(parameterValues, new ParamFormatting(isArray, isString, isBitwiseFlags));
+            valueToPrint = new StringBuilder(formatParam(parameterValues, new ParamFormatting(isArray, isString, isBitwiseFlags)));
         }
 
         if (isJsonFormat) {
             return fieldName + ": " + valueToPrint;
         }
 
+        return valueToPrint.toString();
+
+
+    }
+
+    private StringBuilder formatValuesAsJsonArray(List<String> unformattedValuesToPrint) {
+        StringBuilder valueToPrint = new StringBuilder();
+
+
+        for (int i = 0, count = 0; i < unformattedValuesToPrint.size(); i++) {
+            if (count == 0) {
+                valueToPrint.append("{");
+            }
+
+            valueToPrint.append(unformattedValuesToPrint.get(i));
+
+
+
+            if (count == (this.numSubParams-1)) {
+                valueToPrint.append("}");
+                count = 0;
+            } else {
+                count++;
+            }
+
+            if (i < unformattedValuesToPrint.size() - 1) {
+                valueToPrint.append(",");
+            }
+        }
+
+        System.out.println("special value to print " + valueToPrint);
         return valueToPrint;
-
-
     }
 
     private String formatParam(List<String> parameterValues, ParamFormatting paramFormatting) {

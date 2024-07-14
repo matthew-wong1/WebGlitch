@@ -143,6 +143,8 @@ public class ParameterNode extends ASTNode {
             this.parameters.add(new Parameter("0"));
         } else if (paramType.equals("bindGroupLayout")) {
             generateBindGroupLayout(details);
+        } else if (this.isArray && details.has("arrayType")) {
+            generateArrayOfJsonObjects(paramType, details.get("arrayType").asText(), details);
         } else if (Character.isUpperCase(paramType.charAt(0))) { // Requires a WebGPU object
             additionalConditionsNode = findAndSetWebGPUInterface(paramType, details);
         } else { // Requires WebGPU Type
@@ -173,6 +175,94 @@ public class ParameterNode extends ASTNode {
             generator.parseAndSetCallAvailabilityIfNoParameters(additionalConditionsNode, parentList);
         }
 
+    }
+
+    private void generateArrayOfJsonObjects(String paramType, String arrayType, JsonNode details) {
+        JsonNode conditionsNode = details.has("conditions") ? details.get("conditions") : null;
+
+        switch (arrayType) {
+            case "bindGroupEntry":
+                generateArrayOfBindGroupEntries(paramType, conditionsNode);
+            default:
+                System.err.println("reacheed unreachable area");
+        }
+
+    }
+
+    private void generateArrayOfBindGroupEntries(String paramType, JsonNode conditionsNode) {
+        if (conditionsNode == null || !conditionsNode.has("computeShaderCompatible")) {
+            return;
+        }
+
+        Map<String, List<String>> bufferRequirements = new HashMap<>();
+
+        String label = parentList.getParameter("label");
+        String[] split = label.split("\\.", 2);
+        String computePipelineName = split[0];
+        String computeShaderModule = generator.getObjectAttributes(computePipelineName, "compute");
+        String computeShader = generator.getObjectAttributes(computeShaderModule, "code");
+        String shaderFolderPath = generator.getShaderProperties(computeShader, "path");
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode shaderRequirementsNode = null;
+
+        try {
+            shaderRequirementsNode = mapper.readTree(new File(shaderFolderPath + "requirements.json"));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
+        // Parse shaderRequirementsNode for inputBuffer
+        List<String> inputBufferValues = new ArrayList<>();
+        Parser.extractNodeAsList(shaderRequirementsNode.get("inputBuffer"), inputBufferValues);
+
+        // Generate the input array as a top level statement
+        String inputValuesVariableName = generator.generateTopLevelStatement("typedArray", "Uint8", inputBufferValues);
+
+        // Set the size as bufferName.byteLength() - see if this is possible when generating a parameter\
+        String inputBufferSize = String.valueOf(inputBufferValues.size());
+
+        // Set requirements for input buffer
+        // Input Usage: UNIFORM
+        bufferRequirements.put("GPUBuffer.mappedAtCreation", List.of("false"));
+        bufferRequirements.put("GPUBuffer.size", List.of(inputBufferSize));
+        bufferRequirements.put("GPUBuffer.usage", List.of("GPUBufferUsage.UNIFORM"));
+
+        // ESSETNIALLY MAKE THE BUFFER
+        String inputBufferName = generator.getRandomReceiver("GPUBuffer", "getMappedRange", bufferRequirements, List.of("GPUDevice"), parentList.getReceiver(), this);
+        // public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName, ParameterNode parameterNode)
+
+        nestedParameterRequirements.put("binding", List.of("0"));
+        nestedParameterRequirements.put("resource.buffer", List.of(inputBufferName));
+        nestedParameterRequirements.put("resource.size", List.of(inputBufferSize));
+
+        // Generate parameter for input buffer
+        generateParamAsJson(paramType);
+        nestedParameterRequirements.clear();
+
+        // Set requirements for storage buffer
+        // storage usage: storage, COPY_SRC
+        String storageBufferSize = shaderRequirementsNode.get("storageBufferSize").asText();
+        bufferRequirements.put("GPUBuffer.usage", List.of("GPUBufferUsage.STORAGE", "GPUBufferUsage.COPY_SRC"));
+
+        String storageBufferName = generator.getRandomReceiver("GPUBuffer", "getMappedRange", bufferRequirements, List.of("GPUDevice"), parentList.getReceiver(), this);
+        nestedParameterRequirements.put("binding", List.of("1"));
+        nestedParameterRequirements.put("resource.size", List.of(storageBufferSize));
+        nestedParameterRequirements.put("resource.buffer", List.of(storageBufferName));
+
+        // Generate parameter for storage buffer
+        generateParamAsJson(paramType);
+
+        // Make a writeBuffer call, copying input data into the buffer that was generated
+        Map<String, List<String>> writeBufferRequirements = new HashMap<>();
+        writeBufferRequirements.put("buffer", List.of(inputBufferName));
+        writeBufferRequirements.put("bufferOffset", List.of("0"));
+        writeBufferRequirements.put("data", List.of(inputBufferName));
+
+        Map<String, String> sameObjectReqs = new HashMap<>();
+        String sameGPUDevice = generator.findBaseReceiver(inputBufferName, "GPUDevice");
+        sameObjectReqs.put("GPUDevice", sameGPUDevice);
+        generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUQueue", "writeBuffer", true), writeBufferRequirements, sameObjectReqs, null);
     }
 
     private void generateBindGroupLayout(JsonNode details) {
@@ -519,10 +609,6 @@ public class ParameterNode extends ASTNode {
 
             param.fieldNames().forEachRemaining(nestedFieldName -> {
                 JsonNode paramDetails = param.get(nestedFieldName);
-
-//                if (paramDetails.has("optional")) {
-//
-//                }
 
                 try {
                     ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, this, generator, parentList, nestedParameterRequirements);

@@ -369,7 +369,7 @@ public class Generator {
         return sameObjectsReqs;
     }
 
-    private String findBaseReceiver(String variableName, String objectType) {
+    public String findBaseReceiver(String variableName, String objectType) {
         String currentVariable = variableName;
 
         while (variableToReceiverName.containsKey(currentVariable) && !variableToReceiverType.get(currentVariable).equals(objectType)) {

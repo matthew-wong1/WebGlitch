@@ -47,11 +47,11 @@ async function main() {
 
     const uniformBuffer = device.createBuffer({
         size: inSize,
-        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST,
+        usage: GPUBufferUsage.UNIFORM,
     });
     const storageBuffer = device.createBuffer({
         size: outSize,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
     });
     const bindGroup = device.createBindGroup({
         layout: computePipeline.getBindGroupLayout(0),

@@ -151,9 +151,11 @@ public class ParameterNode extends ASTNode {
             generateParamAsJson(paramType);
         }
 
+        // Parse post-generation conditions
+        parsePostGenerationConditions(details.get("conditions"));
+
         // how does this work for triply nested?
         // Maybe the parent adds it and continually does .getFieldName
-
         if(!this.isRoot) {
             return;
         }
@@ -175,6 +177,23 @@ public class ParameterNode extends ASTNode {
             generator.parseAndSetCallAvailabilityIfNoParameters(additionalConditionsNode, parentList);
         }
 
+    }
+
+    private void parsePostGenerationConditions(JsonNode conditions) {
+        if (conditions == null) {
+            return;
+        }
+
+        // Set a compatible bindgroup
+        if (conditions.has("bindGroupCompatible")) {
+            String computePassEncoderName = parentList.getReceiver();
+            Set<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);
+            if (computePassEncoderCallState == null || !computePassEncoderCallState.contains("setBindGroup")) {
+                return;
+            }
+
+            generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUComputePassEncoder", "setBindGroup", true), null, null, computePassEncoderName);
+        }
     }
 
     private void generateArrayOfJsonObjects(String paramType, String arrayType, JsonNode details) {
@@ -256,7 +275,6 @@ public class ParameterNode extends ASTNode {
 
         // Make a writeBuffer call, copying input data into the buffer that was generated
         Map<String, List<String>> writeBufferRequirements = new HashMap<>();
-        System.out.println("input bufer name " + inputBufferName);
         writeBufferRequirements.put("buffer", List.of(inputBufferName));
         writeBufferRequirements.put("bufferOffset", List.of("0"));
         writeBufferRequirements.put("data", List.of(inputValuesVariableName));
@@ -416,7 +434,7 @@ public class ParameterNode extends ASTNode {
             return requirements;
 
             // (Also look at depth stencil if it exists)
-        } else if (conditionsNode.has("bindGroupCompatible")) {
+        } else if (conditionsNode.has("computePipelineCompatible")) {
             // Check have setPIpeline called already
             String computePassEncoderName = parentList.getReceiver();
             Set<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);
@@ -432,7 +450,7 @@ public class ParameterNode extends ASTNode {
             List<String> requiredLabel = new ArrayList<>();
             requiredLabel.add(computePipelineName + ".bindGroup");
             requirements.put("GPUBindGroup.label", requiredLabel);
-
+            return requirements;
         }
 
         return null;

@@ -8,7 +8,10 @@
       "properties": [
         {
           "pipeline": {
-            "type": "GPUComputePipeline"
+            "type": "GPUComputePipeline",
+            "conditions": {
+              "bindGroupCompatible": true
+            }
           }
         }
       ]
@@ -39,7 +42,7 @@
           "bindGroup": {
             "type": "GPUBindGroup",
             "conditions": {
-              "bindGroupCompatible": true
+              "computePipelineCompatible": true
             }
           }
         }

@@ -197,8 +197,10 @@ public class ParameterNode extends ASTNode {
     private void parseTypedArrayRequirements(JsonNode conditionsNode, Map<String, String> requirements) {
         if (conditionsNode.has("fitsInBuffer")) {
             String gpuBufferName = parentList.getParameter("buffer");
-            String bufferSize = generator.getObjectAttributes(gpuBufferName, "size");
-            requirements.put("maxBytes", bufferSize);
+            int bufferSize = Integer.parseInt(generator.getObjectAttributes(gpuBufferName, "size"));
+            int bufferOffset = Integer.parseInt(generator.getObjectAttributes(gpuBufferName, "bufferOffset"));
+            int maxBytes = bufferSize - bufferOffset;
+            requirements.put("maxBytes", String.valueOf(maxBytes));
         }
     }
 

@@ -198,7 +198,7 @@ public class ParameterNode extends ASTNode {
         if (conditionsNode.has("fitsInBuffer")) {
             String gpuBufferName = parentList.getParameter("buffer");
             int bufferSize = Integer.parseInt(generator.getObjectAttributes(gpuBufferName, "size"));
-            int bufferOffset = Integer.parseInt(generator.getObjectAttributes(gpuBufferName, "bufferOffset"));
+            int bufferOffset = Integer.parseInt(parentList.getParameter("bufferOffset"));
             int maxBytes = bufferSize - bufferOffset;
             requirements.put("maxBytes", String.valueOf(maxBytes));
         }

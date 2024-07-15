@@ -82,14 +82,7 @@ public class Parser {
             System.exit(1);
         }
 
-        // First generate any prerequisite methodCalls
-        if (callJsonNode.has("prerequisiteMethods")) {
-            JsonNode prerequisiteMethodsJsonNode = callJsonNode.get("prerequisiteMethods");
-            for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
 
-                generator.generateCall(new Generator.ReceiverTypeCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true), null, sameObjectsReqs, null);
-            }
-        }
 
         String returnType = callJsonNode.get("returnType").asText();
         String parentReceiverType = rootJsonNode.get("receiverType").asText();
@@ -98,6 +91,15 @@ public class Parser {
             receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), requirements, sameObjectsReqs);
         } else {
             receiver = specificReceiver;
+        }
+
+        // First generate any prerequisite methodCalls
+        if (callJsonNode.has("prerequisiteMethods")) {
+            JsonNode prerequisiteMethodsJsonNode = callJsonNode.get("prerequisiteMethods");
+            for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
+
+                generator.generateCall(new Generator.ReceiverTypeCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true), null, sameObjectsReqs, receiver);
+            }
         }
 
 

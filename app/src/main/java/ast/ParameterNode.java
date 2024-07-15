@@ -873,7 +873,21 @@ public class ParameterNode extends ASTNode {
             ensureReadCompatible(conditions.get("readCompatible").asText());
         }
 
+        if (conditions.has("uniformStorageCompatible")) {
+            ensureUniformStorageCompatible(mandatoryEnums, enumValues);
+        }
+
         return mandatoryEnums;
+    }
+
+    private void ensureUniformStorageCompatible(List<String> mandatoryEnums, List<String> enumValues) {
+        if (mandatoryEnums == null || mandatoryEnums.isEmpty()) {
+            return;
+        }
+
+        if (mandatoryEnums.contains("GPUBufferUsage.UNIFORM")) {
+            enumValues.remove("GPUBufferUsage.STORAGE");
+        }
     }
 
 

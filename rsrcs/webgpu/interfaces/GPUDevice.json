@@ -37,6 +37,9 @@
               "GPUBufferUsage.UNIFORM",
               "GPUBufferUsage.VERTEX"
             ],
+            "conditions": {
+              "uniformStorageCompatible": true
+            },
             "mutex": [
               {
                 "name": "GPUBufferUsage.MAP_WRITE",

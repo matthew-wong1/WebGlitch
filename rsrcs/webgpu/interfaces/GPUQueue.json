@@ -27,7 +27,10 @@
             }
           },
           "data": {
-            "type": "typedArray"
+            "type": "typedArray",
+            "conditions": {
+              "fitsInBuffer": true
+            }
           }
         }
       ]

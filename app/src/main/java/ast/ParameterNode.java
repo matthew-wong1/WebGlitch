@@ -135,8 +135,7 @@ public class ParameterNode extends ASTNode {
         } else if (paramType.equals("boolean")) {
             generateBoolean(details);
         } else if (paramType.equals("typedArray")) {
-            String arrayVariableName = generator.generateTopLevelStatement("typedArray");
-            this.parameters.add(new Parameter(arrayVariableName));
+            generateTypedArray(details);
         } else if (paramType.equals("shaderEntryPoint")) {
             this.parameters.add(new Parameter(encodeAsString(SHADER_ENTRY_POINT)));
         } else if (paramType.equals("gpuLayout")) {
@@ -181,6 +180,26 @@ public class ParameterNode extends ASTNode {
             generator.parseAndSetCallAvailabilityIfNoParameters(additionalConditionsNode, parentList);
         }
 
+    }
+
+    private void generateTypedArray(JsonNode details) {
+        JsonNode conditionsNode = details.has("conditions") ? details.get("conditions") : null;
+
+        Map<String, String> requirements = new HashMap<>();
+        if (conditionsNode != null) {
+            parseTypedArrayRequirements(conditionsNode, requirements);
+        }
+        String arrayVariableName = generator.generateTopLevelStatement("typedArray", null, null, requirements);
+        this.parameters.add(new Parameter(arrayVariableName));
+    }
+
+    // Assumes conditionsNode is not null
+    private void parseTypedArrayRequirements(JsonNode conditionsNode, Map<String, String> requirements) {
+        if (conditionsNode.has("fitsInBuffer")) {
+            String gpuBufferName = parentList.getParameter("buffer");
+            String bufferSize = generator.getObjectAttributes(gpuBufferName, "size");
+            requirements.put("maxBytes", bufferSize);
+        }
     }
 
     private void parsePostGenerationConditions(JsonNode conditions) {
@@ -243,7 +262,7 @@ public class ParameterNode extends ASTNode {
         Parser.extractNodeAsList(shaderRequirementsNode.get("inputBuffer"), inputBufferValues);
 
         // Generate the input array as a top level statement
-        String inputValuesVariableName = generator.generateTopLevelStatement("typedArray", "Uint8", inputBufferValues);
+        String inputValuesVariableName = generator.generateTopLevelStatement("typedArray", "Uint8", inputBufferValues, null);
 
         // Set the size as bufferName.byteLength() - see if this is possible when generating a parameter\
         String inputBufferSize = String.valueOf(inputBufferValues.size());

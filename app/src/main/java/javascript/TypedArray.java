@@ -14,13 +14,13 @@ public class TypedArray extends ASTNode {
     private final int MIN_SIZE = 1;
     private final int RANGE = 10000;
 
-    public TypedArray() {
+    public TypedArray(int maxBytes) {
         this.type = TYPES.get(rand.nextInt(TYPES.size()));
 
         // SIZE OF DATA WHEN CONVERTED TO BYTES IS MULTIPEL OF 4
 
         int elementSizeInBytes = getElementSizeInBytes() / 8;
-        int numValues = generateForSizeThatIsMultipleOf4Bytes(elementSizeInBytes);
+        int numValues = generateForSizeThatIsMultipleOf4Bytes(elementSizeInBytes, maxBytes);
 
 
         for (int i = 0; i < numValues; i++) {
@@ -33,8 +33,14 @@ public class TypedArray extends ASTNode {
         valuesToUse.forEach(v -> this.values.add(Integer.parseInt(v)));
     }
 
-    private int generateForSizeThatIsMultipleOf4Bytes(int elementSizeInBytes) {
-        int numValues = rand.nextInt(MAX_SIZE - MIN_SIZE) + MIN_SIZE;
+    private int generateForSizeThatIsMultipleOf4Bytes(int elementSizeInBytes, int maxBytes) {
+        int maxValuesToGenerate = MAX_SIZE;
+
+        if (maxBytes != -1) {
+            maxValuesToGenerate = maxBytes / elementSizeInBytes;
+        }
+
+        int numValues = rand.nextInt(maxValuesToGenerate - MIN_SIZE) + MIN_SIZE;
         int totalBytes = numValues * elementSizeInBytes;
 
         while (totalBytes % 4 != 0) {

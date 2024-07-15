@@ -589,10 +589,10 @@ public class Generator {
 //    }
 
     public String generateTopLevelStatement(String type) {
-        return generateTopLevelStatement(type, null,null);
+        return generateTopLevelStatement(type, null,null, null);
     }
 
-    public String generateTopLevelStatement(String type, String subType, List<String> values) {
+    public String generateTopLevelStatement(String type, String subType, List<String> values, Map<String, String> requirements) {
         ASTNode astNodeToPrepend = null;
         AssignmentNode assignmentNode = null;
         String varName = "";
@@ -606,8 +606,13 @@ public class Generator {
             case "typedArray":
                 assignmentNode = new AssignmentNode("const", false);
                 TypedArray typedArray = null;
+
                 if (values == null) {
-                    typedArray = new TypedArray();
+                    int maxBytes = -1;
+                    if (requirements != null && requirements.containsKey("maxBytes")) {
+                        maxBytes = Integer.parseInt(requirements.get("maxBytes"));
+                    }
+                    typedArray = new TypedArray(maxBytes);
                 } else {
                     typedArray = new TypedArray(subType, values);
                 }

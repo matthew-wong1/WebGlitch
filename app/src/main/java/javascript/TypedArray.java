@@ -1,12 +1,13 @@
 package javascript;
 
 import ast.ASTNode;
+import generator.RandomUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class TypedArray extends ASTNode {
-    private final Random rand = new Random();
+    private final Random rand = RandomUtils.getInstance();
     private final List<String> TYPES = Arrays.asList("Int8", "Float32", "Uint8");
     private final String type;
     private final List<Number> values = new ArrayList<>();

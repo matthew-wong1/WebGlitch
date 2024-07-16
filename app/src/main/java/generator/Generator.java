@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Generator {
-    private static final Random rand = new Random();
+    private static Random rand = null;
     private static final PrettyPrinter printer = new PrettyPrinter();
     private static final String DEFAULT_CONTEXT_NAME = "context";
     private final String HEADER = "\nasync function main() {";
@@ -34,8 +34,11 @@ public class Generator {
     private final Map<String, Set<String>> callUnavailability = new HashMap<>();
     private final Map<String, Set<String>> interfaceToAvailableCalls = new HashMap<>();
     private final Map<String, String> availableCallsToInterface = new HashMap<>();
-    private final HashMap<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
-    private final HashMap<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new HashMap<>();
+    private final Map<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
+    private final Map<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new HashMap<>();
+
+    // Stores counts of different webgpu interfaces for variable names and labels
+    private final Map<String, Integer> interfaceCounts = new HashMap<>();
 
     private final Map<String, FileNameReceiverTypeCallNameCallType> receiverInits = new HashMap<>();
     // Maps method call name to File it's located in and Probability (double)
@@ -50,11 +53,19 @@ public class Generator {
     private final String platform;
     private ASTNode programNode;
 
-    public Generator(int maxCalls, boolean allowOptParams, String platform) {
+    public Generator(int maxCalls, boolean allowOptParams, String platform, Long seed) {
         this.maxCalls = maxCalls;
         this.allowOptParams = allowOptParams;
         this.numDevices = 0;
         this.platform = platform;
+
+        if (seed != null) {
+            RandomUtils.initialize(seed);
+        } else {
+            RandomUtils.initialize();
+        }
+
+        rand = RandomUtils.getInstance();
 
         try {
             this.initializeReceiverInitsAndCallProbs();
@@ -66,7 +77,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(500, false, "dawn");
+        Generator generator = new Generator(500, false, "dawn", null);
         generator.generateProgram(1);
     }
 
@@ -253,6 +264,7 @@ public class Generator {
     public void addToSymbolTable(String returnedObjectType, String variableName) {
         if (!symbolTable.containsKey(returnedObjectType)) {
             symbolTable.put(returnedObjectType, new ArrayList<>());
+            interfaceCounts.put(returnedObjectType, 0);
         }
 
         symbolTable.get(returnedObjectType).add(variableName);
@@ -264,6 +276,12 @@ public class Generator {
             interfaceToAvailableCalls.get("GPUAdapter").remove("requestDevice");
         }
 
+        interfaceCounts.put(returnedObjectType, this.getInterfaceCount(returnedObjectType) + 1);
+
+    }
+
+    public Integer getInterfaceCount(String interfaceType) {
+        return interfaceCounts.getOrDefault(interfaceType, 0);
     }
 
     public String getVariableType(String variableName) {

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
 import generator.NumericConstraints;
 import generator.ParamGenerator;
+import generator.RandomUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class ParameterNode extends ASTNode {
 
 
     private final Generator generator;
-    private final Random rand = new Random();
+    private final Random rand = RandomUtils.getInstance();
     private final ParameterListNode parentList;
 
     private final Map<String, ParameterNode> parameterNodeMap = new HashMap<>();

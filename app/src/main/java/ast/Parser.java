@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
+import generator.RandomUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.*;
 
 public class Parser {
 
-    private static final Random rand = new Random();
+    private static final Random rand = RandomUtils.getInstance();
 
 
     private final Generator generator;

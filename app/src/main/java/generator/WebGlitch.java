@@ -46,7 +46,7 @@ public class WebGlitch {
         int maxCalls = parseInt(cmd.getOptionValue("l", DEFAULT_MAX_CALLS));
         boolean allowOptionalParams = cmd.hasOption("o");
 
-        Generator generator = new Generator(maxCalls, allowOptionalParams, DEFAULT_PLATFORM);
+        Generator generator = new Generator(maxCalls, allowOptionalParams, DEFAULT_PLATFORM, null);
 
 
         for (int i = 0; i < numPrograms; i++) {

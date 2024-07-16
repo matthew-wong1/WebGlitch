@@ -11,8 +11,8 @@ public class PrettyPrinter {
     private final String OUT_DIRECTORY_PATH = "./output/";
     private final String SKELETON_SRC_PATH = "./rsrcs/js/nodeSkeleton.js";
 
-    public void printToFile(ASTNode root, Integer fileNum) {
-
+    public void printToFile(ASTNode root, Integer fileNum, long seed) {
+        String commentedSeed = "// Seed: " + seed + "\n";
         String pathName = OUT_DIRECTORY_PATH + fileNum.toString() + ".js";
         // Copy the file
         Path destPath = Path.of(pathName);
@@ -30,7 +30,7 @@ public class PrettyPrinter {
             // Set to append mode
             FileWriter fileWriter = new FileWriter(outFile, true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.println(root.toString());
+            printWriter.println(commentedSeed + root.toString());
             printWriter.close();
 
         } catch (FileNotFoundException e) {

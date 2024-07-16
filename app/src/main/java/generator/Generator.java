@@ -202,7 +202,7 @@ public class Generator {
         }
 
         programNode.addNode(new JavaScriptStatement(FOOTER));
-        printer.printToFile(this.programNode, fileNum);
+        printer.printToFile(this.programNode, fileNum, randomUtils.getSeed());
     }
 
     public void addToObjectAttributesTable(String variableName, Map<String, List<Parameter>> keyValuePairs) {
@@ -265,7 +265,6 @@ public class Generator {
     public void addToSymbolTable(String returnedObjectType, String variableName) {
         if (!symbolTable.containsKey(returnedObjectType)) {
             symbolTable.put(returnedObjectType, new ArrayList<>());
-            System.out.println("returned object type " + returnedObjectType);
         }
 
         symbolTable.get(returnedObjectType).add(variableName);
@@ -280,7 +279,6 @@ public class Generator {
         int interfaceCount = getInterfaceCount(returnedObjectType);
         interfaceCounts.put(returnedObjectType, interfaceCount + 1);
 
-        System.out.println("interface counts " + interfaceCounts);
 
     }
 
@@ -634,7 +632,6 @@ public class Generator {
                     int maxBytes = -1;
                     if (requirements != null && requirements.containsKey("maxBytes")) {
                         maxBytes = Integer.parseInt(requirements.get("maxBytes"));
-                        System.out.println("max bytes " + maxBytes);
                     }
                     typedArray = new TypedArray(maxBytes, randomUtils.getRandom());
                 } else {

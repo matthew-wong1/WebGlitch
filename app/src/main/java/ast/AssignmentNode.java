@@ -1,6 +1,5 @@
 package ast;
 
-import generator.ParamGenerator;
 
 public class AssignmentNode extends ASTNode {
 
@@ -17,10 +16,6 @@ public class AssignmentNode extends ASTNode {
         this.prefix = prefix;
         this.isAsync = isAsync;
         this.varName = varName;
-    }
-
-    public AssignmentNode(String prefix, boolean isAsync) {
-        this(prefix, isAsync, ParamGenerator.generateRandVarName());
     }
 
     public String getVarName() {

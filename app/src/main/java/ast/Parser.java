@@ -13,9 +13,6 @@ import java.util.*;
 
 public class Parser {
 
-    private static final Random rand = RandomUtils.getInstance();
-
-
     private final Generator generator;
 
     public Parser(Generator generator) {

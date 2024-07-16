@@ -4,27 +4,25 @@ package generator;
 import java.util.Random;
 
 public class RandomUtils {
-    private static Long seed;
-    private static Random instance;
+    private final Long seed;
+    private final Random random;
 
-    private RandomUtils(){}
-
-    public static void initialize() {
-        Random rand = new Random();
-        seed = rand.nextLong();
-        instance = new Random(seed);
+    public RandomUtils() {
+        this(new Random().nextLong());
     }
 
-    public static void initialize(Long specifiedSeed) {
+    public RandomUtils(Long specifiedSeed) {
         seed = specifiedSeed;
-        instance = new Random(seed);
+        random = new Random(seed);
     }
 
-    public static Long getSeed() {
+    public Random getRandom() {
+        return random;
+    }
+
+    public Long getSeed() {
         return seed;
     }
 
-    public static Random getInstance() {
-        return instance;
-    }
+
 }

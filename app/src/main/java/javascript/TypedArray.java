@@ -7,16 +7,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TypedArray extends ASTNode {
-    private final Random rand = RandomUtils.getInstance();
     private final List<String> TYPES = Arrays.asList("Int8", "Float32", "Uint8");
     private final String type;
     private final List<Number> values = new ArrayList<>();
     private final int MAX_SIZE = 500;
     private final int MIN_SIZE = 1;
     private final int RANGE = 10000;
+    private final Random rand;
 
-    public TypedArray(int maxBytes) {
+    public TypedArray(int maxBytes, Random random) {
+        this.rand = random;
         this.type = TYPES.get(rand.nextInt(TYPES.size()));
+
 
         // SIZE OF DATA WHEN CONVERTED TO BYTES IS MULTIPEL OF 4
 
@@ -29,8 +31,9 @@ public class TypedArray extends ASTNode {
         }
     }
 
-    public TypedArray(String type, List<String> valuesToUse) {
+    public TypedArray(String type, List<String> valuesToUse, Random random) {
         this.type = type;
+        this.rand = random;
         valuesToUse.forEach(v -> this.values.add(Integer.parseInt(v)));
     }
 
@@ -42,14 +45,11 @@ public class TypedArray extends ASTNode {
             maxValuesToGenerate = Math.min(maxValuesToGenerate, absoluteMaximumValuesToGenerate);
         }
 
-        System.out.println("max bytes " + maxBytes);
-        System.out.println("element size in bytes " + elementSizeInBytes);
-        System.out.println("maxvalues to generate " + maxValuesToGenerate);
-
         int numValues;
         if (maxValuesToGenerate == 1) {
             numValues = 1;
         } else {
+            System.out.println(maxValuesToGenerate);
             numValues = rand.nextInt(maxValuesToGenerate - MIN_SIZE) + MIN_SIZE;
         }
         int totalBytes = numValues * elementSizeInBytes;

@@ -14,15 +14,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Generator {
-    private static Random rand = null;
-    private static final PrettyPrinter printer = new PrettyPrinter();
-    private static final String DEFAULT_CONTEXT_NAME = "context";
+    private final RandomUtils randomUtils;
+    private final PrettyPrinter printer = new PrettyPrinter();
+    private final String DEFAULT_CONTEXT_NAME = "context";
     private final String HEADER = "\nasync function main() {";
     private final String FOOTER = "\n}main().catch(console.error);";
     private final String SHADERS_PATH = "/rsrcs/shaders/";
     private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/interfaces/";
     private final int MAX_DEVICES = 1;
-    private final int numDevices;
+    private int numTypedArrays;
 
     // Hash map to keep track of state
     // Key: Type of object eg adapter, device
@@ -34,7 +34,7 @@ public class Generator {
     private final Map<String, Set<String>> callUnavailability = new HashMap<>();
     private final Map<String, Set<String>> interfaceToAvailableCalls = new HashMap<>();
     private final Map<String, String> availableCallsToInterface = new HashMap<>();
-    private final Map<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
+    public final Map<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
     private final Map<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new HashMap<>();
 
     // Stores counts of different webgpu interfaces for variable names and labels
@@ -56,16 +56,13 @@ public class Generator {
     public Generator(int maxCalls, boolean allowOptParams, String platform, Long seed) {
         this.maxCalls = maxCalls;
         this.allowOptParams = allowOptParams;
-        this.numDevices = 0;
         this.platform = platform;
 
         if (seed != null) {
-            RandomUtils.initialize(seed);
+            this.randomUtils = new RandomUtils(seed);
         } else {
-            RandomUtils.initialize();
+            this.randomUtils = new RandomUtils();
         }
-
-        rand = RandomUtils.getInstance();
 
         try {
             this.initializeReceiverInitsAndCallProbs();
@@ -74,6 +71,10 @@ public class Generator {
         }
 
         symbolTable.put("RenderingContext", new ArrayList<>(List.of(DEFAULT_CONTEXT_NAME)));
+    }
+
+    public Random getRandom() {
+        return randomUtils.getRandom();
     }
 
     public static void main(String[] args) {
@@ -189,7 +190,7 @@ public class Generator {
 
         for (int i = 0; i < maxCalls; i++) {
             ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
-            int randIdx = rand.nextInt(methods.length);
+            int randIdx = randomUtils.getRandom().nextInt(methods.length);
             ReceiverTypeCallNameCallType randMethod = methods[randIdx];
             String fileName = callProbabilities.get(randMethod).fileName;
 
@@ -317,7 +318,7 @@ public class Generator {
             return parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
         }
 
-        int randIdx = rand.nextInt(variablesThatMeetReqs.size());
+        int randIdx = randomUtils.getRandom().nextInt(variablesThatMeetReqs.size());
 
         return variablesThatMeetReqs.get(randIdx);
 
@@ -545,8 +546,9 @@ public class Generator {
     }
 
     public ASTNode generateDeclaration(JsonNode methodJsonNode, CallNode rootASTNode) {
-        String varName = ParamGenerator.generateRandVarName();
+
         String returnType = methodJsonNode.get("returnType").asText();
+        String varName = generateRandVarName(returnType);
         boolean isAsync = methodJsonNode.has("async");
 
         // Create the ASTNode
@@ -622,7 +624,7 @@ public class Generator {
 
         switch (type) {
             case "typedArray":
-                assignmentNode = new AssignmentNode("const", false);
+                assignmentNode = new AssignmentNode("const", false, "typedArray" + numTypedArrays);
                 TypedArray typedArray = null;
 
                 if (values == null) {
@@ -630,10 +632,11 @@ public class Generator {
                     if (requirements != null && requirements.containsKey("maxBytes")) {
                         maxBytes = Integer.parseInt(requirements.get("maxBytes"));
                     }
-                    typedArray = new TypedArray(maxBytes);
+                    typedArray = new TypedArray(maxBytes, randomUtils.getRandom());
                 } else {
-                    typedArray = new TypedArray(subType, values);
+                    typedArray = new TypedArray(subType, values, randomUtils.getRandom());
                 }
+                numTypedArrays++;
                 assignmentNode.addNode(typedArray);
                 varName = assignmentNode.getVarName();
                 astNodeToPrepend = assignmentNode;
@@ -653,12 +656,12 @@ public class Generator {
                 File shadersDirectory = new File("." + SHADERS_PATH + chosenBaseShaderType);
                 File[] files = shadersDirectory.listFiles();
                 assert files != null;
-                String chosenFolderName = files[rand.nextInt(files.length)].getName();
+                String chosenFolderName = files[randomUtils.getRandom().nextInt(files.length)].getName();
 
                 String folderPath = "../WebGlitch" + SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
                 String fullPath = folderPath + shaderSubType + ".wgsl";
 
-                assignmentNode = new AssignmentNode("const", false);
+                assignmentNode = new AssignmentNode("const", false, "shader" + shaderNameToProperties.size());
                 Require requireStatement = new Require(fullPath, true);
                 assignmentNode.addNode(requireStatement);
                 String importName = assignmentNode.getVarName();
@@ -825,6 +828,98 @@ public class Generator {
             this.setCallAvailability(entry.getKey(), entry.getValue(), isAvailable);
         }
 
+    }
+
+    public String generateRandVarName(String receiverType) {
+        return receiverType + getInterfaceCount(receiverType);
+    }
+
+    public Number generateRandNumber(String paramType, NumericConstraints numericConstraints) {
+        long maxValue = numericConstraints.getMax();
+
+        long minValue = numericConstraints.getMin();
+
+        Long divisibility = numericConstraints.getDivisibility();
+
+        if (maxValue == minValue) {
+            return maxValue;
+        }
+
+        // Because Json specification provides it as an inclusvie range
+        maxValue += 1;
+        if (divisibility != null) {
+            long ceilMax = (maxValue + divisibility - 1) / divisibility;
+            return randomUtils.getRandom().nextLong(minValue / divisibility, ceilMax) * divisibility;
+        }
+
+
+        if (paramType.equals("double") || paramType.equals("rgba")) {
+            return randomUtils.getRandom().nextDouble(minValue, maxValue);
+        }
+
+        return randomUtils.getRandom().nextLong(minValue, maxValue);
+    }
+
+
+    public String generateCustomConstraint(String customValidation, ParameterListNode parent, ParameterNode parameterNode, Generator generator) {
+        switch (customValidation) {
+            case "mipLevelCount":
+                String MULTI_SAMPLING_FLAG = "4";
+                String MAX_MIP_COUNT_IF_MULTI_SAMPLING = "1";
+
+                boolean multiSampling = parent.getParameter("sampleCount").equals(MULTI_SAMPLING_FLAG);
+
+                if (multiSampling) {
+                    return MAX_MIP_COUNT_IF_MULTI_SAMPLING;
+                }
+
+                String dimension = parent.getParameter("dimension");
+
+                // Needs to find from itself first, then go looking for Global Attributes table
+                int width = Integer.parseInt(parent.getParameter("size.width"));
+                int height = Integer.parseInt(parent.getParameter("size.height"));
+                int depthOrArrayLayer = Integer.parseInt(parent.getParameter("size.depthOrArrayLayers"));
+
+                // Formula from documentation
+                int maxDimensionValue;
+
+                switch (dimension) {
+                    case "1d":
+                        maxDimensionValue = 1;
+                        break;
+                    case "2d":
+                        maxDimensionValue = Math.max(width, height);
+                        break;
+                    default: // 3d
+                        maxDimensionValue = Math.max(Math.max(width, height), depthOrArrayLayer);
+                        break;
+                }
+
+                int max = (int) (Math.floor(Math.log(maxDimensionValue) / Math.log(2)) + 1);
+//                int max = (int) (Math.floor(Math.log(Math.min(width, height)) / Math.log(2)) + 1);
+                return String.valueOf(max);
+            case "depthSlice": {
+
+                String textureViewVariableName = parameterNode.getRootParameterNode().findNestedParameterNode("view").getParameter().getValue();
+
+                String viewDimensionValue = generator.getObjectAttributes(textureViewVariableName, "dimension");
+
+                if (!viewDimensionValue.equals("3d")) {
+                    throw new SkipParameterException("Skipping depth slice because dimension is not 3d");
+                }
+
+                String textureViewParentName = generator.getParentVariable(textureViewVariableName);
+                int parentDepthOrArrayLayersValue = Integer.parseInt(generator.getObjectAttributes(textureViewParentName, "size.depthOrArrayLayers"));
+                int baseMipLevelValue = Integer.parseInt(generator.getObjectAttributes(textureViewVariableName, "baseMipLevel"));
+
+                int maxValue = (int) Math.max(parentDepthOrArrayLayersValue / Math.pow(2, baseMipLevelValue), 1);
+
+                // -1 since max value is inclusvie
+                return String.valueOf(maxValue - 1);
+            }
+        }
+
+        return null;
     }
 
     public Set<String> getFromCallState(String receiverName) {

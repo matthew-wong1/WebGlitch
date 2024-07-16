@@ -20,69 +20,690 @@ function loadShader(file) {
         console.error('Failed to load shader:', err);
     }
 }
-const MTOJAKzxNVjTSv = new Float32Array([-5220, 6331, 3706, -3619, -5407, 8642, 8241, 1921, -8870, -9328, -7409, 4274, 4600, -3968, 5656, -1727, 340, -8837, 9071, -4317, -5520, 4037, -8844, -8286, -9609, -452, 4639, 1549, 7762, 7271, 7399, 8166, 2324, -8481, 852, 1855, -4548, 6241, -8497, 852, 6031, -9925, 2188, 6420, -8012, -3950, -4041, -4536, -5585, 8352, 5020, 2117, 7931, -5606, -1431, 8340, -2380, 5515, -3458, -7807, -8045, 6679, -7439, -2195, 7395, -2357, -4493, 4034, 4503, -8292, 448, 5741, -9045, 8259, 4431, 6259, 2879, 7445, -9152, 6822, 1918, -3406, 9900, -5616, 3989, 6520, -8585, 3297, 8735, -696, 6888, 9939, 735, 7736, 8620, 9742, -6213, -3928, -1589, -9088, -6108, 4099, 7514, 6376, 9487, 7660, 2155, 2365, -2991, -9049, 3672, -684, 512, -2902, 507, 4582, -595, -5595, -4976, -6938, 8803, 3687, -2641, -3836, 1864, -8, 5090, -9284, -2682, 7207, -810, -5091, 2803, -7508, -7845, 5951, -8779, 3784, 4988, 2843, 9082, -7559, -1341, -9032, 2337, 2578, -9679, -4696, -9514, -1582, -8357, -3856, 2907, -6358, 5877, -6455, -297, -2206, 9127, 6790, 1229, 9687, -3691, 7968, 4756, 1014, -6777, 8115, -8650, 47, 5435, -1567, 3524, -1264, -848, -3402, 7471, 5630, 8731, -6591, 1984, 3770, -5200, -5177, 7588, -2694, -9823, -7085, 9092, -4893, -8827, 1197, 2298, 4137, 4350, -5614, 6162, -6283, -3820, -6640, -3991, 5932, -2902, 1658, 3002, 9522, 151, -881, 8900, -802, -7658, -6978, -4975, 8971, 4895, -3646, -432, -5914, -3796, 6504, 6574, -6941, 1333, -9340, -8403, -6903, 9525, 2549, -4094, -6940, 4233, -2011, -2199, -9650, 4108, 4342, 4876, 2783, -8065, 1038, -516, 2414, -7211, -2217, -8466, -5276, 3029, -6631, 9881, 875, 8288, -2886, 161, -6086, 2267, -6593, -5196, -777, 9956, 1819, -3591, -8265, 1520, -6425, 1736, 9485, -1251, 2562, 2104, -5993, -5955, 2898, 5313, -1466, -8489, -9052, 6539, -5087, -4180, -6034, -9837, -864, 8805, 1596, 166, -3397, -8584, -8067, -3072, -3147, -2313, -3991, 4324, -9362, -6758, -1216, 5068, 6090, 527, 2312, 4, 543, -5709, 5649, -4997, 3361, 4988, 8906, -9551, 9416, -146, -4342, -757, 7768, -379, 5134])
-const xOLhxb = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const rJLSS = new Int8Array([-7968, 4528, 2565, -9376, -1531, 1495, 4092, -7727, 7903, -8815, -1607, 315, 6228, -9406, 9101, 1970, -3989, -3610, -4707, 2669, 9207, -6350, 9633, 2592, 8659, -5045, -6641, -112, -6724, -7761, 7375, -4502, -5278, 4235, 5983, -5196, 3824, 4529, 7699, -8391, 2611, 5525, -2546, 888, 1473, 3591, -1340, 7196, -7707, -2885, -3297, 3742, 8705, -4542, -6133, 7294, -7334, 6679, -5774, 1441, -4933, -1415, -2874, 3774, -3246, -2456, -2649, 515, -7302, 5349, 1252, -4686, -6657, 1207, 5720, 3169, 158, 6935, -3945, 5490, -3284, -4247, -2484, 8657, -4965, -3733, -9143, 2094, -9040, 2016, -3160, 39, 7519, -6346, 8012, 4842, -5723, -1036, -5657, 8536, 8046, -849, 3162, 3668, 3858, -9961, -2581, 3218, -9534, 8409, 6591, -5039, 9760, -4249, 7569, 5648, 3166, 5285, -7105, 9037, 2614, -1463, 8212, 1537, 9702, -7873, -9053, -5967, 2134, -9649, -5369, 5693, 3010, 227, -4197, -8737, 7310, -7964, -2604, -8980, -4979, -3888, -696, 6357, 8869, -7171, 7043, -9282, -9924, 7925, -6218, -3353, -4943, -7703, -375, -3442, -3925, -4268, -1554, 3341, -3260, -1222, 5788, 2184, -7218, -2261, -6981, 5903, 5781, -670, 2094, -7103, 8127, -6764, -9483, 5770, -6380, -9272, -7462, 6409, 5215, -5559, -1997, -3005, -6818, -9709, -771, 3156, -3169, 8752, -9591, 8532, 7893, -4788, -1603, -1765, 5695, -2373, 6977, 6567, 1221, -5221, -9093, 865, -9438, -1574, -6108, -3657, 7607, -1902, -6777, 474, -9215, 1079, -8989, -8053])
-const GLPnQVLrvDNIOYHst = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const DRCZUgMvGZj = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const mJsgCrhvnmtHZoa = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const NdMWtjvrTBVXDJtKFMiE = new Uint8Array([-4007, 2965, -9614, 4591, 8009, -7904, -762, -5097, 1000, -8455, -2282, 7409, 9127, 6383, -7464, 9634, 7705, -5468, 1962, -5945, -5948, -9590, -3493, -7807, -7098, -4931, -8488, 2069, -3235, -6168, -236, 9323, -9167, 2315, 1467, -5553, -5309, -6540, 9840, 8504, 8879, -2564, -1971, -126, -2205, 2799, 3396, 6630, 867, 8326, 8178, 8311, 2262, 1303, 9528, -9071, 9735, 2804, 392, 3576, 3202, 9593, -996, 2033, 772, -381, -7921, -6177, -1710, 5254, 3149, -9952, -1354, -7465, -4693, -6361, -7341, 1297, 7445, 62, -907, -4896, -6922, 6319, 9931, -6914, 60, -7464, 3579, 795, 7419, 2807, -6552, -2826, 9090, -5498, 7892, -6132, -5208, 1362, 3207, -6626, -9518, -5864, 7793, -7104, -4664, 7105, 7830, -2353, -5563, -8286, 9663, -7649, -4685, 7259, -274, -9066, -9965, -5026, 3806, 674, -1590, 3403, -3805, 1628, 717, -8314, 2731, 5064, 3743, -4820, 8537, -7302, 8355, -2258, 939, 5788, -7272, 9604, -46, 252, -3900, 3554, -845, 1533, -7489, -9164, 989, -8920, -3408, 5409, 9968, -601, -1780, 9907, -2736, -6861, -2813, -821, 6737, 3245, -4480, 4963, -4633, 7645, -4066, -793, 4533, -3190, -3248, -9262, 4641, 7575, -3500, -1044, 7523, 4199, 906, 3510, 4971, 4857, 8677, -166, -181, 8308, 4239, 1212, 2439, -1417, 758, -9601, -3730, 9762, 773, -2154, 9671, -7350, -9499, -6214, 8378, -8011, 6194, -9094, 4923, -2036, -1243, 2309, -7575, 9774, 951, 264, 4849, -7720, -1712, -1319, -1981, -3892, 3245, 3233, -3607, 6305, 1736, -61, 8378, 4071, 3509, -9085, -3641, 4856, -7207, 4145, -3445, 9508, -14, -10000, 6883, -8360, -7513, -3715, -3842, 9190, -7651, 6830, -6692, 1232, -378, -6472, -7758, 1851, 4374, -3645, 8202, 6655, -9957, 3307, -718, -1888, -58, 3543, 98, -9817, -4530, 5092, 1469, 8746, -9168, 1012, -8502, 2761, -7525, 8180, -5988, -4917, 6204, -1628, 7213, -8004, 3784, -8798, -3980, 441, 6583, -7186, 4119, -1696, -8150, 505, 6040, -1467, -1460, 48, -9235, 236, -7381, -468, 8209, 2910, 7156, 4129, -9142, -7527, -1924, 7880, 2435, -2394, 1485, -915, -8755, 422, -2319, 8040, 5507, -4185, -7993, 6527, 7871, -4566, -2481, -4231, -479, 5342, -1325, -6393, -5266, -5783, -3880, 3550, -2618, 132, 4086, 4820, 1998, -7015, 5236, -7430, -3472, -2974, 7454, -5923, -197, 7371, -3838, -7769, 9011, -3114, 9171, -4363, -6212, 3032, 7167, -6298, -9214, -1606, -3480, 480, 1984, 5155, -9293, 2704, 8036, 3045, 4171, -5275, -5134, -4589, -2137, 283, 834, -8046, -757, -9004, 5297, 737, 8099, -8300, 3019, 6728, 5794, -6661, 3275, -5545, 9881, -3320, -8894, 6369, 2123, -7309, -6104, -5130, -1779, -8591, 440, 9382, -9154, -4857, -6729, -7648, 8079, 4131, -1701, -764, 6833, 5575, 2380, 6089, 2227, -1126, -6456, -7321, -7607, -2087, 2957, -6625, 7045, 985, 5395, 6358, -8855, 8942, -2878, -9074, 8010, 9583, 2688, 5005, -929, -1318, -7726, 6586, -456, -891, -7474, -9138, 8337, -3550, 914, 6155, -7020, 536, 7682, -7992, -1722, -1513, -1292, 7768, -4625, 719, 2988, -2888, 9193, -2537])
-const MnpbptbrkWmmHFLk = loadShader('../WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
-const XxMGjjWh = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const aGpCrPeMdF = new Int8Array([-9296, 3945, 3511, -1058, 1460, 894, -5205, 1348])
-const duuCmboDqqGgx = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const ZfdGS = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const SWgdR = new Uint8Array([3987, -1051, 4479, -8238, -4871, 1094, 5749, -2503])
-const dPiCTEjMXhS = new Float32Array([-8201, 2178, -6533, 1319, -3712, 1751, 7744, -6186, -5713, 7929, -902, -9836, -8468, -9358, -4442, -3008, -3781, 6973, 8263, 3179, 3321, 2936, -9868, -9988, -9454, -1411, -1259, -5349, 8071, -30, 7402, 6260, 2659, 7807, -6188, 4715, 4376, 490, 5945, -9506, 5516, -4283, -2394, 1652, 8126, -4637, -2373, 8274, 2840, -9062, 1426, 4480, -3763, -9944, 1043, -7057, 2419, 83, -5796, -9734, 4960, 9212, 7318, -801, 9306, -9352, 60, -2359, -2239, -5381, -642, -5419, 8173, 5817, 1429, 5943, -5338, 8513, 3511, -1553, 8444, 1110, -3868, -7993, -3245, 4016, -6944, 6142, -1829, -690, 8596, 1287, -6415, -8280, 7919, 6519, -2716, -5314, -2011, -3067, 9807, -9924, -790, 1947, -3673, -3420, 4966, -638, -5705, -29, 6240, -2482, -5444, 5340, -8452, 2419, -9973, 9060, -1100, 9227, -3163, -9718, -9959, 7908, -7091, -3356, -6800, -1304, 3369, 5973, -6948, 4256, -8436, 7141, -357, -5914, 2415, 5824, -7, -2068, -4606, 9089, -462, -1892, -4266, 2795, -8748, 5326, 4221, -7495, 5652, -9716, 5685, -3399, 7387, -9301, 8940, -1203, -1377, 9275, -9500, 3212, 563, 9133, 5866, 5843, 9638, -5012, -3392, -8939, 2406, -5315, 6247, 137, 88, -6309, 2135, 2885, 517, 8466, 6225, 6964, -7249, 6250, -2689, 2322, 9238, 2354, 4865, -3990, -8808, -8301, -3228, 4970, 959, -7519, 645, 9593, -3171, 1499, 3667, -9061, 4671, -6322, -115, 5214, -1369, 6997, 8119, 2543, -7716, -6, 4872, 1814, -3764, 8770, 8283, -4934, 3956, 665, 7720, -9907, -1273, -1698, 84, 3485, -8929, 1558, 1298, 7710, 5345, -2830, -4833, -3519, 5398, -1822, -8878, -7482, 4311, -1876, -2212, 3959, 3911, -7685, 4224, 924, 8242, 5981, -4169, -241, 5952, 4403, 7603, -5085, -7288, 2602, 3363, -2111, 1871, -3432, 880, -6160, -9819, -2735, 2936, -6230, -9330, 9498, -6519, 9046, 4357, -6007, 286, 4621, -2521, -2083, 2958, -7133, -61, -7920, 2146, -5148, 6653, -3535, -6585, -753, 1727, 9797, -4548, 9848, -6382, -3865])
-const ZnjpoMzuyWszi = loadShader('../WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
-const ieyyXxz = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const wlMBISnUuKSYuQJ = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const KuUdDLmDdfEcKXRlwd = new Int8Array([8381, -3102, -6775, 7368, 3070, -3384, -9949, 4324, -2938, 2023, -4403, 9459, -1647, -7766, 7099, -3202, -5233, -3573, 1311, -8108, 5391, 2147, -9198, -9123, 1377, 7125, -3859, 4946, 7623, -1520, 2865, -5755, -1609, -2385, 5498, -3481, -1251, 3804, 1341, 6145, -270, -2234, 1658, 8168, 8192, 9329, -7440, 2428, 7018, -9105, -3672, 9525, 3176, 9705, -1155, 6585, 5335, -6236, -7844, 2418, 7832, -9026, -4159, 6778, -7662, 9491, 7309, 7054, -3832, -8365, 5751, -5859, -275, 4133, -3234, -6700, 7258, -5244, 6287, -4289, 7437, 3798, -348, 6528, 6308, -7034, 9609, 4296, 7647, -2903, 5996, 5492, 8081, 3763, 6492, 329, 2874, 786, 2545, 5713, 1259, 7113, -5108, -1740, 2807, -6093, -8388, -3930, -8497, -1943, -8767, 9486, -2863, -3568, 5597, -1933, 7619, 8955, 8612, 369, -45, -9758, -8050, -9208, -2051, -968, -5772, 4971, -8498, -8575, 6050, 1, -521, 8031, -2235, 7200, 4428, -3236, 722, -185, -4147, 7676, -4235, 9314, -4015, -3007, 3941, 6941, 5044, 1478, -8563, -7967, -1413, 509, 9001, -9841, -9502, -3453, -6531, -7928, 9690, 5971, -4524, -4078, 7477, -36, -267, -9052, -3937, -8524, 78, 2830, 5533, 2123, 2098, 3207])
-const WElSWFvVbl = new Uint8Array([6985, -1520, -650, 319, -5685, 6862, -3608, -4607, -3145, 5456, 2255, -1641, -2003, 5537, 6656, 697, -6416, 8139, 9839, -1728, 1532, -9322, -4607, -8076, -5516, 8179, 5082, -5005, -6967, 8822, 3179, -1214, -977, -5813, 5612, -937, -377, 3863, -7492, -5682, 7012, -4344, -6240, -3339, -8162, 5379, 468, 8378, -6256, -231, -3587, -6969, -2207, -3358, -5727, 7317, 2121, 485, 2880, -3681, 8768, -4784, -3675, 6687, -5269, 444, -8492, -2770, -1987, -3824, 4570, 4488, 4118, -7876, -3928, -7099, -3110, 113, -8502, 7078, 9737, -3684, -957, -1387, 793, 526, 4339, -2091, -8767, -7054, 1548, 2844, 456, 2411, -6398, 2717, -4966, 8131, 1122, 3527, 1454, 475, -8654, -2585, -830, 129, -5593, -3105, -2740, 2569, -2231, -6256, 6171, -9433, 55, 6767, -2841, -1804, -5859, 1730, 1658, 4211, -5133, 995, 119, 1176, -5824, 8143, -6444, -6019, 6043, -6173, 1529, 7018, -8993, 3676, 8463, 7150, 9078, 4543, -7353, 3079, 5514, 3080, -9491, 4330, 2430, -5513, -3857, -5451, 4128, -4290, 7643, 8614, 9822, 7648, 6000, -2051, 1518, 7813, 5847, -2592, 2758, -6785, -9094, -1242, 7868, 2882, 5773, 7285, -5299, -4436, 1272, -6227, -90, -174, 8365, 8537, 2030, -578, 8363, -5158, 2573, -7053, -800, 4763, 5843, -7409, -4813, -5431, 2949, 8548, -3965, 1965, 356, -2761, -8378, 2266, -7900, 4917, -2284, 5113, -4528, -301, -3231, -5139, 9885, 4591, -7632, 8335, 4441, -7040, 6582, 7704, -6574, -4692, 6060, -3980, -9070, -1837, 2629, 2441, -9899, -4860, 9033, -2506, 1100, -7390, 6676, -6514, -4575, 2688, -6791, -749, -9780, -5155, 5319, 7316, -6744, 5077, 7193, -8473, -4040, -3608, -997, -1301, 9317, 9062, -4396, -2461, 3739, -7417, -191, 8574, -5502, -2776, 5272, 2717, 7582, -4274, 8203, 1362, -5366, 4529, 4473, 3047, -1343, -297, 1389, -9187, -8254, 8769, 3488, -9622, 6639, -6641, -4249, -6746, 9032, 7942, 3168, 4044, 7405, 461, 7259, 4886, -5727, -9964, -7825, -5911, -3754, 5976, -798, 5359, -59, 3226, -3901, -151, -270, 5813, 4174, -1697, 9128, -9212, 5183, 1182, -5088, -4869, 2759, -5223, 9928, 7149, -6007, -9331, 9350, -9287, -5823, 1480, -3062, 9780, 5587, 7203, 2615, -9634, -9556, -4486, -5121, 3762, -5499, 2850, 8836, 5485, 2420, 4669, 2965, -9357, -4066, -6989, 1968, 8697, 5124, -4137, 8527, -331, 4997, -8248, 6778, -664, -6719, -8910, 5853, 538, 1886, 8161, 6818, 8048, 4877, -8503, -7809, -9055, 2623, -9094, -1693, 4237, 3672, 6907, -513, 9268, 1256, -5769, 6296, -2326, 2981, 5166, -3486, -1595, 1912, -7311, 466, 6798, -3752, -9944, -8419, -6997, -6434, -3423, -8233, -2685, -456, -5576, -8495, 2271, -9606, 7537, -1840, -9940, -6716, -9054, 662, -1329, 979, 5866, 4257, 923, 9404, -4278, 6783, -6807, -41, -6308, -5735, 7962, -9101, -2554, 4627, 5001, -3122, 871, 3034, -8643, 6175, 9787, 2759, -5392, 204, 9844, 9873, -7693, 198, 1166, 8348, 4445, 9002, 7618, -7761, -1140, 5474, -5020, 6504, 9907, -7549, -7342, -846, -3381, 6426, 3731, 5130, -2466, -4500, -3648, 7873, 3910, -4224, -5250, 254, 3109, 4401, -9608, 426, -1200, -2412, 9096, 2977, -525, 584, 4686, -4256, -7182])
-const muepHZJLr = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const bSetkmJE = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const VswdAHssvfRXEPsfhnUG = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const hgmtHT = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const CWoecXBprjXqyaRfc = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const QjzUAiWam = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const ZxiNjBAC = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const DtROaNfzSJDPWDTV = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const pzmxZOxMSSGHgPqgf = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const ZgMVEOyXa = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const ceGzs = new Int8Array([-1681, 3815, -2519, -1664, -8116, 173, -7338, -3862, 576, 1015, -6577, -4428, -8229, -8564, -1106, 6087])
-const lZHPUcwPfRANvOiIib = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const MSHyhaGCvkk = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const cOTNYOtprf = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const imWufGNthbitEPzfQxQN = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const vdiiEukUyaxwzUZ = loadShader('../WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
-const pNBhezFMrp = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const OPtgtogjEzeaD = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const roXmtJZslLRSuhIzWUy = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
-const gWvDxAL = loadShader('../WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
-const dvbLWoM = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const nRjddnadYaHACPWHegK = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const typedArray22 = new Float32Array([7764, -5095, -2762, -4991, 7834, -9721, -9863, 2495, 280, 2833, 2553, 1361, -7179, 8702, -9546, 1562, -6154, 2301, 7545, -3965, -5138, 692, 6966, -5028, -4689, 7513, -4899, -1421, 8247, -8135, 9102, 8554, 4329, 9744, 635, -2049, 2461, 7034, -9298, -7609, 7440, 6181, -5964, 9510, 418, 4341, -1835, -9357, -5293, 9392, 4130, -6436, -3808, 4289, -9293, 613, 4336, -3575, -3610, -1926, -2859, -8561, 827, 2888, 4334, 1353, 9999, 8043, 7074, 9478, 822, -3855, 0, -9677, -9298, -3039, -5283, -8091, 814, -3558, -6764, 915, -6139, -1592, 4489, 3994, 1819, -4646, 2300, 5830, 9797, 755, 4032, -2495, 320, 4024, 9757, 1520, -101, 1369, 5127, -6554, 633, 3758, 8179, 391, 257, 2903, 2835, 6592, -9849, -3020, 6774, 5472, -5411, -5815, 1816, -2404, 3405, -2987, -2956, -4116, -8457, -247, 7093, -4474, -3247, -7030, 4626, -3936, 6315, -8282, -3467, -7774, -4481, 475, -9599, 2964, 4754, 3824, 6788, 6328, 863, 4780, -9644, 1935, -9412, 8771, 5416, 2783, -9445, 3830, 6120, -3071, 1412, 5595, -8145, -9138, -361, 8582, 5597, -7768, 9788, -3775, -4373, 3915, -5875, -724, -2039, -5171, 5551, -1222, -2884, -7379, -166, 75, -1489, 1531, -7962, -4325, 6807, 5920, -3637, 20, 3903, -9199, -2169, 204, -1375, -6009, -1740, -2024, -5788, 7032, -9070, 2205, -4233, 3876, -5362, -1049, -5463, 1911, 4052, -15, 3568, 5682, 6638, 3512, 9080, 7935, 9534, 6295, -5835, 6486, -1368, 9587, 2084, -6171, 2592, -2480, 6361, 858, 7573, -6683, -6614, -9806, 7376, 2888, -2429, -4464, 3741, -4541, -3117, 3950, -3842, -9153, 1666, 1101, -5689, 2055, -941, 741, -1719, 6727, -391, 8587, -8743, -5087, 7464, -6622, 5659, -4388, -2535, -2547, 4511, 6799, -6980, 8560, -2976, 2707, 8909, 7188, 7553, -4855, -4504, -9245, -9138, 6517, 7969, -992, 4628, -2815, -310, -4440, 8497, 3118, -3741, -8162, -8820, 8748, -8750, 1424, -6440, -5529, 5544, 8362, -408, 2213, -6672, -499, 6452, -3401, -5429, -2158, 1761, -1555, -6347, -3229, 3958, -6492, -9253, -9437, 7840, 8620, 4952, 5155, -4752, -38])
+const typedArray21 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const typedArray20 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const typedArray19 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const shader14 = loadShader('../WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
+const typedArray18 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const shader13 = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const typedArray17 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const typedArray16 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const typedArray15 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const shader12 = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const typedArray14 = new Float32Array([3474, -4170, -5288, -6661, 1917, 3985, -7964, 1575, -3038, -8398, -9385, 3132, 4125, 8550, -7620, 5381, -144, 2346, 3793, -3757, -4541, 4422, -9521, -8912, -508, -7773, 6254, 7338, 8449, 5931, 9619, -8609, 4245, 6336, 822, 8512, 3543, -2727, -5183, 525, -4958, -3293, 3410, -412, 2470, 72, 3042, 7250, -9303, -4149, -7029, 5919, -2315, -4562, 2444, 8017, 9432, 1603, -2230, 4452, 8195, -3663, -8196, -293, 778, 6673, 4739, 9967, 6316, 248, -6594, -9475, -1673, -2452, -5798, -4678, 1796, -1036, -7879, -2090, 6372, 6941, -9970, -516, -9861, 1449, 8866, -6441, 7519, -364, 5492, 5554, -2358, -9616, 3003, 3589, 3833])
+const typedArray13 = new Float32Array([3737, 8927, -6849, -3285, 5466, -5011, -4581, -3228, -1372, 6993, -6514, 4734, -1544, -7478, 2975, 7453, 1125, 1080, -3275, 8599, 5411, 7761, 9238, -139, -6251, -1635, -4052, 3300, 6025, -4412, 3030, -5151, -1393, -7064, 1228, -3596, 5174, 2540, -3590, -2249, 9437, 5423, 3818, -2799, 3296, -8666, 3162, 3201, 1664, 9398, -6892, 7613, -9933, -3160, 3944, 8918, -2483, 9323, -1918, 5688, -2378, 8916, 2325, -5448, 7889, -8918, 4342, 9931, 5469, -4711, -8864, -3542, -5789, 5124, 4654, -6512, 6241, 5138, -1313, -5843, -9571, 7559, -8235, 2498, 3465, 2223, -7040, 6468, 3104, -904, 5276, 2964, -6694, -1913, -2590, -4970, -3803, 3503, -7333, -1662, -7244, -452, -8851, 4866, -3680, -7312, 6083, 716, 8315, 1021, 6302, 9993])
+const typedArray12 = new Uint8Array([-5448, 4481, -9121, -3618, 7725, -4684, 2950, -1819, 3436, -1958, 2456, -647, 5256, -5317, 7046, -9443, -6348, 38, 185, -7575, -8729, 6939, -5083, 3254, -9812, -3738, -8623, 2850, 5669, -1269, -4552, 6073, -2064, -1783, 5940, 9944, -1843, 3293, -4600, 3304, -419, -557, -1645, 8267, 9176, 9497, -1860, -4807, 8029, 9712, -9144, -5824, 2618, 2647, 3018, -4926, -5254, -7036, -973, 2010, -5398, -7914, -1449, 4670, 9480, 805, 315, 552, -8095, -51, 949, 8192, -701, 7653, 2000, 9406, -632, -9491, 3142, -4649, -2160, 7611, -9878, -3647, 1213, 7269, -1024, 6034, -9140, 517, 6497, 5171, 1729, 8739, -8204, 1014, 123, -7641, -4142, 9303, -5896, 9565, -9744, -3201, -3201, -1861, -4813, 2498, 9890, -9450, -7988, -2150, -3406, 1403, 7743, -3216, -1631, 664, 1867, -1888, -242, -710, -2230, 9063, -494, 6889, -8762, 690, 9468, 3537, -5558, 9289, 1562, 6963, 2251, 8605, 902, 7194, 3011, -5112, 5618, 1254, -3079, 9335, -591, 4825, 2303, 7154, -1285, -3944, 6714, 293, -3834, -2000, -4029, 7577, 981, -4865, 6773, -3339, -7955, -7770, 1102, -5344, 6470, 9674, 3387, -634, -9150, -8981, 247, -1780, 3367, 485, -5611, -5317, 5810, 1085, 6777, 8875, -3177, 5796, -5931, -4059, 6218, -2276, 756, 8606, 9607, 2426, -6583, -8642, 1708, 8253, 1263, -7239, -6666, 3054, -6008, 4136, 7875, 6477, 6677, -2308, -8733, 3136, 4722, 2028, -6909, 5748, 2486, 9594, -5618, -9805, -422, -6762, 42, -7670, -6884, -1332, -9082, -9201, -2119, 2928, -7029, -2135, -2584, -4089, -5536, 1386, -5040, -4711, 2715, 1147, -2409, 7586, -4053, 5282, -4109, -6335, 2339, -5995, 297, 4774, -4664, 4091, -3187, -8536, -5360, 7887, -9849, -704, -7623, 1366, 1125, -5981, 490, -3242, 6411, 9693, -4123, -859, 8045, -5088, -8547, 8760, -7000, -6676, -2709, -4580, -6453, 794, -8706, 9774, 3710, -88, -9595, 6471, 95, -6867, -6234, 9643, 3069, -2280, 1353, -8095, -2866, 4734, 9441, -3640, -5214, -5161, -5680, 9852, 3952, 4996, -5249, 5120, 5759, 6318, 4946, -9763, 7575, 6945, -6169, 2883, 5684, 3869, -8326, -4725, -826, 7788, 6933, 7986, 7935, 5588, -2692, -1114, -1152, -3061, -1082, -8841, -1559, 9411, -2721, 6310, 6349, -4301, 9108, -6896, -3707, -2576, 5200, -8589, 7558, -8500, 3483, -3064, 5971, -9244, 4461, 148, 4153, 3034, 5428, 3138, 593, 5476, -6231, 7366, -4350, 4155, 7401, -4361, -7094, 3113, -793, -9300, 5062, 6319, -9627, -5322, 2057, -8894, 1700, -7013, -8917, -7384, -7576, -7298, 8694, -6146, 7861, -4296, 8294, 4922, 8607, -6054, 8518, 4506])
+const typedArray11 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const shader11 = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const typedArray10 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const typedArray9 = new Uint8Array([-2268, 7372, -4047, -4539, 2568, 6077, -6522, -5530])
+const shader10 = loadShader('../WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
+const shader9 = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const typedArray8 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const shader8 = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const shader7 = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const typedArray7 = new Uint8Array([1252, -248, -2996, -9191, -1091, 9520, 9379, 729, -6812, 985, -2359, -9556, 739, 9114, 6129, 1955, -721, 1539, 52, 9238])
+const typedArray6 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const typedArray5 = new Float32Array([3982, 8435, 5099])
+const shader6 = loadShader('../WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
+const shader5 = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const typedArray4 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const typedArray3 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const typedArray2 = new Float32Array([1572])
+const shader4 = loadShader('../WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
+const shader3 = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const typedArray1 = new Float32Array([8161, -9081, 1651, 7989, -3654])
+const typedArray0 = new Uint8Array([17, 251, 246, 66, 58, 181, 113, 125, 23, 109, 64, 232, 100, 188, 134, 185, 214, 6, 230, 20, 63, 112, 44, 51, 131, 9, 213, 42, 184, 165, 30, 158])
+const shader2 = loadShader('../WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
+const shader1 = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const shader0 = loadShader('../WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
 
 async function main() {
-    const AfmqzbYLWatchhgB = await navigator.gpu.requestAdapter({
-        powerPreference: "high-performance"
+    const GPUAdapter0 = await navigator.gpu.requestAdapter({
+        powerPreference: "low-power"
     });
-    const zRFjJXxxetMQrDlTMO = await AfmqzbYLWatchhgB.requestDevice();
-    const dICFoqHoCPqtEME = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "oTgTHvl"
+    const GPUDevice0 = await GPUAdapter0.requestDevice();
+    const GPUCommandEncoder0 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder0"
     });
-    const eiQPHIaiGgVqSK = dICFoqHoCPqtEME.finish();
-    const DbxblPJPWkzMMuzrP = zRFjJXxxetMQrDlTMO.createShaderModule({
+    const GPUTexture0 = GPUDevice0.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "rg8unorm",
+        label: "GPUTexture0",
+        size: {
+            width: 330,
+            height: 52,
+            depthOrArrayLayers: 12
+        },
+        mipLevelCount: 8,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["rg8unorm"]
+    });
+    const GPUTextureView0 = GPUTexture0.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 2,
+        format: "rg8unorm",
+        label: "GPUTextureView0"
+    });
+    const GPUQuerySet0 = GPUDevice0.createQuerySet({
+        count: 2138,
+        label: "GPUQuerySet0",
+        type: "occlusion"
+    });
+    const GPURenderPassEncoder0 = GPUCommandEncoder0.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 0.5590081771471491,
+                g: 1.063622937075396,
+                b: 0.4928112218425611,
+                a: 0.7833838533305348
+            },
+            loadOp: "clear",
+            storeOp: "discard",
+            view: GPUTextureView0,
+            depthSlice: 2
+        }],
+        label: "GPURenderPassEncoder0",
+        maxDrawCount: 3911920919,
+        occlusionQuerySet: GPUQuerySet0
+    });
+    const GPUShaderModule0 = GPUDevice0.createShaderModule({
         label: "fragment",
-        code: nRjddnadYaHACPWHegK
+        code: shader0
     });
-    const qgxHQxhpvTfaFOlB = zRFjJXxxetMQrDlTMO.createShaderModule({
+    const GPUShaderModule1 = GPUDevice0.createShaderModule({
         label: "vertex",
-        code: dvbLWoM
+        code: shader1
     });
-    const wldxObLhVm = zRFjJXxxetMQrDlTMO.createRenderPipeline({
+    const GPURenderPipeline0 = GPUDevice0.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: DbxblPJPWkzMMuzrP,
+            module: GPUShaderModule0,
+            targets: [{
+                blend: {
+                    alpha: {
+                        operation: "subtract",
+                        dstFactor: "one-minus-constant",
+                        srcFactor: "one"
+                    },
+                    color: {
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
+                    }
+                },
+                format: "rg8unorm",
+                writeMask: GPUColorWrite.RED | GPUColorWrite.GREEN | GPUColorWrite.BLUE | GPUColorWrite.ALL
+            }]
+        },
+        label: "GPURenderPipeline0",
+        layout: "auto",
+        multisample: {
+            count: 1
+        },
+        primitive: {
+            cullMode: "none",
+            frontFace: "ccw",
+            topology: "point-list"
+        },
+        vertex: {
+            entryPoint: "main",
+            module: GPUShaderModule1
+        }
+    });
+    GPURenderPassEncoder0.setPipeline(GPURenderPipeline0);
+    GPURenderPassEncoder0.draw(1);
+    const GPUCommandEncoder1 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder1"
+    });
+    const GPUComputePassEncoder0 = GPUCommandEncoder1.beginComputePass({
+        label: "GPUComputePassEncoder0"
+    });
+    const GPUShaderModule2 = GPUDevice0.createShaderModule({
+        label: "compute",
+        code: shader2
+    });
+    const GPUComputePipeline0 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule2
+        },
+        label: "GPUComputePipeline0",
+        layout: "auto"
+    });
+    GPUComputePassEncoder0.setPipeline(GPUComputePipeline0);
+    const GPUBuffer0 = GPUDevice0.createBuffer({
+        label: "GPUBuffer0",
+        mappedAtCreation: false,
+        size: 32,
+        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.VERTEX | GPUBufferUsage.QUERY_RESOLVE
+    });
+    const GPUBuffer1 = GPUDevice0.createBuffer({
+        label: "GPUBuffer1",
+        mappedAtCreation: false,
+        size: 32,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.INDEX
+    });
+    const GPUQueue0 = GPUDevice0.queue
+    GPUQueue0.writeBuffer(GPUBuffer0, 0, typedArray0);
+    const GPUBindGroup0 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline0.bindGroup",
+        layout: GPUComputePipeline0.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    GPUComputePassEncoder0.setBindGroup(0, GPUBindGroup0);
+    GPUComputePassEncoder0.dispatchWorkgroups(147, 155, 9);
+    GPUQueue0.writeBuffer(GPUBuffer0, 8, typedArray1);
+    const string0 = GPURenderPipeline0.label
+    const WGSLLanguageFeatures0 = navigator.gpu.wgslLanguageFeatures
+    const GPUAdapterInfo0 = GPUAdapter0.info
+    const GPUSupportedFeatures0 = GPUAdapter0.features
+    const GPUComputePipeline1 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule2
+        },
+        label: "GPUComputePipeline1",
+        layout: "auto"
+    });
+    const string1 = GPUTextureView0.label
+    const GPUShaderModule3 = GPUDevice0.createShaderModule({
+        label: "vertex",
+        code: shader3
+    });
+    const GPUShaderModule4 = GPUDevice0.createShaderModule({
+        label: "compute",
+        code: shader4
+    });
+    const GPUBindGroupLayout0 = GPUComputePipeline1.getBindGroupLayout(0);
+    const string2 = GPUDevice0.label
+    const GPUAdapter1 = await navigator.gpu.requestAdapter({
+        powerPreference: "low-power"
+    });
+    GPUQueue0.writeBuffer(GPUBuffer0, 24, typedArray2);
+    GPURenderPassEncoder0.setVertexBuffer(0, GPUBuffer0);
+    GPURenderPassEncoder0.end();
+    const GPUCommandBuffer0 = GPUCommandEncoder0.finish();
+    GPUQueue0.submit([GPUCommandBuffer0]);
+    const GPUCommandEncoder2 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder2"
+    });
+    const string3 = GPUComputePipeline1.label
+    GPUComputePassEncoder0.end();
+    const GPUSupportedLimits0 = GPUDevice0.limits
+    const GPUTexture1 = GPUDevice0.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "rgb10a2unorm",
+        label: "GPUTexture1",
+        size: {
+            width: 668,
+            height: 688,
+            depthOrArrayLayers: 28
+        },
+        mipLevelCount: 3,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["rgb10a2unorm"]
+    });
+    const GPUTextureView1 = GPUTexture1.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 2,
+        format: "rgb10a2unorm",
+        label: "GPUTextureView1"
+    });
+    const GPURenderPassEncoder1 = GPUCommandEncoder2.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 1.1656836742453491,
+                g: 0.627874333943887,
+                b: 0.49348692338657374,
+                a: 1.9129575271172932
+            },
+            loadOp: "load",
+            storeOp: "store",
+            view: GPUTextureView1,
+            depthSlice: 6
+        }],
+        label: "GPURenderPassEncoder1",
+        maxDrawCount: 4145958974,
+        occlusionQuerySet: GPUQuerySet0
+    });
+    const string4 = GPURenderPassEncoder1.label
+    const string5 = GPURenderPipeline0.label
+    const GPUComputePipeline2 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule4
+        },
+        label: "GPUComputePipeline2",
+        layout: "auto"
+    });
+    const WGSLLanguageFeatures1 = navigator.gpu.wgslLanguageFeatures
+    const string6 = GPUQueue0.label
+    const GPURenderPipeline1 = GPUDevice0.createRenderPipeline({
+        fragment: {
+            entryPoint: "main",
+            module: GPUShaderModule0,
+            targets: [{
+                blend: {
+                    alpha: {
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
+                    },
+                    color: {
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
+                    }
+                },
+                format: "rgb10a2unorm",
+                writeMask: GPUColorWrite.ALPHA
+            }]
+        },
+        label: "GPURenderPipeline1",
+        layout: "auto",
+        multisample: {
+            count: 1
+        },
+        primitive: {
+            cullMode: "back",
+            frontFace: "cw",
+            topology: "line-strip"
+        },
+        vertex: {
+            entryPoint: "main",
+            module: GPUShaderModule1
+        }
+    });
+    GPURenderPassEncoder1.setPipeline(GPURenderPipeline1);
+    const GPUCommandBuffer1 = GPUCommandEncoder1.finish();
+    GPUQueue0.submit([GPUCommandBuffer1]);
+    const string7 = GPUQuerySet0.label
+    const string8 = GPUQueue0.label
+    const GPUCommandEncoder3 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder3"
+    });
+    const GPUComputePassEncoder1 = GPUCommandEncoder3.beginComputePass({
+        label: "GPUComputePassEncoder1"
+    });
+    const string9 = GPUComputePassEncoder1.label
+    const GPUAdapter2 = await navigator.gpu.requestAdapter({
+        powerPreference: "high-performance"
+    });
+    GPURenderPassEncoder1.setPipeline(GPURenderPipeline1);
+    const string10 = GPUDevice0.label
+    const string11 = GPUDevice0.label
+    const string12 = GPUComputePassEncoder1.label
+    const GPUQuerySet1 = GPUDevice0.createQuerySet({
+        count: 2239,
+        label: "GPUQuerySet1",
+        type: "occlusion"
+    });
+    GPURenderPassEncoder1.setPipeline(GPURenderPipeline1);
+    const string13 = GPUQuerySet1.count
+    const string14 = GPUQueue0.label
+    GPURenderPassEncoder1.setVertexBuffer(0, GPUBuffer0);
+    const string15 = GPUQuerySet0.count
+    const GPUCommandEncoder4 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder4"
+    });
+    const GPUTexture2 = GPUDevice0.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "rg8unorm",
+        label: "GPUTexture2",
+        size: {
+            width: 825,
+            height: 290,
+            depthOrArrayLayers: 63
+        },
+        mipLevelCount: 10,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["rg8unorm"]
+    });
+    const GPUTextureView2 = GPUTexture2.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 2,
+        format: "rg8unorm",
+        label: "GPUTextureView2"
+    });
+    const GPURenderPassEncoder2 = GPUCommandEncoder4.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 1.5608677052992814,
+                g: 0.22610296833208876,
+                b: 0.015358282112096555,
+                a: 1.8942979775184277
+            },
+            loadOp: "clear",
+            storeOp: "discard",
+            view: GPUTextureView2,
+            depthSlice: 9
+        }],
+        label: "GPURenderPassEncoder2",
+        maxDrawCount: 461805142,
+        occlusionQuerySet: GPUQuerySet1
+    });
+    const GPUCommandEncoder5 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder5"
+    });
+    const GPUSupportedFeatures1 = GPUDevice0.features
+    const string16 = GPUQuerySet1.type
+    const boolean0 = GPUAdapter0.isFallbackAdapter
+    GPURenderPassEncoder1.end();
+    const GPUCommandBuffer1 = GPUCommandEncoder2.finish();
+    GPUQueue0.submit([GPUCommandBuffer1]);
+    const boolean1 = GPUAdapter2.isFallbackAdapter
+    const GPUTextureView3 = GPUTexture2.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 2,
+        baseMipLevel: 7,
+        format: "rg8unorm",
+        label: "GPUTextureView3"
+    });
+    const string17 = GPUComputePassEncoder1.label
+    GPURenderPassEncoder2.setPipeline(GPURenderPipeline0);
+    GPURenderPassEncoder2.draw(10);
+    const GPUSupportedFeatures2 = GPUDevice0.features
+    const GPUSupportedLimits1 = GPUDevice0.limits
+    GPUQueue0.writeBuffer(GPUBuffer0, 0, typedArray3);
+    const GPUBindGroup1 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline2.bindGroup",
+        layout: GPUComputePipeline2.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    const string18 = GPUDevice0.label
+    GPURenderPassEncoder2.draw(6);
+    const GPUAdapterInfo1 = GPUAdapter1.info
+    const GPURenderPipeline2 = GPUDevice0.createRenderPipeline({
+        fragment: {
+            entryPoint: "main",
+            module: GPUShaderModule0,
+            targets: [{
+                blend: {
+                    alpha: {
+                        operation: "min",
+                        dstFactor: "one",
+                        srcFactor: "one"
+                    },
+                    color: {
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
+                    }
+                },
+                format: "rg8unorm",
+                writeMask: GPUColorWrite.ALL | GPUColorWrite.BLUE | GPUColorWrite.RED
+            }]
+        },
+        label: "GPURenderPipeline2",
+        layout: "auto",
+        multisample: {
+            count: 4
+        },
+        primitive: {
+            cullMode: "back",
+            frontFace: "cw",
+            topology: "triangle-list"
+        },
+        vertex: {
+            entryPoint: "main",
+            module: GPUShaderModule1
+        }
+    });
+    GPUComputePassEncoder1.setBindGroup(0, GPUBindGroup1);
+    const string19 = GPUQuerySet1.label
+    const GPUCommandBuffer1 = GPUCommandEncoder5.finish();
+    const GPUSupportedFeatures3 = GPUDevice0.features
+    GPURenderPassEncoder2.end();
+    const GPUCommandBuffer1 = GPUCommandEncoder4.finish();
+    const GPUCommandEncoder6 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder6"
+    });
+    const GPUTexture3 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 1,
+        format: "rgba16float",
+        label: "GPUTexture3",
+        size: {
+            width: 3200,
+            height: 1798,
+            depthOrArrayLayers: 20
+        },
+        mipLevelCount: 3,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["rgba16float"]
+    });
+    const GPUTextureView4 = GPUTexture3.createView({
+        aspect: "all",
+        dimension: "2d-array",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 2,
+        format: "rgba16float",
+        label: "GPUTextureView4"
+    });
+    const GPURenderPassEncoder3 = GPUCommandEncoder6.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 0.38368013102449705,
+                g: 0.371220823013634,
+                b: 1.0130899768742152,
+                a: 0.4426141929099603
+            },
+            loadOp: "clear",
+            storeOp: "discard",
+            view: GPUTextureView4
+        }],
+        label: "GPURenderPassEncoder3",
+        maxDrawCount: 1376376038,
+        occlusionQuerySet: GPUQuerySet0
+    });
+    GPURenderPassEncoder3.setVertexBuffer(0, GPUBuffer0);
+    GPUComputePassEncoder1.setBindGroup(0, GPUBindGroup1);
+    GPUComputePassEncoder1.setPipeline(GPUComputePipeline1);
+    GPUQueue0.writeBuffer(GPUBuffer0, 0, typedArray4);
+    const GPUBindGroup2 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline1.bindGroup",
+        layout: GPUComputePipeline1.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    GPUComputePassEncoder1.setBindGroup(0, GPUBindGroup2);
+    GPUComputePassEncoder1.dispatchWorkgroups(132, 8, 31);
+    const GPURenderPipeline3 = GPUDevice0.createRenderPipeline({
+        fragment: {
+            entryPoint: "main",
+            module: GPUShaderModule0,
+            targets: [{
+                blend: {
+                    alpha: {
+                        operation: "add",
+                        dstFactor: "one-minus-src",
+                        srcFactor: "one-minus-constant"
+                    },
+                    color: {
+                        operation: "subtract",
+                        dstFactor: "one-minus-src",
+                        srcFactor: "one-minus-src-alpha"
+                    }
+                },
+                format: "rgba16float",
+                writeMask: GPUColorWrite.ALPHA | GPUColorWrite.ALL
+            }]
+        },
+        label: "GPURenderPipeline3",
+        layout: "auto",
+        multisample: {
+            count: 1
+        },
+        primitive: {
+            cullMode: "back",
+            frontFace: "ccw",
+            topology: "triangle-list"
+        },
+        vertex: {
+            entryPoint: "main",
+            module: GPUShaderModule1
+        }
+    });
+    GPURenderPassEncoder3.setPipeline(GPURenderPipeline3);
+    GPURenderPassEncoder3.draw(6);
+    GPUComputePassEncoder1.setBindGroup(0, GPUBindGroup2);
+    GPUComputePassEncoder1.setPipeline(GPUComputePipeline1);
+    GPUComputePassEncoder1.setBindGroup(0, GPUBindGroup2);
+    GPUComputePassEncoder1.dispatchWorkgroups(164, 176, 19);
+    const boolean2 = GPUAdapter1.isFallbackAdapter
+    GPURenderPassEncoder3.draw(8);
+    const GPUCommandEncoder7 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder7"
+    });
+    const string20 = GPUCommandEncoder6.label
+    const string21 = GPUTextureView4.label
+    GPUComputePassEncoder1.end();
+    GPURenderPassEncoder3.setVertexBuffer(0, GPUBuffer0);
+    const GPUComputePassEncoder2 = GPUCommandEncoder3.beginComputePass({
+        label: "GPUComputePassEncoder2"
+    });
+    GPUComputePassEncoder2.setBindGroup(0, GPUBindGroup2);
+    const GPUSupportedLimits2 = GPUAdapter0.limits
+    GPUComputePassEncoder2.end();
+    const GPUCommandBuffer2 = GPUCommandEncoder3.finish();
+    GPURenderPassEncoder3.end();
+    const GPUBuffer2 = GPUDevice0.createBuffer({
+        label: "GPUBuffer2",
+        mappedAtCreation: false,
+        size: 263391548,
+        usage: GPUBufferUsage.COPY_SRC | GPUBufferUsage.UNIFORM | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.STORAGE
+    });
+    const GPUShaderModule5 = GPUDevice0.createShaderModule({
+        label: "vertex",
+        code: shader5
+    });
+    const string22 = GPURenderPipeline2.label
+    const string23 = GPUComputePipeline0.label
+    const string24 = GPUCommandEncoder7.label
+    const GPUCommandEncoder8 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder8"
+    });
+    const GPUTexture4 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 4,
+        format: "bgra8unorm",
+        label: "GPUTexture4",
+        size: {
+            width: 1577,
+            height: 246,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["bgra8unorm"]
+    });
+    const GPUTextureView5 = GPUTexture4.createView({
+        aspect: "all",
+        dimension: "2d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "bgra8unorm",
+        label: "GPUTextureView5"
+    });
+    const GPURenderPassEncoder4 = GPUCommandEncoder6.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 1.0851038633663825,
+                g: 0.367514315073699,
+                b: 1.2862455434100035,
+                a: 1.8424523038826628
+            },
+            loadOp: "clear",
+            storeOp: "discard",
+            view: GPUTextureView5
+        }],
+        label: "GPURenderPassEncoder4",
+        maxDrawCount: 1443012189,
+        occlusionQuerySet: GPUQuerySet0
+    });
+    GPURenderPassEncoder4.setVertexBuffer(0, GPUBuffer0);
+    const GPUSupportedFeatures4 = GPUAdapter1.features
+    const GPUCommandEncoder9 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder9"
+    });
+    const GPUComputePipeline3 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule2
+        },
+        label: "GPUComputePipeline3",
+        layout: "auto"
+    });
+    const boolean3 = GPUAdapter1.isFallbackAdapter
+    const GPUComputePassEncoder3 = GPUCommandEncoder8.beginComputePass({
+        label: "GPUComputePassEncoder3"
+    });
+    GPUComputePassEncoder3.end();
+    const GPUComputePipeline4 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule2
+        },
+        label: "GPUComputePipeline4",
+        layout: "auto"
+    });
+    const GPURenderPipeline4 = GPUDevice0.createRenderPipeline({
+        fragment: {
+            entryPoint: "main",
+            module: GPUShaderModule0,
             targets: [{
                 blend: {
                     alpha: {
@@ -92,224 +713,663 @@ async function main() {
                     },
                     color: {
                         operation: "subtract",
-                        dstFactor: "dst-alpha",
-                        srcFactor: "src"
+                        dstFactor: "one",
+                        srcFactor: "one-minus-constant"
                     }
                 },
                 format: "bgra8unorm",
-                writeMask: GPUColorWrite.RED | GPUColorWrite.ALPHA | GPUColorWrite.ALL
+                writeMask: GPUColorWrite.BLUE | GPUColorWrite.ALL | GPUColorWrite.ALPHA | GPUColorWrite.GREEN
             }]
         },
-        label: "dfzoBKLyEVFmd",
+        label: "GPURenderPipeline4",
+        layout: "auto",
+        multisample: {
+            count: 4
+        },
+        primitive: {
+            cullMode: "front",
+            frontFace: "cw",
+            topology: "triangle-strip"
+        },
+        vertex: {
+            entryPoint: "main",
+            module: GPUShaderModule3
+        }
+    });
+    GPURenderPassEncoder4.setPipeline(GPURenderPipeline4);
+    const GPUBindGroupLayout1 = GPUComputePipeline1.getBindGroupLayout(0);
+    const GPUComputePassEncoder4 = GPUCommandEncoder9.beginComputePass({
+        label: "GPUComputePassEncoder4"
+    });
+    GPUComputePassEncoder4.end();
+    const string25 = GPURenderPassEncoder4.label
+    const string26 = GPUCommandEncoder6.label
+    const GPUComputePassEncoder5 = GPUCommandEncoder8.beginComputePass({
+        label: "GPUComputePassEncoder5"
+    });
+    GPUComputePassEncoder5.setPipeline(GPUComputePipeline2);
+    const GPUBuffer3 = GPUDevice0.createBuffer({
+        label: "GPUBuffer3",
+        mappedAtCreation: false,
+        size: 19162748,
+        usage: GPUBufferUsage.MAP_WRITE
+    });
+    const string27 = GPUQueue0.label
+    const string28 = GPUTextureView1.label
+    const string29 = GPUComputePassEncoder5.label
+    GPURenderPassEncoder4.setPipeline(GPURenderPipeline4);
+    const GPUSupportedFeatures5 = GPUDevice0.features
+    const string30 = GPUCommandEncoder6.label
+    const string31 = await navigator.gpu.getPreferredCanvasFormat();
+    const string32 = GPUTextureView5.label
+    const string33 = await navigator.gpu.getPreferredCanvasFormat();
+    const string34 = await navigator.gpu.getPreferredCanvasFormat();
+    const GPUTexture5 = GPUDevice0.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "rgba8snorm",
+        label: "GPUTexture5",
+        size: {
+            width: 535,
+            height: 459,
+            depthOrArrayLayers: 36
+        },
+        mipLevelCount: 2,
+        usage: GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.STORAGE_BINDING,
+        viewFormats: ["rgba8snorm"]
+    });
+    const boolean4 = GPUAdapter2.isFallbackAdapter
+    GPUComputePassEncoder5.end();
+    const string35 = GPUQuerySet0.label
+    const GPUShaderModule6 = GPUDevice0.createShaderModule({
+        label: "compute",
+        code: shader6
+    });
+    const GPUBuffer4 = GPUDevice0.createBuffer({
+        label: "GPUBuffer4",
+        mappedAtCreation: false,
+        size: 90896940,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.VERTEX | GPUBufferUsage.UNIFORM | GPUBufferUsage.INDIRECT | GPUBufferUsage.QUERY_RESOLVE
+    });
+    const WGSLLanguageFeatures2 = navigator.gpu.wgslLanguageFeatures
+    GPURenderPassEncoder4.draw(2);
+    const GPUBindGroupLayout2 = GPUComputePipeline0.getBindGroupLayout(0);
+    GPUQueue0.writeBuffer(GPUBuffer0, 12, typedArray5);
+    const GPUAdapterInfo2 = GPUAdapter0.info
+    const string36 = await navigator.gpu.getPreferredCanvasFormat();
+    GPURenderPassEncoder4.draw(6);
+    const GPURenderPipeline5 = GPUDevice0.createRenderPipeline({
+        fragment: {
+            entryPoint: "main",
+            module: GPUShaderModule0,
+            targets: [{
+                blend: {
+                    alpha: {
+                        operation: "subtract",
+                        dstFactor: "one-minus-constant",
+                        srcFactor: "dst"
+                    },
+                    color: {
+                        operation: "reverse-subtract",
+                        dstFactor: "one-minus-src",
+                        srcFactor: "constant"
+                    }
+                },
+                format: "rgb10a2unorm",
+                writeMask: GPUColorWrite.RED | GPUColorWrite.ALL | GPUColorWrite.ALPHA
+            }]
+        },
+        label: "GPURenderPipeline5",
         layout: "auto",
         multisample: {
             count: 1
         },
         primitive: {
-            cullMode: "front",
-            frontFace: "ccw",
-            topology: "point-list"
+            cullMode: "back",
+            frontFace: "cw",
+            topology: "triangle-list"
         },
         vertex: {
             entryPoint: "main",
-            module: qgxHQxhpvTfaFOlB
+            module: GPUShaderModule1
         }
     });
-    const iAJpEeqJJrfVBN = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 3631,
-        label: "zSEpmYxrmsqKI",
-        type: "occlusion"
-    });
-    const WfrXAtTZIGQ = iAJpEeqJJrfVBN.count
-    const RQOuYIWRjLI = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "asgDHwEzv"
-    });
-    const nwtRVXFu = RQOuYIWRjLI.beginComputePass({
-        label: "gexIIjBssE"
-    });
-    const fRsnsVsrHLnf = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "compute",
-        code: gWvDxAL
-    });
-    const dMntVMG = zRFjJXxxetMQrDlTMO.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: fRsnsVsrHLnf
-        },
-        label: "ioPBWya",
-        layout: "auto"
-    });
-    const jCfOHeGkVXyLIaP = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "KZeBk",
-        mappedAtCreation: false,
-        size: 32,
-        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_SRC
-    });
-    const axiME = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "TKUSVSIGjBC",
-        mappedAtCreation: false,
-        size: 32,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
-    });
-    const IYWpYnd = zRFjJXxxetMQrDlTMO.queue
-    IYWpYnd.writeBuffer(jCfOHeGkVXyLIaP, 0, roXmtJZslLRSuhIzWUy);
-    const CzaYDynkZvuP = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "dMntVMG.bindGroup",
-        layout: dMntVMG.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    nwtRVXFu.setBindGroup(0, CzaYDynkZvuP);
-    const QXeuThAPEHhFQ = zRFjJXxxetMQrDlTMO.label
-    nwtRVXFu.setBindGroup(0, CzaYDynkZvuP);
-    nwtRVXFu.setPipeline(dMntVMG);
-    nwtRVXFu.setBindGroup(0, CzaYDynkZvuP);
-    nwtRVXFu.dispatchWorkgroups(9, 159, 44);
-    const jbOqcb = zRFjJXxxetMQrDlTMO.createTexture({
+    const string37 = GPUDevice0.label
+    const string38 = GPURenderPipeline5.label
+    const GPUSupportedLimits3 = GPUDevice0.limits
+    const GPUTexture6 = GPUDevice0.createTexture({
         dimension: "3d",
         sampleCount: 1,
-        format: "r32uint",
-        label: "YNXVhyaR",
+        format: "rg8uint",
+        label: "GPUTexture6",
         size: {
-            width: 83,
-            height: 468,
-            depthOrArrayLayers: 34
+            width: 43,
+            height: 1007,
+            depthOrArrayLayers: 43
         },
-        mipLevelCount: 5,
-        usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["r32uint"]
+        mipLevelCount: 10,
+        usage: GPUTextureUsage.COPY_SRC | GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST,
+        viewFormats: ["rg8uint"]
     });
-    const YyeboGqCUPv = jbOqcb.createView({
+    const GPUCommandEncoder10 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder10"
+    });
+    const GPUAdapterInfo3 = GPUAdapter2.info
+    const GPUQueue1 = GPUDevice0.queue
+    const string39 = await navigator.gpu.getPreferredCanvasFormat();
+    const GPUTextureView6 = GPUTexture2.createView({
         aspect: "all",
         dimension: "3d",
         arrayLayerCount: 1,
         baseArrayLayer: 0,
+        mipLevelCount: 9,
+        baseMipLevel: 0,
+        format: "rg8unorm",
+        label: "GPUTextureView6"
+    });
+    const string40 = GPUQuerySet1.count
+    const GPUComputePipeline5 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule4
+        },
+        label: "GPUComputePipeline5",
+        layout: "auto"
+    });
+    const GPURenderPipeline6 = GPUDevice0.createRenderPipeline({
+        fragment: {
+            entryPoint: "main",
+            module: GPUShaderModule0,
+            targets: [{
+                blend: {
+                    alpha: {
+                        operation: "add",
+                        dstFactor: "src-alpha-saturated",
+                        srcFactor: "dst-alpha"
+                    },
+                    color: {
+                        operation: "add",
+                        dstFactor: "one-minus-src-alpha",
+                        srcFactor: "one"
+                    }
+                },
+                format: "rg8unorm",
+                writeMask: GPUColorWrite.GREEN | GPUColorWrite.BLUE | GPUColorWrite.ALPHA | GPUColorWrite.RED
+            }]
+        },
+        label: "GPURenderPipeline6",
+        layout: "auto",
+        multisample: {
+            count: 4
+        },
+        primitive: {
+            cullMode: "back",
+            frontFace: "cw",
+            topology: "triangle-strip"
+        },
+        vertex: {
+            entryPoint: "main",
+            module: GPUShaderModule1
+        }
+    });
+    const string41 = GPUComputePipeline3.label
+    GPURenderPassEncoder4.draw(5);
+    const string42 = GPUQuerySet1.count
+    const string43 = GPUCommandEncoder9.label
+    const GPUCommandEncoder11 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder11"
+    });
+    const string44 = GPURenderPassEncoder4.label
+    const GPUComputePassEncoder6 = GPUCommandEncoder9.beginComputePass({
+        label: "GPUComputePassEncoder6"
+    });
+    const GPUAdapter3 = await navigator.gpu.requestAdapter({
+        powerPreference: "low-power"
+    });
+    const GPUBuffer5 = GPUDevice0.createBuffer({
+        label: "GPUBuffer5",
+        mappedAtCreation: true,
+        size: 174396424,
+        usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.STORAGE | GPUBufferUsage.VERTEX | GPUBufferUsage.INDEX | GPUBufferUsage.COPY_SRC
+    });
+    const string45 = GPUComputePipeline4.label
+    const GPUQuerySet2 = GPUDevice0.createQuerySet({
+        count: 3755,
+        label: "GPUQuerySet2",
+        type: "occlusion"
+    });
+    const GPUComputePassEncoder7 = GPUCommandEncoder10.beginComputePass({
+        label: "GPUComputePassEncoder7"
+    });
+    const GPUComputePipeline6 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule4
+        },
+        label: "GPUComputePipeline6",
+        layout: "auto"
+    });
+    GPUQueue0.submit([GPUCommandBuffer2]);
+    const GPUSupportedLimits4 = GPUDevice0.limits
+    GPUComputePassEncoder7.end();
+    const GPUCommandBuffer3 = GPUCommandEncoder10.finish();
+    const GPUBuffer6 = GPUDevice0.createBuffer({
+        label: "GPUBuffer6",
+        mappedAtCreation: true,
+        size: 105216424,
+        usage: GPUBufferUsage.INDEX | GPUBufferUsage.INDIRECT | GPUBufferUsage.STORAGE | GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_SRC | GPUBufferUsage.QUERY_RESOLVE
+    });
+    GPUComputePassEncoder6.setPipeline(GPUComputePipeline3);
+    GPUQueue0.writeBuffer(GPUBuffer0, 0, typedArray6);
+    const GPUBindGroup3 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline3.bindGroup",
+        layout: GPUComputePipeline3.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup3);
+    GPUComputePassEncoder6.dispatchWorkgroups(236, 23, 46);
+    GPUQueue0.writeBuffer(GPUBuffer0, 4, typedArray7);
+    const string46 = GPUComputePipeline3.label
+    const GPUAdapter4 = await navigator.gpu.requestAdapter({
+        powerPreference: "low-power"
+    });
+    GPURenderPassEncoder4.setVertexBuffer(0, GPUBuffer0);
+    const string47 = GPUTextureView3.label
+    const GPUSupportedLimits5 = GPUDevice0.limits
+    const string48 = await navigator.gpu.getPreferredCanvasFormat();
+    const WGSLLanguageFeatures3 = navigator.gpu.wgslLanguageFeatures
+    const GPUSupportedFeatures6 = GPUDevice0.features
+    GPUQueue1.submit([GPUCommandBuffer1]);
+    const GPUTexture7 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 1,
+        format: "r8snorm",
+        label: "GPUTexture7",
+        size: {
+            width: 1636,
+            height: 66,
+            depthOrArrayLayers: 19
+        },
+        mipLevelCount: 10,
+        usage: GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["r8snorm"]
+    });
+    const GPURenderPipeline7 = GPUDevice0.createRenderPipeline({
+        fragment: {
+            entryPoint: "main",
+            module: GPUShaderModule0,
+            targets: [{
+                blend: {
+                    alpha: {
+                        operation: "subtract",
+                        dstFactor: "one-minus-dst-alpha",
+                        srcFactor: "dst"
+                    },
+                    color: {
+                        operation: "subtract",
+                        dstFactor: "one-minus-src",
+                        srcFactor: "one-minus-src-alpha"
+                    }
+                },
+                format: "rg8unorm",
+                writeMask: GPUColorWrite.BLUE | GPUColorWrite.GREEN | GPUColorWrite.ALL | GPUColorWrite.RED
+            }]
+        },
+        label: "GPURenderPipeline7",
+        layout: "auto",
+        multisample: {
+            count: 4
+        },
+        primitive: {
+            cullMode: "none",
+            frontFace: "cw",
+            topology: "triangle-list"
+        },
+        vertex: {
+            entryPoint: "main",
+            module: GPUShaderModule1
+        }
+    });
+    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup3);
+    GPUComputePassEncoder6.setPipeline(GPUComputePipeline0);
+    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup0);
+    GPUComputePassEncoder6.dispatchWorkgroups(118, 107, 64);
+    const GPUSupportedFeatures7 = GPUAdapter2.features
+    GPUComputePassEncoder6.end();
+    const GPUSupportedLimits6 = GPUDevice0.limits
+    const string49 = GPUQueue0.label
+    GPUQueue1.submit([GPUCommandBuffer1]);
+    GPURenderPassEncoder4.setPipeline(GPURenderPipeline4);
+    const string50 = GPURenderPipeline1.label
+    const GPUQuerySet3 = GPUDevice0.createQuerySet({
+        count: 2450,
+        label: "GPUQuerySet3",
+        type: "occlusion"
+    });
+    const GPUSupportedLimits7 = GPUDevice0.limits
+    const GPUComputePassEncoder8 = GPUCommandEncoder8.beginComputePass({
+        label: "GPUComputePassEncoder8"
+    });
+    GPUComputePassEncoder8.setBindGroup(0, GPUBindGroup1);
+    const boolean5 = GPUAdapter3.isFallbackAdapter
+    const GPUAdapter5 = await navigator.gpu.requestAdapter({
+        powerPreference: "high-performance"
+    });
+    GPUComputePassEncoder8.setBindGroup(0, GPUBindGroup2);
+    GPUComputePassEncoder8.setPipeline(GPUComputePipeline6);
+    const string51 = GPURenderPassEncoder4.label
+    const GPUBindGroupLayout3 = GPUComputePipeline5.getBindGroupLayout(0);
+    const GPUCommandEncoder12 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder12"
+    });
+    const string52 = GPUQuerySet0.label
+    const GPUQuerySet4 = GPUDevice0.createQuerySet({
+        count: 3211,
+        label: "GPUQuerySet4",
+        type: "occlusion"
+    });
+    const string53 = GPUDevice0.label
+    const string54 = GPURenderPipeline5.label
+    const string55 = GPUTextureView5.label
+    const GPUShaderModule7 = GPUDevice0.createShaderModule({
+        label: "fragment",
+        code: shader7
+    });
+    const GPUAdapterInfo4 = GPUAdapter5.info
+    const GPUTextureView7 = GPUTexture2.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 3,
+        baseMipLevel: 0,
+        format: "rg8unorm",
+        label: "GPUTextureView7"
+    });
+    const GPUQueue2 = GPUDevice0.queue
+    const GPUSupportedFeatures8 = GPUDevice0.features
+    GPURenderPassEncoder4.setPipeline(GPURenderPipeline4);
+    const GPUAdapterInfo5 = GPUAdapter3.info
+    const string56 = GPURenderPipeline4.label
+    const GPUShaderModule8 = GPUDevice0.createShaderModule({
+        label: "fragment",
+        code: shader8
+    });
+    const GPUBindGroupLayout4 = GPUComputePipeline6.getBindGroupLayout(0);
+    GPUQueue2.writeBuffer(GPUBuffer0, 0, typedArray8);
+    const GPUBindGroup4 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline6.bindGroup",
+        layout: GPUComputePipeline6.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    GPUComputePassEncoder8.setBindGroup(0, GPUBindGroup4);
+    GPUComputePassEncoder8.setPipeline(GPUComputePipeline3);
+    const GPUSupportedFeatures9 = GPUDevice0.features
+    const GPUShaderModule9 = GPUDevice0.createShaderModule({
+        label: "fragment",
+        code: shader9
+    });
+    const GPUComputePassEncoder9 = GPUCommandEncoder11.beginComputePass({
+        label: "GPUComputePassEncoder9"
+    });
+    const GPUTexture8 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 1,
+        format: "bgra8unorm-srgb",
+        label: "GPUTexture8",
+        size: {
+            width: 1682,
+            height: 367,
+            depthOrArrayLayers: 38
+        },
+        mipLevelCount: 9,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["bgra8unorm"]
+    });
+    const GPUTextureView8 = GPUTexture8.createView({
+        aspect: "all",
+        dimension: "2d-array",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 6,
+        format: "bgra8unorm",
+        label: "GPUTextureView8"
+    });
+    const GPURenderPassEncoder5 = GPUCommandEncoder7.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 1.7609123250713599,
+                g: 0.6800635215078406,
+                b: 0.3060351772822516,
+                a: 0.43112159156173524
+            },
+            loadOp: "clear",
+            storeOp: "store",
+            view: GPUTextureView8
+        }],
+        label: "GPURenderPassEncoder5",
+        maxDrawCount: 4000254455,
+        occlusionQuerySet: GPUQuerySet3
+    });
+    GPUComputePassEncoder8.end();
+    GPUQueue1.submit([GPUCommandBuffer3]);
+    const string57 = GPUTextureView6.label
+    GPUComputePassEncoder9.setPipeline(GPUComputePipeline0);
+    const GPUAdapterInfo6 = GPUAdapter2.info
+    const GPUShaderModule10 = GPUDevice0.createShaderModule({
+        label: "compute",
+        code: shader10
+    });
+    GPURenderPassEncoder4.setPipeline(GPURenderPipeline4);
+    const GPUTexture9 = GPUDevice0.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "rg8uint",
+        label: "GPUTexture9",
+        size: {
+            width: 173,
+            height: 185,
+            depthOrArrayLayers: 39
+        },
+        mipLevelCount: 3,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT,
+        viewFormats: ["rg8uint"]
+    });
+    const string58 = GPUCommandEncoder7.label
+    const GPUTexture10 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 1,
+        format: "rgba8unorm-srgb",
+        label: "GPUTexture10",
+        size: {
+            width: 1703,
+            height: 220,
+            depthOrArrayLayers: 4
+        },
+        mipLevelCount: 3,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["rgba8unorm"]
+    });
+    const GPUTextureView9 = GPUTexture10.createView({
+        aspect: "all",
+        dimension: "2d-array",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
         mipLevelCount: 1,
         baseMipLevel: 1,
-        format: "r32uint",
-        label: "KvMPYhSSbFI"
+        format: "rgba8unorm-srgb",
+        label: "GPUTextureView9"
     });
-    const BIIzFDxjPfvKRcw = YyeboGqCUPv.label
-    const MoIrlBY = zRFjJXxxetMQrDlTMO.queue
-    const iAAKTmjqDV = wldxObLhVm.label
-    const ZcWXtpmOZccj = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "MxfwjlkblJ"
+    const GPURenderPassEncoder6 = GPUCommandEncoder12.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 0.7113691562365962,
+                g: 0.07814503158292063,
+                b: 1.7135229409331543,
+                a: 1.6988515625387026
+            },
+            loadOp: "load",
+            storeOp: "store",
+            view: GPUTextureView9
+        }],
+        label: "GPURenderPassEncoder6",
+        maxDrawCount: 3803277980,
+        occlusionQuerySet: GPUQuerySet4
     });
-    const PzwJIAPdqukEoawCp = zRFjJXxxetMQrDlTMO.createTexture({
+    const string59 = GPURenderPipeline4.label
+    GPUQueue1.writeBuffer(GPUBuffer0, 12, typedArray9);
+    GPUComputePassEncoder9.setBindGroup(0, GPUBindGroup0);
+    GPUComputePassEncoder9.setBindGroup(0, GPUBindGroup0);
+    GPUComputePassEncoder9.setPipeline(GPUComputePipeline4);
+    const GPUBindGroupLayout5 = GPUComputePipeline4.getBindGroupLayout(0);
+    const GPUTextureView10 = GPUTexture3.createView({
+        aspect: "all",
         dimension: "2d",
-        sampleCount: 4,
-        format: "rg16float",
-        label: "lYmTeyPLZstSzLtdIW",
-        size: {
-            width: 2511,
-            height: 2840,
-            depthOrArrayLayers: 1
-        },
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
         mipLevelCount: 1,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT,
-        viewFormats: ["rg16float"]
+        baseMipLevel: 2,
+        format: "rgba16float",
+        label: "GPUTextureView10"
     });
-    const SRjdEWiYoFWIS = PzwJIAPdqukEoawCp.createView({
+    const GPUTexture11 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 1,
+        format: "rgba8unorm-srgb",
+        label: "GPUTexture11",
+        size: {
+            width: 3251,
+            height: 3331,
+            depthOrArrayLayers: 12
+        },
+        mipLevelCount: 10,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
+        viewFormats: ["rgba8unorm"]
+    });
+    const GPUTextureView11 = GPUTexture11.createView({
         aspect: "all",
         dimension: "2d",
         arrayLayerCount: 1,
         baseArrayLayer: 0,
         mipLevelCount: 1,
         baseMipLevel: 0,
-        format: "rg16float",
-        label: "VJwgUgxbpMCJhFgt"
+        format: "rgba8unorm-srgb",
+        label: "GPUTextureView11"
     });
-    const TnjuAai = ZcWXtpmOZccj.beginRenderPass({
+    const GPURenderPassEncoder7 = GPUCommandEncoder8.beginRenderPass({
         colorAttachments: [{
             clearValue: {
-                r: 1.6702726001759713,
-                g: 1.4391239275280125,
-                b: 0.8515912772952225,
-                a: 0.6277619554437459
+                r: 1.2964722955658026,
+                g: 1.0799389402678756,
+                b: 1.0564536758618128,
+                a: 1.9880926928287121
             },
             loadOp: "clear",
             storeOp: "discard",
-            view: SRjdEWiYoFWIS
+            view: GPUTextureView11
         }],
-        label: "LrvfnErqDmOY",
-        maxDrawCount: 1666174645,
-        occlusionQuerySet: iAJpEeqJJrfVBN
+        label: "GPURenderPassEncoder7",
+        maxDrawCount: 4075853933,
+        occlusionQuerySet: GPUQuerySet3
     });
-    TnjuAai.end();
-    const YiSdwC = zRFjJXxxetMQrDlTMO.limits
-    const ZzvEgeLsvnlF = nwtRVXFu.label
-    const AJpEAuLjVgXH = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
+    const GPUQueue3 = GPUDevice0.queue
+    GPUComputePassEncoder9.end();
+    const GPUComputePassEncoder10 = GPUCommandEncoder11.beginComputePass({
+        label: "GPUComputePassEncoder10"
+    });
+    const string60 = GPUComputePassEncoder10.label
+    const GPUBindGroupLayout6 = GPUComputePipeline3.getBindGroupLayout(0);
+    const string61 = GPURenderPassEncoder6.label
+    const GPUBindGroupLayout7 = GPUComputePipeline1.getBindGroupLayout(0);
+    GPURenderPassEncoder7.end();
+    const GPUCommandBuffer4 = GPUCommandEncoder8.finish();
+    GPUQueue1.submit([GPUCommandBuffer4]);
+    const string62 = GPUComputePipeline5.label
+    const GPUSupportedLimits8 = GPUAdapter5.limits
+    const string63 = GPUTextureView9.label
+    const string64 = GPURenderPipeline7.label
+    const GPUQuerySet5 = GPUDevice0.createQuerySet({
+        count: 252,
+        label: "GPUQuerySet5",
+        type: "occlusion"
+    });
+    const string65 = GPUTextureView8.label
+    const GPUCommandBuffer1 = GPUCommandEncoder9.finish();
+    GPUQueue0.submit([GPUCommandBuffer1]);
+    const string66 = GPUQueue1.label
+    GPURenderPassEncoder6.end();
+    const GPUComputePassEncoder11 = GPUCommandEncoder12.beginComputePass({
+        label: "GPUComputePassEncoder11"
+    });
+    const string67 = GPURenderPipeline6.label
+    const GPUSupportedFeatures10 = GPUDevice0.features
+    const GPUAdapter6 = await navigator.gpu.requestAdapter({
+        powerPreference: "low-power"
+    });
+    const GPUBuffer7 = GPUDevice0.createBuffer({
+        label: "GPUBuffer7",
+        mappedAtCreation: true,
+        size: 117831540,
+        usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.VERTEX | GPUBufferUsage.UNIFORM
+    });
+    const GPUTexture12 = GPUDevice0.createTexture({
+        dimension: "2d",
         sampleCount: 1,
-        format: "rg8unorm",
-        label: "iVIzDXS",
+        format: "rgb10a2uint",
+        label: "GPUTexture12",
         size: {
-            width: 1005,
-            height: 76,
-            depthOrArrayLayers: 27
+            width: 1877,
+            height: 1979,
+            depthOrArrayLayers: 4
         },
-        mipLevelCount: 6,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["rg8unorm"]
+        mipLevelCount: 7,
+        usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["rgb10a2uint"]
     });
-    const wVidOmlGK = AJpEAuLjVgXH.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 5,
-        format: "rg8unorm",
-        label: "oeJkcnhEACnSrAPg"
-    });
-    const AEXEixzzY = ZcWXtpmOZccj.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.5452153417642414,
-                g: 0.04905610824063178,
-                b: 1.2316199520616014,
-                a: 1.8419453760608568
-            },
-            loadOp: "load",
-            storeOp: "discard",
-            view: wVidOmlGK,
-            depthSlice: 0
-        }],
-        label: "HBxqRwZCUjw",
-        maxDrawCount: 249275700,
-        occlusionQuerySet: iAJpEeqJJrfVBN
-    });
-    const zUtwNvk = zRFjJXxxetMQrDlTMO.createRenderPipeline({
+    const string68 = GPUQuerySet3.label
+    const GPURenderPipeline8 = GPUDevice0.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: DbxblPJPWkzMMuzrP,
+            module: GPUShaderModule0,
             targets: [{
                 blend: {
                     alpha: {
-                        operation: "subtract",
-                        dstFactor: "src-alpha-saturated",
-                        srcFactor: "dst"
+                        operation: "min",
+                        dstFactor: "one",
+                        srcFactor: "one"
                     },
                     color: {
-                        operation: "subtract",
-                        dstFactor: "dst-alpha",
-                        srcFactor: "zero"
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
                     }
                 },
-                format: "rg8unorm",
-                writeMask: GPUColorWrite.RED | GPUColorWrite.ALL
+                format: "bgra8unorm",
+                writeMask: GPUColorWrite.ALL | GPUColorWrite.ALPHA | GPUColorWrite.BLUE
             }]
         },
-        label: "WhkNY",
+        label: "GPURenderPipeline8",
         layout: "auto",
         multisample: {
             count: 1
@@ -317,27 +1377,544 @@ async function main() {
         primitive: {
             cullMode: "front",
             frontFace: "ccw",
-            topology: "point-list"
+            topology: "triangle-strip"
         },
         vertex: {
             entryPoint: "main",
-            module: qgxHQxhpvTfaFOlB
+            module: GPUShaderModule5
         }
     });
-    AEXEixzzY.setPipeline(zUtwNvk);
-    AEXEixzzY.draw(10);
-    const ModUAWSgggfvHapC = dMntVMG.label
-    const lqvUETCUafi = AfmqzbYLWatchhgB.limits
-    const wlvPMb = zRFjJXxxetMQrDlTMO.createRenderPipeline({
+    GPURenderPassEncoder5.setPipeline(GPURenderPipeline8);
+    GPURenderPassEncoder5.draw(9);
+    const GPUTextureView12 = GPUTexture6.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 9,
+        baseMipLevel: 0,
+        format: "rg8uint",
+        label: "GPUTextureView12"
+    });
+    const GPUBindGroupLayout8 = GPUComputePipeline1.getBindGroupLayout(0);
+    const boolean6 = GPUAdapter6.isFallbackAdapter
+    GPURenderPassEncoder4.draw(7);
+    GPURenderPassEncoder4.draw(2);
+    const boolean7 = GPUAdapter0.isFallbackAdapter
+    const string69 = await navigator.gpu.getPreferredCanvasFormat();
+    const GPUQueue4 = GPUDevice0.queue
+    const GPUQuerySet6 = GPUDevice0.createQuerySet({
+        count: 1250,
+        label: "GPUQuerySet6",
+        type: "occlusion"
+    });
+    const string70 = GPUQuerySet3.label
+    GPUComputePassEncoder11.end();
+    const GPUCommandBuffer1 = GPUCommandEncoder12.finish();
+    const GPUSupportedFeatures11 = GPUAdapter2.features
+    GPURenderPassEncoder5.end();
+    GPUQueue4.writeBuffer(GPUBuffer0, 0, typedArray10);
+    const GPUBindGroup5 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline0.bindGroup",
+        layout: GPUComputePipeline0.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    const string71 = await navigator.gpu.getPreferredCanvasFormat();
+    const GPUTextureView13 = GPUTexture4.createView({
+        aspect: "all",
+        dimension: "2d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "bgra8unorm",
+        label: "GPUTextureView13"
+    });
+    GPUQueue2.submit([GPUCommandBuffer1]);
+    GPUComputePassEncoder10.end();
+    const GPUCommandBuffer1 = GPUCommandEncoder11.finish();
+    GPUQueue4.submit([GPUCommandBuffer1]);
+    const GPUSupportedFeatures12 = GPUDevice0.features
+    const GPUAdapterInfo7 = GPUAdapter2.info
+    const GPUTexture13 = GPUDevice0.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "bgra8unorm",
+        label: "GPUTexture13",
+        size: {
+            width: 145,
+            height: 496,
+            depthOrArrayLayers: 46
+        },
+        mipLevelCount: 4,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT,
+        viewFormats: ["bgra8unorm-srgb"]
+    });
+    const GPUTextureView14 = GPUTexture13.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 1,
+        format: "bgra8unorm",
+        label: "GPUTextureView14"
+    });
+    const GPURenderPassEncoder8 = GPUCommandEncoder7.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 0.14544134064041758,
+                g: 1.7145737677702444,
+                b: 0.49045868276063276,
+                a: 1.9996627225225325
+            },
+            loadOp: "load",
+            storeOp: "discard",
+            view: GPUTextureView14,
+            depthSlice: 9
+        }],
+        label: "GPURenderPassEncoder8",
+        maxDrawCount: 2312209218,
+        occlusionQuerySet: GPUQuerySet4
+    });
+    const GPUSupportedLimits9 = GPUDevice0.limits
+    const GPUSupportedFeatures13 = GPUDevice0.features
+    const GPUAdapterInfo8 = GPUAdapter4.info
+    const string72 = await navigator.gpu.getPreferredCanvasFormat();
+    const GPUCommandEncoder13 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder13"
+    });
+    const GPUComputePassEncoder12 = GPUCommandEncoder13.beginComputePass({
+        label: "GPUComputePassEncoder12"
+    });
+    GPUComputePassEncoder12.setPipeline(GPUComputePipeline6);
+    GPUComputePassEncoder12.setBindGroup(0, GPUBindGroup4);
+    GPUComputePassEncoder12.dispatchWorkgroups(160, 165, 26);
+    GPUComputePassEncoder12.end();
+    const GPUCommandBuffer1 = GPUCommandEncoder13.finish();
+    GPUQueue3.submit([GPUCommandBuffer1]);
+    const GPUQuerySet7 = GPUDevice0.createQuerySet({
+        count: 3189,
+        label: "GPUQuerySet7",
+        type: "occlusion"
+    });
+    const GPUShaderModule11 = GPUDevice0.createShaderModule({
+        label: "vertex",
+        code: shader11
+    });
+    const WGSLLanguageFeatures4 = navigator.gpu.wgslLanguageFeatures
+    GPURenderPassEncoder4.setPipeline(GPURenderPipeline4);
+    const string73 = GPUCommandEncoder6.label
+    const string74 = GPURenderPipeline0.label
+    const GPUQueue5 = GPUDevice0.queue
+    const GPUSupportedLimits10 = GPUDevice0.limits
+    const string75 = GPURenderPassEncoder4.label
+    const string76 = await navigator.gpu.getPreferredCanvasFormat();
+    GPURenderPassEncoder4.setVertexBuffer(0, GPUBuffer4);
+    const string77 = GPUCommandEncoder6.label
+    const GPUCommandEncoder14 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder14"
+    });
+    const GPUComputePassEncoder13 = GPUCommandEncoder14.beginComputePass({
+        label: "GPUComputePassEncoder13"
+    });
+    GPUComputePassEncoder13.end();
+    GPUQueue2.writeBuffer(GPUBuffer0, 0, typedArray11);
+    const GPUBindGroup6 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline2.bindGroup",
+        layout: GPUComputePipeline2.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    GPURenderPassEncoder4.setVertexBuffer(0, GPUBuffer0);
+    const string78 = GPUCommandEncoder14.label
+    const GPUComputePassEncoder14 = GPUCommandEncoder14.beginComputePass({
+        label: "GPUComputePassEncoder14"
+    });
+    GPURenderPassEncoder4.draw(7);
+    GPURenderPassEncoder8.setVertexBuffer(0, GPUBuffer4);
+    GPUComputePassEncoder14.setPipeline(GPUComputePipeline2);
+    const string79 = GPUTextureView2.label
+    GPURenderPassEncoder4.end();
+    GPUComputePassEncoder14.end();
+    const GPUCommandBuffer1 = GPUCommandEncoder14.finish();
+    GPUQueue2.submit([GPUCommandBuffer1]);
+    GPUQueue5.writeBuffer(GPUBuffer4, 40493872, typedArray12);
+    const string80 = GPUTextureView12.label
+    GPUQueue1.writeBuffer(GPUBuffer4, 23130440, typedArray13);
+    const boolean8 = GPUAdapter4.isFallbackAdapter
+    const GPUQueue6 = GPUDevice0.queue
+    const string81 = GPURenderPassEncoder8.label
+    const GPUComputePassEncoder15 = GPUCommandEncoder6.beginComputePass({
+        label: "GPUComputePassEncoder15"
+    });
+    GPUComputePassEncoder15.setPipeline(GPUComputePipeline0);
+    GPUQueue2.writeBuffer(GPUBuffer4, 47285344, typedArray14);
+    const GPUQuerySet8 = GPUDevice0.createQuerySet({
+        count: 1312,
+        label: "GPUQuerySet8",
+        type: "occlusion"
+    });
+    const string82 = GPUComputePassEncoder15.label
+    GPUComputePassEncoder15.setBindGroup(0, GPUBindGroup5);
+    GPUComputePassEncoder15.end();
+    const GPUCommandBuffer1 = GPUCommandEncoder6.finish();
+    GPUQueue6.submit([GPUCommandBuffer1]);
+    const string83 = GPUQueue4.label
+    const GPUBuffer8 = GPUDevice0.createBuffer({
+        label: "GPUBuffer8",
+        mappedAtCreation: false,
+        size: 18219660,
+        usage: GPUBufferUsage.COPY_SRC | GPUBufferUsage.INDIRECT | GPUBufferUsage.STORAGE | GPUBufferUsage.UNIFORM | GPUBufferUsage.INDEX | GPUBufferUsage.VERTEX
+    });
+    const GPUTexture14 = GPUDevice0.createTexture({
+        dimension: "1d",
+        sampleCount: 1,
+        format: "rg32float",
+        label: "GPUTexture14",
+        size: {
+            width: 3149,
+            height: 1,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
+        viewFormats: ["rg32float"]
+    });
+    GPURenderPassEncoder8.end();
+    const GPUCommandBuffer1 = GPUCommandEncoder7.finish();
+    GPUQueue3.submit([GPUCommandBuffer1]);
+    const GPUCommandEncoder15 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder15"
+    });
+    const GPUTexture15 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 4,
+        format: "bgra8unorm-srgb",
+        label: "GPUTexture15",
+        size: {
+            width: 1975,
+            height: 3103,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["bgra8unorm"]
+    });
+    const GPUTextureView15 = GPUTexture15.createView({
+        aspect: "all",
+        dimension: "2d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "bgra8unorm",
+        label: "GPUTextureView15"
+    });
+    const GPURenderPassEncoder9 = GPUCommandEncoder15.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 1.1315117452251295,
+                g: 1.6058174914219203,
+                b: 0.49949249138712104,
+                a: 1.787948021384732
+            },
+            loadOp: "load",
+            storeOp: "discard",
+            view: GPUTextureView15
+        }],
+        label: "GPURenderPassEncoder9",
+        maxDrawCount: 3175242981,
+        occlusionQuerySet: GPUQuerySet5
+    });
+    GPURenderPassEncoder9.setPipeline(GPURenderPipeline4);
+    const GPUCommandEncoder16 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder16"
+    });
+    const GPUComputePassEncoder16 = GPUCommandEncoder16.beginComputePass({
+        label: "GPUComputePassEncoder16"
+    });
+    GPUComputePassEncoder16.end();
+    const string84 = GPUQuerySet8.label
+    const GPUBindGroupLayout9 = GPUComputePipeline3.getBindGroupLayout(0);
+    GPURenderPassEncoder9.end();
+    const GPUAdapter7 = await navigator.gpu.requestAdapter({
+        powerPreference: "high-performance"
+    });
+    const GPUAdapterInfo9 = GPUAdapter1.info
+    const GPUTexture16 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 4,
+        format: "r16float",
+        label: "GPUTexture16",
+        size: {
+            width: 2788,
+            height: 2918,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["r16float"]
+    });
+    const GPUTextureView16 = GPUTexture16.createView({
+        aspect: "all",
+        dimension: "2d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "r16float",
+        label: "GPUTextureView16"
+    });
+    const GPURenderPassEncoder10 = GPUCommandEncoder15.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 1.8304794753676392,
+                g: 0.2222770643258154,
+                b: 0.7285794639664362,
+                a: 0.37669463825505867
+            },
+            loadOp: "clear",
+            storeOp: "store",
+            view: GPUTextureView16
+        }],
+        label: "GPURenderPassEncoder10",
+        maxDrawCount: 368787494,
+        occlusionQuerySet: GPUQuerySet7
+    });
+    const GPURenderPipeline9 = GPUDevice0.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: DbxblPJPWkzMMuzrP,
+            module: GPUShaderModule7,
             targets: [{
                 blend: {
                     alpha: {
                         operation: "add",
                         dstFactor: "one-minus-src",
-                        srcFactor: "zero"
+                        srcFactor: "src-alpha"
+                    },
+                    color: {
+                        operation: "reverse-subtract",
+                        dstFactor: "one-minus-dst",
+                        srcFactor: "one-minus-dst-alpha"
+                    }
+                },
+                format: "r16float",
+                writeMask: GPUColorWrite.BLUE
+            }]
+        },
+        label: "GPURenderPipeline9",
+        layout: "auto",
+        multisample: {
+            count: 4
+        },
+        primitive: {
+            cullMode: "front",
+            frontFace: "cw",
+            topology: "point-list"
+        },
+        vertex: {
+            entryPoint: "main",
+            module: GPUShaderModule1
+        }
+    });
+    GPURenderPassEncoder10.setPipeline(GPURenderPipeline9);
+    GPURenderPassEncoder10.draw(6);
+    const GPUTexture17 = GPUDevice0.createTexture({
+        dimension: "1d",
+        sampleCount: 1,
+        format: "rgba8unorm",
+        label: "GPUTexture17",
+        size: {
+            width: 2276,
+            height: 1,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.STORAGE_BINDING,
+        viewFormats: ["rgba8unorm"]
+    });
+    const GPUBindGroupLayout10 = GPUComputePipeline2.getBindGroupLayout(0);
+    const string85 = GPUComputePipeline0.label
+    const string86 = GPUComputePipeline2.label
+    const string87 = GPUQuerySet3.count
+    const string88 = GPURenderPipeline7.label
+    const GPUSupportedFeatures14 = GPUDevice0.features
+    const GPUComputePassEncoder17 = GPUCommandEncoder16.beginComputePass({
+        label: "GPUComputePassEncoder17"
+    });
+    GPUComputePassEncoder17.end();
+    const boolean9 = GPUAdapter3.isFallbackAdapter
+    const string89 = GPUCommandEncoder15.label
+    const GPUComputePipeline7 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule10
+        },
+        label: "GPUComputePipeline7",
+        layout: "auto"
+    });
+    const GPUQueue7 = GPUDevice0.queue
+    const string90 = GPURenderPassEncoder10.label
+    GPURenderPassEncoder10.end();
+    const GPUTexture18 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 4,
+        format: "rgba8unorm",
+        label: "GPUTexture18",
+        size: {
+            width: 3269,
+            height: 2408,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["rgba8unorm"]
+    });
+    const GPUTextureView17 = GPUTexture18.createView({
+        aspect: "all",
+        dimension: "2d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "rgba8unorm",
+        label: "GPUTextureView17"
+    });
+    const GPURenderPassEncoder11 = GPUCommandEncoder16.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 1.98360316665525,
+                g: 0.6072050359581058,
+                b: 1.1850243187838527,
+                a: 0.4089718781979237
+            },
+            loadOp: "clear",
+            storeOp: "discard",
+            view: GPUTextureView17
+        }],
+        label: "GPURenderPassEncoder11",
+        maxDrawCount: 3599378267,
+        occlusionQuerySet: GPUQuerySet4
+    });
+    GPURenderPassEncoder11.setVertexBuffer(0, GPUBuffer4);
+    const string91 = GPUQuerySet4.type
+    const GPUBindGroupLayout11 = GPUComputePipeline3.getBindGroupLayout(0);
+    const GPUSupportedLimits11 = GPUAdapter2.limits
+    GPURenderPassEncoder11.end();
+    const GPUQueue8 = GPUDevice0.queue
+    const GPUCommandBuffer1 = GPUCommandEncoder16.finish();
+    GPUQueue5.submit([GPUCommandBuffer1]);
+    const GPUShaderModule12 = GPUDevice0.createShaderModule({
+        label: "fragment",
+        code: shader12
+    });
+    const GPUComputePassEncoder18 = GPUCommandEncoder15.beginComputePass({
+        label: "GPUComputePassEncoder18"
+    });
+    const string92 = GPUComputePassEncoder18.label
+    const string93 = GPUComputePassEncoder18.label
+    const GPUCommandEncoder17 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder17"
+    });
+    const GPUTexture19 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 1,
+        format: "rg16float",
+        label: "GPUTexture19",
+        size: {
+            width: 230,
+            height: 1445,
+            depthOrArrayLayers: 9
+        },
+        mipLevelCount: 5,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST,
+        viewFormats: ["rg16float"]
+    });
+    const GPUTextureView18 = GPUTexture19.createView({
+        aspect: "all",
+        dimension: "2d-array",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "rg16float",
+        label: "GPUTextureView18"
+    });
+    const GPURenderPassEncoder12 = GPUCommandEncoder17.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 1.237020455611836,
+                g: 0.8619934627784982,
+                b: 1.4030932859003382,
+                a: 1.271425486868812
+            },
+            loadOp: "clear",
+            storeOp: "store",
+            view: GPUTextureView18
+        }],
+        label: "GPURenderPassEncoder12",
+        maxDrawCount: 4081238296,
+        occlusionQuerySet: GPUQuerySet8
+    });
+    const string94 = GPURenderPassEncoder12.label
+    const string95 = await navigator.gpu.getPreferredCanvasFormat();
+    const GPUSupportedFeatures15 = GPUDevice0.features
+    GPUQueue6.writeBuffer(GPUBuffer0, 0, typedArray15);
+    const GPUBindGroup7 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline7.bindGroup",
+        layout: GPUComputePipeline7.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    const string96 = GPURenderPassEncoder12.label
+    const GPUAdapterInfo10 = GPUAdapter5.info
+    const GPUAdapterInfo11 = GPUAdapter3.info
+    const GPUBuffer9 = GPUDevice0.createBuffer({
+        label: "GPUBuffer9",
+        mappedAtCreation: true,
+        size: 64059136,
+        usage: GPUBufferUsage.QUERY_RESOLVE
+    });
+    const string97 = GPUQueue3.label
+    const GPURenderPipeline10 = GPUDevice0.createRenderPipeline({
+        fragment: {
+            entryPoint: "main",
+            module: GPUShaderModule0,
+            targets: [{
+                blend: {
+                    alpha: {
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
                     },
                     color: {
                         operation: "max",
@@ -346,216 +1923,74 @@ async function main() {
                     }
                 },
                 format: "rgba16float",
-                writeMask: GPUColorWrite.ALPHA | GPUColorWrite.GREEN | GPUColorWrite.ALL | GPUColorWrite.RED
+                writeMask: GPUColorWrite.GREEN | GPUColorWrite.ALL | GPUColorWrite.ALPHA | GPUColorWrite.RED
             }]
         },
-        label: "AUhddKbIT",
+        label: "GPURenderPipeline10",
         layout: "auto",
         multisample: {
-            count: 1
-        },
-        primitive: {
-            cullMode: "none",
-            frontFace: "cw",
-            topology: "line-list"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: qgxHQxhpvTfaFOlB
-        }
-    });
-    const PdmBoUunGIAKR = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "huGOyKhMPtIxVecdR"
-    });
-    const jdBkumCZZtanJ = PdmBoUunGIAKR.beginComputePass({
-        label: "tiGLbMQtcIqT"
-    });
-    const MYHGvmunRTNn = MoIrlBY.label
-    const tibKRelIHFIoakYgD = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "eauCKHdJfnESGigMy",
-        mappedAtCreation: false,
-        size: 52538864,
-        usage: GPUBufferUsage.VERTEX | GPUBufferUsage.INDIRECT | GPUBufferUsage.COPY_SRC | GPUBufferUsage.STORAGE | GPUBufferUsage.QUERY_RESOLVE
-    });
-    AEXEixzzY.setVertexBuffer(0, tibKRelIHFIoakYgD);
-    const UWyXQBcBvGvfGgWL = AfmqzbYLWatchhgB.isFallbackAdapter
-    const ZrrVEZEESUEqoBUnNUlg = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "1d",
-        sampleCount: 1,
-        format: "rg32float",
-        label: "rIunO",
-        size: {
-            width: 2530,
-            height: 1,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.STORAGE_BINDING,
-        viewFormats: ["rg32float"]
-    });
-    AEXEixzzY.setVertexBuffer(0, tibKRelIHFIoakYgD);
-    const sWIqrDMfdZwM = zRFjJXxxetMQrDlTMO.label
-    const VTUdFYwTMEC = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "fragment",
-        code: OPtgtogjEzeaD
-    });
-    nwtRVXFu.end();
-    const smiUCAbrgdTg = navigator.gpu.wgslLanguageFeatures
-    const SBRwTQONDBDYlBKO = RQOuYIWRjLI.finish();
-    const RThXXiyW = iAJpEeqJJrfVBN.type
-    AEXEixzzY.setVertexBuffer(0, tibKRelIHFIoakYgD);
-    const iUCalhFWGUkMbirm = AfmqzbYLWatchhgB.isFallbackAdapter
-    const gNrxMXro = AfmqzbYLWatchhgB.limits
-    const aEbcpwZLSuZLGon = zRFjJXxxetMQrDlTMO.limits
-    MoIrlBY.writeBuffer(jCfOHeGkVXyLIaP, 0, pNBhezFMrp);
-    const YfoPkWVRSz = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "dMntVMG.bindGroup",
-        layout: dMntVMG.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    jdBkumCZZtanJ.setBindGroup(0, CzaYDynkZvuP);
-    const IqGnTs = zRFjJXxxetMQrDlTMO.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: VTUdFYwTMEC,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "reverse-subtract",
-                        dstFactor: "one-minus-constant",
-                        srcFactor: "one-minus-dst"
-                    },
-                    color: {
-                        operation: "min",
-                        dstFactor: "one",
-                        srcFactor: "one"
-                    }
-                },
-                format: "bgra8unorm",
-                writeMask: GPUColorWrite.GREEN | GPUColorWrite.ALPHA | GPUColorWrite.BLUE
-            }]
-        },
-        label: "FaPbaHEl",
-        layout: "auto",
-        multisample: {
-            count: 1
+            count: 4
         },
         primitive: {
             cullMode: "front",
-            frontFace: "ccw",
+            frontFace: "cw",
             topology: "line-strip"
         },
         vertex: {
             entryPoint: "main",
-            module: qgxHQxhpvTfaFOlB
+            module: GPUShaderModule11
         }
     });
-    jdBkumCZZtanJ.end();
-    const zzcSzyojYIwptcHk = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "compute",
-        code: vdiiEukUyaxwzUZ
+    const GPUCommandEncoder18 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder18"
     });
-    const GpenRmDeuSEGBbBWXdZ = AfmqzbYLWatchhgB.isFallbackAdapter
-    const TmPkCTHSqbthtG = iAJpEeqJJrfVBN.count
-    const xngrlcIMaKM = AJpEAuLjVgXH.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 5,
-        baseMipLevel: 1,
-        format: "rg8unorm",
-        label: "UfkHVeavmHvHC"
+    const GPUComputePassEncoder19 = GPUCommandEncoder18.beginComputePass({
+        label: "GPUComputePassEncoder19"
     });
-    const nQffPpSVyWldFiKj = await navigator.gpu.requestAdapter({
-        powerPreference: "low-power"
-    });
-    const rYCpIwbyM = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 1894,
-        label: "WrJKragoWRDtQHI",
-        type: "occlusion"
-    });
-    const MWKXXkPLvyMQD = await navigator.gpu.requestAdapter({
-        powerPreference: "high-performance"
-    });
-    AEXEixzzY.end();
-    const lNqAyscjQsGDpBdFab = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 187,
-        label: "AsIfkstDzfORmPiWOL",
-        type: "occlusion"
-    });
-    const vAnuJnBJm = zRFjJXxxetMQrDlTMO.createTexture({
+    const GPUTexture20 = GPUDevice0.createTexture({
         dimension: "2d",
         sampleCount: 4,
-        format: "rg16float",
-        label: "kRUeGJIYfjIjP",
+        format: "rgba8sint",
+        label: "GPUTexture20",
         size: {
-            width: 3335,
-            height: 2161,
+            width: 396,
+            height: 2139,
             depthOrArrayLayers: 1
         },
         mipLevelCount: 1,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
-        viewFormats: ["rg16float"]
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["rgba8sint"]
     });
-    const oXAdxkRXmLEhWAeZC = vAnuJnBJm.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "rg16float",
-        label: "gHtZScWdkqp"
+    const string98 = GPUCommandEncoder18.label
+    const GPUCommandEncoder19 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder19"
     });
-    const MjkyXOl = PdmBoUunGIAKR.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.7291183259478495,
-                g: 1.916791759837116,
-                b: 1.8080411308264452,
-                a: 1.6496060464777742
-            },
-            loadOp: "load",
-            storeOp: "store",
-            view: oXAdxkRXmLEhWAeZC
-        }],
-        label: "EZwSNdJueoDGyLjzJ",
-        maxDrawCount: 2425237319,
-        occlusionQuerySet: iAJpEeqJJrfVBN
+    const GPUComputePassEncoder20 = GPUCommandEncoder19.beginComputePass({
+        label: "GPUComputePassEncoder20"
     });
-    const WNotq = zRFjJXxxetMQrDlTMO.createRenderPipeline({
+    const string99 = GPUComputePipeline0.label
+    const GPURenderPipeline11 = GPUDevice0.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: DbxblPJPWkzMMuzrP,
+            module: GPUShaderModule12,
             targets: [{
                 blend: {
                     alpha: {
-                        operation: "min",
-                        dstFactor: "one",
-                        srcFactor: "one"
+                        operation: "reverse-subtract",
+                        dstFactor: "src-alpha",
+                        srcFactor: "src-alpha-saturated"
                     },
                     color: {
-                        operation: "min",
+                        operation: "max",
                         dstFactor: "one",
                         srcFactor: "one"
                     }
                 },
-                format: "rg16float",
-                writeMask: GPUColorWrite.ALL | GPUColorWrite.ALPHA | GPUColorWrite.GREEN
+                format: "rgb10a2unorm",
+                writeMask: GPUColorWrite.GREEN | GPUColorWrite.ALL | GPUColorWrite.RED
             }]
         },
-        label: "WqAGMjDNlFAgrWJ",
+        label: "GPURenderPipeline11",
         layout: "auto",
         multisample: {
             count: 4
@@ -563,1168 +1998,264 @@ async function main() {
         primitive: {
             cullMode: "front",
             frontFace: "cw",
-            topology: "triangle-list"
+            topology: "triangle-strip"
         },
         vertex: {
             entryPoint: "main",
-            module: qgxHQxhpvTfaFOlB
+            module: GPUShaderModule5
         }
     });
-    MjkyXOl.setPipeline(WNotq);
-    MjkyXOl.draw(10);
-    const VeCRqLVGwLSdhSIPW = zRFjJXxxetMQrDlTMO.features
-    const kQuiGoHgdhquvpKcMLH = YyeboGqCUPv.label
-    const yKUseiRNWCY = zRFjJXxxetMQrDlTMO.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: zzcSzyojYIwptcHk
-        },
-        label: "RGfIUgZQjIxfMuI",
-        layout: "auto"
-    });
-    const rtizwiF = AfmqzbYLWatchhgB.info
-    const EKxcVTKbxtrjzK = zRFjJXxxetMQrDlTMO.features
-    const XYSJlTQlUOKZhyd = IYWpYnd.label
-    const NRxDmYqsEFKbNWnwH = MWKXXkPLvyMQD.info
-    MoIrlBY.submit([SBRwTQONDBDYlBKO]);
-    const twIAkuEEPHodVQR = ZcWXtpmOZccj.beginComputePass({
-        label: "PQMPBFpQqMNoBibGMfmY"
-    });
-    twIAkuEEPHodVQR.setPipeline(dMntVMG);
-    MoIrlBY.writeBuffer(jCfOHeGkVXyLIaP, 0, imWufGNthbitEPzfQxQN);
-    const eDoQcI = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "dMntVMG.bindGroup",
-        layout: dMntVMG.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    const jJLgXrDiEbDKtTVbQo = zRFjJXxxetMQrDlTMO.label
-    const hNYxo = zRFjJXxxetMQrDlTMO.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: fRsnsVsrHLnf
-        },
-        label: "rgtduChGzWJuVUCFDCQJ",
-        layout: "auto"
-    });
-    const ELjejdfuZHxIiUB = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "vertex",
-        code: cOTNYOtprf
-    });
-    const aVIlwcYP = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "jqqjWbNbraGtI"
-    });
-    const poXsQdJaqpaMJS = zRFjJXxxetMQrDlTMO.limits
-    twIAkuEEPHodVQR.end();
-    MjkyXOl.draw(8);
-    const jtHBjKQHn = aVIlwcYP.beginComputePass({
-        label: "MTijuArVMmxhwsZJ"
-    });
-    const DkynQoaxTGNvQsAhv = jtHBjKQHn.label
-    const IXvXaMRZIoiXQjYrLyWE = wlvPMb.label
-    jtHBjKQHn.end();
-    const ELIzLANxIOjMlR = MWKXXkPLvyMQD.isFallbackAdapter
-    const gxYwXpWXPWLTTtd = ZcWXtpmOZccj.beginComputePass({
-        label: "DjVtXrB"
-    });
-    gxYwXpWXPWLTTtd.setPipeline(hNYxo);
-    const JsgUIxFO = dMntVMG.label
-    const YqEugVZCYqqllRpdbjr = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "fragment",
-        code: MSHyhaGCvkk
-    });
-    const BMYbwbb = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "r8snorm",
-        label: "AVWEYGuHOp",
-        size: {
-            width: 678,
-            height: 590,
-            depthOrArrayLayers: 15
-        },
-        mipLevelCount: 8,
-        usage: GPUTextureUsage.COPY_DST,
-        viewFormats: ["r8snorm"]
-    });
-    const HgObVKcrST = dMntVMG.label
-    const lyfbZMmSBl = rYCpIwbyM.count
-    const GhpfVb = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "uOUJaMjfUJ"
-    });
-    const czWVbndkbMz = aVIlwcYP.beginComputePass({
-        label: "SEAxUjQeeKUHDYeolQaQ"
-    });
-    const vnyhBwEY = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rg8snorm",
-        label: "NpVNZRAknhPiO",
-        size: {
-            width: 286,
-            height: 363,
-            depthOrArrayLayers: 30
-        },
-        mipLevelCount: 9,
-        usage: GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["rg8snorm"]
-    });
-    const jkMoDuD = IYWpYnd.label
-    MjkyXOl.end();
-    const ZhmXyHewy = zRFjJXxxetMQrDlTMO.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: VTUdFYwTMEC,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "subtract",
-                        dstFactor: "constant",
-                        srcFactor: "one"
-                    },
-                    color: {
-                        operation: "max",
-                        dstFactor: "one",
-                        srcFactor: "one"
-                    }
-                },
-                format: "rg16float",
-                writeMask: GPUColorWrite.RED
-            }]
-        },
-        label: "gfKiuXeTnzSczzvPe",
-        layout: "auto",
-        multisample: {
-            count: 4
-        },
-        primitive: {
-            cullMode: "none",
-            frontFace: "cw",
-            topology: "line-strip"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: ELjejdfuZHxIiUB
-        }
-    });
-    const mNscnEl = zRFjJXxxetMQrDlTMO.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: zzcSzyojYIwptcHk
-        },
-        label: "mVAJJSSAVKBziu",
-        layout: "auto"
-    });
-    const zpsCrlqVOAwre = zRFjJXxxetMQrDlTMO.features
-    const YGXFT = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "gLslFpOpIPpuTCGhRsMX",
-        mappedAtCreation: false,
-        size: 39963132,
-        usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.INDEX | GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_SRC | GPUBufferUsage.STORAGE | GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.INDIRECT
-    });
-    const bGhcYTB = zRFjJXxxetMQrDlTMO.label
-    const hRIlyXyNLcWMzFwZn = lNqAyscjQsGDpBdFab.type
-    const rRhxaqoLr = zRFjJXxxetMQrDlTMO.label
-    const qImNITDTYhd = GhpfVb.beginComputePass({
-        label: "xlXlRvxQQqdtwrWJ"
-    });
-    MoIrlBY.submit([eiQPHIaiGgVqSK]);
-    const rrgIcrkuxVAGLwkr = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rgba16float",
-        label: "TIRFKoQoMP",
-        size: {
-            width: 565,
-            height: 131,
-            depthOrArrayLayers: 37
-        },
-        mipLevelCount: 8,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.STORAGE_BINDING,
-        viewFormats: ["rgba16float"]
-    });
-    const OZcRhOHmotP = rrgIcrkuxVAGLwkr.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 5,
-        format: "rgba16float",
-        label: "ejwnpzRZmvKBpyxNYk"
-    });
-    const bfsGiuCykAGzqHw = PdmBoUunGIAKR.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.8679402005056585,
-                g: 0.6277752870505076,
-                b: 1.2452372014051256,
-                a: 1.77319849645494
-            },
-            loadOp: "clear",
-            storeOp: "store",
-            view: OZcRhOHmotP,
-            depthSlice: 0
-        }],
-        label: "GLKNZDTVlMcIsF",
-        maxDrawCount: 3042535233,
-        occlusionQuerySet: iAJpEeqJJrfVBN
-    });
-    bfsGiuCykAGzqHw.setPipeline(wlvPMb);
-    bfsGiuCykAGzqHw.draw(7);
-    const HpXXWQsILDuz = hNYxo.getBindGroupLayout(0);
-    const iJNIKKNSZOTIXEh = mNscnEl.label
-    const iqhholDQxJRuJMws = await navigator.gpu.getPreferredCanvasFormat();
-    const PkkCBqqoI = qImNITDTYhd.label
-    MoIrlBY.writeBuffer(jCfOHeGkVXyLIaP, 0, lZHPUcwPfRANvOiIib);
-    const hvfrKx = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "yKUseiRNWCY.bindGroup",
-        layout: yKUseiRNWCY.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    bfsGiuCykAGzqHw.setVertexBuffer(0, tibKRelIHFIoakYgD);
-    const FamqJtKBIgOkiLEthZKu = ZhmXyHewy.label
-    const tUSsCC = bfsGiuCykAGzqHw.label
-    IYWpYnd.writeBuffer(jCfOHeGkVXyLIaP, 8, ceGzs);
-    const JbQsl = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "vertex",
-        code: ZgMVEOyXa
-    });
-    const XaeoETImZKJmMslLC = MoIrlBY.label
-    const TgIWdQFUdAcmZrkLCcPj = lNqAyscjQsGDpBdFab.label
-    const BOnXSB = hNYxo.getBindGroupLayout(0);
-    bfsGiuCykAGzqHw.setVertexBuffer(0, tibKRelIHFIoakYgD);
-    qImNITDTYhd.setPipeline(yKUseiRNWCY);
-    const GfPvGC = zRFjJXxxetMQrDlTMO.features
-    const ZpEwimsjLaBb = yKUseiRNWCY.getBindGroupLayout(0);
-    const BTUCdBO = zRFjJXxxetMQrDlTMO.limits
-    const UBUyiKEfCabQeBb = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rgba16uint",
-        label: "qofwbMKMgjUzkpT",
-        size: {
-            width: 186,
-            height: 942,
-            depthOrArrayLayers: 28
-        },
-        mipLevelCount: 6,
-        usage: GPUTextureUsage.STORAGE_BINDING,
-        viewFormats: ["rgba16uint"]
-    });
-    qImNITDTYhd.setBindGroup(0, hvfrKx);
-    bfsGiuCykAGzqHw.setVertexBuffer(0, tibKRelIHFIoakYgD);
-    const IrRtRglNbIeGCaM = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "CUUakWGneZOM",
-        mappedAtCreation: true,
-        size: 246454516,
-        usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.UNIFORM | GPUBufferUsage.VERTEX | GPUBufferUsage.INDEX | GPUBufferUsage.QUERY_RESOLVE
-    });
-    qImNITDTYhd.end();
-    const LlTkEAhfczCxTde = zRFjJXxxetMQrDlTMO.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: fRsnsVsrHLnf
-        },
-        label: "mvdfG",
-        layout: "auto"
-    });
-    czWVbndkbMz.setPipeline(LlTkEAhfczCxTde);
-    MoIrlBY.writeBuffer(jCfOHeGkVXyLIaP, 0, pzmxZOxMSSGHgPqgf);
-    const KEWqEoXo = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "LlTkEAhfczCxTde.bindGroup",
-        layout: LlTkEAhfczCxTde.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    czWVbndkbMz.setBindGroup(0, KEWqEoXo);
-    czWVbndkbMz.dispatchWorkgroups(205, 212, 8);
-    const tmgbKOgRvlJ = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "fragment",
-        code: DtROaNfzSJDPWDTV
-    });
-    const vXEkadyZSBeLyrx = ZhmXyHewy.label
-    const zsVKgGaiYswV = LlTkEAhfczCxTde.getBindGroupLayout(0);
-    const RJUnOIpIkDsGcVhw = await navigator.gpu.requestAdapter({
-        powerPreference: "high-performance"
-    });
-    bfsGiuCykAGzqHw.end();
-    const lcVQj = PdmBoUunGIAKR.finish();
-    gxYwXpWXPWLTTtd.end();
-    const wKmhBKbFea = ZcWXtpmOZccj.finish();
-    const YXwWlaMnXtPs = hNYxo.getBindGroupLayout(0);
-    const HffcSwuqRfWdbp = MWKXXkPLvyMQD.isFallbackAdapter
-    const AITqVzSaFSiSuTJgO = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "HYZHPJmsUT"
-    });
-    const zZBFHylfxxk = lNqAyscjQsGDpBdFab.type
-    const IbwVaqyqBllqyw = mNscnEl.getBindGroupLayout(0);
-    const LUSUc = RJUnOIpIkDsGcVhw.limits
-    const ObezsSuFKIwPqYZGExTr = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "2d",
-        sampleCount: 1,
-        format: "bgra8unorm",
-        label: "zuUXV",
-        size: {
-            width: 1463,
-            height: 2338,
-            depthOrArrayLayers: 9
-        },
-        mipLevelCount: 7,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["bgra8unorm"]
-    });
-    const VbPZFQzBzE = ObezsSuFKIwPqYZGExTr.createView({
+    GPURenderPassEncoder12.end();
+    const GPUTextureView19 = GPUTexture4.createView({
         aspect: "all",
         dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 4,
-        format: "bgra8unorm",
-        label: "CjXqSMKyD"
-    });
-    const kbGoOrKrVGYyDBczmsF = AITqVzSaFSiSuTJgO.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 1.2907618428297725,
-                g: 0.815471675204557,
-                b: 0.4283187828004935,
-                a: 1.1289150442263574
-            },
-            loadOp: "load",
-            storeOp: "store",
-            view: VbPZFQzBzE
-        }],
-        label: "MeIURiSbLe",
-        maxDrawCount: 2403802052,
-        occlusionQuerySet: iAJpEeqJJrfVBN
-    });
-    const AfDWKFMmsamD = kbGoOrKrVGYyDBczmsF.label
-    const ahaXuRG = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "bgra8unorm",
-        label: "dAgWIstVCEuuSrhnIrC",
-        size: {
-            width: 39,
-            height: 485,
-            depthOrArrayLayers: 2
-        },
-        mipLevelCount: 3,
-        usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["bgra8unorm"]
-    });
-    const EgytiTHTAZRalKM = IYWpYnd.label
-    kbGoOrKrVGYyDBczmsF.end();
-    const aOvwOkfHKlFJnDhOJXvI = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 4004,
-        label: "EesavKxe",
-        type: "occlusion"
-    });
-    czWVbndkbMz.setBindGroup(0, KEWqEoXo);
-    czWVbndkbMz.setPipeline(yKUseiRNWCY);
-    const cHhsX = OZcRhOHmotP.label
-    const JQCqMJxSasvv = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rg8uint",
-        label: "lPEWH",
-        size: {
-            width: 281,
-            height: 578,
-            depthOrArrayLayers: 44
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["rg8uint"]
-    });
-    const sYuRIUcNvAgZ = AfmqzbYLWatchhgB.features
-    const tTpxtE = GhpfVb.beginComputePass({
-        label: "rUNkDMmjxjjJjthMAVC"
-    });
-    const zCMtQPIyDNYABnRiAo = nQffPpSVyWldFiKj.info
-    const oQMbYvOufpE = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "CKpqmSwsuN",
-        mappedAtCreation: false,
-        size: 172844248,
-        usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.VERTEX | GPUBufferUsage.INDIRECT | GPUBufferUsage.COPY_SRC
-    });
-    const gzwSuaudsvlM = AfmqzbYLWatchhgB.info
-    const LFqqEaLJzPJFkskA = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rg8unorm",
-        label: "arEiVxDef",
-        size: {
-            width: 904,
-            height: 652,
-            depthOrArrayLayers: 58
-        },
-        mipLevelCount: 6,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["rg8unorm"]
-    });
-    const OtaQIVrvuZmQ = LFqqEaLJzPJFkskA.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 3,
-        format: "rg8unorm",
-        label: "bWeqlFAKzQFBkzLA"
-    });
-    const XJJyaikxYOdXndSZR = AITqVzSaFSiSuTJgO.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.7666065941434732,
-                g: 1.9179558750666996,
-                b: 0.6893632978879394,
-                a: 0.898981344912076
-            },
-            loadOp: "load",
-            storeOp: "store",
-            view: OtaQIVrvuZmQ,
-            depthSlice: 4
-        }],
-        label: "Cwgwxrgxtrk",
-        maxDrawCount: 32373447,
-        occlusionQuerySet: iAJpEeqJJrfVBN
-    });
-    XJJyaikxYOdXndSZR.end();
-    const RRHfQCInePLQy = MoIrlBY.label
-    const GHyvuhcVtv = await navigator.gpu.requestAdapter({
-        powerPreference: "high-performance"
-    });
-    MoIrlBY.writeBuffer(jCfOHeGkVXyLIaP, 0, ZxiNjBAC);
-    const LOzaOozS = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "yKUseiRNWCY.bindGroup",
-        layout: yKUseiRNWCY.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    const YyEKQRIxbjbexjIAhoWC = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "2d",
-        sampleCount: 1,
-        format: "rgba16float",
-        label: "RGsNQRbyn",
-        size: {
-            width: 3168,
-            height: 3236,
-            depthOrArrayLayers: 9
-        },
-        mipLevelCount: 4,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["rgba16float"]
-    });
-    const oJkbTzZpROtIPO = YyEKQRIxbjbexjIAhoWC.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 1,
-        format: "rgba16float",
-        label: "CtqyqQQsgAoLos"
-    });
-    const nJQSLVLLSwyEBxXM = AITqVzSaFSiSuTJgO.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.797768483548934,
-                g: 0.6381145972159221,
-                b: 1.2209820128926068,
-                a: 1.5698263666208414
-            },
-            loadOp: "clear",
-            storeOp: "store",
-            view: oJkbTzZpROtIPO
-        }],
-        label: "hSkDhQJG",
-        maxDrawCount: 977452630,
-        occlusionQuerySet: iAJpEeqJJrfVBN
-    });
-    nJQSLVLLSwyEBxXM.end();
-    const YdyyfeeEf = zRFjJXxxetMQrDlTMO.queue
-    const qdnByEsHzlan = czWVbndkbMz.label
-    const yaAZcBhJ = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rg8unorm",
-        label: "lVpaNEqFTvpwE",
-        size: {
-            width: 794,
-            height: 180,
-            depthOrArrayLayers: 14
-        },
-        mipLevelCount: 7,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["rg8unorm"]
-    });
-    const TVHcgCONzYRyg = yaAZcBhJ.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 3,
-        format: "rg8unorm",
-        label: "pyJliGanvT"
-    });
-    const ilJtPkNJJv = AITqVzSaFSiSuTJgO.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 1.9040553781420788,
-                g: 1.7415595876424461,
-                b: 0.6554523522603841,
-                a: 0.3313360450512006
-            },
-            loadOp: "clear",
-            storeOp: "discard",
-            view: TVHcgCONzYRyg,
-            depthSlice: 0
-        }],
-        label: "NbGkHVefxMeTekuFRXIC",
-        maxDrawCount: 4151633619,
-        occlusionQuerySet: rYCpIwbyM
-    });
-    const cyBdFigMpznuK = ilJtPkNJJv.label
-    tTpxtE.end();
-    const tZsdKaWixJN = GhpfVb.finish();
-    const MoAtELZrotvCVESmr = MWKXXkPLvyMQD.info
-    ilJtPkNJJv.setVertexBuffer(0, oQMbYvOufpE);
-    MoIrlBY.writeBuffer(jCfOHeGkVXyLIaP, 0, QjzUAiWam);
-    const vskdtWeCdabttveWGE = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "hNYxo.bindGroup",
-        layout: hNYxo.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    const CqkKSb = lNqAyscjQsGDpBdFab.count
-    czWVbndkbMz.setBindGroup(0, LOzaOozS);
-    const wdIiLSEiqCwVrpEMToR = GHyvuhcVtv.limits
-    const ZvLiSNnzZ = ilJtPkNJJv.label
-    const mUofRtOWIIuGWpPlqV = zRFjJXxxetMQrDlTMO.features
-    ilJtPkNJJv.end();
-    const ImEaJWIU = AITqVzSaFSiSuTJgO.finish();
-    const enINIPKcMvwwEz = zRFjJXxxetMQrDlTMO.limits
-    const KEtAFrCTjMVDPV = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "tMMImpLzfMJggXdSTpa"
-    });
-    const pVUPLfD = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "2d",
-        sampleCount: 1,
-        format: "rgba8unorm",
-        label: "ZPggNsOdkMyOujlx",
-        size: {
-            width: 3134,
-            height: 2465,
-            depthOrArrayLayers: 8
-        },
-        mipLevelCount: 3,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.STORAGE_BINDING | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["rgba8unorm-srgb"]
-    });
-    const fNYhCwuLhDje = pVUPLfD.createView({
-        aspect: "all",
-        dimension: "2d-array",
         arrayLayerCount: 1,
         baseArrayLayer: 0,
         mipLevelCount: 1,
         baseMipLevel: 0,
-        format: "rgba8unorm",
-        label: "qffQYUJpIVibXEZNX"
+        format: "bgra8unorm",
+        label: "GPUTextureView19"
     });
-    const tMbxnAFUInIFdSNaiylf = KEtAFrCTjMVDPV.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.05615984088769266,
-                g: 0.41736491695065947,
-                b: 1.2499753332254542,
-                a: 1.2079094568253441
-            },
-            loadOp: "load",
-            storeOp: "store",
-            view: fNYhCwuLhDje
-        }],
-        label: "DfeLX",
-        maxDrawCount: 165096611,
-        occlusionQuerySet: iAJpEeqJJrfVBN
-    });
-    tMbxnAFUInIFdSNaiylf.end();
-    const IIPCVWnYdR = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "jaBisz"
-    });
-    const BOKgishQmtcu = lNqAyscjQsGDpBdFab.type
-    const jSFevJerFEExLrQf = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "XRita"
-    });
-    const SRgjCBGVDavOrAGNvkoX = lNqAyscjQsGDpBdFab.label
-    const BMbXEFN = zRFjJXxxetMQrDlTMO.label
-    const mhLRmjOpoZptUd = zRFjJXxxetMQrDlTMO.features
-    const OBmMMmoHxSInLpd = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 117,
-        label: "TtYHCHKteasytU",
-        type: "occlusion"
-    });
-    const TfCSXPFuQTLEu = await navigator.gpu.getPreferredCanvasFormat();
-    const yHKSHHm = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "r8unorm",
-        label: "PnGlGOB",
-        size: {
-            width: 105,
-            height: 64,
-            depthOrArrayLayers: 20
-        },
-        mipLevelCount: 3,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT,
-        viewFormats: ["r8unorm"]
-    });
-    const vKwDPPR = yHKSHHm.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "r8unorm",
-        label: "ewjJL"
-    });
-    const yXmMylTJQrqzXNCLBrh = IIPCVWnYdR.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 1.3630022996476028,
-                g: 0.1433848530806734,
-                b: 1.4061171994788613,
-                a: 0.26073412741826885
-            },
-            loadOp: "clear",
-            storeOp: "discard",
-            view: vKwDPPR,
-            depthSlice: 7
-        }],
-        label: "IzaFZrE",
-        maxDrawCount: 4056208141,
-        occlusionQuerySet: OBmMMmoHxSInLpd
-    });
-    const vOXAwtota = zRFjJXxxetMQrDlTMO.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: tmgbKOgRvlJ,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "add",
-                        dstFactor: "src-alpha",
-                        srcFactor: "dst-alpha"
-                    },
-                    color: {
-                        operation: "reverse-subtract",
-                        dstFactor: "one-minus-src-alpha",
-                        srcFactor: "one"
-                    }
-                },
-                format: "r8unorm",
-                writeMask: GPUColorWrite.RED | GPUColorWrite.ALL | GPUColorWrite.GREEN | GPUColorWrite.BLUE
-            }]
-        },
-        label: "KRSAQReuPNsZCCrBN",
-        layout: "auto",
-        multisample: {
-            count: 1
-        },
-        primitive: {
-            cullMode: "none",
-            frontFace: "cw",
-            topology: "point-list"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: JbQsl
-        }
-    });
-    yXmMylTJQrqzXNCLBrh.setPipeline(vOXAwtota);
-    const CXbxiO = yXmMylTJQrqzXNCLBrh.label
-    const csLQNcxHlgOsDfHnu = yXmMylTJQrqzXNCLBrh.label
-    const FfJTzxIgmUPRlJBnu = zRFjJXxxetMQrDlTMO.limits
-    const DslwWggdkXjgYGiY = zRFjJXxxetMQrDlTMO.limits
-    const NvomLvsbD = LlTkEAhfczCxTde.label
-    const ibxVOBoPaS = yXmMylTJQrqzXNCLBrh.label
-    const CKMSUCaqeDgjTDWoib = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 3485,
-        label: "TNFhveHxwcoiQUIsDGWW",
-        type: "occlusion"
-    });
-    const zIKVrgwMHOakI = dMntVMG.label
-    const QJLgKbfjtaZ = YdyyfeeEf.label
-    const RyWMrisTtsnfuQLeD = OBmMMmoHxSInLpd.type
-    const IoWHeXeK = zRFjJXxxetMQrDlTMO.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: YqEugVZCYqqllRpdbjr,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "max",
-                        dstFactor: "one",
-                        srcFactor: "one"
-                    },
-                    color: {
-                        operation: "add",
-                        dstFactor: "zero",
-                        srcFactor: "src-alpha"
-                    }
-                },
-                format: "r8unorm",
-                writeMask: GPUColorWrite.GREEN | GPUColorWrite.RED | GPUColorWrite.ALPHA
-            }]
-        },
-        label: "WYzSNBnv",
-        layout: "auto",
-        multisample: {
-            count: 4
-        },
-        primitive: {
-            cullMode: "none",
-            frontFace: "cw",
-            topology: "line-strip"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: JbQsl
-        }
-    });
-    yXmMylTJQrqzXNCLBrh.draw(10);
-    const DKqYljOGEIXErWbUAYg = dMntVMG.label
-    const dIkXHTJKHOrnXPapC = czWVbndkbMz.label
-    const fjUfZjp = yXmMylTJQrqzXNCLBrh.label
-    czWVbndkbMz.end();
-    const mfEmBLTZiaYoKr = rYCpIwbyM.label
-    yXmMylTJQrqzXNCLBrh.draw(6);
-    const ASWUU = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 862,
-        label: "iYiBhqMuVAliWVG",
-        type: "occlusion"
-    });
-    const qBwNtm = await navigator.gpu.requestAdapter({
-        powerPreference: "high-performance"
-    });
-    yXmMylTJQrqzXNCLBrh.setPipeline(vOXAwtota);
-    const UIBkcycIWx = nQffPpSVyWldFiKj.isFallbackAdapter
-    MoIrlBY.writeBuffer(jCfOHeGkVXyLIaP, 0, CWoecXBprjXqyaRfc);
-    const JbyQuXGFlmlstMLacB = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "LlTkEAhfczCxTde.bindGroup",
-        layout: LlTkEAhfczCxTde.getBindGroupLayout(0),
+    GPUQueue2.writeBuffer(GPUBuffer0, 0, typedArray16);
+    const GPUBindGroup8 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline4.bindGroup",
+        layout: GPUComputePipeline4.getBindGroupLayout(0),
         entries: [{
             binding: 0,
             resource: {
-                buffer: jCfOHeGkVXyLIaP
+                buffer: GPUBuffer0
             }
         }, {
             binding: 1,
             resource: {
-                buffer: axiME
+                buffer: GPUBuffer1
             }
         }]
     });
-    const WuXgaSah = yKUseiRNWCY.getBindGroupLayout(0);
-    const wuMhjPd = ASWUU.type
-    const OLjICQOyMEbRprOEzAFU = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "tTpUlUjm"
-    });
-    const iDNwR = rYCpIwbyM.count
-    const dIDQnJT = KEtAFrCTjMVDPV.finish();
-    const VoOQvRZIUyjQSIxTkdHY = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
+    const GPUTexture21 = GPUDevice0.createTexture({
+        dimension: "2d",
         sampleCount: 1,
-        format: "rg16float",
-        label: "RjtqEqzamWtxCfJvdi",
+        format: "bgra8unorm-srgb",
+        label: "GPUTexture21",
         size: {
-            width: 614,
-            height: 274,
-            depthOrArrayLayers: 28
+            width: 2322,
+            height: 1399,
+            depthOrArrayLayers: 32
         },
-        mipLevelCount: 5,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST,
-        viewFormats: ["rg16float"]
+        mipLevelCount: 10,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["bgra8unorm-srgb"]
     });
-    const dQEEHkQI = VoOQvRZIUyjQSIxTkdHY.createView({
+    const GPUTextureView20 = GPUTexture21.createView({
         aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 1,
-        format: "rg16float",
-        label: "uSfDGjabAYn"
-    });
-    const CTPiD = OLjICQOyMEbRprOEzAFU.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.5196523112997804,
-                g: 0.664171521406905,
-                b: 0.5419976561752742,
-                a: 0.2312758438572784
-            },
-            loadOp: "load",
-            storeOp: "store",
-            view: dQEEHkQI,
-            depthSlice: 5
-        }],
-        label: "ZBtCaCfktwKCAU",
-        maxDrawCount: 1687341324,
-        occlusionQuerySet: iAJpEeqJJrfVBN
-    });
-    const ltXlfGJvPaNKjV = mNscnEl.label
-    const XUFumVNJryQFcbWrjX = IYWpYnd.label
-    IYWpYnd.writeBuffer(jCfOHeGkVXyLIaP, 0, hgmtHT);
-    const YIdrzkjj = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "LlTkEAhfczCxTde.bindGroup",
-        layout: LlTkEAhfczCxTde.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    const iaLRcxhtfiihsogNRV = iAJpEeqJJrfVBN.type
-    const uPaRvKMlWK = jSFevJerFEExLrQf.beginComputePass({
-        label: "ldGRrfrkKjKutD"
-    });
-    uPaRvKMlWK.end();
-    const sRiBfVUCiuQRmNywyalK = jSFevJerFEExLrQf.beginComputePass({
-        label: "SwIku"
-    });
-    sRiBfVUCiuQRmNywyalK.setBindGroup(0, CzaYDynkZvuP);
-    const kQXTxzTfByn = MoIrlBY.label
-    const uOezLcFUKjoiRH = iAJpEeqJJrfVBN.type
-    const SmnrYpy = jSFevJerFEExLrQf.label
-    const yMkfZtWmKbBJ = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "r16float",
-        label: "wUseqJbzuIWYkcABV",
-        size: {
-            width: 857,
-            height: 75,
-            depthOrArrayLayers: 37
-        },
-        mipLevelCount: 9,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT,
-        viewFormats: ["r16float"]
-    });
-    const yZTDzatcW = yMkfZtWmKbBJ.createView({
-        aspect: "all",
-        dimension: "3d",
+        dimension: "2d",
         arrayLayerCount: 1,
         baseArrayLayer: 0,
         mipLevelCount: 1,
         baseMipLevel: 8,
-        format: "r16float",
-        label: "kizrHzL"
+        format: "bgra8unorm-srgb",
+        label: "GPUTextureView20"
     });
-    const aTdmiBla = aVIlwcYP.beginRenderPass({
+    const GPURenderPassEncoder13 = GPUCommandEncoder17.beginRenderPass({
         colorAttachments: [{
             clearValue: {
-                r: 0.9161022173972317,
-                g: 1.804805978954957,
-                b: 0.2607731691062358,
-                a: 0.5919492462378995
+                r: 1.5839213732865236,
+                g: 0.15946721660295204,
+                b: 0.21532471526066588,
+                a: 1.8739729252052224
             },
             loadOp: "clear",
-            storeOp: "store",
-            view: yZTDzatcW,
-            depthSlice: 0
+            storeOp: "discard",
+            view: GPUTextureView20
         }],
-        label: "VGGmJjBLUEX",
-        maxDrawCount: 2814687384,
-        occlusionQuerySet: rYCpIwbyM
+        label: "GPURenderPassEncoder13",
+        maxDrawCount: 589242566,
+        occlusionQuerySet: GPUQuerySet3
     });
-    const uEPYFef = navigator.gpu.wgslLanguageFeatures
-    const QdNaR = nQffPpSVyWldFiKj.limits
-    const DOjsovLsXCQ = zRFjJXxxetMQrDlTMO.createRenderPipeline({
+    const GPURenderPipeline12 = GPUDevice0.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: YqEugVZCYqqllRpdbjr,
+            module: GPUShaderModule8,
             targets: [{
                 blend: {
                     alpha: {
-                        operation: "max",
+                        operation: "min",
                         dstFactor: "one",
                         srcFactor: "one"
                     },
                     color: {
-                        operation: "subtract",
-                        dstFactor: "dst-alpha",
-                        srcFactor: "one"
+                        operation: "reverse-subtract",
+                        dstFactor: "dst",
+                        srcFactor: "one-minus-src-alpha"
                     }
                 },
-                format: "r16float",
-                writeMask: GPUColorWrite.GREEN | GPUColorWrite.RED | GPUColorWrite.ALL
+                format: "bgra8unorm-srgb",
+                writeMask: GPUColorWrite.ALPHA | GPUColorWrite.BLUE | GPUColorWrite.ALL | GPUColorWrite.RED
             }]
         },
-        label: "Xxvps",
+        label: "GPURenderPipeline12",
         layout: "auto",
         multisample: {
             count: 1
         },
         primitive: {
-            cullMode: "none",
+            cullMode: "front",
             frontFace: "ccw",
             topology: "triangle-strip"
         },
         vertex: {
             entryPoint: "main",
-            module: JbQsl
+            module: GPUShaderModule5
         }
     });
-    aTdmiBla.setPipeline(DOjsovLsXCQ);
-    aTdmiBla.draw(5);
-    aTdmiBla.setVertexBuffer(0, tibKRelIHFIoakYgD);
-    const DxwXCggeHssOQSN = sRiBfVUCiuQRmNywyalK.label
-    yXmMylTJQrqzXNCLBrh.setPipeline(vOXAwtota);
-    const XPkVoBkIFLzi = zRFjJXxxetMQrDlTMO.createTexture({
+    GPURenderPassEncoder13.setPipeline(GPURenderPipeline12);
+    const GPUCommandEncoder20 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder20"
+    });
+    const GPUComputePassEncoder21 = GPUCommandEncoder20.beginComputePass({
+        label: "GPUComputePassEncoder21"
+    });
+    GPUQueue5.writeBuffer(GPUBuffer0, 0, typedArray17);
+    const GPUBindGroup9 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline6.bindGroup",
+        layout: GPUComputePipeline6.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    const GPUSupportedLimits12 = GPUDevice0.limits
+    const string100 = GPUDevice0.label
+    const string101 = GPURenderPipeline9.label
+    const GPUCommandEncoder21 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder21"
+    });
+    const GPUTexture22 = GPUDevice0.createTexture({
         dimension: "3d",
         sampleCount: 1,
-        format: "r32float",
-        label: "eBSRnquoVMKwyWQ",
+        format: "rgba16float",
+        label: "GPUTexture22",
         size: {
-            width: 288,
-            height: 519,
-            depthOrArrayLayers: 25
+            width: 458,
+            height: 675,
+            depthOrArrayLayers: 36
         },
-        mipLevelCount: 3,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.STORAGE_BINDING,
-        viewFormats: ["r32float"]
+        mipLevelCount: 4,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["rgba16float"]
     });
-    const ckJJLKSDAHWXbYrB = aTdmiBla.label
-    const tUbzTcCt = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "ZVshADQhKZmVC"
+    const GPUTextureView21 = GPUTexture22.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "rgba16float",
+        label: "GPUTextureView21"
     });
-    const mTnzhgzUYjGIhIr = AfmqzbYLWatchhgB.isFallbackAdapter
-    const rWKQx = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "XIHidRtrHPTYRtgMLY"
+    const GPURenderPassEncoder14 = GPUCommandEncoder21.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 0.4305818016068097,
+                g: 1.6032184245071075,
+                b: 1.358308958391648,
+                a: 0.053329349269970905
+            },
+            loadOp: "clear",
+            storeOp: "discard",
+            view: GPUTextureView21,
+            depthSlice: 24
+        }],
+        label: "GPURenderPassEncoder14",
+        maxDrawCount: 529221832,
+        occlusionQuerySet: GPUQuerySet1
     });
-    const LANVX = zRFjJXxxetMQrDlTMO.features
-    const KsAOLiwyvhpdmCF = tUbzTcCt.finish();
-    const VbWsOOZSclXYFxxL = MWKXXkPLvyMQD.features
-    const LoYKlKV = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "lbvPat",
+    const GPUSupportedLimits13 = GPUAdapter4.limits
+    const string102 = GPURenderPipeline12.label
+    GPURenderPassEncoder14.setPipeline(GPURenderPipeline3);
+    const string103 = await navigator.gpu.getPreferredCanvasFormat();
+    const GPUShaderModule13 = GPUDevice0.createShaderModule({
+        label: "fragment",
+        code: shader13
+    });
+    const string104 = GPUComputePassEncoder21.label
+    const string105 = GPUComputePipeline5.label
+    const GPUBindGroupLayout12 = GPUComputePipeline5.getBindGroupLayout(0);
+    GPUComputePassEncoder21.end();
+    const GPUCommandBuffer1 = GPUCommandEncoder20.finish();
+    const GPUBindGroupLayout13 = GPUComputePipeline7.getBindGroupLayout(0);
+    const string106 = await navigator.gpu.getPreferredCanvasFormat();
+    const string107 = await navigator.gpu.getPreferredCanvasFormat();
+    const GPUAdapterInfo12 = GPUAdapter7.info
+    const string108 = GPUQuerySet4.type
+    const string109 = GPUComputePipeline2.label
+    const string110 = GPUQuerySet7.count
+    const GPUQuerySet9 = GPUDevice0.createQuerySet({
+        count: 42,
+        label: "GPUQuerySet9",
+        type: "occlusion"
+    });
+    GPUQueue4.submit([GPUCommandBuffer1]);
+    GPURenderPassEncoder13.setPipeline(GPURenderPipeline12);
+    const GPUBuffer10 = GPUDevice0.createBuffer({
+        label: "GPUBuffer10",
+        mappedAtCreation: true,
+        size: 250919476,
+        usage: GPUBufferUsage.INDIRECT | GPUBufferUsage.STORAGE | GPUBufferUsage.INDEX | GPUBufferUsage.COPY_SRC | GPUBufferUsage.UNIFORM
+    });
+    const GPUCommandEncoder22 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder22"
+    });
+    const GPUComputePassEncoder22 = GPUCommandEncoder22.beginComputePass({
+        label: "GPUComputePassEncoder22"
+    });
+    GPURenderPassEncoder14.setPipeline(GPURenderPipeline3);
+    GPURenderPassEncoder14.draw(1);
+    const GPUQueue9 = GPUDevice0.queue
+    const GPUSupportedLimits14 = GPUDevice0.limits
+    const GPUCommandEncoder23 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder23"
+    });
+    const GPUComputePassEncoder23 = GPUCommandEncoder23.beginComputePass({
+        label: "GPUComputePassEncoder23"
+    });
+    GPUComputePassEncoder19.end();
+    const WGSLLanguageFeatures5 = navigator.gpu.wgslLanguageFeatures
+    const GPUBuffer11 = GPUDevice0.createBuffer({
+        label: "GPUBuffer11",
         mappedAtCreation: false,
-        size: 91454832,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.UNIFORM | GPUBufferUsage.QUERY_RESOLVE
+        size: 233293572,
+        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_DST
     });
-    const hnUyzCsJ = aOvwOkfHKlFJnDhOJXvI.label
-    const aDUXaJTJkWHzZiI = jSFevJerFEExLrQf.label
-    const JRodQhR = navigator.gpu.wgslLanguageFeatures
-    IYWpYnd.writeBuffer(jCfOHeGkVXyLIaP, 0, VswdAHssvfRXEPsfhnUG);
-    const xTvRgrTKz = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "dMntVMG.bindGroup",
-        layout: dMntVMG.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
+    const string111 = GPUComputePassEncoder18.label
+    const WGSLLanguageFeatures6 = navigator.gpu.wgslLanguageFeatures
+    const GPUQuerySet10 = GPUDevice0.createQuerySet({
+        count: 281,
+        label: "GPUQuerySet10",
+        type: "occlusion"
     });
-    YdyyfeeEf.writeBuffer(jCfOHeGkVXyLIaP, 0, bSetkmJE);
-    const MzCJPwxgKTteBYeqdhE = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "LlTkEAhfczCxTde.bindGroup",
-        layout: LlTkEAhfczCxTde.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
+    const string112 = GPUComputePassEncoder18.label
+    const GPUComputePassEncoder24 = GPUCommandEncoder18.beginComputePass({
+        label: "GPUComputePassEncoder24"
     });
-    MoIrlBY.writeBuffer(jCfOHeGkVXyLIaP, 0, muepHZJLr);
-    const euIfMgOcjmJYupALmUL = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "LlTkEAhfczCxTde.bindGroup",
-        layout: LlTkEAhfczCxTde.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    const mMngRypfRxM = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "EjAmSWfdgOwkIbRb",
-        mappedAtCreation: false,
-        size: 11975912,
-        usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC | GPUBufferUsage.UNIFORM | GPUBufferUsage.VERTEX | GPUBufferUsage.INDIRECT | GPUBufferUsage.STORAGE | GPUBufferUsage.QUERY_RESOLVE
-    });
-    const iBVCW = yKUseiRNWCY.getBindGroupLayout(0);
-    const QYCieGfZKmj = navigator.gpu.wgslLanguageFeatures
-    const QvTDtpPdaIYyiMccpB = zRFjJXxxetMQrDlTMO.label
-    const yOJoT = CTPiD.label
-    MoIrlBY.writeBuffer(mMngRypfRxM, 10998056, WElSWFvVbl);
-    const fxmQWjzBWBLlBGC = qBwNtm.limits
-    const nMBvOGAkBsKHccUdOr = MWKXXkPLvyMQD.info
-    const gRCPBZOqfITxql = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "osLQUsrqHgcf",
-        mappedAtCreation: false,
-        size: 188429704,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.INDEX | GPUBufferUsage.UNIFORM
-    });
-    yXmMylTJQrqzXNCLBrh.setVertexBuffer(0, oQMbYvOufpE);
-    const qjEfbymnrB = aOvwOkfHKlFJnDhOJXvI.type
-    const KucznFzxyIHM = zRFjJXxxetMQrDlTMO.limits
-    const tqxFfwRBUY = MoIrlBY.label
-    const XDvVyNVpQuJHhYrom = zRFjJXxxetMQrDlTMO.createRenderPipeline({
+    const GPURenderPipeline13 = GPUDevice0.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: YqEugVZCYqqllRpdbjr,
+            module: GPUShaderModule0,
             targets: [{
                 blend: {
                     alpha: {
                         operation: "min",
                         dstFactor: "one",
                         srcFactor: "one"
-                    },
-                    color: {
-                        operation: "subtract",
-                        dstFactor: "one",
-                        srcFactor: "one-minus-dst"
-                    }
-                },
-                format: "rgb10a2unorm",
-                writeMask: GPUColorWrite.ALPHA
-            }]
-        },
-        label: "ekMvSrOnonAY",
-        layout: "auto",
-        multisample: {
-            count: 1
-        },
-        primitive: {
-            cullMode: "none",
-            frontFace: "ccw",
-            topology: "point-list"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: ELjejdfuZHxIiUB
-        }
-    });
-    const uLlEOgFuYX = zUtwNvk.label
-    CTPiD.end();
-    const HNnCVfQaAMYV = IYWpYnd.label
-    const zsFOtbN = aTdmiBla.label
-    yXmMylTJQrqzXNCLBrh.setVertexBuffer(0, oQMbYvOufpE);
-    yXmMylTJQrqzXNCLBrh.setVertexBuffer(0, tibKRelIHFIoakYgD);
-    const DKpGBgLwONsU = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "yffcK"
-    });
-    const nHvtKjXWcxlYvvZfy = dMntVMG.label
-    const PmCTHBKROpA = sRiBfVUCiuQRmNywyalK.label
-    const vnCfmCJquYmjt = XPkVoBkIFLzi.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 3,
-        baseMipLevel: 0,
-        format: "r32float",
-        label: "mUHUUScYYQW"
-    });
-    const miMuNKmLQ = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "rRheCXpXDX",
-        mappedAtCreation: true,
-        size: 261124900,
-        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.INDIRECT | GPUBufferUsage.STORAGE
-    });
-    const fAbmStYowWvWPfoxPeX = rrgIcrkuxVAGLwkr.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 8,
-        baseMipLevel: 0,
-        format: "rgba16float",
-        label: "QJeyyDzn"
-    });
-    const LhajAiQLhVaraio = zRFjJXxxetMQrDlTMO.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: DbxblPJPWkzMMuzrP,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "subtract",
-                        dstFactor: "zero",
-                        srcFactor: "dst-alpha"
                     },
                     color: {
                         operation: "max",
@@ -1732,308 +2263,14 @@ async function main() {
                         srcFactor: "one"
                     }
                 },
-                format: "rg16float",
+                format: "r16float",
                 writeMask: GPUColorWrite.GREEN | GPUColorWrite.RED | GPUColorWrite.ALPHA
             }]
         },
-        label: "RsqQhuGiDWZj",
+        label: "GPURenderPipeline13",
         layout: "auto",
         multisample: {
             count: 1
-        },
-        primitive: {
-            cullMode: "none",
-            frontFace: "ccw",
-            topology: "point-list"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: ELjejdfuZHxIiUB
-        }
-    });
-    const WSHSeynO = rWKQx.finish();
-    sRiBfVUCiuQRmNywyalK.setBindGroup(0, vskdtWeCdabttveWGE);
-    sRiBfVUCiuQRmNywyalK.setPipeline(mNscnEl);
-    YdyyfeeEf.submit([wKmhBKbFea]);
-    YdyyfeeEf.writeBuffer(mMngRypfRxM, 6634592, KuUdDLmDdfEcKXRlwd);
-    const ZblNtpuCzuXl = OLjICQOyMEbRprOEzAFU.beginComputePass({
-        label: "EoUFqHyPqhKf"
-    });
-    const NqFxVCMxvwnSY = YyeboGqCUPv.label
-    const XEQNUhKlIgkUfVyUl = MWKXXkPLvyMQD.isFallbackAdapter
-    const tiEYzvAsBw = yaAZcBhJ.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 2,
-        baseMipLevel: 4,
-        format: "rg8unorm",
-        label: "zLoWVi"
-    });
-    const CqblVCLJLBvMb = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "fragment",
-        code: wlMBISnUuKSYuQJ
-    });
-    sRiBfVUCiuQRmNywyalK.end();
-    const FBhZSbKpqftDqKPB = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rg16float",
-        label: "ansXMLNh",
-        size: {
-            width: 598,
-            height: 589,
-            depthOrArrayLayers: 37
-        },
-        mipLevelCount: 9,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT,
-        viewFormats: ["rg16float"]
-    });
-    const HIrAFXGWQyOAsjdCZW = FBhZSbKpqftDqKPB.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 4,
-        format: "rg16float",
-        label: "ZSCBZHmuQJtlPwsnFO"
-    });
-    const ggUcTNPYY = DKpGBgLwONsU.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.16120015613137073,
-                g: 1.2473417540642162,
-                b: 1.006728998947575,
-                a: 1.1972606040483673
-            },
-            loadOp: "clear",
-            storeOp: "store",
-            view: HIrAFXGWQyOAsjdCZW,
-            depthSlice: 0
-        }],
-        label: "rMemBgRc",
-        maxDrawCount: 3869879965,
-        occlusionQuerySet: iAJpEeqJJrfVBN
-    });
-    const jVmWAgK = iAJpEeqJJrfVBN.label
-    const JzDfGBimPdMjTCyKFnP = CKMSUCaqeDgjTDWoib.type
-    const hBlbFp = jSFevJerFEExLrQf.beginComputePass({
-        label: "HvJWUTWEuthVm"
-    });
-    ZblNtpuCzuXl.setPipeline(LlTkEAhfczCxTde);
-    const bMhTxriNPZMpozhmwDI = TVHcgCONzYRyg.label
-    const kvURFNtBRnzW = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "pXpFDkCGhbTZqFj"
-    });
-    const KKfvdfBbgwRNlJDrhr = kvURFNtBRnzW.beginComputePass({
-        label: "sSLKDPflsIhybJnP"
-    });
-    const arxqOwVvZcbwsQeQCc = yKUseiRNWCY.getBindGroupLayout(0);
-    ggUcTNPYY.end();
-    const aowtmonZwuKLEMMEcivh = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rgb10a2unorm",
-        label: "ZhoAVGpmsbQfRCB",
-        size: {
-            width: 512,
-            height: 1023,
-            depthOrArrayLayers: 14
-        },
-        mipLevelCount: 9,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["rgb10a2unorm"]
-    });
-    YdyyfeeEf.submit([lcVQj]);
-    KKfvdfBbgwRNlJDrhr.setPipeline(yKUseiRNWCY);
-    KKfvdfBbgwRNlJDrhr.setBindGroup(0, hvfrKx);
-    KKfvdfBbgwRNlJDrhr.dispatchWorkgroups(127, 232, 19);
-    const nzFAPFBYY = yKUseiRNWCY.getBindGroupLayout(0);
-    hBlbFp.end();
-    const ZnPthQETDuEltKMn = jSFevJerFEExLrQf.finish();
-    const ifnisZ = zRFjJXxxetMQrDlTMO.limits
-    yXmMylTJQrqzXNCLBrh.setVertexBuffer(0, mMngRypfRxM);
-    const EUiMemJOYDbPssVDquH = ZrrVEZEESUEqoBUnNUlg.createView({
-        aspect: "all",
-        dimension: "1d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "rg32float",
-        label: "FHmPhB"
-    });
-    const qymhoZPoPUubiNbewl = DOjsovLsXCQ.label
-    const yhSPMzlTbMXE = navigator.gpu.wgslLanguageFeatures
-    const CEHgqxbmIkliDQsR = zRFjJXxxetMQrDlTMO.limits
-    const mtNuPkvACrNJv = zRFjJXxxetMQrDlTMO.label
-    yXmMylTJQrqzXNCLBrh.setVertexBuffer(0, mMngRypfRxM);
-    const hCJSUmhPcMqS = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "vertex",
-        code: ieyyXxz
-    });
-    MoIrlBY.submit([KsAOLiwyvhpdmCF]);
-    const DDtAsjFnHx = PzwJIAPdqukEoawCp.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "rg16float",
-        label: "DnGVhNJEijTSphF"
-    });
-    const DlbCmwMJoRW = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "KDAeZDluSHrPR",
-        mappedAtCreation: false,
-        size: 257914352,
-        usage: GPUBufferUsage.INDIRECT | GPUBufferUsage.UNIFORM | GPUBufferUsage.STORAGE | GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.VERTEX
-    });
-    const gNyBL = DKpGBgLwONsU.beginComputePass({
-        label: "cpACoF"
-    });
-    const FfPxJOUWPXjoUPDnWjA = yKUseiRNWCY.label
-    gNyBL.setPipeline(LlTkEAhfczCxTde);
-    gNyBL.setBindGroup(0, KEWqEoXo);
-    gNyBL.dispatchWorkgroups(254, 64, 18);
-    const DCHwDIIlawVuYt = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "oWDuGYxZ"
-    });
-    const GZTNwOXAoIsHYsjFm = DCHwDIIlawVuYt.beginComputePass({
-        label: "SAQXykxzBSXUGztB"
-    });
-    const EIBRrnVsWgBDDQE = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 2218,
-        label: "vYnPtBVmXJDGHF",
-        type: "occlusion"
-    });
-    const ONHlPSuolcSqGLZTtV = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "compute",
-        code: ZnjpoMzuyWszi
-    });
-    const zADTcRiqB = lNqAyscjQsGDpBdFab.count
-    const NsosITnKrTdZlEmZTIsu = AfmqzbYLWatchhgB.limits
-    const rZITXsVwxeSi = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "KqjMznrylQBzbGCRt",
-        mappedAtCreation: false,
-        size: 124064444,
-        usage: GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST | GPUBufferUsage.VERTEX | GPUBufferUsage.INDIRECT
-    });
-    const bUXNlxLebiHZsWqODitq = LFqqEaLJzPJFkskA.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 5,
-        baseMipLevel: 1,
-        format: "rg8unorm",
-        label: "cJndqlMbifyx"
-    });
-    const qQzQOamuxcInVsjHD = RJUnOIpIkDsGcVhw.limits
-    const GSWsv = rrgIcrkuxVAGLwkr.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 6,
-        baseMipLevel: 2,
-        format: "rgba16float",
-        label: "QDubXtcAGtAGsPqUxc"
-    });
-    KKfvdfBbgwRNlJDrhr.setBindGroup(0, LOzaOozS);
-    const cAMkJ = qBwNtm.isFallbackAdapter
-    const wQnOlwuXjyIFMLBQ = aOvwOkfHKlFJnDhOJXvI.label
-    yXmMylTJQrqzXNCLBrh.draw(2);
-    const qwwnQ = fNYhCwuLhDje.label
-    const PLRIowYhwsFVGWAcIaeh = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "AbipkyO"
-    });
-    const nKRnWuzL = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "2d",
-        sampleCount: 4,
-        format: "rg16float",
-        label: "xGjQCW",
-        size: {
-            width: 3484,
-            height: 496,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["rg16float"]
-    });
-    const AVYTThHqbxfTwht = nKRnWuzL.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "rg16float",
-        label: "JlMsGaNFUJaJ"
-    });
-    const icMpLx = PLRIowYhwsFVGWAcIaeh.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 1.2333252108286374,
-                g: 0.2557318673518476,
-                b: 0.9473748383539919,
-                a: 0.578538230731565
-            },
-            loadOp: "clear",
-            storeOp: "store",
-            view: AVYTThHqbxfTwht
-        }],
-        label: "DtVyNqPvSvOOVJXDBh",
-        maxDrawCount: 3615477461,
-        occlusionQuerySet: iAJpEeqJJrfVBN
-    });
-    const mrWtCxnumoYgMFKSBB = icMpLx.label
-    const dARELWYBztJmh = zRFjJXxxetMQrDlTMO.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: fRsnsVsrHLnf
-        },
-        label: "SAiUkoWUMJXkBLo",
-        layout: "auto"
-    });
-    const elBUfTAuMkAJXV = ZrrVEZEESUEqoBUnNUlg.createView({
-        aspect: "all",
-        dimension: "1d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "rg32float",
-        label: "IFCvVxLvOPp"
-    });
-    const oZZeyWNNsBA = zRFjJXxxetMQrDlTMO.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: DbxblPJPWkzMMuzrP,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "subtract",
-                        dstFactor: "zero",
-                        srcFactor: "one-minus-constant"
-                    },
-                    color: {
-                        operation: "min",
-                        dstFactor: "one",
-                        srcFactor: "one"
-                    }
-                },
-                format: "rgba8unorm",
-                writeMask: GPUColorWrite.BLUE
-            }]
-        },
-        label: "kpxLzeQKrWI",
-        layout: "auto",
-        multisample: {
-            count: 4
         },
         primitive: {
             cullMode: "back",
@@ -2042,559 +2279,159 @@ async function main() {
         },
         vertex: {
             entryPoint: "main",
-            module: ELjejdfuZHxIiUB
+            module: GPUShaderModule11
         }
     });
-    const oDRZT = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "2d",
-        sampleCount: 1,
-        format: "depth24plus-stencil8",
-        label: "bdKeUNNALemBorXn",
-        size: {
-            width: 2240,
-            height: 1334,
-            depthOrArrayLayers: 6
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["depth24plus-stencil8"]
+    GPURenderPassEncoder13.end();
+    const string113 = GPURenderPassEncoder14.label
+    const GPUQuerySet11 = GPUDevice0.createQuerySet({
+        count: 2036,
+        label: "GPUQuerySet11",
+        type: "occlusion"
     });
-    YdyyfeeEf.writeBuffer(mMngRypfRxM, 9549940, dPiCTEjMXhS);
-    yXmMylTJQrqzXNCLBrh.draw(10);
-    const LkRjMfSdDEnMc = hNYxo.getBindGroupLayout(0);
-    const lhSxfz = zRFjJXxxetMQrDlTMO.label
-    MoIrlBY.submit([dIDQnJT]);
-    const FFektPl = RJUnOIpIkDsGcVhw.isFallbackAdapter
-    const ncERrHYvRLI = nQffPpSVyWldFiKj.limits
-    const UfQCqMghDhN = await navigator.gpu.getPreferredCanvasFormat();
-    const AEFdk = IYWpYnd.label
-    const LHhKjLauhvVNBSYsYCS = GHyvuhcVtv.limits
-    const DUjSTaiMXHgAF = qBwNtm.features
-    const QDAoCjCxNq = aOvwOkfHKlFJnDhOJXvI.count
-    yXmMylTJQrqzXNCLBrh.draw(10);
-    const CsGLCyUkuUFm = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "jcsCesdFEqYPnohropZc"
-    });
-    const DfDHIFuALQtOJfM = CsGLCyUkuUFm.beginComputePass({
-        label: "ffNVIInAUInrkwRfyI"
-    });
-    const gdVtzjnyoDnbfmzuXDU = await navigator.gpu.getPreferredCanvasFormat();
-    IYWpYnd.writeBuffer(jCfOHeGkVXyLIaP, 24, SWgdR);
-    const MGhTI = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "nvOFEospWBpOWyC"
-    });
-    const hqHKpirs = GHyvuhcVtv.info
-    const LwwbDIzUEWnr = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rg8unorm",
-        label: "CHoIYCJnKQXycTG",
-        size: {
-            width: 805,
-            height: 512,
-            depthOrArrayLayers: 37
-        },
-        mipLevelCount: 10,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["rg8unorm"]
-    });
-    const nKYgEAWbp = LwwbDIzUEWnr.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 2,
-        format: "rg8unorm",
-        label: "NlrQsyPpJtgNEmzHMXg"
-    });
-    const kUxfVMumLvIfUUG = MGhTI.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 1.9862151545537083,
-                g: 1.537586245401572,
-                b: 1.4681461017457396,
-                a: 1.6837092714506432
-            },
-            loadOp: "clear",
-            storeOp: "discard",
-            view: nKYgEAWbp,
-            depthSlice: 6
-        }],
-        label: "iyfkuDBJ",
-        maxDrawCount: 2838436965,
-        occlusionQuerySet: ASWUU
-    });
-    GZTNwOXAoIsHYsjFm.setPipeline(hNYxo);
-    GZTNwOXAoIsHYsjFm.setBindGroup(0, vskdtWeCdabttveWGE);
-    GZTNwOXAoIsHYsjFm.dispatchWorkgroups(54, 226, 8);
-    const AeArONbiEhG = MWKXXkPLvyMQD.limits
-    const Tzzofv = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "vertex",
-        code: ZfdGS
-    });
-    const BHKZJUiOMI = kvURFNtBRnzW.label
-    const qssAnIRPFvzDeuAVPzOV = zUtwNvk.label
-    GZTNwOXAoIsHYsjFm.setBindGroup(0, vskdtWeCdabttveWGE);
-    YdyyfeeEf.writeBuffer(jCfOHeGkVXyLIaP, 0, duuCmboDqqGgx);
-    const oUsXVcdYfUUYsrUbg = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "hNYxo.bindGroup",
-        layout: hNYxo.getBindGroupLayout(0),
+    GPUComputePassEncoder23.setPipeline(GPUComputePipeline5);
+    GPUQueue1.writeBuffer(GPUBuffer0, 0, typedArray18);
+    const GPUBindGroup10 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline5.bindGroup",
+        layout: GPUComputePipeline5.getBindGroupLayout(0),
         entries: [{
             binding: 0,
             resource: {
-                buffer: jCfOHeGkVXyLIaP
+                buffer: GPUBuffer0
             }
         }, {
             binding: 1,
             resource: {
-                buffer: axiME
+                buffer: GPUBuffer1
             }
         }]
     });
-    const ZzTMFgDBYW = RJUnOIpIkDsGcVhw.features
-    const RXWCnIiRmjFfVjp = await navigator.gpu.requestAdapter({
+    GPUComputePassEncoder23.setBindGroup(0, GPUBindGroup10);
+    GPUComputePassEncoder23.dispatchWorkgroups(169, 57, 11);
+    const GPUAdapterInfo13 = GPUAdapter1.info
+    const GPUCommandEncoder24 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder24"
+    });
+    const GPUTexture23 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 4,
+        format: "rg8unorm",
+        label: "GPUTexture23",
+        size: {
+            width: 2879,
+            height: 2635,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT,
+        viewFormats: ["rg8unorm"]
+    });
+    const GPUTextureView22 = GPUTexture23.createView({
+        aspect: "all",
+        dimension: "2d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "rg8unorm",
+        label: "GPUTextureView22"
+    });
+    const GPURenderPassEncoder15 = GPUCommandEncoder17.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 1.4111969045535897,
+                g: 0.03230361781655122,
+                b: 0.31145337225618075,
+                a: 1.0917338863440411
+            },
+            loadOp: "load",
+            storeOp: "store",
+            view: GPUTextureView22
+        }],
+        label: "GPURenderPassEncoder15",
+        maxDrawCount: 1411247882,
+        occlusionQuerySet: GPUQuerySet3
+    });
+    const string114 = await navigator.gpu.getPreferredCanvasFormat();
+    GPUComputePassEncoder22.end();
+    const GPUBuffer12 = GPUDevice0.createBuffer({
+        label: "GPUBuffer12",
+        mappedAtCreation: false,
+        size: 153131288,
+        usage: GPUBufferUsage.MAP_WRITE | GPUBufferUsage.COPY_SRC
+    });
+    const string115 = GPUDevice0.label
+    const GPUQuerySet12 = GPUDevice0.createQuerySet({
+        count: 1950,
+        label: "GPUQuerySet12",
+        type: "occlusion"
+    });
+    const GPUCommandEncoder25 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder25"
+    });
+    const string116 = GPUQuerySet6.type
+    const string117 = GPUQuerySet12.type
+    const string118 = GPUQuerySet8.count
+    const GPUQuerySet13 = GPUDevice0.createQuerySet({
+        count: 775,
+        label: "GPUQuerySet13",
+        type: "occlusion"
+    });
+    const GPUAdapter8 = await navigator.gpu.requestAdapter({
         powerPreference: "high-performance"
     });
-    const sIEpResNPtyQqSwktCy = OBmMMmoHxSInLpd.label
-    const eOmaIBNhAHTrgGwv = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "SbvdtWyzInVOZRM"
-    });
-    const eyqhfiAcssayCGlcK = eOmaIBNhAHTrgGwv.beginComputePass({
-        label: "oeHHtwxhQdPR"
-    });
-    const FLBdgTGgc = DOjsovLsXCQ.label
-    DfDHIFuALQtOJfM.end();
-    const ouwrkmVLL = zRFjJXxxetMQrDlTMO.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: tmgbKOgRvlJ,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "max",
-                        dstFactor: "one",
-                        srcFactor: "one"
-                    },
-                    color: {
-                        operation: "min",
-                        dstFactor: "one",
-                        srcFactor: "one"
-                    }
-                },
-                format: "r16float",
-                writeMask: GPUColorWrite.ALPHA | GPUColorWrite.RED | GPUColorWrite.GREEN | GPUColorWrite.ALL
-            }]
-        },
-        label: "UrMzUpcptLufrx",
-        layout: "auto",
-        multisample: {
-            count: 4
-        },
-        primitive: {
-            cullMode: "front",
-            frontFace: "ccw",
-            topology: "triangle-strip"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: JbQsl
-        }
-    });
-    YdyyfeeEf.submit([tZsdKaWixJN]);
-    const smPebz = CsGLCyUkuUFm.beginComputePass({
-        label: "EiXqQxmIRKb"
-    });
-    const CrtmO = AfmqzbYLWatchhgB.features
-    eyqhfiAcssayCGlcK.setPipeline(dMntVMG);
-    eyqhfiAcssayCGlcK.setBindGroup(0, eDoQcI);
-    eyqhfiAcssayCGlcK.dispatchWorkgroups(212, 224, 11);
-    const gBolrLqHNfsKnvIbZvr = TVHcgCONzYRyg.label
-    const omTnCf = ASWUU.label
-    const PMvQYzhrCgmCyFEQ = YdyyfeeEf.label
-    const ZOBnTexbcnSiHX = zRFjJXxxetMQrDlTMO.limits
-    const TRovutdoqZ = aOvwOkfHKlFJnDhOJXvI.count
-    icMpLx.setPipeline(WNotq);
-    icMpLx.draw(9);
-    const ArCUOxdydpaSpvrUSP = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "QDBtkJXymrYkdXDdDlcn",
-        mappedAtCreation: true,
-        size: 80657536,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.INDIRECT | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.VERTEX
-    });
-    const UFQigczPBCbY = ASWUU.type
-    ZblNtpuCzuXl.setBindGroup(0, euIfMgOcjmJYupALmUL);
-    const jSaxkbrNmHsn = ZblNtpuCzuXl.label
-    aTdmiBla.setVertexBuffer(0, tibKRelIHFIoakYgD);
-    const WbmcxhPwoCJwDV = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 3053,
-        label: "XxCpH",
-        type: "occlusion"
-    });
-    const BemmdBZRryjPV = zRFjJXxxetMQrDlTMO.limits
-    const mlUoYMmaRbAUBm = kvURFNtBRnzW.label
-    const MFYaBK = zRFjJXxxetMQrDlTMO.features
-    ZblNtpuCzuXl.end();
-    MoIrlBY.writeBuffer(jCfOHeGkVXyLIaP, 12, aGpCrPeMdF);
-    KKfvdfBbgwRNlJDrhr.setBindGroup(0, hvfrKx);
-    YdyyfeeEf.submit([WSHSeynO]);
-    icMpLx.setPipeline(ZhmXyHewy);
-    eyqhfiAcssayCGlcK.setBindGroup(0, CzaYDynkZvuP);
-    eyqhfiAcssayCGlcK.setPipeline(dARELWYBztJmh);
-    IYWpYnd.writeBuffer(jCfOHeGkVXyLIaP, 0, XxMGjjWh);
-    const AtaraVC = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "dARELWYBztJmh.bindGroup",
-        layout: dARELWYBztJmh.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    eyqhfiAcssayCGlcK.setBindGroup(0, AtaraVC);
-    eyqhfiAcssayCGlcK.dispatchWorkgroups(103, 139, 10);
-    kUxfVMumLvIfUUG.setVertexBuffer(0, DlbCmwMJoRW);
-    const yUEGguUgRRRoT = zRFjJXxxetMQrDlTMO.createShaderModule({
+    const GPUShaderModule14 = GPUDevice0.createShaderModule({
         label: "compute",
-        code: MnpbptbrkWmmHFLk
+        code: shader14
     });
-    const MxWkTjPOdpU = iAJpEeqJJrfVBN.count
-    const hhtxf = await navigator.gpu.getPreferredCanvasFormat();
-    const fnHhQZcibwLGhIYrdfDi = dMntVMG.label
-    MoIrlBY.writeBuffer(DlbCmwMJoRW, 92402784, NdMWtjvrTBVXDJtKFMiE);
-    const FfwKrH = await navigator.gpu.getPreferredCanvasFormat();
-    const xuVSmZDl = zRFjJXxxetMQrDlTMO.createTexture({
+    GPURenderPassEncoder15.setVertexBuffer(0, GPUBuffer8);
+    const string119 = GPURenderPassEncoder15.label
+    const GPUTexture24 = GPUDevice0.createTexture({
         dimension: "2d",
-        sampleCount: 1,
-        format: "r8uint",
-        label: "TjAjaaFEdVafo",
-        size: {
-            width: 2614,
-            height: 3504,
-            depthOrArrayLayers: 55
-        },
-        mipLevelCount: 9,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["r8uint"]
-    });
-    const JpSTccyYxyuVbYr = zRFjJXxxetMQrDlTMO.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: fRsnsVsrHLnf
-        },
-        label: "aELABtmvrSwi",
-        layout: "auto"
-    });
-    const MhcUtzxkVZfNMMrNRFwV = rYCpIwbyM.count
-    smPebz.setPipeline(mNscnEl);
-    const XDUwJJccrFVFrIzHkvz = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "Icimn",
-        mappedAtCreation: false,
-        size: 12208080,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.QUERY_RESOLVE
-    });
-    eyqhfiAcssayCGlcK.end();
-    const GiNLCIlzDuWYlEKlw = dMntVMG.label
-    const dUShQfAqglGngkMpMH = zRFjJXxxetMQrDlTMO.features
-    const ZIPHFZ = RXWCnIiRmjFfVjp.features
-    const DnGPR = IYWpYnd.label
-    const qHzSGIX = zRFjJXxxetMQrDlTMO.queue
-    const McWVBIO = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "hXZgzZoPBZrSNDFJDx",
-        mappedAtCreation: false,
-        size: 183829080,
-        usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.INDEX | GPUBufferUsage.UNIFORM
-    });
-    const FTBgb = await navigator.gpu.getPreferredCanvasFormat();
-    const jTdAWEIRqg = dQEEHkQI.label
-    const VsahhysrVtLaayQejK = qBwNtm.features
-    const LqQPrXsABpSUxtO = MWKXXkPLvyMQD.limits
-    const JkucskJHhuSUIZisj = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "2d",
-        sampleCount: 4,
-        format: "rgb10a2unorm",
-        label: "OnJfmDMgvOAAaqnraf",
-        size: {
-            width: 2490,
-            height: 2191,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["rgb10a2unorm"]
-    });
-    const jdShKggsMwxVkxEhJE = JkucskJHhuSUIZisj.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "rgb10a2unorm",
-        label: "uvcYhr"
-    });
-    const bbImy = OLjICQOyMEbRprOEzAFU.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.08448117085077222,
-                g: 0.47761380242381457,
-                b: 0.3061809518813581,
-                a: 0.3902762958659387
-            },
-            loadOp: "clear",
-            storeOp: "store",
-            view: jdShKggsMwxVkxEhJE
-        }],
-        label: "ltkbaE",
-        maxDrawCount: 474460410,
-        occlusionQuerySet: EIBRrnVsWgBDDQE
-    });
-    const TcVvuuOxhdp = MWKXXkPLvyMQD.isFallbackAdapter
-    const lGsFGRF = zRFjJXxxetMQrDlTMO.label
-    const DxQCVeCfwK = zRFjJXxxetMQrDlTMO.queue
-    const wqdae = zRFjJXxxetMQrDlTMO.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: zzcSzyojYIwptcHk
-        },
-        label: "zCfPeICYkmBMaqM",
-        layout: "auto"
-    });
-    const bgQlKXm = eOmaIBNhAHTrgGwv.beginComputePass({
-        label: "kxcuqnTHxZFzZEF"
-    });
-    aTdmiBla.end();
-    const KgsiNlUjPgEo = aVIlwcYP.finish();
-    const tqfeYrHEAkedobrWl = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "ZKZBMKPMmKrrDv"
-    });
-    const SujYmifwhgGJTWwLddr = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "2d",
-        sampleCount: 4,
-        format: "bgra8unorm",
-        label: "RJehreezfzlvO",
-        size: {
-            width: 3533,
-            height: 2586,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["bgra8unorm-srgb"]
-    });
-    const AfHiUXszmYNjZOGuDdgM = SujYmifwhgGJTWwLddr.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "bgra8unorm-srgb",
-        label: "QZPxHolTFOkFojWionJ"
-    });
-    const ARQGoVzdcpCsPdYQqUU = tqfeYrHEAkedobrWl.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.370773127281812,
-                g: 1.4258313904428157,
-                b: 1.159445020425499,
-                a: 1.751865765026224
-            },
-            loadOp: "clear",
-            storeOp: "store",
-            view: AfHiUXszmYNjZOGuDdgM
-        }],
-        label: "jggCcgvDZdQo",
-        maxDrawCount: 4265956217,
-        occlusionQuerySet: CKMSUCaqeDgjTDWoib
-    });
-    const LqLTlzIRISyym = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 2268,
-        label: "iqITwviMpfpnTSonb",
-        type: "occlusion"
-    });
-    const pByvHqjES = GHyvuhcVtv.limits
-    const EpndVIcqktfa = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "EMlKqEPudg"
-    });
-    const rcuWDjnkgWGDKkSCrK = EpndVIcqktfa.beginComputePass({
-        label: "RtzMiczWNhXv"
-    });
-    ARQGoVzdcpCsPdYQqUU.end();
-    const ndBkaNs = tqfeYrHEAkedobrWl.finish();
-    smPebz.setPipeline(hNYxo);
-    smPebz.setBindGroup(0, vskdtWeCdabttveWGE);
-    smPebz.dispatchWorkgroups(234, 96, 36);
-    yXmMylTJQrqzXNCLBrh.setPipeline(vOXAwtota);
-    IYWpYnd.writeBuffer(jCfOHeGkVXyLIaP, 0, mJsgCrhvnmtHZoa);
-    const RVhVz = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "JpSTccyYxyuVbYr.bindGroup",
-        layout: JpSTccyYxyuVbYr.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    const COIoFWsbY = CKMSUCaqeDgjTDWoib.label
-    const trAIu = GHyvuhcVtv.limits
-    const eaPERAhuYP = zRFjJXxxetMQrDlTMO.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: YqEugVZCYqqllRpdbjr,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "reverse-subtract",
-                        dstFactor: "dst-alpha",
-                        srcFactor: "constant"
-                    },
-                    color: {
-                        operation: "add",
-                        dstFactor: "one",
-                        srcFactor: "src-alpha-saturated"
-                    }
-                },
-                format: "rgba16float",
-                writeMask: GPUColorWrite.RED
-            }]
-        },
-        label: "IUjIuNvqSRzDZhFqLD",
-        layout: "auto",
-        multisample: {
-            count: 1
-        },
-        primitive: {
-            cullMode: "front",
-            frontFace: "cw",
-            topology: "triangle-strip"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: Tzzofv
-        }
-    });
-    YdyyfeeEf.writeBuffer(jCfOHeGkVXyLIaP, 0, DRCZUgMvGZj);
-    const BOYLToeuDhfB = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "mNscnEl.bindGroup",
-        layout: mNscnEl.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    kUxfVMumLvIfUUG.setPipeline(zUtwNvk);
-    kUxfVMumLvIfUUG.draw(5);
-    kUxfVMumLvIfUUG.draw(9);
-    const jLSqCsVr = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rg8unorm",
-        label: "IsYjs",
-        size: {
-            width: 1005,
-            height: 376,
-            depthOrArrayLayers: 34
-        },
-        mipLevelCount: 6,
-        usage: GPUTextureUsage.COPY_SRC | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["rg8unorm"]
-    });
-    IYWpYnd.submit([ZnPthQETDuEltKMn]);
-    MoIrlBY.writeBuffer(jCfOHeGkVXyLIaP, 0, GLPnQVLrvDNIOYHst);
-    const XQIcRwildxyoxeC = zRFjJXxxetMQrDlTMO.createBindGroup({
-        label: "dARELWYBztJmh.bindGroup",
-        layout: dARELWYBztJmh.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: jCfOHeGkVXyLIaP
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: axiME
-            }
-        }]
-    });
-    qHzSGIX.writeBuffer(DlbCmwMJoRW, 124161204, rJLSS);
-    const LgerQjPiznuAx = zRFjJXxxetMQrDlTMO.queue
-    const rXtvGunQ = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "qsxBDPveLlHZL",
-        mappedAtCreation: true,
-        size: 156093428,
-        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.INDEX | GPUBufferUsage.STORAGE | GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST | GPUBufferUsage.QUERY_RESOLVE
-    });
-    const wBGBCFGbajVAKbEtQK = zRFjJXxxetMQrDlTMO.createCommandEncoder({
-        label: "uJvIfRTSMBXyD"
-    });
-    const jNWAMTpzcqp = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
         sampleCount: 1,
         format: "r8unorm",
-        label: "VYIQUsfrDPWuFO",
+        label: "GPUTexture24",
         size: {
-            width: 986,
-            height: 144,
-            depthOrArrayLayers: 43
+            width: 2450,
+            height: 807,
+            depthOrArrayLayers: 63
         },
-        mipLevelCount: 6,
+        mipLevelCount: 5,
         usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING,
         viewFormats: ["r8unorm"]
     });
-    const QgqzZBrdayXGhHivU = jNWAMTpzcqp.createView({
+    const GPUTextureView23 = GPUTexture24.createView({
         aspect: "all",
-        dimension: "3d",
+        dimension: "2d",
         arrayLayerCount: 1,
         baseArrayLayer: 0,
         mipLevelCount: 1,
         baseMipLevel: 1,
         format: "r8unorm",
-        label: "iMCiWCqYxVouEcYMBsg"
+        label: "GPUTextureView23"
     });
-    const bxvqDpwlMqfmhzjEnc = wBGBCFGbajVAKbEtQK.beginRenderPass({
+    const GPURenderPassEncoder16 = GPUCommandEncoder25.beginRenderPass({
         colorAttachments: [{
             clearValue: {
-                r: 1.864346425451875,
-                g: 1.3295423834585807,
-                b: 0.024290758834107695,
-                a: 1.0441890296401992
+                r: 1.734212332895195,
+                g: 1.3808814576820951,
+                b: 0.7813033599850592,
+                a: 0.8802286696714825
             },
             loadOp: "clear",
             storeOp: "store",
-            view: QgqzZBrdayXGhHivU,
-            depthSlice: 18
+            view: GPUTextureView23
         }],
-        label: "BQVwtSrWociduvfm",
-        maxDrawCount: 736490367,
-        occlusionQuerySet: lNqAyscjQsGDpBdFab
+        label: "GPURenderPassEncoder16",
+        maxDrawCount: 81387940,
+        occlusionQuerySet: GPUQuerySet9
     });
-    const NKkgVFFkS = OBmMMmoHxSInLpd.count
-    const ORndQYunIJPqW = zRFjJXxxetMQrDlTMO.queue
-    const PWKqdapzhWNyaSZ = await navigator.gpu.getPreferredCanvasFormat();
-    const SqofYAZMR = zRFjJXxxetMQrDlTMO.createRenderPipeline({
+    const GPUSupportedFeatures16 = GPUDevice0.features
+    const string120 = GPUDevice0.label
+    const GPURenderPipeline14 = GPUDevice0.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: CqblVCLJLBvMb,
+            module: GPUShaderModule12,
             targets: [{
                 blend: {
                     alpha: {
@@ -2603,246 +2440,315 @@ async function main() {
                         srcFactor: "one"
                     },
                     color: {
-                        operation: "add",
-                        dstFactor: "one-minus-dst-alpha",
-                        srcFactor: "one-minus-dst-alpha"
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
                     }
                 },
-                format: "rgb10a2unorm",
-                writeMask: GPUColorWrite.ALPHA | GPUColorWrite.ALL | GPUColorWrite.GREEN | GPUColorWrite.RED
+                format: "r8unorm",
+                writeMask: GPUColorWrite.RED | GPUColorWrite.BLUE
             }]
         },
-        label: "qrvSnTQlwukuCi",
-        layout: "auto",
-        multisample: {
-            count: 4
-        },
-        primitive: {
-            cullMode: "front",
-            frontFace: "cw",
-            topology: "line-list"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: ELjejdfuZHxIiUB
-        }
-    });
-    bbImy.setPipeline(SqofYAZMR);
-    bbImy.draw(1);
-    bgQlKXm.setPipeline(dMntVMG);
-    const gCcDwjaEAhC = zRFjJXxxetMQrDlTMO.label
-    const GySGctFgMSOouAcHCleA = navigator.gpu.wgslLanguageFeatures
-    const FBPJUbmqraNn = iAJpEeqJJrfVBN.count
-    const DYhSmMZbSFe = zRFjJXxxetMQrDlTMO.features
-    const xohrEKPj = ORndQYunIJPqW.label
-    smPebz.setBindGroup(0, oUsXVcdYfUUYsrUbg);
-    smPebz.setPipeline(mNscnEl);
-    smPebz.setBindGroup(0, BOYLToeuDhfB);
-    smPebz.dispatchWorkgroups(70, 175, 53);
-    smPebz.setBindGroup(0, BOYLToeuDhfB);
-    smPebz.setPipeline(dMntVMG);
-    const icuvnABZVEgHokpkbxco = yaAZcBhJ.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 3,
-        baseMipLevel: 0,
-        format: "rg8unorm",
-        label: "uYoGc"
-    });
-    DxQCVeCfwK.submit([ndBkaNs]);
-    const MHfRdRKOrLbsoQTVGllW = zRFjJXxxetMQrDlTMO.createShaderModule({
-        label: "fragment",
-        code: xOLhxb
-    });
-    DxQCVeCfwK.submit([KgsiNlUjPgEo]);
-    const HupfAgJDJqPSJbaoTAH = vOXAwtota.label
-    const hGypc = zRFjJXxxetMQrDlTMO.createBuffer({
-        label: "PLRzSJMFoXxTRHnk",
-        mappedAtCreation: true,
-        size: 129534928,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.INDEX
-    });
-    const QUdCYxi = oZZeyWNNsBA.label
-    const lkZaAsRJHWJXA = lNqAyscjQsGDpBdFab.count
-    const HwksmoT = LhajAiQLhVaraio.label
-    const BARzCvvVTu = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 2096,
-        label: "gGutjcGmXHQcri",
-        type: "occlusion"
-    });
-    const iQMXArHTwO = zRFjJXxxetMQrDlTMO.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: CqblVCLJLBvMb,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "subtract",
-                        dstFactor: "one-minus-dst-alpha",
-                        srcFactor: "one-minus-dst"
-                    },
-                    color: {
-                        operation: "add",
-                        dstFactor: "one-minus-dst-alpha",
-                        srcFactor: "src"
-                    }
-                },
-                format: "rg8unorm",
-                writeMask: GPUColorWrite.GREEN | GPUColorWrite.ALL | GPUColorWrite.ALPHA | GPUColorWrite.BLUE
-            }]
-        },
-        label: "JFZiABPnnfTOWqAcv",
+        label: "GPURenderPipeline14",
         layout: "auto",
         multisample: {
             count: 1
         },
         primitive: {
             cullMode: "none",
-            frontFace: "ccw",
-            topology: "triangle-strip"
+            frontFace: "cw",
+            topology: "triangle-list"
         },
         vertex: {
             entryPoint: "main",
-            module: ELjejdfuZHxIiUB
+            module: GPUShaderModule3
         }
     });
-    bbImy.end();
-    const PTKYczsfzMo = CsGLCyUkuUFm.label
-    const ekEKQRcBMtEh = zRFjJXxxetMQrDlTMO.limits
-    const nYeSQVyoAJrQgwAXWx = RJUnOIpIkDsGcVhw.limits
-    yXmMylTJQrqzXNCLBrh.end();
-    GZTNwOXAoIsHYsjFm.setBindGroup(0, oUsXVcdYfUUYsrUbg);
-    GZTNwOXAoIsHYsjFm.setPipeline(hNYxo);
-    const KvBPCCcJB = OLjICQOyMEbRprOEzAFU.beginComputePass({
-        label: "ZTKTfMN"
+    GPURenderPassEncoder16.setPipeline(GPURenderPipeline14);
+    GPURenderPassEncoder16.draw(9);
+    const GPUCommandEncoder26 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder26"
     });
-    const xVtlWczaVeaih = MWKXXkPLvyMQD.features
-    const mPsAUZmYeIKgKQCAd = WbmcxhPwoCJwDV.type
-    const NiacucILBlm = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 270,
-        label: "iclWirTXdwoKwdabesg",
-        type: "occlusion"
+    GPUComputePassEncoder23.end();
+    GPUQueue6.writeBuffer(GPUBuffer0, 0, typedArray19);
+    const GPUBindGroup11 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline5.bindGroup",
+        layout: GPUComputePipeline5.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
     });
-    const LwzcZXHpnNTgbbDnl = yKUseiRNWCY.getBindGroupLayout(0);
-    bxvqDpwlMqfmhzjEnc.setPipeline(vOXAwtota);
-    bxvqDpwlMqfmhzjEnc.draw(3);
-    const wvUZYbR = await navigator.gpu.getPreferredCanvasFormat();
-    const HECdeJMgjeD = mNscnEl.getBindGroupLayout(0);
-    bgQlKXm.setPipeline(yKUseiRNWCY);
-    const FcusuttRPuogrUnG = zRFjJXxxetMQrDlTMO.queue
-    bxvqDpwlMqfmhzjEnc.setVertexBuffer(0, rZITXsVwxeSi);
-    const ontZU = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 3473,
-        label: "nOLPGlOIzLjaPQrzVcZ",
-        type: "occlusion"
+    const GPUAdapter9 = await navigator.gpu.requestAdapter({
+        powerPreference: "low-power"
     });
-    const UwyFAlhyvqTKVFdY = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 420,
-        label: "BBKuAkAksdBjRyCpsznM",
-        type: "occlusion"
+    const GPUAdapter10 = await navigator.gpu.requestAdapter({
+        powerPreference: "high-performance"
     });
-    KvBPCCcJB.setBindGroup(0, JbyQuXGFlmlstMLacB);
-    gNyBL.end();
-    const JmPkdHGzWCdMljrxc = qBwNtm.limits
-    const QREYXuikeBdCJ = zRFjJXxxetMQrDlTMO.createTexture({
-        dimension: "3d",
+    const GPUCommandBuffer1 = GPUCommandEncoder22.finish();
+    GPURenderPassEncoder16.setPipeline(GPURenderPipeline14);
+    const GPUCommandEncoder27 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder27"
+    });
+    const GPUBindGroupLayout14 = GPUComputePipeline1.getBindGroupLayout(0);
+    const GPUTexture25 = GPUDevice0.createTexture({
+        dimension: "2d",
         sampleCount: 1,
-        format: "rg8unorm",
-        label: "kBFvVim",
+        format: "r32float",
+        label: "GPUTexture25",
         size: {
-            width: 830,
-            height: 845,
-            depthOrArrayLayers: 38
+            width: 1405,
+            height: 1983,
+            depthOrArrayLayers: 36
         },
-        mipLevelCount: 3,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["rg8unorm"]
+        mipLevelCount: 11,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST,
+        viewFormats: ["r32float"]
     });
-    const ldvjUPRIIQJ = QREYXuikeBdCJ.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 1,
-        format: "rg8unorm",
-        label: "DIMUNBHmFGrCLJnqN"
-    });
-    const BsOqbAGRrrA = DKpGBgLwONsU.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 1.9499148663407408,
-                g: 1.2339868806092333,
-                b: 1.2177965332456415,
-                a: 1.428231239021251
-            },
-            loadOp: "clear",
-            storeOp: "discard",
-            view: ldvjUPRIIQJ,
-            depthSlice: 15
-        }],
-        label: "OeEvnJe",
-        maxDrawCount: 600044831,
-        occlusionQuerySet: WbmcxhPwoCJwDV
-    });
-    const taciO = ORndQYunIJPqW.label
-    bgQlKXm.setBindGroup(0, LOzaOozS);
-    kUxfVMumLvIfUUG.end();
-    MoIrlBY.submit([ImEaJWIU]);
-    const uSgpWTVTacjNRVXt = IYWpYnd.label
-    const NUFJQFFYbnAtrztNHzpH = KvBPCCcJB.label
-    const lroZtjsqXxwn = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 2321,
-        label: "VTlTHvaRsiYueuvzo",
+    const GPUBindGroupLayout15 = GPUComputePipeline1.getBindGroupLayout(0);
+    const GPUQuerySet14 = GPUDevice0.createQuerySet({
+        count: 1715,
+        label: "GPUQuerySet14",
         type: "occlusion"
     });
-    const WyyaoGVpOSLgsmRVzIGh = smPebz.label
-    BsOqbAGRrrA.end();
-    const QEotjVXTqkBQqB = DKpGBgLwONsU.finish();
-    const iwECBNomkJQsdO = CKMSUCaqeDgjTDWoib.label
-    const lkaNYKs = DxQCVeCfwK.label
-    const gGtRNcqzNaQM = await navigator.gpu.getPreferredCanvasFormat();
-    bgQlKXm.setBindGroup(0, hvfrKx);
-    const XlfFLllfwHgPY = QgqzZBrdayXGhHivU.label
-    const qwbnBDCBHrcxvO = GHyvuhcVtv.isFallbackAdapter
-    const TMuWlbjNTKrYCHOfx = zRFjJXxxetMQrDlTMO.createQuerySet({
-        count: 157,
-        label: "agXiQGgvI",
-        type: "occlusion"
+    GPUQueue8.writeBuffer(GPUBuffer0, 0, typedArray20);
+    const GPUBindGroup12 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline0.bindGroup",
+        layout: GPUComputePipeline0.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
     });
-    ORndQYunIJPqW.submit([QEotjVXTqkBQqB]);
-    const nkuVm = AfmqzbYLWatchhgB.features
-    const tOBtoSObplxTSajJwV = rcuWDjnkgWGDKkSCrK.label
-    KKfvdfBbgwRNlJDrhr.setBindGroup(0, LOzaOozS);
-    KKfvdfBbgwRNlJDrhr.setPipeline(hNYxo);
-    const ihHjznEgluXnxx = zRFjJXxxetMQrDlTMO.createTexture({
+    const string121 = GPUQuerySet6.count
+    GPUQueue0.submit([GPUCommandBuffer1]);
+    const GPUComputePassEncoder25 = GPUCommandEncoder27.beginComputePass({
+        label: "GPUComputePassEncoder25"
+    });
+    const string122 = GPUComputePassEncoder18.label
+    GPURenderPassEncoder16.setPipeline(GPURenderPipeline14);
+    const string123 = GPUQuerySet6.type
+    const string124 = GPUQuerySet10.type
+    const GPUTexture26 = GPUDevice0.createTexture({
         dimension: "2d",
         sampleCount: 4,
-        format: "rgb10a2uint",
-        label: "vDfiCKEze",
+        format: "rgba16sint",
+        label: "GPUTexture26",
         size: {
-            width: 2930,
-            height: 1817,
+            width: 1175,
+            height: 3865,
             depthOrArrayLayers: 1
         },
         mipLevelCount: 1,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["rgb10a2uint"]
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["rgba16sint"]
     });
-    const AQLmGYGJAFRqUtGEpOF = zRFjJXxxetMQrDlTMO.limits
-    icMpLx.setPipeline(WNotq);
-    DxQCVeCfwK.writeBuffer(McWVBIO, 38268744, MTOJAKzxNVjTSv);
-    const oqEdiFKmD = IoWHeXeK.label
-    const SXSkvCMxnPaoOQ = navigator.gpu.wgslLanguageFeatures
-    const GQLSxo = IIPCVWnYdR.finish();
-    const VLVEUPDdO = RJUnOIpIkDsGcVhw.isFallbackAdapter
-    icMpLx.end();
-    const mlOzFeKbA = await navigator.gpu.requestAdapter({
+    GPUComputePassEncoder24.end();
+    const string125 = GPUCommandEncoder24.label
+    const string126 = GPUQuerySet14.label
+    const boolean10 = GPUAdapter5.isFallbackAdapter
+    const GPUComputePassEncoder26 = GPUCommandEncoder24.beginComputePass({
+        label: "GPUComputePassEncoder26"
+    });
+    GPUComputePassEncoder18.setPipeline(GPUComputePipeline3);
+    GPUComputePassEncoder18.setBindGroup(0, GPUBindGroup3);
+    GPUComputePassEncoder18.dispatchWorkgroups(173, 62, 38);
+    const GPUSupportedLimits15 = GPUDevice0.limits
+    const string127 = GPUQuerySet12.count
+    const GPUQueue10 = GPUDevice0.queue
+    const GPUComputePassEncoder27 = GPUCommandEncoder23.beginComputePass({
+        label: "GPUComputePassEncoder27"
+    });
+    const string128 = GPUQuerySet10.count
+    const GPUCommandBuffer1 = GPUCommandEncoder18.finish();
+    const GPUAdapter11 = await navigator.gpu.requestAdapter({
         powerPreference: "low-power"
     });
-    qHzSGIX.submit([GQLSxo]);
+    const string129 = GPURenderPassEncoder14.label
+    const GPUAdapterInfo14 = GPUAdapter5.info
+    const string130 = GPUComputePipeline3.label
+    const GPUSupportedLimits16 = GPUAdapter6.limits
+    const GPUComputePipeline8 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule6
+        },
+        label: "GPUComputePipeline8",
+        layout: "auto"
+    });
+    const GPUComputePassEncoder28 = GPUCommandEncoder26.beginComputePass({
+        label: "GPUComputePassEncoder28"
+    });
+    const string131 = GPUQueue5.label
+    GPURenderPassEncoder14.setPipeline(GPURenderPipeline3);
+    GPURenderPassEncoder16.setVertexBuffer(0, GPUBuffer4);
+    GPURenderPassEncoder14.setPipeline(GPURenderPipeline3);
+    const string132 = GPURenderPipeline2.label
+    const GPUBindGroupLayout16 = GPUComputePipeline3.getBindGroupLayout(0);
+    const string133 = GPUTextureView11.label
+    const GPUCommandEncoder28 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder28"
+    });
+    const GPUTexture27 = GPUDevice0.createTexture({
+        dimension: "2d",
+        sampleCount: 4,
+        format: "rgba8unorm-srgb",
+        label: "GPUTexture27",
+        size: {
+            width: 216,
+            height: 3542,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC | GPUTextureUsage.COPY_DST,
+        viewFormats: ["rgba8unorm-srgb"]
+    });
+    const GPUTextureView24 = GPUTexture27.createView({
+        aspect: "all",
+        dimension: "2d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "rgba8unorm-srgb",
+        label: "GPUTextureView24"
+    });
+    const GPURenderPassEncoder17 = GPUCommandEncoder28.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 0.09142464035458864,
+                g: 0.8308032539451546,
+                b: 1.5010918533364044,
+                a: 0.41085834407876587
+            },
+            loadOp: "clear",
+            storeOp: "discard",
+            view: GPUTextureView24
+        }],
+        label: "GPURenderPassEncoder17",
+        maxDrawCount: 3631296929,
+        occlusionQuerySet: GPUQuerySet9
+    });
+    const WGSLLanguageFeatures7 = navigator.gpu.wgslLanguageFeatures
+    const boolean11 = GPUAdapter2.isFallbackAdapter
+    const string134 = await navigator.gpu.getPreferredCanvasFormat();
+    const GPUQuerySet15 = GPUDevice0.createQuerySet({
+        count: 3362,
+        label: "GPUQuerySet15",
+        type: "occlusion"
+    });
+    GPUQueue2.writeBuffer(GPUBuffer0, 0, typedArray21);
+    const GPUBindGroup13 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline4.bindGroup",
+        layout: GPUComputePipeline4.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    const GPUCommandEncoder29 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder29"
+    });
+    const GPURenderPipeline15 = GPUDevice0.createRenderPipeline({
+        fragment: {
+            entryPoint: "main",
+            module: GPUShaderModule12,
+            targets: [{
+                blend: {
+                    alpha: {
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
+                    },
+                    color: {
+                        operation: "subtract",
+                        dstFactor: "one-minus-dst",
+                        srcFactor: "src-alpha-saturated"
+                    }
+                },
+                format: "rgba8unorm-srgb",
+                writeMask: GPUColorWrite.RED | GPUColorWrite.BLUE | GPUColorWrite.ALL | GPUColorWrite.ALPHA
+            }]
+        },
+        label: "GPURenderPipeline15",
+        layout: "auto",
+        multisample: {
+            count: 4
+        },
+        primitive: {
+            cullMode: "back",
+            frontFace: "cw",
+            topology: "line-list"
+        },
+        vertex: {
+            entryPoint: "main",
+            module: GPUShaderModule11
+        }
+    });
+    GPURenderPassEncoder17.setPipeline(GPURenderPipeline15);
+    GPURenderPassEncoder17.draw(10);
+    GPUComputePassEncoder26.setBindGroup(0, GPUBindGroup2);
+    const GPUSupportedFeatures17 = GPUDevice0.features
+    GPURenderPassEncoder15.end();
+    const GPUCommandBuffer1 = GPUCommandEncoder17.finish();
+    GPURenderPassEncoder14.setVertexBuffer(0, GPUBuffer4);
+    GPURenderPassEncoder14.end();
+    const GPUComputePipeline9 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule14
+        },
+        label: "GPUComputePipeline9",
+        layout: "auto"
+    });
+    const WGSLLanguageFeatures8 = navigator.gpu.wgslLanguageFeatures
+    const GPUCommandEncoder30 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder30"
+    });
+    const GPUAdapter12 = await navigator.gpu.requestAdapter({
+        powerPreference: "low-power"
+    });
+    GPUQueue6.writeBuffer(GPUBuffer4, 85285616, typedArray22);
+    const string135 = GPUQuerySet0.label
+    const GPUTexture28 = GPUDevice0.createTexture({
+        dimension: "1d",
+        sampleCount: 1,
+        format: "r32float",
+        label: "GPUTexture28",
+        size: {
+            width: 1193,
+            height: 1,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.COPY_SRC,
+        viewFormats: ["r32float"]
+    });
+    const string136 = await navigator.gpu.getPreferredCanvasFormat();
+    const string137 = GPUCommandEncoder29.label
+    GPUComputePassEncoder20.end();
+    const string138 = GPURenderPassEncoder17.label
 
 }
 main().catch(console.error);

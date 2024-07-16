@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
 import generator.NumericConstraints;
-import generator.ParamGenerator;
-import generator.RandomUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +18,7 @@ public class ParameterNode extends ASTNode {
     private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
     private final String SHADER_ENTRY_POINT = "main";
     private final String fieldName;
+    private final Random rand;
 
     private final boolean isRoot;
     private final boolean isJsonFormat;
@@ -32,7 +31,6 @@ public class ParameterNode extends ASTNode {
 
 
     private final Generator generator;
-    private final Random rand = RandomUtils.getInstance();
     private final ParameterListNode parentList;
 
     private final Map<String, ParameterNode> parameterNodeMap = new HashMap<>();
@@ -53,6 +51,7 @@ public class ParameterNode extends ASTNode {
         this.isArray = details.has("array");
         this.isJsonArray = details.has("arrayType");
         this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
+        this.rand = generator.getRandom();
 
         System.out.println("generating " + fieldName + " for call " + getParentList().getCallName());
 
@@ -130,7 +129,7 @@ public class ParameterNode extends ASTNode {
 
             this.parameters.add(new Parameter(parameterValue));
         } else if (isString) {
-            this.parameters.add(new Parameter(ParamGenerator.generateRandVarName()));
+            this.parameters.add(new Parameter(generator.generateRandVarName(parentList.getCallNode().getReturnType())));
         } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
             generateNumber(details, paramType);
         } else if (paramType.equals("boolean")) {
@@ -248,7 +247,9 @@ public class ParameterNode extends ASTNode {
         System.out.println("computePipelineName " + label);
         System.out.println(generator.objectAttributesTable.get(computePipelineName));
         String computeShaderModule = generator.getObjectAttributes(computePipelineName, "compute.module");
+        System.out.println(generator.objectAttributesTable.get(computeShaderModule));
         String computeShader = generator.getObjectAttributes(computeShaderModule, "code");
+        System.out.println(generator.shaderNameToProperties);
         String shaderFolderPath = generator.getShaderProperties(computeShader, "path");
 
         ObjectMapper mapper = new ObjectMapper();
@@ -262,6 +263,7 @@ public class ParameterNode extends ASTNode {
 
         // Parse shaderRequirementsNode for inputBuffer
         List<String> inputBufferValues = new ArrayList<>();
+        System.out.println(shaderRequirementsNode);
         Parser.extractNodeAsList(shaderRequirementsNode.get("inputBuffer"), inputBufferValues);
 
         // Generate the input array as a top level statement
@@ -524,7 +526,7 @@ public class ParameterNode extends ASTNode {
             parseNumericConditions(details.get("conditions"), numericConstraints);
         }
 
-        this.parameters.add(new Parameter(String.valueOf(ParamGenerator.generateRandNumber(paramType, numericConstraints))));
+        this.parameters.add(new Parameter(String.valueOf(generator.generateRandNumber(paramType, numericConstraints))));
     }
 
     private void parseNumericConditions(JsonNode conditions, NumericConstraints numericConstraints) {
@@ -544,7 +546,7 @@ public class ParameterNode extends ASTNode {
 
             if (valueNode.has("customValidation")) {
 
-                value[0] = Long.parseLong(ParamGenerator.generateCustomConstraint(valueNode.get("customValidation").asText(), parentList, this, generator));
+                value[0] = Long.parseLong(generator.generateCustomConstraint(valueNode.get("customValidation").asText(), parentList, this, generator));
             } else if (valueNode.has("constraints")) {
                 parseNumericConstraints(valueNode, value);
             } else if (valueNode.has("comparison")) {

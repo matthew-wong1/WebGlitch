@@ -33,14 +33,5 @@ async function main() {
         label: "compute",
         code: computeShader
     });
-    const computePipeline = device.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: computeShaderModule
-        },
-        label: "computePipeline",
-        layout: "auto"
-    });
-
 }
 main().catch(console.error);

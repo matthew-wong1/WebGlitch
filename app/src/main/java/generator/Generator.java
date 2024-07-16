@@ -266,7 +266,6 @@ public class Generator {
         if (!symbolTable.containsKey(returnedObjectType)) {
             symbolTable.put(returnedObjectType, new ArrayList<>());
             System.out.println("returned object type " + returnedObjectType);
-            interfaceCounts.put(returnedObjectType, 0);
         }
 
         symbolTable.get(returnedObjectType).add(variableName);
@@ -278,7 +277,9 @@ public class Generator {
             interfaceToAvailableCalls.get("GPUAdapter").remove("requestDevice");
         }
 
-        interfaceCounts.put(returnedObjectType, this.getInterfaceCount(returnedObjectType) + 1);
+        int interfaceCount = getInterfaceCount(returnedObjectType);
+        interfaceCounts.put(returnedObjectType, interfaceCount + 1);
+
         System.out.println("interface counts " + interfaceCounts);
 
     }

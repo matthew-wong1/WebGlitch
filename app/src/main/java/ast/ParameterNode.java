@@ -244,12 +244,8 @@ public class ParameterNode extends ASTNode {
         String label = parentList.getParameter("label");
         String[] split = label.split("\\.", 2);
         String computePipelineName = split[0];
-        System.out.println("computePipelineName " + label);
-        System.out.println(generator.objectAttributesTable.get(computePipelineName));
         String computeShaderModule = generator.getObjectAttributes(computePipelineName, "compute.module");
-        System.out.println(generator.objectAttributesTable.get(computeShaderModule));
         String computeShader = generator.getObjectAttributes(computeShaderModule, "code");
-        System.out.println(generator.shaderNameToProperties);
         String shaderFolderPath = generator.getShaderProperties(computeShader, "path");
 
         ObjectMapper mapper = new ObjectMapper();
@@ -263,7 +259,6 @@ public class ParameterNode extends ASTNode {
 
         // Parse shaderRequirementsNode for inputBuffer
         List<String> inputBufferValues = new ArrayList<>();
-        System.out.println(shaderRequirementsNode);
         Parser.extractNodeAsList(shaderRequirementsNode.get("inputBuffer"), inputBufferValues);
 
         // Generate the input array as a top level statement
@@ -480,12 +475,9 @@ public class ParameterNode extends ASTNode {
 
 
             String computePipelineName = generator.getObjectAttributes(computePassEncoderName, "pipeline");
-            System.out.println("in here, the comptue pipeline name is " + computePipelineName);
-            System.out.println(generator.objectAttributesTable.get(computePassEncoderName));
             List<String> requiredLabel = new ArrayList<>();
             requiredLabel.add(computePipelineName + ".bindGroup");
             requirements.put("GPUBindGroup.label", requiredLabel);
-            System.out.println("required label: " + requiredLabel);
             return requirements;
         }
 
@@ -1279,7 +1271,6 @@ public class ParameterNode extends ASTNode {
             }
         }
 
-        System.out.println("special value to print " + valueToPrint);
         return valueToPrint;
     }
 

@@ -662,8 +662,9 @@ public class Generator {
                 File[] files = shadersDirectory.listFiles();
                 assert files != null;
                 String chosenFolderName = files[randomUtils.nextInt(files.length)].getName();
+                String webGlitchPath = System.getProperty("user.dir").replace("\\", "/");
 
-                String folderPath = "../WebGlitch" + SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
+                String folderPath = webGlitchPath + SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
                 String fullPath = folderPath + shaderSubType + ".wgsl";
 
                 assignmentNode = new AssignmentNode("const", false, "shader" + shaderNameToProperties.size());

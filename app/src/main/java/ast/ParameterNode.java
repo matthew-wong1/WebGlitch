@@ -909,6 +909,8 @@ public class ParameterNode extends ASTNode {
 
         if (mandatoryEnums.contains("GPUBufferUsage.UNIFORM")) {
             enumValues.remove("GPUBufferUsage.STORAGE");
+        } else if (mandatoryEnums.contains("GPUBufferUsage.STORAGE")) {
+            enumValues.remove("GPUBufferUsage.UNIFORM");
         }
     }
 

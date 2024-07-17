@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Generator {
-    private final RandomUtils randomUtils;
+    public final RandomUtils randomUtils;
     private final PrettyPrinter printer = new PrettyPrinter();
     private final String DEFAULT_CONTEXT_NAME = "context";
     private final String HEADER = "\nasync function main() {";
@@ -74,12 +74,8 @@ public class Generator {
         System.out.println("USING SEED: " + randomUtils.getSeed());
     }
 
-    public Random getRandom() {
-        return randomUtils.getRandom();
-    }
-
     public static void main(String[] args) {
-        Generator generator = new Generator(500, false, "dawn", 8758754314846937167L);
+        Generator generator = new Generator(500, false, "dawn", 6182115232769204830L);
         generator.generateProgram(1);
     }
 
@@ -89,6 +85,10 @@ public class Generator {
 
     public String getPlatform() {
         return platform;
+    }
+
+    public RandomUtils getRandomUtils() {
+        return randomUtils;
     }
 
     private void initializeReceiverInitsAndCallProbs() throws IOException {
@@ -191,7 +191,7 @@ public class Generator {
 
         for (int i = 0; i < maxCalls; i++) {
             ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
-            int randIdx = randomUtils.getRandom().nextInt(methods.length);
+            int randIdx = randomUtils.nextInt(methods.length);
             ReceiverTypeCallNameCallType randMethod = methods[randIdx];
             String fileName = callProbabilities.get(randMethod).fileName;
 
@@ -322,7 +322,7 @@ public class Generator {
             return parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
         }
 
-        int randIdx = randomUtils.getRandom().nextInt(variablesThatMeetReqs.size());
+        int randIdx = randomUtils.nextInt(variablesThatMeetReqs.size());
 
         return variablesThatMeetReqs.get(randIdx);
 
@@ -646,9 +646,9 @@ public class Generator {
                     if (requirements != null && requirements.containsKey("maxBytes")) {
                         maxBytes = Integer.parseInt(requirements.get("maxBytes"));
                     }
-                    typedArray = new TypedArray(maxBytes, randomUtils.getRandom());
+                    typedArray = new TypedArray(maxBytes, randomUtils);
                 } else {
-                    typedArray = new TypedArray(subType, values, randomUtils.getRandom());
+                    typedArray = new TypedArray(subType, values, randomUtils);
                 }
                 numTypedArrays++;
                 assignmentNode.addNode(typedArray);
@@ -670,7 +670,7 @@ public class Generator {
                 File shadersDirectory = new File("." + SHADERS_PATH + chosenBaseShaderType);
                 File[] files = shadersDirectory.listFiles();
                 assert files != null;
-                String chosenFolderName = files[randomUtils.getRandom().nextInt(files.length)].getName();
+                String chosenFolderName = files[randomUtils.nextInt(files.length)].getName();
 
                 String folderPath = "../WebGlitch" + SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
                 String fullPath = folderPath + shaderSubType + ".wgsl";
@@ -863,15 +863,15 @@ public class Generator {
         maxValue += 1;
         if (divisibility != null) {
             long ceilMax = (maxValue + divisibility - 1) / divisibility;
-            return randomUtils.getRandom().nextLong(minValue / divisibility, ceilMax) * divisibility;
+            return randomUtils.nextLong(minValue / divisibility, ceilMax) * divisibility;
         }
 
 
         if (paramType.equals("double") || paramType.equals("rgba")) {
-            return randomUtils.getRandom().nextDouble(minValue, maxValue);
+            return randomUtils.nextDouble(minValue, maxValue);
         }
 
-        return randomUtils.getRandom().nextLong(minValue, maxValue);
+        return randomUtils.nextLong(minValue, maxValue);
     }
 
 

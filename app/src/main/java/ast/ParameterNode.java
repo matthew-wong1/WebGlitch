@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
 import generator.NumericConstraints;
+import generator.RandomUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class ParameterNode extends ASTNode {
     private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
     private final String SHADER_ENTRY_POINT = "main";
     private final String fieldName;
-    private final Random rand;
+    private final RandomUtils randomUtils;
 
     private final boolean isRoot;
     private final boolean isJsonFormat;
@@ -51,7 +52,7 @@ public class ParameterNode extends ASTNode {
         this.isArray = details.has("array");
         this.isJsonArray = details.has("arrayType");
         this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
-        this.rand = generator.getRandom();
+        this.randomUtils = generator.randomUtils;
 
         System.out.println("generating " + fieldName + " for call " + getParentList().getCallName());
 
@@ -120,7 +121,7 @@ public class ParameterNode extends ASTNode {
             generateEnumVal(details, paramType);
         } else if (this.individualParameterRequirements != null && !this.individualParameterRequirements.isEmpty()) {
             // Also if are multiple choices and since it's not an enum, pick one of them at random
-            String parameterValue = individualParameterRequirements.get(rand.nextInt(0, individualParameterRequirements.size()));
+            String parameterValue = individualParameterRequirements.get(randomUtils.nextInt(0, individualParameterRequirements.size()));
 
             // can't be a label otherwise generates qutoes twice
             if (paramType.equals("string") && !fieldName.equals("label")) {
@@ -200,12 +201,16 @@ public class ParameterNode extends ASTNode {
             int bufferSize = Integer.parseInt(generator.getObjectAttributes(gpuBufferName, "size"));
             int bufferOffset = Integer.parseInt(parentList.getParameter("bufferOffset"));
             int maxBytes;
+            System.out.println("bufferSize " + bufferSize);
+            System.out.println("bufferOffset " + bufferOffset);
+
             if (bufferSize != bufferOffset) {
                 maxBytes = bufferSize - bufferOffset;
             } else {
                 maxBytes = 1;
                 parentList.setParamValue("bufferOffset", String.valueOf(bufferOffset - 4));
             }
+            System.out.println("maxBytes " + maxBytes);
             requirements.put("maxBytes", String.valueOf(maxBytes));
         }
     }
@@ -355,7 +360,7 @@ public class ParameterNode extends ASTNode {
         if (details.has("conditions")) {
             generatedValue = parseBooleanConditions(details.get("conditions"));
         } else {
-            generatedValue = String.valueOf(rand.nextBoolean());
+            generatedValue = String.valueOf(randomUtils.nextBoolean());
         }
 
         this.parameters.add(new Parameter(generatedValue));
@@ -369,7 +374,7 @@ public class ParameterNode extends ASTNode {
             }
         }
 
-        return String.valueOf(rand.nextBoolean());
+        return String.valueOf(randomUtils.nextBoolean());
     }
 
     private String chooseShaderOfType(String type) {
@@ -396,7 +401,7 @@ public class ParameterNode extends ASTNode {
             chosenShaderType = preDeterminedType;
 
         } else {
-            chosenShaderType = SHADER_TYPES.get(rand.nextInt(SHADER_TYPES.size()));
+            chosenShaderType = SHADER_TYPES.get(randomUtils.nextInt(SHADER_TYPES.size()));
         }
 
         // Add import statement, remembering the shader variable name. Will be in format type.actualName
@@ -706,8 +711,7 @@ public class ParameterNode extends ASTNode {
         }
 
         List<String> mandatoryEnums = parseEnumConditions(conditions, enumValues);
-
-        Collections.shuffle(enumValues);
+        Collections.shuffle(enumValues, randomUtils.getRandom());
         List<String> chosenEnumValues = new ArrayList<>();
 
         if (this.isBitwiseFlags) {
@@ -758,7 +762,7 @@ public class ParameterNode extends ASTNode {
         if (enumValuesSize == 1) {
             chosenFlag.add(enumValues.getFirst());
         } else {
-            int randIdx = rand.nextInt(enumValuesSize);
+            int randIdx = randomUtils.nextInt(enumValuesSize);
             chosenFlag.add(enumValues.get(randIdx));
         }
 
@@ -770,7 +774,7 @@ public class ParameterNode extends ASTNode {
         if (enumValues.size() == 1) {
             randIdx = 1;
         } else {
-            randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+            randIdx = randomUtils.nextInt(enumValues.size() - 1) + 1;
         }
 
 
@@ -790,7 +794,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private List<String> pickEnumValuesAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode, List<String> mandatoryEnums) {
-        int randIdx = rand.nextInt(enumValues.size() - 1) + 1;
+        int randIdx = randomUtils.nextInt(enumValues.size() - 1) + 1;
 
 //        Set<String> uniqueValues = new HashSet<>();
 //        uniqueValues.addAll(mandatoryEnums);

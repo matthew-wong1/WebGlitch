@@ -71,6 +71,7 @@ public class Generator {
         }
 
         symbolTable.put("RenderingContext", new ArrayList<>(List.of(DEFAULT_CONTEXT_NAME)));
+        System.out.println("USING SEED: " + randomUtils.getSeed());
     }
 
     public Random getRandom() {
@@ -78,7 +79,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(500, false, "dawn", null);
+        Generator generator = new Generator(500, false, "dawn", 8758754314846937167L);
         generator.generateProgram(1);
     }
 
@@ -312,9 +313,11 @@ public class Generator {
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
+        System.out.println("getting receiver type " + receiverType);
         Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, callName, requirements, sameObjects, variablesThatMeetReqs, receiverName, parameterNode);
 
         if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
+            System.out.println("didn't find any " + receiverType);
             // pass in same objects here
             return parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
         }
@@ -407,17 +410,27 @@ public class Generator {
 
         for (String variableName : allVariables) {
             boolean meetsAllRequirements = true;
+            System.out.println("requirements " + requirements);
 
             // Only works for 1 level deep ie 1 dot
             for (Map.Entry<String, List<String>> requirement : requirements.entrySet()) {
                 String variableToCheck = variableName;
                 String[] split = requirement.getKey().split("\\.", 2);
+                String paramTypeToCheck = split[0];
                 String attributeNameToCheck = split[1];
 
                 List<String> attributeValuesToCheck = parseAttributeValue(requirement.getValue(), parameterNode);
 
-                if (!requirement.getKey().startsWith(paramType)) {
+                System.out.println("requirement: " + requirement.getKey());
+                System.out.println("paramType " + paramType);
+                System.out.println("attributeNameToCheck " + attributeNameToCheck);
+                System.out.println("paramTypeToCheck " + paramTypeToCheck);
+                if (!paramTypeToCheck.startsWith(paramType)) {
                     variableToCheck = variableToReceiverName.get(variableName);
+                }
+
+                if (!this.getVariableType(variableToCheck).equals(paramTypeToCheck)) {
+                    continue;
                 }
 
                 List<String> attributes = this.getAllObjectAttributes(variableToCheck, attributeNameToCheck);

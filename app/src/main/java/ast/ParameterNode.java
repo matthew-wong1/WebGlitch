@@ -201,16 +201,14 @@ public class ParameterNode extends ASTNode {
             int bufferSize = Integer.parseInt(generator.getObjectAttributes(gpuBufferName, "size"));
             int bufferOffset = Integer.parseInt(parentList.getParameter("bufferOffset"));
             int maxBytes;
-            System.out.println("bufferSize " + bufferSize);
-            System.out.println("bufferOffset " + bufferOffset);
 
             if (bufferSize != bufferOffset) {
                 maxBytes = bufferSize - bufferOffset;
             } else {
                 maxBytes = 4;
-                parentList.setParamValue("bufferOffset", String.valueOf(bufferOffset - 4));
+                parentList.setParamValue("bufferOffset", String.valueOf(bufferOffset - maxBytes));
             }
-            System.out.println("maxBytes " + maxBytes);
+
             requirements.put("maxBytes", String.valueOf(maxBytes));
         }
     }

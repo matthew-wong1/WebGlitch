@@ -49,7 +49,6 @@ public class TypedArray extends ASTNode {
         if (maxValuesToGenerate == 1) {
             numValues = 1;
         } else {
-            System.out.println("maxValuesToGenerate: " + maxValuesToGenerate);
             numValues = randomUtils.nextInt(maxValuesToGenerate - MIN_SIZE) + MIN_SIZE;
         }
         int totalBytes = numValues * elementSizeInBytes;

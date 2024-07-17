@@ -254,8 +254,6 @@ public class Generator {
     }
 
     public List<String> getAllObjectAttributes(String variableName, String fieldName) {
-        System.out.println("getting variable " + variableName + " with field name " + fieldName);
-        System.out.println(objectAttributesTable.get(variableName));
         return objectAttributesTable.get(variableName).get(fieldName).stream().map(Parameter::getValue).toList();
     }
 
@@ -313,11 +311,9 @@ public class Generator {
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
-        System.out.println("getting receiver type " + receiverType);
         Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, callName, requirements, sameObjects, variablesThatMeetReqs, receiverName, parameterNode);
 
         if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
-            System.out.println("didn't find any " + receiverType);
             // pass in same objects here
             return parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
         }
@@ -410,7 +406,6 @@ public class Generator {
 
         for (String variableName : allVariables) {
             boolean meetsAllRequirements = true;
-            System.out.println("requirements " + requirements);
 
             // Only works for 1 level deep ie 1 dot
             for (Map.Entry<String, List<String>> requirement : requirements.entrySet()) {
@@ -421,10 +416,6 @@ public class Generator {
 
                 List<String> attributeValuesToCheck = parseAttributeValue(requirement.getValue(), parameterNode);
 
-                System.out.println("requirement: " + requirement.getKey());
-                System.out.println("paramType " + paramType);
-                System.out.println("attributeNameToCheck " + attributeNameToCheck);
-                System.out.println("paramTypeToCheck " + paramTypeToCheck);
                 if (!paramTypeToCheck.startsWith(paramType)) {
                     variableToCheck = variableToReceiverName.get(variableName);
                 }

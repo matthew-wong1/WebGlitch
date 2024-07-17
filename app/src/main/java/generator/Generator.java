@@ -75,7 +75,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(500, false, "dawn", 6182115232769204830L);
+        Generator generator = new Generator(500, false, "dawn", null);
         generator.generateProgram(1);
     }
 

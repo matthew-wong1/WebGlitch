@@ -1,7 +1,7 @@
 const {
     create,
     globals
-} = require('../../dawn_newest/out/Debug/Debug/dawn.node');
+} = require('../../dawn_no_asan/out/Debug/Debug/dawn.node');
 const fs = require('fs');
 Object.assign(globalThis, globals);
 let navigator = {
@@ -31,5 +31,14 @@ async function main() {
         label: "compute",
         code: computeShader
     });
+    const computePipeline = device.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: computeShaderModule
+        },
+        label: "computePipeline",
+        layout: "auto"
+    });
+
 }
 main().catch(console.error);

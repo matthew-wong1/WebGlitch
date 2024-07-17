@@ -207,7 +207,7 @@ public class ParameterNode extends ASTNode {
             if (bufferSize != bufferOffset) {
                 maxBytes = bufferSize - bufferOffset;
             } else {
-                maxBytes = 1;
+                maxBytes = 4;
                 parentList.setParamValue("bufferOffset", String.valueOf(bufferOffset - 4));
             }
             System.out.println("maxBytes " + maxBytes);

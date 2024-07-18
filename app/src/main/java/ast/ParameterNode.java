@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 public class ParameterNode extends ASTNode {
 
-
-    private final String TYPES_PATH = "./rsrcs/webgpu/types/types.json";
-    private final String ENUMS_PATH = "./rsrcs/webgpu/types/enums/";
+    private final String WEBGLITCH_PATH = System.getProperty("user.dir").replace("\\", "/");
+    private final String TYPES_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/types/types.json";
+    private final String ENUMS_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/types/enums/";
     private final String SHADER_ENTRY_POINT = "main";
     private final String fieldName;
     private final RandomUtils randomUtils;

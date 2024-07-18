@@ -19,8 +19,9 @@ public class Generator {
     private final String DEFAULT_CONTEXT_NAME = "context";
     private final String HEADER = "\nasync function main() {";
     private final String FOOTER = "\n}main().catch(console.error);";
-    private final String SHADERS_PATH = "/rsrcs/shaders/";
-    private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/interfaces/";
+    private final String WEBGLITCH_PATH = System.getProperty("user.dir").replace("\\", "/");
+    private final String SHADERS_PATH = WEBGLITCH_PATH + "/rsrcs/shaders/";
+    private final String JSON_DIRECTORY_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/interfaces/";
     private final int MAX_DEVICES = 1;
     private final boolean mainOnly;
     private int numTypedArrays;
@@ -125,6 +126,10 @@ public class Generator {
 
         }
 
+    }
+
+    public String getWebGlitchPath() {
+        return WEBGLITCH_PATH;
     }
 
     private void addCall(File apiInterface, JsonNode callJsonNode, String receiverType, boolean isMethod) {
@@ -659,14 +664,13 @@ public class Generator {
                     default:
                         chosenBaseShaderType = "graphics";
                 }
-
-                File shadersDirectory = new File("." + SHADERS_PATH + chosenBaseShaderType);
+                File shadersDirectory = new File(SHADERS_PATH + chosenBaseShaderType);
                 File[] files = shadersDirectory.listFiles();
                 assert files != null;
                 String chosenFolderName = files[randomUtils.nextInt(files.length)].getName();
-                String webGlitchPath = System.getProperty("user.dir").replace("\\", "/");
 
-                String folderPath = webGlitchPath + SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
+
+                String folderPath = SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
                 String fullPath = folderPath + shaderSubType + ".wgsl";
 
                 assignmentNode = new AssignmentNode("const", false, "shader" + shaderNameToProperties.size());

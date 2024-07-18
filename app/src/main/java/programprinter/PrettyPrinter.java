@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrettyPrinter {
-    private final String OUT_DIRECTORY_PATH = "./output/";
-    private final String REQUIRED_HEADER_PATH = "./rsrcs/js/requiredHeader.js";
-    private final String DAWN_HEADER_PATH = "./rsrcs/js/dawnHeader.js";
-    private final String DENO_HEADER_PATH = "./rsrcs/js/denoHeader.js";
-
+    private final String WEBGLITCH_PATH = System.getProperty("user.dir").replace("\\", "/");
+    private final String REQUIRED_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/requiredHeader.js";
+    private final String DAWN_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/dawnHeader.js";
+    private final String DENO_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/denoHeader.js";
 
     public void printToFile(ASTNode root, String filePath, long seed, boolean mainOnly) {
         String commentedSeed = "// Seed: " + seed + "\n";

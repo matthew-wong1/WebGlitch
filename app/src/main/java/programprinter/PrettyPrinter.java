@@ -1,6 +1,7 @@
 package programprinter;
 
 import ast.ASTNode;
+import generator.WebGlitch;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrettyPrinter {
-    private final String WEBGLITCH_PATH = System.getProperty("user.dir").replace("\\", "/");
+    private final String WEBGLITCH_PATH = WebGlitch.getPath();
     private final String REQUIRED_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/requiredHeader.js";
     private final String DAWN_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/dawnHeader.js";
     private final String DENO_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/denoHeader.js";

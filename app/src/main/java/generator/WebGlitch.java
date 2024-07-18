@@ -1,6 +1,11 @@
 package generator;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.cli.*;
+
+import java.io.File;
+import java.io.IOException;
 
 import static java.lang.Integer.parseInt;
 
@@ -64,5 +69,9 @@ public class WebGlitch {
         Generator generator = new Generator(maxCalls, allowOptionalParams, DEFAULT_PLATFORM, specificSeed, generateMainFunctionOnly);
 
         generator.generateProgram(filePathToUse);
+    }
+
+    public static String getPath() {
+        return System.getProperty("user.dir").replace("\\", "/");
     }
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
 import generator.NumericConstraints;
 import generator.RandomUtils;
+import generator.WebGlitch;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class ParameterNode extends ASTNode {
 
-    private final String WEBGLITCH_PATH = System.getProperty("user.dir").replace("\\", "/");
+    private final String WEBGLITCH_PATH = WebGlitch.getPath();
     private final String TYPES_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/types/types.json";
     private final String ENUMS_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/types/enums/";
     private final String SHADER_ENTRY_POINT = "main";

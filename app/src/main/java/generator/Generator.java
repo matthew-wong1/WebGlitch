@@ -19,7 +19,7 @@ public class Generator {
     private final String DEFAULT_CONTEXT_NAME = "context";
     private final String HEADER = "\nasync function main() {";
     private final String FOOTER = "\n}main().catch(console.error);";
-    private final String WEBGLITCH_PATH = System.getProperty("user.dir").replace("\\", "/");
+    private final String WEBGLITCH_PATH = WebGlitch.getPath();
     private final String SHADERS_PATH = WEBGLITCH_PATH + "/rsrcs/shaders/";
     private final String JSON_DIRECTORY_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/interfaces/";
     private final int MAX_DEVICES = 1;
@@ -126,10 +126,6 @@ public class Generator {
 
         }
 
-    }
-
-    public String getWebGlitchPath() {
-        return WEBGLITCH_PATH;
     }
 
     private void addCall(File apiInterface, JsonNode callJsonNode, String receiverType, boolean isMethod) {

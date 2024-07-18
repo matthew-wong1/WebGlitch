@@ -78,7 +78,7 @@ public class Generator {
 
     public static void main(String[] args) {
         Generator generator = new Generator(500, false, "dawn", null, false);
-        generator.generateProgram("1");
+        generator.generateProgram("./output/1.js");
     }
 
     public String getParentVariable(String childVariable) {

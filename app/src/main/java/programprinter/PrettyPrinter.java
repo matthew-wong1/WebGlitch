@@ -15,9 +15,9 @@ public class PrettyPrinter {
     private final String DENO_HEADER_PATH = "./rsrcs/js/denoHeader.js";
 
 
-    public void printToFile(ASTNode root, String fileName, long seed, boolean mainOnly) {
+    public void printToFile(ASTNode root, String filePath, long seed, boolean mainOnly) {
         String commentedSeed = "// Seed: " + seed + "\n";
-        String pathName = OUT_DIRECTORY_PATH + fileName + ".js";
+        String pathName = filePath;
         // Copy the file
         Path destPath = Path.of(pathName);
         List<StandardOpenOption> openOptions = new ArrayList<>();
@@ -29,7 +29,7 @@ public class PrettyPrinter {
                 Files.copy(Path.of(DAWN_HEADER_PATH), destPath, StandardCopyOption.REPLACE_EXISTING);
                 openOptions.add(StandardOpenOption.APPEND);
             } catch (IOException e) {
-                System.err.println("Error copying file " + fileName + " to " + destPath);
+                System.err.println("Error copying file " + filePath + " to " + destPath);
             }
         }
 
@@ -52,9 +52,9 @@ public class PrettyPrinter {
             printWriter.close();
 
         } catch (FileNotFoundException e) {
-            System.err.println("Failed to find file " + fileName + ": " + e.getMessage());
+            System.err.println("Failed to find file " + filePath + ": " + e.getMessage());
         } catch (IOException e) {
-            System.err.println("Failed to append to file " + fileName + ": " + e.getMessage());
+            System.err.println("Failed to append to file " + filePath + ": " + e.getMessage());
         }
 
         try {

@@ -16,7 +16,7 @@ public class WebGlitch {
         Option allowOptional = new Option("a", "allow-optional", false, "Allow optional parameters");
         Option swarm = new Option("sw", "swarm", false, "Enable swarm testing");
         Option seed = new Option("s", "seed", true, "Seed for RNG");
-        Option fileName = new Option("o", "output", true, "Output file name");
+        Option filePath = new Option("o", "output", true, "Output path");
         Option mainOnly = new Option("m", "mainOnly", false, "Generate only the main function");
 
         numFiles.setType(Integer.class);
@@ -31,8 +31,8 @@ public class WebGlitch {
         seed.setType(Long.class);
         seed.setRequired(false);
 
-        fileName.setType(String.class);
-        fileName.setRequired(true);
+        filePath.setType(String.class);
+        filePath.setRequired(true);
 
         mainOnly.setType(Boolean.class);
         mainOnly.setRequired(false);
@@ -41,7 +41,7 @@ public class WebGlitch {
         options.addOption(maxLines);
         options.addOption(allowOptional);
         options.addOption(seed);
-        options.addOption(fileName);
+        options.addOption(filePath);
         options.addOption(mainOnly);
 
         CommandLineParser parser = new DefaultParser();
@@ -65,10 +65,10 @@ public class WebGlitch {
             specificSeed = Long.parseLong(cmd.getOptionValue("s"));
         }
 
-        String fileNameToUse = cmd.getOptionValue("o");
+        String filePathToUse = cmd.getOptionValue("o");
 
         Generator generator = new Generator(maxCalls, allowOptionalParams, DEFAULT_PLATFORM, specificSeed, generateMainFunctionOnly);
 
-        generator.generateProgram(fileNameToUse);
+        generator.generateProgram(filePathToUse);
     }
 }

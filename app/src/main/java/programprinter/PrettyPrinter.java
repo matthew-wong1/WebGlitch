@@ -3,26 +3,40 @@ package programprinter;
 import ast.ASTNode;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.channels.FileChannel;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrettyPrinter {
     private final String OUT_DIRECTORY_PATH = "./output/";
-    private final String SKELETON_SRC_PATH = "./rsrcs/js/nodeSkeleton.js";
+    private final String NODE_HEADER_PATH = "./rsrcs/js/nodeHeader.js";
+    private final String DAWN_HEADER_PATH = "./rsrcs/js/dawnHeader.js";
 
     public void printToFile(ASTNode root, String fileName, long seed, boolean mainOnly) {
         String commentedSeed = "// Seed: " + seed + "\n";
         String pathName = OUT_DIRECTORY_PATH + fileName + ".js";
         // Copy the file
         Path destPath = Path.of(pathName);
+        List<StandardOpenOption> openOptions = new ArrayList<>();
+        openOptions.add(StandardOpenOption.CREATE);
+        openOptions.add(StandardOpenOption.WRITE);
 
         if (!mainOnly) {
             try {
-                Files.copy(Path.of(SKELETON_SRC_PATH), destPath, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(Path.of(DAWN_HEADER_PATH), destPath, StandardCopyOption.REPLACE_EXISTING);
+                openOptions.add(StandardOpenOption.APPEND);
             } catch (IOException e) {
                 System.err.println("Error copying file " + fileName + " to " + destPath);
             }
+        }
+
+        try {
+            FileChannel nodeHeader = FileChannel.open(Paths.get(NODE_HEADER_PATH), StandardOpenOption.READ);
+            FileChannel destFile = FileChannel.open(Paths.get(pathName), openOptions.toArray(new StandardOpenOption[0]));
+            destFile.transferFrom(nodeHeader, destFile.size(), nodeHeader.size());
+        } catch (IOException e) {
+            System.err.println("Error copying headers: " + e.getMessage());
         }
 
         try {

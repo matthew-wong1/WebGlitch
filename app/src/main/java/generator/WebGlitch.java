@@ -11,16 +11,12 @@ public class WebGlitch {
 
     public static void main(String[] args) {
         Options options = new Options();
-        Option numFiles = new Option("n", "num-files", true, "Number of files to generate");
         Option maxLines = new Option("l", "max-lines", true, "Maximum number of lines per file");
         Option allowOptional = new Option("a", "allow-optional", false, "Allow optional parameters");
         Option swarm = new Option("sw", "swarm", false, "Enable swarm testing");
         Option seed = new Option("s", "seed", true, "Seed for RNG");
         Option filePath = new Option("o", "output", true, "Output path");
         Option mainOnly = new Option("m", "mainOnly", false, "Generate only the main function");
-
-        numFiles.setType(Integer.class);
-        numFiles.setRequired(true);
 
         maxLines.setType(Integer.class);
         maxLines.setRequired(false);
@@ -37,7 +33,6 @@ public class WebGlitch {
         mainOnly.setType(Boolean.class);
         mainOnly.setRequired(false);
 
-        options.addOption(numFiles);
         options.addOption(maxLines);
         options.addOption(allowOptional);
         options.addOption(seed);
@@ -56,7 +51,6 @@ public class WebGlitch {
             System.exit(1);
         }
 
-        int numPrograms = parseInt(cmd.getOptionValue("n"));
         int maxCalls = parseInt(cmd.getOptionValue("l", DEFAULT_MAX_CALLS));
         boolean allowOptionalParams = cmd.hasOption("a");
         boolean generateMainFunctionOnly = cmd.hasOption("m");

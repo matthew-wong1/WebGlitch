@@ -8,7 +8,7 @@
 *.bat           text eol=crlf
 
 # Exclude directories from GitHub's language calculations
-rsrcs/shaders/** linguist-generated
-output/* linguist-generated
-rsrcs/webgpu/wip_shaders/**
-wgpu_playground/**
+rsrcs/shaders/** linguist-vendored=true
+output/* linguist-vendored=true
+rsrcs/webgpu/wip_shaders/** linguist-vendored=true
+rsrcs/wip_generated_files/** linguist-vendored=true

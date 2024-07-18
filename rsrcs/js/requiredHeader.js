@@ -1,5 +1,3 @@
-const fs = require('node:fs');
-
 if (!navigator.gpu) {
     throw new Error("WebGPU not supported on this browser");
 }

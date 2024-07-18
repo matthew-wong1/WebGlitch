@@ -10,8 +10,10 @@ import java.util.List;
 
 public class PrettyPrinter {
     private final String OUT_DIRECTORY_PATH = "./output/";
-    private final String NODE_HEADER_PATH = "./rsrcs/js/nodeHeader.js";
+    private final String REQUIRED_HEADER_PATH = "./rsrcs/js/requiredHeader.js";
     private final String DAWN_HEADER_PATH = "./rsrcs/js/dawnHeader.js";
+    private final String DENO_HEADER_PATH = "./rsrcs/js/denoHeader.js";
+
 
     public void printToFile(ASTNode root, String fileName, long seed, boolean mainOnly) {
         String commentedSeed = "// Seed: " + seed + "\n";
@@ -32,9 +34,9 @@ public class PrettyPrinter {
         }
 
         try {
-            FileChannel nodeHeader = FileChannel.open(Paths.get(NODE_HEADER_PATH), StandardOpenOption.READ);
+            FileChannel requiredHeader = FileChannel.open(Paths.get(REQUIRED_HEADER_PATH), StandardOpenOption.READ);
             FileChannel destFile = FileChannel.open(Paths.get(pathName), openOptions.toArray(new StandardOpenOption[0]));
-            destFile.transferFrom(nodeHeader, destFile.size(), nodeHeader.size());
+            destFile.transferFrom(requiredHeader, destFile.size(), requiredHeader.size());
         } catch (IOException e) {
             System.err.println("Error copying headers: " + e.getMessage());
         }

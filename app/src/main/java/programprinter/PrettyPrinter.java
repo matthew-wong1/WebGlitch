@@ -11,16 +11,18 @@ public class PrettyPrinter {
     private final String OUT_DIRECTORY_PATH = "./output/";
     private final String SKELETON_SRC_PATH = "./rsrcs/js/nodeSkeleton.js";
 
-    public void printToFile(ASTNode root, String fileName, long seed) {
+    public void printToFile(ASTNode root, String fileName, long seed, boolean mainOnly) {
         String commentedSeed = "// Seed: " + seed + "\n";
         String pathName = OUT_DIRECTORY_PATH + fileName + ".js";
         // Copy the file
         Path destPath = Path.of(pathName);
 
-        try {
-            Files.copy(Path.of(SKELETON_SRC_PATH), destPath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            System.err.println("Error copying file " + fileName + " to " + destPath);
+        if (!mainOnly) {
+            try {
+                Files.copy(Path.of(SKELETON_SRC_PATH), destPath, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                System.err.println("Error copying file " + fileName + " to " + destPath);
+            }
         }
 
         try {

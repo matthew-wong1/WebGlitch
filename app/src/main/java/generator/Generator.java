@@ -22,6 +22,7 @@ public class Generator {
     private final String SHADERS_PATH = "/rsrcs/shaders/";
     private final String JSON_DIRECTORY_PATH = "./rsrcs/webgpu/interfaces/";
     private final int MAX_DEVICES = 1;
+    private final boolean mainOnly;
     private int numTypedArrays;
 
     // Hash map to keep track of state
@@ -53,10 +54,11 @@ public class Generator {
     private final String platform;
     private ASTNode programNode;
 
-    public Generator(int maxCalls, boolean allowOptParams, String platform, Long seed) {
+    public Generator(int maxCalls, boolean allowOptParams, String platform, Long seed, boolean mainOnly) {
         this.maxCalls = maxCalls;
         this.allowOptParams = allowOptParams;
         this.platform = platform;
+        this.mainOnly = mainOnly;
 
         if (seed != null) {
             this.randomUtils = new RandomUtils(seed);
@@ -75,7 +77,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(500, false, "dawn", null);
+        Generator generator = new Generator(500, false, "dawn", null, false);
         generator.generateProgram("1");
     }
 
@@ -203,7 +205,7 @@ public class Generator {
         }
 
         programNode.addNode(new JavaScriptStatement(FOOTER));
-        printer.printToFile(this.programNode, fileNameToUse, randomUtils.getSeed());
+        printer.printToFile(this.programNode, fileNameToUse, randomUtils.getSeed(), this.mainOnly);
     }
 
     public void addToObjectAttributesTable(String variableName, Map<String, List<Parameter>> keyValuePairs) {

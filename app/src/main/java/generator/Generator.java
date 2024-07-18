@@ -71,12 +71,12 @@ public class Generator {
         }
 
         symbolTable.put("RenderingContext", new ArrayList<>(List.of(DEFAULT_CONTEXT_NAME)));
-        System.out.println("USING SEED: " + randomUtils.getSeed());
+        System.out.println("Generating file using seed: " + randomUtils.getSeed());
     }
 
     public static void main(String[] args) {
         Generator generator = new Generator(500, false, "dawn", null);
-        generator.generateProgram(1);
+        generator.generateProgram("1");
     }
 
     public String getParentVariable(String childVariable) {
@@ -185,7 +185,7 @@ public class Generator {
     // ASSIGN PROBABILTIES BY FIRST LOADING ALL METHODS FROM ALL FILES INTO SOME MAP, INITIALIZE PROBABILITIES
     // EG MAP OF STRING TO DOUBLE
 
-    public void generateProgram(int fileNum) {
+    public void generateProgram(String fileNameToUse) {
         this.programNode = new ProgramNode();
         programNode.addNode(new JavaScriptStatement(HEADER));
 
@@ -203,7 +203,7 @@ public class Generator {
         }
 
         programNode.addNode(new JavaScriptStatement(FOOTER));
-        printer.printToFile(this.programNode, fileNum, randomUtils.getSeed());
+        printer.printToFile(this.programNode, fileNameToUse, randomUtils.getSeed());
     }
 
     public void addToObjectAttributesTable(String variableName, Map<String, List<Parameter>> keyValuePairs) {

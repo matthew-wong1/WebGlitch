@@ -1,7 +1,7 @@
 const {
     create,
     globals
-} = require('../../dawn_newest/out/Debug/Debug/dawn.node');
+} = require('D:/dawn_clang/out/Debug/Debug/dawn.node');
 const fs = require('fs');
 Object.assign(globalThis, globals);
 let navigator = {

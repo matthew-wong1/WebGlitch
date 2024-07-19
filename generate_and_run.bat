@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 :: Set constants
 set WEBGLITCH_PATH=D:\final_proj\WebGlitch\app\build\libs\app.jar
 set RUNNER_PATH=D:\final_proj\WebGlitchRunner\run.bat
-set OUTPUT_DIR=D:\final_proj\generated_files
+set OUTPUT_DIR=D:\final_proj\WebGlitchFiles
 set NUM_FILES=100
 set /a "i=1"
 

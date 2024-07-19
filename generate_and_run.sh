@@ -3,7 +3,7 @@
 # Set constants
 WEBGLITCH_PATH="/Users/matthew/Documents/msc/final_proj/WebGlitch/app/build/libs/app.jar"
 RUNNER_PATH="/Users/matthew/Documents/msc/final_proj/WebGlitchRunner/run.sh"
-OUTPUT_DIR="/Users/matthew/Documents/msc/final_proj/WebGlitchFiles"
+OUTPUT_DIR="/Users/matthew/Documents/msc/final_proj/WebGlitchFiles/files"
 NUM_FILES=100
 i=1
 

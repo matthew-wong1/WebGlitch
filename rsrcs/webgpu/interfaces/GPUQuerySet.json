@@ -3,15 +3,7 @@
   "requirements": ["GPUQuerySet"],
   "attributes": [
     {
-      "name": "count",
-      "returnType": "string"
-    },
-    {
       "name": "label",
-      "returnType": "string"
-    },
-    {
-      "name": "type",
       "returnType": "string"
     }
   ]

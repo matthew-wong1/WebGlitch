@@ -298,6 +298,7 @@ public class ParameterNode extends ASTNode {
         // Set requirements for storage buffer
         // storage usage: storage, COPY_SRC
         String storageBufferSize = shaderRequirementsNode.get("storageBufferSize").asText();
+        bufferRequirements.put("GPUBuffer.size", List.of(storageBufferSize));
         bufferRequirements.put("GPUBuffer.usage", List.of("GPUBufferUsage.STORAGE", "GPUBufferUsage.COPY_SRC"));
 
         String storageBufferName = generator.getRandomReceiver("GPUBuffer", "getMappedRange", bufferRequirements, List.of("GPUDevice"), parentList.getReceiver(), this);

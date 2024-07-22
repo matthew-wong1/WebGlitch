@@ -42,11 +42,14 @@
           "same": [
             "GPUDevice"
           ],
+          "dawnOnlyAttributes": {
+            "GPUTexture.dimension": ["3d"]
+          },
           "withAttributes": {
             "GPUTexture.usage": [
               "GPUTextureUsage.RENDER_ATTACHMENT"
             ],
-            "GPUTexture.dimension": ["2d", "3d"],
+            "GPUTexture.dimension": ["2d"],
             "GPUTexture.format": [
               "r8unorm",
               "r16float",

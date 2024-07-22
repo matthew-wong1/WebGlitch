@@ -439,6 +439,15 @@ public class ParameterNode extends ASTNode {
                 requirements.put(fieldName, values);
             });
 
+            // Recombine requirements
+            if (!generator.getWgpuCompatible() && conditionsNode.has("dawnOnlyAttributes")) {
+                JsonNode dawnOnlyAttributesNode = conditionsNode.get("dawnOnlyAttributes");
+                dawnOnlyAttributesNode.fieldNames().forEachRemaining(fieldName -> {
+                    List<String> values = Parser.getListFromJson(dawnOnlyAttributesNode.get(fieldName).toString());
+                    requirements.get(fieldName).addAll(values);
+                });
+            }
+
             return requirements;
         } else if (conditionsNode.has("renderPassCompatible")) {
             // The receiver is GPUCommandEncoder

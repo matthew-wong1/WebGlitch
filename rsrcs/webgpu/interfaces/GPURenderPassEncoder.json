@@ -10,6 +10,7 @@
           "pipeline": {
             "type": "GPURenderPipeline",
             "conditions": {
+              "same": ["GPUDevice"],
               "renderPassCompatible": true
             }
           }

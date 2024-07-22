@@ -10,6 +10,7 @@
           "pipeline": {
             "type": "GPUComputePipeline",
             "conditions": {
+              "same": ["GPUDevice"],
               "bindGroupCompatible": true
             }
           }

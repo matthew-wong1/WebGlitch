@@ -250,7 +250,10 @@
           "layout": {
             "type": "bindGroupLayout",
             "conditions": {
-              "computeShaderCompatible": true
+              "computeShaderCompatible": true,
+              "same": [
+                "GPUDevice"
+              ]
             }
           },
           "entries": {

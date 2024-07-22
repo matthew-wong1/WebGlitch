@@ -42,6 +42,11 @@
         {
           "commandBuffers": {
             "type": "GPUCommandBuffer",
+            "conditions": {
+              "same": [
+                "GPUDevice"
+              ]
+            },
             "array": true
           }
         }

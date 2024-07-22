@@ -860,8 +860,12 @@ public class Generator {
         }
 
 
-        if (paramType.equals("double") || paramType.equals("rgba")) {
+        if (paramType.equals("double")) {
             return randomUtils.nextDouble(minValue, maxValue);
+        }
+
+        if (paramType.equals("rgba")) {
+            return randomUtils.nextDouble(0.0, 1.0);
         }
 
         return randomUtils.nextLong(minValue, maxValue);

@@ -31,7 +31,7 @@ public class WebGlitchOptions {
         this.invalidParameterChance = configNode.get("invalidParameterChance").asDouble();
         this.percentOfAvailableCallsToGenerate = configNode.get("percentOfAvailableCallsToGenerate").asDouble();
         this.maxGPUDevices = configNode.get("maxGPUDevices").asInt();
-        this.generateNewRequiredObjectChance = configNode.get("generateNewRequiredObject").asDouble();
+        this.generateNewRequiredObjectChance = configNode.get("generateNewRequiredObjectChance").asDouble();
 
     }
 

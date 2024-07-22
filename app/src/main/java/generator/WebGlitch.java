@@ -19,7 +19,6 @@ public class WebGlitch {
         CommandLine cmd = checkCLIOptions(args, options);
 
         int maxCallsToGenerate = parseInt(cmd.getOptionValue("l", DEFAULT_MAX_CALLS));
-        boolean allowOptionalParams = cmd.hasOption("a");
         boolean generateMainFunctionOnly = cmd.hasOption("m");
         Long specificSeed = null;
         if (cmd.hasOption("s")) {
@@ -29,9 +28,7 @@ public class WebGlitch {
 
         String filePathToUse = cmd.getOptionValue("o");
 
-        WebGlitchOptions webGlitchOptions = new WebGlitchOptions();
-
-        Generator generator = new Generator(maxCallsToGenerate, allowOptionalParams, wgpuCompatibilityMode, specificSeed, generateMainFunctionOnly);
+        Generator generator = new Generator(maxCallsToGenerate, wgpuCompatibilityMode, specificSeed, generateMainFunctionOnly);
 
         generator.generateProgram(filePathToUse);
     }

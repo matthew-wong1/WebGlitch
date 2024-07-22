@@ -22,9 +22,10 @@ public class Generator {
     private final String WEBGLITCH_PATH = WebGlitch.getPath();
     private final String SHADERS_PATH = WEBGLITCH_PATH + "/rsrcs/shaders/";
     private final String JSON_DIRECTORY_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/interfaces/";
-    private final int MAX_DEVICES = 1;
+    private final WebGlitchOptions webGlitchOptions = new WebGlitchOptions();
     private final boolean mainOnly;
     private int numTypedArrays;
+
 
     // Hash map to keep track of state
     // Key: Type of object eg adapter, device
@@ -51,13 +52,11 @@ public class Generator {
 
     private final Parser parser = new Parser(this);
     private final int maxCalls;
-    private final boolean allowOptParams;
     private final boolean wgpuCompatible;
     private ASTNode programNode;
 
-    public Generator(int maxCalls, boolean allowOptParams, boolean wgpuCompatible, Long seed, boolean mainOnly) {
+    public Generator(int maxCalls, boolean wgpuCompatible, Long seed, boolean mainOnly) {
         this.maxCalls = maxCalls;
-        this.allowOptParams = allowOptParams;
         this.wgpuCompatible = wgpuCompatible;
         this.mainOnly = mainOnly;
 
@@ -78,7 +77,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(500, false, false, null, false);
+        Generator generator = new Generator(500,  false, null, false);
         generator.generateProgram("./output/1.js");
     }
 
@@ -273,7 +272,7 @@ public class Generator {
         variableToReceiverType.put(variableName, returnedObjectType);
 
         // Limit number of devices that can be generated
-        if (symbolTable.get("GPUDevice") != null && symbolTable.get("GPUDevice").size() == MAX_DEVICES) {
+        if (symbolTable.get("GPUDevice") != null && symbolTable.get("GPUDevice").size() == webGlitchOptions.getMaxGPUDevices()) {
             callProbabilities.remove(new ReceiverTypeCallNameCallType("GPUAdapter", "requestDevice", true));
             interfaceToAvailableCalls.get("GPUAdapter").remove("requestDevice");
         }

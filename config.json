@@ -1,2 +1,7 @@
 {
+  "disabledCalls": [],
+  "invalidParameterChance": 0,
+  "percentOfAvailableCallsToGenerate": 1.0,
+  "generateNewRequiredObjectChance": 0,
+  "maxGPUDevices": 1
 }

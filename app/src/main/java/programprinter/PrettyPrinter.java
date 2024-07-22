@@ -23,11 +23,13 @@ public class PrettyPrinter {
         List<StandardOpenOption> openOptions = new ArrayList<>();
         openOptions.add(StandardOpenOption.CREATE);
         openOptions.add(StandardOpenOption.WRITE);
+        openOptions.add(StandardOpenOption.TRUNCATE_EXISTING);
 
         if (!mainOnly) {
             try {
                 Files.copy(Path.of(DAWN_HEADER_PATH), destPath, StandardCopyOption.REPLACE_EXISTING);
                 openOptions.add(StandardOpenOption.APPEND);
+                openOptions.remove(StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e) {
                 System.err.println("Error copying file " + filePath + " to " + destPath);
             }

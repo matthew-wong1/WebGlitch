@@ -1168,6 +1168,11 @@ public class ParameterNode extends ASTNode {
         if (currentDimension.equals("1d")) {
             enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.RENDER_ATTACHMENT"));
         }
+
+        // WGPU COMPATIBILITY
+        if (generator.getWgpuCompatible() && currentDimension.equals("3d")) {
+            enumValues.removeIf(flag -> flag.equals("GPUTextureUsage.RENDER_ATTACHMENT"));
+        }
     }
 
     private void parseConstraints(JsonNode conditions, List<String> enumValues) throws SkipParameterException {

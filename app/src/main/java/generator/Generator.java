@@ -52,13 +52,13 @@ public class Generator {
     private final Parser parser = new Parser(this);
     private final int maxCalls;
     private final boolean allowOptParams;
-    private final String platform;
+    private final boolean wgpuCompatible;
     private ASTNode programNode;
 
-    public Generator(int maxCalls, boolean allowOptParams, String platform, Long seed, boolean mainOnly) {
+    public Generator(int maxCalls, boolean allowOptParams, boolean wgpuCompatible, Long seed, boolean mainOnly) {
         this.maxCalls = maxCalls;
         this.allowOptParams = allowOptParams;
-        this.platform = platform;
+        this.wgpuCompatible = wgpuCompatible;
         this.mainOnly = mainOnly;
 
         if (seed != null) {
@@ -78,7 +78,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(500, false, "dawn", null, false);
+        Generator generator = new Generator(500, false, false, null, false);
         generator.generateProgram("./output/1.js");
     }
 
@@ -86,8 +86,8 @@ public class Generator {
         return variableToReceiverName.get(childVariable);
     }
 
-    public String getPlatform() {
-        return platform;
+    public boolean getWgpuCompatible() {
+        return wgpuCompatible;
     }
 
     public RandomUtils getRandomUtils() {

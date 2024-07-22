@@ -103,9 +103,9 @@ public class ParameterNode extends ASTNode {
     }
 
     private void checkImplementationSpecificCalls(JsonNode details) throws SkipParameterException {
-        String platform = generator.getPlatform();
+        boolean wgpuCompatible = generator.getWgpuCompatible();
 
-        if ((details.has("dawnOnly") && !platform.equals("dawn")) || (details.has("wgpuOnly") && !platform.equals("wgpu"))) {
+        if (wgpuCompatible && details.has("dawnOnly")) {
             throw new SkipParameterException("Platform incompatible parameters are skipped");
         }
     }

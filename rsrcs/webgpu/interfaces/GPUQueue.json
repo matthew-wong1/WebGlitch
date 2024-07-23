@@ -5,7 +5,6 @@
     {
       "name": "writeBuffer",
       "returnType": "none",
-
       "properties": [
         {
           "buffer": {

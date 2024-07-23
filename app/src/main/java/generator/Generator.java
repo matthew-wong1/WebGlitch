@@ -379,11 +379,9 @@ public class Generator {
             for (String objectType : sameObjects) {
                 String baseCallReceiver = findBaseReceiver(receiverName, objectType);
                 sameObjectsReqs.put(objectType, baseCallReceiver);
-
                 if (!findBaseReceiver(variableName, objectType).equals(baseCallReceiver)) {
                     toRemove.add(variableName);
                 }
-
             }
         }
 
@@ -530,7 +528,7 @@ public class Generator {
 //            return;
 //        }
 
-        String receiverName = receiverTypeCallNameCallType.receiverName;
+        String receiverType = receiverTypeCallNameCallType.receiverType;
         String callName = receiverTypeCallNameCallType.callName;
         boolean isMethod = receiverTypeCallNameCallType.isMethod;
         String fileName = callProbabilities.get(receiverTypeCallNameCallType).fileName;
@@ -538,7 +536,7 @@ public class Generator {
         ASTNode receiver = null;
 
         try {
-            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverName, isMethod, requirements, sameObjectsReqs, specificReceiver);
+            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverType, isMethod, requirements, sameObjectsReqs, specificReceiver);
         } catch (IOException e) {
             System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }
@@ -943,7 +941,7 @@ public class Generator {
     public record FileNameReceiverTypeCallNameCallType(String fileName, String receiverType, String callName, boolean methodCall, String returnType) {
     }
 
-    public record ReceiverTypeCallNameCallType(String receiverName, String callName, boolean isMethod) {
+    public record ReceiverTypeCallNameCallType(String receiverType, String callName, boolean isMethod) {
     }
 
 }

@@ -285,7 +285,7 @@ public class ParameterNode extends ASTNode {
 
         // ESSETNIALLY MAKE THE BUFFER
         String inputBufferName = generator.getRandomReceiver("GPUBuffer", "getMappedRange", bufferRequirements, List.of("GPUDevice"), parentList.getReceiver(), this);
-        // public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName, ParameterNode parameterNode)
+        // public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverType, ParameterNode parameterNode)
 
         nestedParameterRequirements.put("binding", List.of("0"));
         nestedParameterRequirements.put("resource.buffer", List.of(inputBufferName));
@@ -318,18 +318,21 @@ public class ParameterNode extends ASTNode {
         Map<String, String> sameObjectReqs = new HashMap<>();
         String sameGPUDevice = generator.findBaseReceiver(inputBufferName, "GPUDevice");
         sameObjectReqs.put("GPUDevice", sameGPUDevice);
+        // THE PROBLEM HERE IS THAT WRITE BUFFER IS FROM THE SAME GPUDEVICE. BUT GPUQUEUE ISN'T.
         generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUQueue", "writeBuffer", true), writeBufferRequirements, sameObjectReqs, null);
     }
 
     private void generateBindGroupLayout(JsonNode details) {
 
         JsonNode conditionsNode = details.has("conditions") ? details.get("conditions") : null;
-        List<String> sameObjectRequirements = null;
-        if (conditionsNode != null) {
-            sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
+        Map<String, String> sameObjectRequirements = null;
+        if (conditionsNode != null && conditionsNode.has("same")) {
+            // TODO: Deprecate to GPUdevice only
+            sameObjectRequirements = new HashMap<>();
+            sameObjectRequirements.put("GPUDevice", generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice"));
         }
 
-        String pipelineVariableName = generator.getRandomReceiver("GPUComputePipeline", "getBindGroupLayout", null, sameObjectRequirements, parentList.getReceiver(), this);
+        String pipelineVariableName = generator.determineReceiver("GPUComputePipeline", "getBindGroupLayout", true, null, sameObjectRequirements);
 
         // Label should be the first paramter to be generated
         if (conditionsNode != null && conditionsNode.has("computeShaderCompatible")) {
@@ -423,6 +426,16 @@ public class ParameterNode extends ASTNode {
         List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
 
         Parameter newParameter = new Parameter(generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this));
+
+//        if (sameObjectRequirements != null) {
+//            String baseReceiverOfNewParameter = generator.findBaseReceiver(newParameter.getValue(), "GPUDevice");
+//            String baseReceiverOfParentListReceiver = generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice");
+//            if (!baseReceiverOfNewParameter.equals(baseReceiverOfParentListReceiver)) {
+//
+//                System.exit(1);
+//            }
+//        }
+
         this.parameters.add(newParameter);
 
         return conditionsNode;

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generator.Generator;
-import generator.RandomUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +51,7 @@ public class Parser {
 //        String callName = methodJsonNode.get("name").asText(); // Required field
 
 
-        return parseAndBuildCall(filePath, callDetails.callName(), callDetails.receiverName(), callDetails.isMethod(), null, null, null);
+        return parseAndBuildCall(filePath, callDetails.callName(), callDetails.receiverType(), callDetails.isMethod(), null, null, null);
 
     }
 

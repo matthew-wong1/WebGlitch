@@ -407,7 +407,10 @@
   "gpuBufferBinding": [
     {
       "buffer": {
-        "type": "GPUBuffer"
+        "type": "GPUBuffer",
+        "conditions": {
+          "same": ["GPUDevice"]
+        }
       }
     }
   ]

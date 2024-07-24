@@ -1,7 +1,9 @@
 {
   "disabledCalls": [],
   "invalidParameterChance": 0,
+  "letRandomPercentOfCallsBeAvailable": false,
   "percentOfAvailableCallsToGenerate": 1.0,
   "generateNewRequiredObjectChance": 0,
+  "generateComputePassOutputChance": 1.0,
   "maxGPUDevices": 5
 }

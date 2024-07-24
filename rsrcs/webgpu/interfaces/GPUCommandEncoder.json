@@ -22,6 +22,9 @@
           },
           "occlusionQuerySet": {
             "type": "GPUQuerySet",
+            "conditions": {
+              "same": ["GPUDevice"]
+            },
             "optional": true
           }
         }

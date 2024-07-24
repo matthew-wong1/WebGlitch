@@ -28,6 +28,7 @@
           "buffer": {
             "type": "GPUBuffer",
             "conditions": {
+              "same": ["GPUDevice"],
               "withAttributes": {
                 "GPUBuffer.usage": ["GPUBufferUsage.VERTEX"],
                 "GPUBuffer.mappedAtCreation": ["false"]

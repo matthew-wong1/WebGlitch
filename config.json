@@ -4,6 +4,6 @@
   "letRandomPercentOfCallsBeAvailable": false,
   "percentOfAvailableCallsToGenerate": 1.0,
   "generateNewRequiredObjectChance": 0,
-  "generateComputePassOutputChance": 1.0,
+  "printComputePassOutputChance": 1.0,
   "maxGPUDevices": 5
 }

@@ -43,7 +43,8 @@
           "bindGroup": {
             "type": "GPUBindGroup",
             "conditions": {
-              "computePipelineCompatible": true
+              "computePipelineCompatible": true,
+              "same": ["GPUDevice"]
             }
           }
         }

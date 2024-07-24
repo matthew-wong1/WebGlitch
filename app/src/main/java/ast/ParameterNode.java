@@ -287,11 +287,7 @@ public class ParameterNode extends ASTNode {
         sameObjectRequirements.put("GPUDevice", generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice"));
 
         // ESSETNIALLY MAKE THE BUFFER
-//        String inputBufferName = generator.determineReceiver("GPUBuffer", "getMappedRange", true, bufferRequirements, sameObjectRequirements);
         String inputBufferName = generator.getRandomReceiver("GPUBuffer", "getMappedRange", bufferRequirements, List.of("GPUDevice"), parentList.getReceiver(), this);
-        System.out.println(inputBufferName + " from gpu device" + generator.findBaseReceiver(inputBufferName, "GPUDevice"));
-        System.out.println("The receive is from GPUDevice " + generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice") + "\n");
-        // public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverType, ParameterNode parameterNode)
 
         nestedParameterRequirements.put("binding", List.of("0"));
         nestedParameterRequirements.put("resource.buffer", List.of(inputBufferName));
@@ -337,19 +333,9 @@ public class ParameterNode extends ASTNode {
         if (conditionsNode != null) {
             sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
         }
-//        Map<String, String> sameObjectRequirements = null;
-//        if (conditionsNode != null && conditionsNode.has("same")) {
-//            // TODO: Deprecate to GPUdevice only
-//            sameObjectRequirements = new HashMap<>();
-//            sameObjectRequirements.put("GPUDevice", generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice"));
-//        }
-//
-//        String pipelineVariableName = generator.determineReceiver("GPUComputePipeline", "getBindGroupLayout", true, null, sameObjectRequirements);
+
         String pipelineVariableName = generator.getRandomReceiver("GPUComputePipeline", "getBindGroupLayout", null, sameObjectRequirements, parentList.getReceiver(), this);
-        System.out.println("Pipeline variable name " + pipelineVariableName);
-        System.out.println("Base device of receiver " + parentList.getReceiver() + " is " + generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice"));
-        System.out.println("The same object requirements passed in were " + sameObjectRequirements);
-        System.out.println("Base device of pipeline variable " + generator.findBaseReceiver(pipelineVariableName, "GPUDevice") + "\n");
+
 
         // Label should be the first paramter to be generated
         if (conditionsNode != null && conditionsNode.has("computeShaderCompatible")) {
@@ -364,9 +350,6 @@ public class ParameterNode extends ASTNode {
                 String[] split = label.split("\\.", 2);
                 pipelineVariableName = split[0];
             }
-
-            // Find that pipeline variable, find its compute shader name
-            // Look up compute shader properties
         }
 
         // Generate the actual parameter
@@ -443,15 +426,6 @@ public class ParameterNode extends ASTNode {
         List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
 
         Parameter newParameter = new Parameter(generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this));
-
-//        if (sameObjectRequirements != null) {
-//            String baseReceiverOfNewParameter = generator.findBaseReceiver(newParameter.getValue(), "GPUDevice");
-//            String baseReceiverOfParentListReceiver = generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice");
-//            if (!baseReceiverOfNewParameter.equals(baseReceiverOfParentListReceiver)) {
-//
-//                System.exit(1);
-//            }
-//        }
 
         this.parameters.add(newParameter);
 
@@ -835,11 +809,6 @@ public class ParameterNode extends ASTNode {
     private List<String> pickEnumValuesAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode, List<String> mandatoryEnums) {
         int randIdx = randomUtils.nextInt(enumValues.size() - 1) + 1;
 
-//        Set<String> uniqueValues = new HashSet<>();
-//        uniqueValues.addAll(mandatoryEnums);
-//        uniqueValues.addAll(enumValues.subList(0, randIdx));
-//        List<String> chosenFlags = new ArrayList<>(uniqueValues);
-
 
         List<String> chosenFlags = chooseFinalFlags(enumValues, mandatoryEnums, randIdx);
 
@@ -1119,11 +1088,6 @@ public class ParameterNode extends ASTNode {
     private void ensureTextureAspectCompatible(List<String> enumValues, boolean hasViewFormatsCompatible) {
 
 
-
-//        else {
-//            enumValues.removeIf(flag -> flag.startsWith("stencil") || flag.startsWith("depth"));
-//        }
-
         if (hasViewFormatsCompatible) {
 
             List<String> compatibleTextures = new ArrayList<>();
@@ -1256,10 +1220,6 @@ public class ParameterNode extends ASTNode {
 
         enumValues.addAll(resultantSetAsList);
 
-
-//        String value = parentList.getParameter(newEnumNode.get("name").asText());
-//        newEnumNode = newEnumNode.get(value);
-//        extractNodeAsList(newEnumNode, enumValues);
     }
 
     private String findCompatibleTexture(String compatibleTexture) {
@@ -1352,8 +1312,6 @@ public class ParameterNode extends ASTNode {
     private String encodeAsString(String value) {
         return "\"" + value + "\"";
     }
-
-    private record ParamsAndFormattingPair(List<Parameter> parameters, ParamFormatting paramFormatting) {}
 
     public List<Parameter> getParameters() {
         return parameters;

@@ -42,7 +42,7 @@ public class WebGlitchOptions {
             System.exit(1);
         }
 
-        if (!isValidPercentage(maxGPUDevices)) {
+        if (!isValidAmount(maxGPUDevices)) {
             System.err.println("Error in config.json: Max GPU devices cannot be negative");
             System.exit(1);
         }

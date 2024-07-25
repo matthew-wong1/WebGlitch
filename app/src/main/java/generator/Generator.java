@@ -187,6 +187,15 @@ public class Generator {
     // ASSIGN PROBABILTIES BY FIRST LOADING ALL METHODS FROM ALL FILES INTO SOME MAP, INITIALIZE PROBABILITIES
     // EG MAP OF STRING TO DOUBLE
 
+    // Returns true if proceed with what you want, false otherwise
+    public boolean decideBasedOnChance(double percent) {
+        if (randomUtils.nextDouble(1.0) < percent) {
+            return true;
+        }
+
+        return false;
+    }
+
     public void generateProgram(String fileNameToUse) {
         this.programNode = new ProgramNode();
         programNode.addNode(new JavaScriptStatement(HEADER));

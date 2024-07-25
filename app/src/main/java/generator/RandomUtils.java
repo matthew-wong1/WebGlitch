@@ -32,6 +32,10 @@ public class RandomUtils {
         return random.nextLong(lowerBound, upperBound);
     }
 
+    public synchronized double nextDouble(double bound) {
+        return random.nextDouble(bound);
+    }
+
     public synchronized double nextDouble(double lowerBound, double upperBound) {
         return random.nextDouble(lowerBound, upperBound);
     }

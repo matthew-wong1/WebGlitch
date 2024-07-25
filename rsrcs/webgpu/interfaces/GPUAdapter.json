@@ -5,7 +5,10 @@
     {
       "name": "requestDevice",
       "async": true,
-      "returnType": "GPUDevice"
+      "returnType": "GPUDevice",
+      "setUnavailable": {
+        "this": ["GPUAdapter.requestDevice"]
+      }
     }
   ],
   "attributes": [

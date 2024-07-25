@@ -189,11 +189,7 @@ public class Generator {
 
     // Returns true if proceed with what you want, false otherwise
     public boolean decideBasedOnChance(double percent) {
-        if (randomUtils.nextDouble(1.0) < percent) {
-            return true;
-        }
-
-        return false;
+        return randomUtils.nextDouble(1.0) < percent;
     }
 
     public void generateProgram(String fileNameToUse) {

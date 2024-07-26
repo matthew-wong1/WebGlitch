@@ -1,18 +1,16 @@
 @echo off
+SET filename=buffer_recording_ended.js
 
-:: Set the filename of your Node.js script
-set filename=slow_performance.js
+REM Capture the output of the node script
+node %filename% > temp.txt 2>&1
 
-:: Run the Node.js script with a timeout of 30 seconds
-PowerShell -Command "try { $process = Start-Process 'node' -ArgumentList '%filename%' -NoNewWindow -PassThru; $process.WaitForExit(30000); if (!$process.HasExited) { $process.Kill(); Write-Output 'timeout' > timeout.txt; exit 0; } } catch { Write-Output $_.Exception.Message; exit 1; }"
-
-:: Check if the timeout file was created, indicating a forced termination
-if exist timeout.txt (
-    echo The process was terminated due to timeout.
-    del timeout.txt
-    exit 0
+REM Check for the error string
+findstr /C:"Command buffer recording ended before [ComputePassEncoder \"GPUComputePassEncoder12\"] was ended" temp.txt
+if errorlevel 1 (
+    exit /b 1
 ) else (
-    echo The process completed within the time limit.
+    exit /b 0
 )
 
-exit 1
+REM Clean up temporary file
+del temp.txt

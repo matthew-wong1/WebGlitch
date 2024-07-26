@@ -5,5 +5,6 @@
   "percentOfAvailableCallsToGenerate": 1.0,
   "generateNewRequiredObjectChance": 0,
   "printComputePassOutputChance": 1.0,
+  "generateNonConstChance": 0,
   "maxGPUDevices": 5
 }

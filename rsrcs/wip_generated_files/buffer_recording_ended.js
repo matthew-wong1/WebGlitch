@@ -1,7 +1,7 @@
 const {
     create,
     globals
-} = require('D:/final_proj/dawn/out/Debug/Debug/dawn.node');
+} = require('/home/matthew/final_project/dawn_no_asan/out/Debug/dawn.node');
 Object.assign(globalThis, globals);
 let navigator = {
     gpu: create([]),
@@ -26,22 +26,22 @@ const typedArray32 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 9
 const typedArray31 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
 const typedArray30 = new Int8Array([-5599, -5243, 6422, -6202, 3893, -2987, 5560, 9484, -3909, -4433, -5150, 3848, 4703, 4946, -7941, -1898])
 const typedArray29 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const shader18 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const shader18 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
 const typedArray28 = new Float32Array([9001, -7424, -5018, -5319, 6069, -6287, -8515, -7683, 1467, -2861, -6576, -283, 946, -1893, 934, 3513, -2531, 3052, -4042, -2433, -5886, -3644, 3770, -3379, -2466, -6808, -3833, -4273, -7469, 3136, 1241, -3021, -3480, 1067, -38, 2580, -7962, -5271, -4950, -8112, 9613, -4969, 8266, 3094, -8294, 7067, -991, 6608, -8358, 4357, 2882, 1777, -5419, -4609, -2856, -4364, 5955, -9595, -4332, -9518, 8719, 5296, -9565, -8716, -8111, -694, 1806, 831, -7629, -4016, -9402, 803, -8355, 4428, 842, 6046, 1363, 9225, -4128, -6670, 6757, -7431, 8541, -649, 6023, 8575, 7998, -971, 3164, -2618, 7894, -1444, -2314, -9363, 5760, 6944, -2181, 5847, -4107, -9628, -8330, -9473, 4528, -9193, -5098, 7604, 5777, -1, 945, -8889, -3177, -3155, 979, 5308, -2569, -8532, -7773, 389, 9123, -7597, 1538, -8210, -3509, -789, 2908, -570, 7882, 4843, -8216, 2603, 7814, -1112, -6355, 8745, 9911, 8797, -7835, -9199, 9057, -9960, 4513, -5626, 761, 9831, -3620, 1491, -2818, -3521, 7711, 834, 4267, -1882, 3114, 3750, 6861, -1746, 9738, 6342, 2395, 8456, 5927, -4341, -19, -1512, -2382, -5409, 6492, 7786, 4657, -9689, 91, -9117, -2497, -7425, -4291, 3610, -863, -3367, 5870, -5980, -3097, 4634, -8443, 9420, -4707, -4082, -66, -4241, 22, -5396, 1178, -4815, 9129, -1034, -4815, 6911, -7336, 3062, -9031, 8338, -2843, -3263, -513, -7203, -4092, -6646, 2004, -6966, -9355, 9769, -5233, 9742, -7299, 861, 8719, 1905, 6951, 8161, 6217, 9225, 2517, -3653, -7292, 4963, 821, 9527, 1957, 6880, -9008, 4710, -9653, -2330, -3813, -5114, 5103, 8447, 1611, -5914, -3585, 7815, 1864, 4988, -3950, 6927, 3000, -8638])
-const shader17 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const shader17 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
 const typedArray27 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const shader16 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
+const shader16 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
 const typedArray26 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
-const shader15 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
+const shader15 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
 const typedArray25 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
 const typedArray24 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
-const shader14 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const shader13 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const shader12 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const shader11 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
+const shader14 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const shader13 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const shader12 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const shader11 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
 const typedArray23 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
 const typedArray22 = new Uint8Array([67, 8388, 5125, 2310, -1594, -8692, 2768, 5678, -4266, -9961, -5926, 8546, 727, 8310, 469, -5766, -4596, 3582, -742, 2901, 4660, 2577, -8934, 7134])
-const shader10 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
+const shader10 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
 const typedArray21 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
 const typedArray20 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
 const typedArray19 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
@@ -53,26 +53,26 @@ const typedArray14 = new Int8Array([-9129, -6430, -4185, -1103, 2183, -3874, 911
 const typedArray13 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
 const typedArray12 = new Int8Array([-1268, 4986, -5118, 3661, 5337, 8065, -4326, -4544, 5319, -5752, -5644, -6841, -7518, -7265, -5066, -784, -4661, -8320, 2514, -1346, 5998, 4080, 4347, -7868, 6252, 9147, 7538, -9696, 4269, 2696, -8986, 4137, -1452, -8575, 2434, -3098, 3749, -8372, 2914, 7469, -6765, 8736, -4364, -2980, -7549, -3518, 8096, -2389, 5260, -5674, 1510, 4635, -4679, 3716, -1257, -4429, -9302, -5467, -9024, -9731, -2987, 9175, -989, -4003, -9993, 903, -3526, 5683, -5180, 5428, -4745, 1287, 858, 3702, -5501, 4272, -9937, -1657, 5939, 7808, -3776, 9841, 7790, 353, 2759, 7360, -6051, 6316, 1102, 9652, 1251, 6596, 624, 5406, 5257, 8664, -2254, -4825, 7559, 7160, -6351, -5182, 1665, -119, 9349, 7618, -9903, 4695, -6415, 4618, 2354, -4259, -4474, -7305, 4615, 330, -1288, 3827, -7973, -3073, 1817, -5992, 1235, -7312, 4941, 2536, 9005, 6722, -1869, -5252, -8294, -9727, -7736, -2377, 9892, -4445, 4758, 6324, -9022, 6707, 4104, -979, 6480, -8128, 4246, -7939, -8373, -9621, 1362, 7472, 6094, 4832, -4953, -5934, -6800, -4881, -8790, 1688, 247, 2646, 175, -6828, -5115, 3623, 1898, 6131, -7974, 0, 7241, -702, -5174, -5955, -6982, 2775, -1478, 4733, 9876, -4814, -6562, 3273, -2732, 2215, 2989, -3979, 2673, 5419, 4275, 292, 2280, 349, -4829, 5234, 3761, 6906, 6112, 3742, 7196, 7746, -9258, 885, -8055, 4663, 3287, -6721, 2561, -4628, -2646, 3506, -5728, -4478, -12, -2510, -1104, 4574, 7006, -8071, 6136, 8713, -8033, -4005, -5211, -205, 3770, -9531, -3667, 6976, -7546, 3570, 7002, -126, 1832, -4064, -528, 5724, -8824, 6323, 7270, -1861, 4814, 4776, -966, -2110, -1090, 1620, -2088, 4067, 3946, -2615, 5092, -9765, -204, 3421, 6141, 5413, 3315, 9915, -4257, -4960, 7775, -2397, -8263, 5326, 6260, -6449, -8504, 9976, 4729, -8563, 3140, -136, 3188, -8417, 4816, -456, 1997, 3232, 7970, -1099, 8564, -4067, 5294, -2353, -7942, -8483, -6314, -7754, 2592, -5920, 8768, -2459, -1757, 1183, 373, -846, -569, -8173, -2640, -3857, -5762, -9354, -9713, 5226, 4273, 819, 628, -8917, 7379, 7128, -2783, 192, -9978, 9948, 114, 1304, -5493, -513, -5248, 2046, 8282, -9459, -7477, -3205, 5325, -3754, -5079, -7700, 9065, 877])
 const typedArray11 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
-const shader9 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const shader9 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
 const typedArray10 = new Float32Array([-8694])
-const shader8 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
+const shader8 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
 const typedArray9 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
 const typedArray8 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
 const typedArray7 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
-const shader7 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const shader6 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const shader5 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const shader4 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
+const shader7 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const shader6 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const shader5 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const shader4 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
 const typedArray6 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
 const typedArray5 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
 const typedArray4 = new Uint8Array([8132, -534, 8526, 4564])
 const typedArray3 = new Int8Array([-3848, 2622, 7205, 8372, 3112, 461, -415, 3570])
-const shader3 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
+const shader3 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
 const typedArray2 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
-const shader2 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const shader1 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const shader2 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const shader1 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
 const typedArray1 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
-const shader0 = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
+const shader0 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
 const typedArray0 = new Int8Array([5601, -6668, -7552, 82, -6431, -2442, -8762, -6120, -7130, -6964, 9302, -1560, 7335, -8428, 115, 4622, 3408, 8860, 3009, -9879, -3081, 4594, 957, 1605, -623, -9001, -376, -5932, -2500, 1832, -5025, 3984, -5172, -6281, -4378, -4627, -6637, -7130, -6477, -3482, -518, 6256, 609, -8517, 7297, -8783, 4128, -862, -942, 4899, -2886, 4394, 7758, 1645, 8216, 3274, 8718, -7518, 1717, -8885, -3093, -2180, -9250, 2019, -8811, 7234, -1295, -978, 6045, -8772, 9123, 5116, -6476, -7604, 8837, 4713, -5830, 1104, -8359, -6378, 3560, -6118, -8267, -4777, -6073, 9024, 1486, -9876, 6239, 6916, 7871, 3759, -260, -8917, -3199, 6840, -3230, -9573, 9701, -427, -1317, -6782, 9837, 6934, -243, 9210, -3705, 6212, 715, 1782, 5850, -6741, -335, 1703, -6118, 8729, -8011, 4922, 54, -77, 5777, -3165, 6409, -6235, -2433, 894, -5533, 8749, 2123, 5907, 2436, 6098, 7806, -4717, -1992, 7237, -5196, 10000, 3846, -6926, -1683, 3747, -8590, 9266, -748, 943, -3249, 478, 7362, -9276, 3891, -224, 1136, 1465, -6782, 6823, 8256, -5135, -5106, -5731, 9662, -8519, 6163, 9498, -5156, -3467, -6265, 2418, -7381, 1253, 264, -8408, 9435, 2228, 7231, 5693, 7582, -5063, -1523, -632, -2542, 7307, 958, -1375, 3065, 2829, -3446, 272, 8175, 2153, 9337, -9228, 8475, -6743, -5138, -2967, 9482, 60, -1510, -5171, 7802, -9568, 2891, -9631, -495, 6653, 3524, -3531, 9071, 1467, -5517, -4694, 9133, -5446, -1270, -4727, -3232, -5065, -2803, -9835, 24, -5766, -1969, -2499, -3410, -4064, 5325, -7125, 7624, -9631, -1336, -1173, 3996, -8855, -439, -6403, 3429, -9869, 6162, -9877, -2849, 3315, 7758, 3041, 3641, -2410, -9149, 4028, -3988, 5569, -3, -3489, 3494, 3270, 197, -6068, -3960, -9465, 6106, 9568, 7502, 7639, 7851, -785, -1253, -8965, 4132, 294, -1982, 4766, -4937, -5492, 8441, -3868, -8231, 8404, 7538, 8767, -823, 992, -3178, 9992, -5276, -4252, 4342, -9170, -3894, 6625, 6087, -9049, 1764, -2399, 2730, 6008, 206, 2299])
 
 async function main() {

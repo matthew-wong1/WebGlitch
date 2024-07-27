@@ -108,11 +108,15 @@ public class Parser {
         JsonNode paramsJsonNode = callJsonNode.path("properties");
         CallNode callNode = new CallNode(receiver, returnType, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode, requirements);
         ASTNode nodeToReturn;
+        String variableWhoseAttributesAreAffected;
 
         if (!returnType.equals("none")) {
-            nodeToReturn = generator.generateDeclaration(callJsonNode, callNode);
+            AssignmentNode assignmentNode = generator.generateDeclaration(callJsonNode, callNode);
+            variableWhoseAttributesAreAffected = assignmentNode.getVarName();
+            nodeToReturn = assignmentNode;
         } else {
             generator.addToObjectAttributesTable(receiver, callNode.getParameters());
+            variableWhoseAttributesAreAffected = receiver;
             nodeToReturn = callNode;
         }
 
@@ -122,6 +126,7 @@ public class Parser {
             parsePostGenerationRequirements(receiver, callsJsonNode.get("postGeneration"));
         }
 
+        generator.setAdditionalAttributes(variableWhoseAttributesAreAffected, callJsonNode);
 
         // Delete object
         if (callJsonNode.has("deletes")) {

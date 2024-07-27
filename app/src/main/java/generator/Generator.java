@@ -244,10 +244,25 @@ public class Generator {
         return objectAttributesTable.get(variableName).get(fieldName).getFirst().getValue();
     }
 
+    // TODO: Make the fieldName if it doesn't exist
     public void setObjectAttribute(String variableName, String fieldName, String value) {
         List<Parameter> parameters = objectAttributesTable.get(variableName).get(fieldName);
         parameters.clear();
         parameters.add(new Parameter(value));
+    }
+
+    public void setMultipleObjectAttributes(String variableName, String fieldName, List<String> values) {
+        Map<String, List<Parameter>> mapOfParameters = objectAttributesTable.get(variableName);
+        if (!mapOfParameters.containsKey(fieldName)) {
+            mapOfParameters.put(fieldName, new ArrayList<>());
+        }
+
+        List<Parameter> parameterList = mapOfParameters.get(fieldName);
+        parameterList.clear();
+        for (String value : values) {
+            parameterList.add(new Parameter(value));
+        }
+
     }
 
     public void appendObjectAttribute(String variableName, String fieldName, String value) {
@@ -560,14 +575,14 @@ public class Generator {
         }
     }
 
-    public ASTNode generateDeclaration(JsonNode methodJsonNode, CallNode rootASTNode) {
+    public AssignmentNode generateDeclaration(JsonNode methodJsonNode, CallNode rootASTNode) {
 
         String returnType = methodJsonNode.get("returnType").asText();
         String varName = generateRandVarName(returnType);
         boolean isAsync = methodJsonNode.has("async");
 
         // Create the ASTNode
-        ASTNode newRootNode = new AssignmentNode("const", isAsync, varName);
+        AssignmentNode newRootNode = new AssignmentNode("const", isAsync, varName);
         newRootNode.addNode(rootASTNode);
 
         this.addToSymbolTable(returnType, varName);
@@ -1051,6 +1066,26 @@ public class Generator {
 //        console.log("input", input);
 //        console.log("result", result);
 
+    }
+
+    // Currently doesn't support setting attributes of another GPUInterfaceType
+    public void setAdditionalAttributes(String variable, JsonNode callJsonNode) {
+        if (!callJsonNode.has("setAttributes")) {
+            return;
+        }
+
+        JsonNode setAttributesNode = callJsonNode.get("setAttributes");
+        setAttributesNode.fieldNames().forEachRemaining(fieldName -> {
+            String[] split = fieldName.split("\\.", 2);
+            String typeOfVariableToModify = split[0];
+            String attributeName = split[1];
+            List<String> attributeValues = new ArrayList<>();
+            Parser.extractNodeAsList(setAttributesNode.get(fieldName), attributeValues);
+
+            if (typeOfVariableToModify.equals("this") || typeOfVariableToModify.equals("returnVariable")) {
+                setMultipleObjectAttributes(variable, attributeName, attributeValues);
+            }
+        });
     }
 
     public record FileNameCallProbPair(String fileName, Double callProbability) {

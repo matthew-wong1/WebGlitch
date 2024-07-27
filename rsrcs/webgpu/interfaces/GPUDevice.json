@@ -54,7 +54,7 @@
         }
       ],
       "setAttributes": {
-        "this.unMapped": ["true"]
+        "returnVariable.unMapped": ["true"]
       }
     },
     {

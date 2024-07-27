@@ -40,6 +40,13 @@
       "setAttributes": {
         "this.unMapped": ["false"]
       }
+    },
+    {
+      "name": "unmap",
+      "returnType": "none",
+      "setAttributes": {
+        "this.unMapped": ["true"]
+      }
     }
   ],
   "attributes": [

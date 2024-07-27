@@ -52,7 +52,10 @@
             ]
           }
         }
-      ]
+      ],
+      "setAttributes": {
+        "this.unMapped": ["true"]
+      }
     },
     {
       "name": "createCommandEncoder",

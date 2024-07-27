@@ -435,11 +435,11 @@ public class ParameterNode extends ASTNode {
     }
 
     private Map<String, List<String>> parseInterfaceConditions(JsonNode conditionsNode) {
-        Map<String, List<String>> requirements = new HashMap<>();
 
         if (conditionsNode.has("withAttributes")) {
-            return generator.parseAttributeRequirements(conditionsNode, requirements, this);
+            return generator.parseAttributeRequirements(conditionsNode);
         } else if (conditionsNode.has("renderPassCompatible")) {
+            Map<String, List<String>> requirements = new HashMap<>();
             // The receiver is GPUCommandEncoder
             // Look at construction and check colorAttachments.view.format
             List<String> requiredColorAttachmentValues = new ArrayList<>();
@@ -469,6 +469,7 @@ public class ParameterNode extends ASTNode {
 
             // (Also look at depth stencil if it exists)
         } else if (conditionsNode.has("computePipelineCompatible")) {
+            Map<String, List<String>> requirements = new HashMap<>();
             // Check have setPIpeline called already
             String computePassEncoderName = parentList.getReceiver();
             Set<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);

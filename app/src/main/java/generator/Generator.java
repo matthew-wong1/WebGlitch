@@ -1087,7 +1087,8 @@ public class Generator {
         });
     }
 
-    public Map<String, List<String>> parseAttributeRequirements(JsonNode conditionsNode, Map<String, List<String>> requirements, ParameterNode parameterNode) {
+    public Map<String, List<String>> parseAttributeRequirements(JsonNode conditionsNode) {
+        Map<String, List<String>> requirements = new HashMap<>();
         JsonNode requiredAttributesNode = conditionsNode.get("withAttributes");
 
         requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {

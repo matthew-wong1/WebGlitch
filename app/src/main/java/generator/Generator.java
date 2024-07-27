@@ -885,12 +885,34 @@ public class Generator {
             case "mipLevelCount":
                 return calculateMipLevelCount(parent);
             case "depthSlice": {
-
                 return calculateDepthSlice(parameterNode, generator);
+            }
+            case "fitsInBuffer": {
+                return calculateMaxBufferSize(parameterNode);
             }
         }
 
         return null;
+    }
+
+    private String calculateMaxBufferSize(ParameterNode parameterNode) {
+        // Source's GPUBuffer.size >= sourceOffset + size
+        ParameterListNode parentList = parameterNode.getParentList();
+        // Destination's GPUBuffer.size >= destinationOffset + size
+        String sourceGPUBuffer = parentList.getParameter("source");
+        String destGPUBuffer = parentList.getParameter("destination");
+
+        int sourceSize = Integer.parseInt(getObjectAttributes(sourceGPUBuffer, "size"));
+        int destSize = Integer.parseInt(getObjectAttributes(destGPUBuffer, "size"));
+
+        int sourceOffset = Integer.parseInt(parentList.getParameter("sourceOffset"));
+        int destOffset = Integer.parseInt(getObjectAttributes(destGPUBuffer, "destinationOffset"));
+
+        int maxSizeForSource = sourceSize - sourceOffset;
+        int maxSizeForDest = destSize - destOffset;
+        int overallMaxSize = Math.min(maxSizeForSource, maxSizeForDest);
+
+        return String.valueOf(overallMaxSize);
     }
 
     private String calculateDepthSlice(ParameterNode parameterNode, Generator generator) {

@@ -25,15 +25,29 @@ const computeShader = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/
 
 async function main() {
     const adapter = await navigator.gpu.requestAdapter();
-    const device1 = await adapter.requestDevice();
-    const device2 = await adapter.requestDevice();
+    const device = await adapter.requestDevice();
 
-    const encoder1 = device1.createCommandEncoder({
+    const encoder = device.createCommandEncoder({
         label: "encoder1"
     });
-    const encoder2 = device2.createCommandEncoder({
-        label: "encoder2",
+
+    const uniformBuffer = device.createBuffer({
+        size: 12,
+        usage:
+            GPUBufferUsage.UNIFORM |
+            GPUBufferUsage.COPY_SRC |
+            GPUBufferUsage.COPY_DST,
     });
+
+    const destBuffer = device.createBuffer({
+        size: 12,
+        usage:
+            GPUBufferUsage.UNIFORM |
+            GPUBufferUsage.COPY_SRC |
+            GPUBufferUsage.COPY_DST,
+    });
+
+    encoder.copyBufferToBuffer(uniformBuffer, 0, destBuffer, 0, 0);
 
 }
 main().catch(console.error);

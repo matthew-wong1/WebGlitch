@@ -897,7 +897,22 @@ public class ParameterNode extends ASTNode {
             ensureUniformStorageCompatible(mandatoryEnums, enumValues);
         }
 
+        if (conditions.has("bufferCompatibleMapping")) {
+            ensureBufferCompatibleMapping(enumValues);
+        }
+
         return mandatoryEnums;
+    }
+
+    private void ensureBufferCompatibleMapping(List<String> enumValues) {
+        String buffer = parentList.getReceiver();
+        List<String> bufferUsageValues = generator.getAllObjectAttributes(buffer, "usage");
+
+        if (bufferUsageValues.contains("GPUBufferUsage.MAP_READ")) {
+            enumValues.removeIf(value -> value.equals("GPUMapMode.WRITE"));
+        } else {
+            enumValues.removeIf(value -> value.equals("GPUMapMode.READ"));
+        }
     }
 
     private void ensureUniformStorageCompatible(List<String> mandatoryEnums, List<String> enumValues) {

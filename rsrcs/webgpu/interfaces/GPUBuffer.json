@@ -12,7 +12,10 @@
             "enum": [
               "GPUMapMode.READ",
               "GPUMapMode.WRITE"
-            ]
+            ],
+            "conditions": {
+              "bufferCompatibleMapping": true
+            }
           }
         }
       ],

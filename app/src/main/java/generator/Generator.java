@@ -1057,13 +1057,16 @@ public class Generator {
 
         String outBuffer = getObjectAttributes(commandBuffer, "destination");
 
-//        await outBuffer.mapAsync(GPUMapMode.READ, 0, outSize);
-//        const copyArray = outBuffer.getMappedRange(0, outSize);
-//        const outData = copyArray.slice(0);
-//        const result = new Uint8Array(outData);
-//
-//        console.log("input", input);
-//        console.log("result", result);
+        Map<String, List<String>> mapAsyncRequirements = new HashMap<>();
+        mapAsyncRequirements.put("mode", List.of("GPUMapMode.READ"));
+        // Generate: await outBuffer.mapAsync(GPUMapMode.READ, 0, outSize);
+        generateCall(new ReceiverTypeCallNameCallType("GPUBuffer","mapAsync", true), mapAsyncRequirements, null, outBuffer);
+
+
+        // Generate: const copyArray = outBuffer.getMappedRange(0, outSize);
+        // Generate: const outData = copyArray.slice(0);
+        // Generate: const result = new Uint8Array(outData);
+        // Generate console.log("result", result); + something with an identifying label
 
     }
 

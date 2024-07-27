@@ -438,23 +438,7 @@ public class ParameterNode extends ASTNode {
         Map<String, List<String>> requirements = new HashMap<>();
 
         if (conditionsNode.has("withAttributes")) {
-            JsonNode requiredAttributesNode = conditionsNode.get("withAttributes");
-
-            requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {
-                List<String> values = Parser.getListFromJson(requiredAttributesNode.get(fieldName).toString());
-                requirements.put(fieldName, values);
-            });
-
-            // Recombine requirements
-            if (!generator.getWgpuCompatible() && conditionsNode.has("dawnOnlyAttributes")) {
-                JsonNode dawnOnlyAttributesNode = conditionsNode.get("dawnOnlyAttributes");
-                dawnOnlyAttributesNode.fieldNames().forEachRemaining(fieldName -> {
-                    List<String> values = Parser.getListFromJson(dawnOnlyAttributesNode.get(fieldName).toString());
-                    requirements.get(fieldName).addAll(values);
-                });
-            }
-
-            return requirements;
+            return generator.parseAttributeRequirements(conditionsNode, requirements, this);
         } else if (conditionsNode.has("renderPassCompatible")) {
             // The receiver is GPUCommandEncoder
             // Look at construction and check colorAttachments.view.format

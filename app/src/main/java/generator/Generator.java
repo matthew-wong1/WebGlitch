@@ -1087,6 +1087,26 @@ public class Generator {
         });
     }
 
+    public Map<String, List<String>> parseAttributeRequirements(JsonNode conditionsNode, Map<String, List<String>> requirements, ParameterNode parameterNode) {
+        JsonNode requiredAttributesNode = conditionsNode.get("withAttributes");
+
+        requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {
+            List<String> values = Parser.getListFromJson(requiredAttributesNode.get(fieldName).toString());
+            requirements.put(fieldName, values);
+        });
+
+        // Recombine requirements
+        if (!getWgpuCompatible() && conditionsNode.has("dawnOnlyAttributes")) {
+            JsonNode dawnOnlyAttributesNode = conditionsNode.get("dawnOnlyAttributes");
+            dawnOnlyAttributesNode.fieldNames().forEachRemaining(fieldName -> {
+                List<String> values = Parser.getListFromJson(dawnOnlyAttributesNode.get(fieldName).toString());
+                requirements.get(fieldName).addAll(values);
+            });
+        }
+
+        return requirements;
+    }
+
     public record FileNameCallProbPair(String fileName, Double callProbability) {
     }
 

@@ -1,0 +1,35 @@
+{
+  "receiverType": "GPUBuffer",
+  "requirements": ["GPUBuffer"],
+  "methods": [
+    {
+      "name": "mapAsync",
+      "returnType": "none",
+      "async": true,
+      "properties": [
+        {
+          "mode": {
+            "enum": [
+              "GPUMapMode.READ",
+              "GPUMapMode.WRITE"
+            ]
+          }
+        }
+      ],
+      "conditions": {
+        "withAttributes": {
+          "this.mappedAtCreation": ["false"]
+        }
+      },
+      "setAttributes": {
+        "this.mappedAtCreation": ["true"]
+      }
+    }
+  ],
+  "attributes": [
+    {
+      "name": "label",
+      "returnType": "string"
+    }
+  ]
+}

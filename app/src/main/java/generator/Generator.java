@@ -1033,11 +1033,16 @@ public class Generator {
 
     private void generatePrintOutputCalls(String receiver) {
         // Check that you are allowed to print it
-        if (!computePassVariablesToPrint.contains(receiver)) {
+        String commandBuffer = getObjectAttributes(receiver, "commandBuffers");
+
+        if (!computePassVariablesToPrint.contains(commandBuffer)) {
             return;
         }
 
-        computePassVariablesToPrint.remove(receiver);
+        computePassVariablesToPrint.remove(commandBuffer);
+
+        String outBuffer = getObjectAttributes(commandBuffer, "destination");
+
 //        await outBuffer.mapAsync(GPUMapMode.READ, 0, outSize);
 //        const copyArray = outBuffer.getMappedRange(0, outSize);
 //        const outData = copyArray.slice(0);

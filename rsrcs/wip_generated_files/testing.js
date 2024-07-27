@@ -42,12 +42,12 @@ async function main() {
     const destBuffer = device.createBuffer({
         size: 12,
         usage:
-            GPUBufferUsage.UNIFORM |
-            GPUBufferUsage.COPY_SRC |
-            GPUBufferUsage.COPY_DST,
+            GPUBufferUsage.COPY_DST |
+            GPUBufferUsage.MAP_READ
     });
 
-    encoder.copyBufferToBuffer(uniformBuffer, 0, destBuffer, 0, 0);
+    await destBuffer.mapAsync(GPUMapMode.READ, 0, 12);
+    await destBuffer.mapAsync(GPUMapMode.READ, 0, 12); // oepration error. Strict conditions
 
 }
 main().catch(console.error);

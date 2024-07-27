@@ -1007,17 +1007,44 @@ public class Generator {
         String commandEncoder = getParentVariable(receiver);
 
         // Generate the copyBufferToBuffer call
-        generateCall(new Generator.ReceiverTypeCallNameCallType("GPUCommandEncoder", "copyBufferToBuffer", true), null, null, commandEncoder);
+        // YOU NEED TO SPECIFY THE BUFFERS!
+        String bindGroup = getObjectAttributes(receiver, "bindGroup");
+
+        // Test that this works
+        String storageBuffer = getObjectAttributes(bindGroup, "entries.buffer");
+        String size = getObjectAttributes(bindGroup, "entries.size");
+
+        Map<String, List<String>> copyBufferRequirements = new HashMap<>();
+        copyBufferRequirements.put("source", List.of(storageBuffer));
+        copyBufferRequirements.put("sourceOffset", List.of("0"));
+
+        // Generate outBufferToReadFrom
+        Map<String, List<String>> outBufferRequirements = new HashMap<>();
+        outBufferRequirements.put("size", List.of(size));
+        outBufferRequirements.put("usage", List.of("GPUBufferUsage.COPY_DST", "GPUBufferUsage.MAP_READ"));
+        String outBuffer = generateCall(new Generator.ReceiverTypeCallNameCallType("GPUDevice", "createBuffer", true), outBufferRequirements, null, getParentVariable(commandEncoder));
+
+        copyBufferRequirements.put("destination", List.of(outBuffer));
+        copyBufferRequirements.put("destinationOffset", List.of("0"));
+        copyBufferRequirements.put("size", List.of(size));
+        generateCall(new Generator.ReceiverTypeCallNameCallType("GPUCommandEncoder", "copyBufferToBuffer", true), copyBufferRequirements, null, commandEncoder);
 
     }
 
     private void generatePrintOutputCalls(String receiver) {
+        // Check that you are allowed to print it
         if (!computePassVariablesToPrint.contains(receiver)) {
             return;
         }
 
         computePassVariablesToPrint.remove(receiver);
-
+//        await outBuffer.mapAsync(GPUMapMode.READ, 0, outSize);
+//        const copyArray = outBuffer.getMappedRange(0, outSize);
+//        const outData = copyArray.slice(0);
+//        const result = new Uint8Array(outData);
+//
+//        console.log("input", input);
+//        console.log("result", result);
 
     }
 

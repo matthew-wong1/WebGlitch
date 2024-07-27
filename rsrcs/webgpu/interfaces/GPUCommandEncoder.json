@@ -62,6 +62,57 @@
           "GPUComputePassEncoder": ["all"]
         }
       }
+    },
+    {
+      "name": "copyBufferToBuffer",
+      "returnType": "none",
+      "properties": [
+        {
+          "source": {
+            "type": "GPUBuffer",
+            "conditions": {
+              "same": ["GPUDevice"],
+              "withAttributes": {
+                "GPUBuffer.usage": ["GPUBufferUsage.COPY_SRC"],
+                "GPUBuffer.mappedAtCreation": ["false"]
+              }
+            }
+          },
+          "sourceOffset": {
+            "type": "uint",
+            "conditions": {
+              "min": 0,
+              "max": "this.source.size",
+              "divisible": 4
+            }
+          },
+          "destination": {
+            "type": "GPUBuffer",
+            "conditions": {
+              "same": ["GPUDevice"],
+              "differentTo": "source",
+              "withAttributes": {
+                "GPUBuffer.usage": ["GPUBufferUsage.COPY_DST"],
+                "GPUBuffer.mappedAtCreation": ["false"]
+              }
+            }
+          },
+          "destinationOffset": {
+            "type": "uint",
+            "conditions": {
+              "min": 0,
+              "max": "this.destination.size",
+              "divisible": 4
+            }
+          },
+          "size": {
+            "type": "uint",
+            "conditions": {
+              "fitsInBuffer": true
+            }
+          }
+        }
+      ]
     }
   ],
   "attributes": [

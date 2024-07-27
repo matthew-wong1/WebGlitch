@@ -30,7 +30,8 @@
         "parents": {
           "GPUCommandEncoder": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass"]
         }
-      }
+      },
+      "postGeneration": ["copyComputePassOutput"]
     },
     {
       "name": "setBindGroup",

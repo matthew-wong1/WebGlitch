@@ -50,7 +50,8 @@
           }
         }
       ],
-      "deletes": "commandBuffers"
+      "deletes": "commandBuffers",
+      "postGeneration": ["printOutput"]
     }
   ],
   "attributes": [

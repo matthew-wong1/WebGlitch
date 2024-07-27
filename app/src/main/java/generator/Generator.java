@@ -37,6 +37,7 @@ public class Generator {
     private final Map<String, Set<String>> callUnavailability = new HashMap<>();
     private final Map<String, Set<String>> interfaceToAvailableCalls = new HashMap<>();
     private final Map<String, String> availableCallsToInterface = new HashMap<>();
+    private final Set<String> computePassVariablesToPrint = new HashSet<>();
     public final Map<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
     private final Map<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new HashMap<>();
 
@@ -309,16 +310,20 @@ public class Generator {
 
     public String getRandomReceiver(String receiverType, String callName) {
 
-        return getRandomReceiver(receiverType, callName, null, null, null, null);
+        return getRandomReceiver(receiverType, callName, null, null, null, null, null);
 
 
     }
 
-    public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName, ParameterNode parameterNode) {
+    public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName, ParameterNode parameterNode, String cannotBeThisObject) {
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
         Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, callName, requirements, sameObjects, variablesThatMeetReqs, receiverName, parameterNode);
+
+        if (cannotBeThisObject != null) {
+            variablesThatMeetReqs.remove(cannotBeThisObject);
+        }
 
         if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
             // pass in same objects here
@@ -878,66 +883,118 @@ public class Generator {
     public String generateCustomConstraint(String customValidation, ParameterListNode parent, ParameterNode parameterNode, Generator generator) {
         switch (customValidation) {
             case "mipLevelCount":
-                String MULTI_SAMPLING_FLAG = "4";
-                String MAX_MIP_COUNT_IF_MULTI_SAMPLING = "1";
-
-                boolean multiSampling = parent.getParameter("sampleCount").equals(MULTI_SAMPLING_FLAG);
-
-                if (multiSampling) {
-                    return MAX_MIP_COUNT_IF_MULTI_SAMPLING;
-                }
-
-                String dimension = parent.getParameter("dimension");
-
-                // Needs to find from itself first, then go looking for Global Attributes table
-                int width = Integer.parseInt(parent.getParameter("size.width"));
-                int height = Integer.parseInt(parent.getParameter("size.height"));
-                int depthOrArrayLayer = Integer.parseInt(parent.getParameter("size.depthOrArrayLayers"));
-
-                // Formula from documentation
-                int maxDimensionValue;
-
-                switch (dimension) {
-                    case "1d":
-                        maxDimensionValue = 1;
-                        break;
-                    case "2d":
-                        maxDimensionValue = Math.max(width, height);
-                        break;
-                    default: // 3d
-                        maxDimensionValue = Math.max(Math.max(width, height), depthOrArrayLayer);
-                        break;
-                }
-
-                int max = (int) (Math.floor(Math.log(maxDimensionValue) / Math.log(2)) + 1);
-//                int max = (int) (Math.floor(Math.log(Math.min(width, height)) / Math.log(2)) + 1);
-                return String.valueOf(max);
+                return calculateMipLevelCount(parent);
             case "depthSlice": {
 
-                String textureViewVariableName = parameterNode.getRootParameterNode().findNestedParameterNode("view").getParameter().getValue();
-
-                String viewDimensionValue = generator.getObjectAttributes(textureViewVariableName, "dimension");
-
-                if (!viewDimensionValue.equals("3d")) {
-                    throw new SkipParameterException("Skipping depth slice because dimension is not 3d");
-                }
-
-                String textureViewParentName = generator.getParentVariable(textureViewVariableName);
-                int parentDepthOrArrayLayersValue = Integer.parseInt(generator.getObjectAttributes(textureViewParentName, "size.depthOrArrayLayers"));
-                int baseMipLevelValue = Integer.parseInt(generator.getObjectAttributes(textureViewVariableName, "baseMipLevel"));
-
-                int maxValue = (int) Math.max(parentDepthOrArrayLayersValue / Math.pow(2, baseMipLevelValue), 1);
-
-                // -1 since max value is inclusvie
-                return String.valueOf(maxValue - 1);
+                return calculateDepthSlice(parameterNode, generator);
             }
         }
 
         return null;
     }
 
+    private String calculateDepthSlice(ParameterNode parameterNode, Generator generator) {
+        String textureViewVariableName = parameterNode.getRootParameterNode().findNestedParameterNode("view").getParameter().getValue();
+
+        String viewDimensionValue = generator.getObjectAttributes(textureViewVariableName, "dimension");
+
+        if (!viewDimensionValue.equals("3d")) {
+            throw new SkipParameterException("Skipping depth slice because dimension is not 3d");
+        }
+
+        String textureViewParentName = generator.getParentVariable(textureViewVariableName);
+        int parentDepthOrArrayLayersValue = Integer.parseInt(generator.getObjectAttributes(textureViewParentName, "size.depthOrArrayLayers"));
+        int baseMipLevelValue = Integer.parseInt(generator.getObjectAttributes(textureViewVariableName, "baseMipLevel"));
+
+        int maxValue = (int) Math.max(parentDepthOrArrayLayersValue / Math.pow(2, baseMipLevelValue), 1);
+
+        // -1 since max value is inclusvie
+        return String.valueOf(maxValue - 1);
+    }
+
+    private String calculateMipLevelCount(ParameterListNode parent) {
+        String MULTI_SAMPLING_FLAG = "4";
+        String MAX_MIP_COUNT_IF_MULTI_SAMPLING = "1";
+
+        boolean multiSampling = parent.getParameter("sampleCount").equals(MULTI_SAMPLING_FLAG);
+
+        if (multiSampling) {
+            return MAX_MIP_COUNT_IF_MULTI_SAMPLING;
+        }
+
+        String dimension = parent.getParameter("dimension");
+
+        // Needs to find from itself first, then go looking for Global Attributes table
+        int width = Integer.parseInt(parent.getParameter("size.width"));
+        int height = Integer.parseInt(parent.getParameter("size.height"));
+        int depthOrArrayLayer = Integer.parseInt(parent.getParameter("size.depthOrArrayLayers"));
+
+        // Formula from documentation
+        int maxDimensionValue;
+
+        switch (dimension) {
+            case "1d":
+                maxDimensionValue = 1;
+                break;
+            case "2d":
+                maxDimensionValue = Math.max(width, height);
+                break;
+            default: // 3d
+                maxDimensionValue = Math.max(Math.max(width, height), depthOrArrayLayer);
+                break;
+        }
+
+        int max = (int) (Math.floor(Math.log(maxDimensionValue) / Math.log(2)) + 1);
+//                int max = (int) (Math.floor(Math.log(Math.min(width, height)) / Math.log(2)) + 1);
+        return String.valueOf(max);
+    }
+
     public Set<String> getFromCallState(String receiverName) {
         return callState.get(receiverName);
+    }
+
+    // Looks at what the post generation requirement is and executes corresponding function
+    public void generatePostGenerationRequirement(String receiver, String requirement) {
+        switch (requirement) {
+            case "copyComputePassOutput":
+                generateCopyComputePassOutputCalls(receiver);
+                return;
+            case "printOutput":
+                generatePrintOutputCalls(receiver);
+                return;
+        }
+    }
+
+    private void generateCopyComputePassOutputCalls(String receiver) {
+        if (!randomUtils.randomChanceIsSuccessful(webGlitchOptions.getPrintComputePassOutputChance())) {
+            return;
+        }
+
+        Set<String> callHistory = getFromCallState(receiver);
+        if (callHistory == null) {
+            return;
+        }
+
+        // All these prerequisites mustve been set already - want to minimize numebr of calls that are generated as a requirement
+        if (!callHistory.contains("setPipeline") || !callHistory.contains("setBindGroup") || !callHistory.contains("dispatchWorkgroups")) {
+            return;
+        }
+
+        computePassVariablesToPrint.add(receiver);
+
+        // Generate the copyBufferToBuffer call
+        generateCall()
+
+    }
+
+    private void generatePrintOutputCalls(String receiver) {
+        if (!computePassVariablesToPrint.contains(receiver)) {
+            return;
+        }
+
+        computePassVariablesToPrint.remove(receiver);
+
+
     }
 
     public record FileNameCallProbPair(String fileName, Double callProbability) {

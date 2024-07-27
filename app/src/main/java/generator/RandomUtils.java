@@ -48,6 +48,10 @@ public class RandomUtils {
         return random;
     }
 
+    public synchronized boolean randomChanceIsSuccessful(double probability) {
+        return random.nextDouble() < probability;
+    }
+
     public Long getSeed() {
         return seed;
     }

@@ -108,7 +108,11 @@
           "size": {
             "type": "uint",
             "conditions": {
-              "fitsInBuffer": true
+              "min": 0,
+              "max": {
+                "customValidation": "fitsInBuffer"
+              },
+              "divisible": 4
             }
           }
         }

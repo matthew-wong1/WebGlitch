@@ -110,7 +110,6 @@ public class Parser {
         ASTNode nodeToReturn;
 
         if (!returnType.equals("none")) {
-            // THIS WONT WORK
             nodeToReturn = generator.generateDeclaration(callJsonNode, callNode);
         } else {
             generator.addToObjectAttributesTable(receiver, callNode.getParameters());
@@ -118,6 +117,10 @@ public class Parser {
         }
 
         generator.setCallState(receiver, callName, isMethod);
+
+        if (callJsonNode.has("postGeneration")) {
+            parsePostGenerationRequirements(receiver, callsJsonNode.get("postGeneration"));
+        }
 
 
         // Delete object
@@ -130,6 +133,15 @@ public class Parser {
 
 
         return nodeToReturn;
+    }
+
+    private void parsePostGenerationRequirements(String receiver, JsonNode postGenerationReqsNode) {
+        List<String> postGenerationRequirements = new ArrayList<>();
+        extractNodeAsList(postGenerationReqsNode, postGenerationRequirements);
+
+        for (String requirement : postGenerationRequirements) {
+            generator.generatePostGenerationRequirement(receiver, requirement);
+        }
     }
 
     private void deleteRequirements(JsonNode callJsonNode, String parentReceiverType, String variableName) {

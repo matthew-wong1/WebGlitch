@@ -579,10 +579,9 @@ public class Generator {
 
         String returnType = methodJsonNode.get("returnType").asText();
         String varName = generateRandVarName(returnType);
-        boolean isAsync = methodJsonNode.has("async");
 
         // Create the ASTNode
-        AssignmentNode newRootNode = new AssignmentNode("const", isAsync, varName);
+        AssignmentNode newRootNode = new AssignmentNode("const", varName);
         newRootNode.addNode(rootASTNode);
 
         this.addToSymbolTable(returnType, varName);
@@ -654,7 +653,7 @@ public class Generator {
 
         switch (type) {
             case "typedArray":
-                assignmentNode = new AssignmentNode("const", false, "typedArray" + numTypedArrays);
+                assignmentNode = new AssignmentNode("const", "typedArray" + numTypedArrays);
                 TypedArray typedArray = null;
 
                 if (values == null) {
@@ -691,7 +690,7 @@ public class Generator {
                 String folderPath = SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
                 String fullPath = folderPath + shaderSubType + ".wgsl";
 
-                assignmentNode = new AssignmentNode("const", false, "shader" + shaderNameToProperties.size());
+                assignmentNode = new AssignmentNode("const",  "shader" + shaderNameToProperties.size());
                 Require requireStatement = new Require(fullPath, true);
                 assignmentNode.addNode(requireStatement);
                 String importName = assignmentNode.getVarName();

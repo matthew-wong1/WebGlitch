@@ -105,8 +105,9 @@ public class Parser {
 
         boolean jsonParams = callJsonNode.path("paramType").asText("csv").equals("object");
         boolean isArray = callJsonNode.has("array");
+        boolean isAsync = callJsonNode.has("async");
         JsonNode paramsJsonNode = callJsonNode.path("properties");
-        CallNode callNode = new CallNode(receiver, returnType, callName, jsonParams, isArray, isMethod, generator, paramsJsonNode, requirements);
+        CallNode callNode = new CallNode(receiver, returnType, callName, jsonParams, isArray, isMethod, isAsync, generator, paramsJsonNode, requirements);
         ASTNode nodeToReturn;
         String variableWhoseAttributesAreAffected;
 

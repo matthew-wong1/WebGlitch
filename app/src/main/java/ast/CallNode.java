@@ -15,14 +15,16 @@ public class CallNode extends ASTNode {
     private final String returnType;
     private ParameterListNode parameterListNode = null;
     private final Generator generator;
+    private final boolean isAsync;
 
-    public CallNode(String receiver, String returnType, String callName, boolean jsonParams, boolean isArray, boolean isMethod, Generator generator, JsonNode paramsJsonNode, Map<String, List<String>> requirements) {
+    public CallNode(String receiver, String returnType, String callName, boolean jsonParams, boolean isArray, boolean isMethod, boolean isAsync, Generator generator, JsonNode paramsJsonNode, Map<String, List<String>> requirements) {
         this.receiver = receiver;
         this.callName = callName;
         this.fullCallName = receiver + "." + callName;
         this.isMethod = isMethod;
         this.generator = generator;
         this.returnType = returnType;
+        this.isAsync = isAsync;
 
         if (isMethod) {
             this.parameterListNode = new ParameterListNode(this, paramsJsonNode, jsonParams, isArray, requirements);
@@ -43,9 +45,16 @@ public class CallNode extends ASTNode {
 
     @Override
     public String toString() {
-
         if (isMethod) {
-            return this.fullCallName + "(" + subnodes.getFirst().toString() + ");";
+            String fullCall = "";
+
+            if (isAsync) {
+                fullCall += "await ";
+            }
+
+            fullCall += this.fullCallName + "(" + subnodes.getFirst().toString() + ");";
+
+            return fullCall;
         }
 
         return this.fullCallName;

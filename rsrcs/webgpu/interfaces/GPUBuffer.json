@@ -24,6 +24,22 @@
       "setAttributes": {
         "this.mappedAtCreation": ["true"]
       }
+    },
+    {
+      "name": "getMappedRange",
+      "returnType": "ArrayBuffer",
+      "setUnavailable": {
+        "this": ["GPUBuffer.getMappedRange"]
+      },
+      "conditions": {
+        "withAttributes": {
+          "this.mappedAtCreation": ["true"],
+          "this.unMapped": ["true"]
+        }
+      },
+      "setAttributes": {
+        "this.unMapped": ["false"]
+      }
     }
   ],
   "attributes": [

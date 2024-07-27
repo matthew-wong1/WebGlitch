@@ -27,6 +27,16 @@ async function main() {
     const adapter = await navigator.gpu.requestAdapter();
     const device = await adapter.requestDevice();
 
+    const destBuffer = device.createBuffer({
+        size: 12,
+        usage:
+            GPUBufferUsage.COPY_DST |
+            GPUBufferUsage.MAP_READ
+    });
+
+    await destBuffer.mapAsync(GPUMapMode.READ, 0, 12);
+    const testBuffer = await destBuffer.getMappedRange();
+
     const encoder = device.createCommandEncoder({
         label: "encoder1"
     });
@@ -39,15 +49,8 @@ async function main() {
             GPUBufferUsage.COPY_DST,
     });
 
-    const destBuffer = device.createBuffer({
-        size: 12,
-        usage:
-            GPUBufferUsage.COPY_DST |
-            GPUBufferUsage.MAP_READ
-    });
+    console.log("hi")
 
-    await destBuffer.mapAsync(GPUMapMode.READ, 0, 12);
-    await destBuffer.mapAsync(GPUMapMode.READ, 0, 12); // oepration error. Strict conditions
 
 }
 main().catch(console.error);

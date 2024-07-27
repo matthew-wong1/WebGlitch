@@ -9,13 +9,21 @@ import java.util.stream.Collectors;
 public class TypedArray extends ASTNode {
     private final List<String> TYPES = Arrays.asList("Int8", "Float32", "Uint8");
     private final String type;
+    private final String dataVariable;
     private final List<Number> values = new ArrayList<>();
     private final int MAX_SIZE = 500;
     private final int MIN_SIZE = 1;
     private final int RANGE = 10000;
     private final RandomUtils randomUtils;
 
+    public TypedArray(String type, String dataVariable, RandomUtils randomUtils) {
+        this.type = type;
+        this.dataVariable = dataVariable;
+        this.randomUtils = randomUtils;
+    }
+
     public TypedArray(int maxBytes, RandomUtils randomUtils) {
+        this.dataVariable = null;
         this.randomUtils = randomUtils;
         this.type = TYPES.get(randomUtils.nextInt(TYPES.size()));
 
@@ -32,6 +40,7 @@ public class TypedArray extends ASTNode {
     }
 
     public TypedArray(String type, List<String> valuesToUse, RandomUtils randomUtils) {
+        this.dataVariable = null;
         this.type = type;
         this.randomUtils = randomUtils;
         valuesToUse.forEach(v -> this.values.add(Integer.parseInt(v)));
@@ -72,6 +81,10 @@ public class TypedArray extends ASTNode {
 
     @Override
     public String toString() {
-        return "new " + type + "Array" + values.stream().map(Objects::toString).collect(Collectors.joining(",", "([", "])"));
+        String baseStructure = "new " + type + "Array";
+        if (dataVariable != null) {
+            return baseStructure + "(" + dataVariable + ")";
+        }
+        return  baseStructure + values.stream().map(Objects::toString).collect(Collectors.joining(",", "([", "])"));
     }
 }

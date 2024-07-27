@@ -37,7 +37,9 @@ public class Generator {
     private final Map<String, Set<String>> callUnavailability = new HashMap<>();
     private final Map<String, Set<String>> interfaceToAvailableCalls = new HashMap<>();
     private final Map<String, String> availableCallsToInterface = new HashMap<>();
-    private final Set<String> computePassVariablesToPrint = new HashSet<>();
+
+    // Maps parent CommandEncoder to the name of the outBuffer and the corresponding pipeline
+    private final Map<String, Map<String, String>> toPrintCommandEncoderAndItsPipeline = new HashMap<>();
     public final Map<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
     private final Map<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new HashMap<>();
 
@@ -1001,12 +1003,13 @@ public class Generator {
         }
     }
 
-    private void generateCopyComputePassOutputCalls(String receiver) {
+    private void generateCopyComputePassOutputCalls(String computePassEncoderName) {
+        // Here the receiver is the computePassEncoder
         if (!randomUtils.randomChanceIsSuccessful(webGlitchOptions.getPrintComputePassOutputChance())) {
             return;
         }
 
-        Set<String> callHistory = getFromCallState(receiver);
+        Set<String> callHistory = getFromCallState(computePassEncoderName);
         if (callHistory == null) {
             return;
         }
@@ -1016,13 +1019,11 @@ public class Generator {
             return;
         }
 
-        computePassVariablesToPrint.add(receiver);
-
-        String commandEncoder = getParentVariable(receiver);
+        String commandEncoder = getParentVariable(computePassEncoderName);
 
         // Generate the copyBufferToBuffer call
         // YOU NEED TO SPECIFY THE BUFFERS!
-        String bindGroup = getObjectAttributes(receiver, "bindGroup");
+        String bindGroup = getObjectAttributes(computePassEncoderName, "bindGroup");
 
         // Test that this works
         String storageBuffer = getObjectAttributes(bindGroup, "entries.buffer");
@@ -1036,6 +1037,7 @@ public class Generator {
         Map<String, List<String>> outBufferRequirements = new HashMap<>();
         outBufferRequirements.put("size", List.of(size));
         outBufferRequirements.put("usage", List.of("GPUBufferUsage.COPY_DST", "GPUBufferUsage.MAP_READ"));
+        outBufferRequirements.put("mappedAtCreation", List.of("false"));
         String outBuffer = generateCall(new Generator.ReceiverTypeCallNameCallType("GPUDevice", "createBuffer", true), outBufferRequirements, null, getParentVariable(commandEncoder));
 
         copyBufferRequirements.put("destination", List.of(outBuffer));
@@ -1043,30 +1045,59 @@ public class Generator {
         copyBufferRequirements.put("size", List.of(size));
         generateCall(new Generator.ReceiverTypeCallNameCallType("GPUCommandEncoder", "copyBufferToBuffer", true), copyBufferRequirements, null, commandEncoder);
 
+        String pipeline = getObjectAttributes(computePassEncoderName, "pipeline");
+        Map<String, String> outBufferToPipeline = new HashMap<>();
+        outBufferToPipeline.put(computePassEncoderName, pipeline);
+        toPrintCommandEncoderAndItsPipeline.put(outBuffer, outBufferToPipeline);
+
     }
 
-    private void generatePrintOutputCalls(String receiver) {
+    // The receiver here is the GPUQueue
+    private void generatePrintOutputCalls(String gpuQueueName) {
         // Check that you are allowed to print it
-        String commandBuffer = getObjectAttributes(receiver, "commandBuffers");
+        // This is okay because you check what commandBuffer it is submitting
+        String commandBuffer = getObjectAttributes(gpuQueueName, "commandBuffers");
 
-        if (!computePassVariablesToPrint.contains(commandBuffer)) {
+
+        if (!toPrintCommandEncoderAndItsPipeline.containsKey(commandBuffer)) {
             return;
         }
 
-        computePassVariablesToPrint.remove(commandBuffer);
+        Map<String, String> computePassEncoderToPipeline = toPrintCommandEncoderAndItsPipeline.get(commandBuffer);
+        toPrintCommandEncoderAndItsPipeline.remove(commandBuffer);
 
-        String outBuffer = getObjectAttributes(commandBuffer, "destination");
+        // loop over all computePassencoders that need printing
+        for (Map.Entry<String, String> entry : computePassEncoderToPipeline.entrySet()) {
+            String outBuffer = entry.getKey();
+            String pipeline = entry.getValue();
 
-        Map<String, List<String>> mapAsyncRequirements = new HashMap<>();
-        mapAsyncRequirements.put("mode", List.of("GPUMapMode.READ"));
-        // Generate: await outBuffer.mapAsync(GPUMapMode.READ, 0, outSize);
-        generateCall(new ReceiverTypeCallNameCallType("GPUBuffer","mapAsync", true), mapAsyncRequirements, null, outBuffer);
+            // Generate: await outBuffer.mapAsync(GPUMapMode.READ);
+            Map<String, List<String>> mapAsyncRequirements = new HashMap<>();
+            mapAsyncRequirements.put("mode", List.of("GPUMapMode.READ"));
+            generateCall(new ReceiverTypeCallNameCallType("GPUBuffer","mapAsync", true), mapAsyncRequirements, null, outBuffer);
 
+            // Generate: const copyArray = outBuffer.getMappedRange();
+            String copyArray = generateCall(new ReceiverTypeCallNameCallType("GPUBuffer", "getMappedRange", true), null, null, outBuffer);
 
-        // Generate: const copyArray = outBuffer.getMappedRange(0, outSize);
-        // Generate: const outData = copyArray.slice(0);
-        // Generate: const result = new Uint8Array(outData);
-        // Generate console.log("result", result); + something with an identifying label
+            // Generate: const outData = copyArray.slice(0);
+            AssignmentNode outArrayAssignment = new AssignmentNode("const", generateRandVarName("ArrayBuffer"));
+            String outArrayVariableName = outArrayAssignment.getVarName();
+            addToSymbolTable("Array", outArrayVariableName);
+            JavaScriptStatement spliceStatement = new JavaScriptStatement(copyArray + ".slice(0)");
+            outArrayAssignment.addNode(spliceStatement);
+            programNode.addNode(outArrayAssignment);
+
+            // Generate: const result = new Uint8Array(outData);
+            AssignmentNode typedArrayAssignment = new AssignmentNode("const", "typedArray" + numTypedArrays);
+            TypedArray typedArray = new TypedArray("Uint8", outArrayVariableName, randomUtils);
+            numTypedArrays++;
+            typedArrayAssignment.addNode(typedArray);
+            programNode.addNode(typedArrayAssignment);
+
+            // Generate console.log("result", result); + something with an identifying label
+            JavaScriptStatement printStatement = new JavaScriptStatement("console.log(" + pipeline + ", " + outArrayVariableName +");");
+            programNode.addNode(printStatement);
+        }
 
     }
 

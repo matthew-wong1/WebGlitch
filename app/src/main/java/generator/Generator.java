@@ -607,7 +607,7 @@ public class Generator {
                     }
                 }
 
-                return getRandomReceiver(receiverType, callName, finalisedRequirements, null, null, null);
+                return getRandomReceiver(receiverType, callName, finalisedRequirements, null, null, null, null);
             }
 
             return requiredReceiver;
@@ -1004,8 +1004,10 @@ public class Generator {
 
         computePassVariablesToPrint.add(receiver);
 
+        String commandEncoder = getParentVariable(receiver);
+
         // Generate the copyBufferToBuffer call
-        generateCall()
+        generateCall(new Generator.ReceiverTypeCallNameCallType("GPUCommandEncoder", "copyBufferToBuffer", true), null, null, commandEncoder);
 
     }
 

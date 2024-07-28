@@ -922,7 +922,7 @@ public class Generator {
         int destSize = Integer.parseInt(getObjectAttributes(destGPUBuffer, "size"));
 
         int sourceOffset = Integer.parseInt(parentList.getParameter("sourceOffset"));
-        int destOffset = Integer.parseInt(getObjectAttributes(destGPUBuffer, "destinationOffset"));
+        int destOffset = Integer.parseInt(parentList.getParameter("destinationOffset"));
 
         int maxSizeForSource = sourceSize - sourceOffset;
         int maxSizeForDest = destSize - destOffset;

@@ -13,9 +13,8 @@
               "same": ["GPUDevice"],
               "withAttributes": {
                 "GPUBuffer.usage": ["GPUBufferUsage.COPY_DST"],
-                "GPUBuffer.mappedAtCreation": ["false"]
-              },
-              "trackedLifetime": true
+                "GPUBuffer.mapped": ["false"]
+              }
             }
           },
           "bufferOffset": {

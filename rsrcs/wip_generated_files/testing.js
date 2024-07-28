@@ -26,15 +26,20 @@ const computeShader = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/
 async function main() {
     const adapter = await navigator.gpu.requestAdapter();
     const device = await adapter.requestDevice();
+    const queue1 = device.queue
+    const queue2 = device.queue
 
-    const destBuffer = device.createBuffer({
-        size: 12,
-        mappedAtCreation: false,
-        usage:
-            GPUBufferUsage.COPY_DST
+    const array = new Uint8Array([1, 2, 3, 4]);
+    const buffer = device.createBuffer({
+        label: "GPUBuffer18",
+        mappedAtCreation: true,
+        size: 24,
+        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
     });
 
-    await destBuffer.mapAsync(GPUMapMode.READ);
+    queue1.writeBuffer(buffer, 0 , array);
+    // const encoder = device.createCommandEncoder()
+    // queue2.submit([encoder])
 
 }
 main().catch(console.error);

@@ -209,8 +209,6 @@ public class Parser {
         String commandBuffer = generator.getObjectAttributes(queueName, "commandBuffers");
         String commandEncoder = generator.getParentVariable(commandBuffer);
         Set<String> allBuffersUsed = new HashSet<>();
-        // Check all buffers from itself
-        allBuffersUsed.addAll(generator.getBuffersUsedFromParentVariable(queueName));
 
         // Check all buffers from the command encoder
         allBuffersUsed.addAll(generator.getBuffersUsedFromParentVariable(commandEncoder));

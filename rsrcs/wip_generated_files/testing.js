@@ -27,30 +27,14 @@ async function main() {
     const adapter = await navigator.gpu.requestAdapter();
     const device = await adapter.requestDevice();
 
-    const uniformBuffer = device.createBuffer({
-        size: 12,
-        usage:
-            GPUBufferUsage.UNIFORM |
-            GPUBufferUsage.COPY_SRC |
-            GPUBufferUsage.COPY_DST,
-    });
-
     const destBuffer = device.createBuffer({
         size: 12,
-        mappedAtCreation: true,
+        mappedAtCreation: false,
         usage:
-            GPUBufferUsage.COPY_DST |
-            GPUBufferUsage.MAP_READ
+            GPUBufferUsage.COPY_DST
     });
 
-    await destBuffer.mapAsync(GPUMapMode.READ, 0, 12);
-
-
-
-
-
-    console.log("hi")
-
+    await destBuffer.mapAsync(GPUMapMode.READ);
 
 }
 main().catch(console.error);

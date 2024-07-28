@@ -205,7 +205,6 @@ public class Parser {
     }
 
     private void ensureBuffersAvailable(String queueName) {
-        System.out.println(generator.objectAttributesTable.get(queueName));
         String commandBuffer = generator.getObjectAttributes(queueName, "commandBuffers");
         String commandEncoder = generator.getParentVariable(commandBuffer);
         Set<String> allBuffersUsed = new HashSet<>();

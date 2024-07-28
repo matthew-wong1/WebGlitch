@@ -9,6 +9,7 @@
       "properties": [
         {
           "mode": {
+            "type": "bitwiseFlag",
             "enum": [
               "GPUMapMode.READ",
               "GPUMapMode.WRITE"
@@ -21,7 +22,8 @@
       ],
       "conditions": {
         "withAttributes": {
-          "GPUBuffer.mapped": ["false"]
+          "GPUBuffer.mapped": ["false"],
+          "GPUBuffer.usage": ["GPUBufferUsage.MAP_READ", "GPUBufferUsage.MAP_WRITE"]
         }
       },
       "setAttributes": {

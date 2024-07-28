@@ -29,8 +29,8 @@ public class Parser {
     public ASTNode parseAndBuildRandCall(String filePath, Generator.ReceiverTypeCallNameCallType callDetails) throws IOException {
 
         // Open file
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootJsonNode = mapper.readTree(new File(filePath));
+//        ObjectMapper mapper = new ObjectMapper();
+//        JsonNode rootJsonNode = mapper.readTree(new File(filePath));
 
 //        List<String> options = new ArrayList<>(Arrays.asList("methods", "attributes"));
 //        String option;
@@ -150,7 +150,7 @@ public class Parser {
 
         generator.parseAndSetCallAvailability(receiver, callJsonNode);
 
-
+        generator.addToProgramNode(nodeToReturn);
         return nodeToReturn;
     }
 

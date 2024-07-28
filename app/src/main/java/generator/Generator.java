@@ -217,6 +217,10 @@ public class Generator {
         return buffersUsed;
     }
 
+    public void addToProgramNode(ASTNode node) {
+        programNode.addNode(node);
+    }
+
     public void generateProgram(String fileNameToUse) {
         this.programNode = new ProgramNode();
         programNode.addNode(new JavaScriptStatement(HEADER));
@@ -228,7 +232,7 @@ public class Generator {
             String fileName = callProbabilities.get(randMethod).fileName;
 
             try {
-                this.programNode.addNode(parser.parseAndBuildRandCall(JSON_DIRECTORY_PATH + fileName, randMethod));
+                parser.parseAndBuildRandCall(JSON_DIRECTORY_PATH + fileName, randMethod);
             } catch (IOException e) {
                 System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
             }
@@ -589,8 +593,6 @@ public class Generator {
         } catch (IOException e) {
             System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }
-
-        this.programNode.addNode(receiver);
 
         if (receiver instanceof AssignmentNode) {
             return ((AssignmentNode) receiver).getVarName();

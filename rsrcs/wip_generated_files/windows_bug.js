@@ -1,7 +1,7 @@
 const {
     create,
     globals
-} = require('/home/matthew/final_project/dawn/out/Debug/dawn.node');
+} = require('/home/matthew/final_project/dawn_no_asan/out/Debug/dawn.node');
 Object.assign(globalThis, globals);
 let navigator = {
     gpu: create([]),

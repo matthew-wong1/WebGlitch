@@ -55,7 +55,7 @@ public class ParameterNode extends ASTNode {
         this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
         this.randomUtils = generator.randomUtils;
 
-        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using receiver " + parentList.getReceiver());
+//        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using receiver " + parentList.getReceiver());
 
         checkImplementationSpecificCalls(details);
 
@@ -429,7 +429,6 @@ public class ParameterNode extends ASTNode {
         if (fieldToFetchCannotBeThisObjectFrom != null) {
             cannotBeThisObject = parentList.getParameter(fieldToFetchCannotBeThisObjectFrom);
         }
-        System.out.println(cannotBeThisObject);
 
         String buffer = generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this, cannotBeThisObject);
         Parameter newParameter = new Parameter(buffer);
@@ -796,14 +795,11 @@ public class ParameterNode extends ASTNode {
     private List<String> chooseFinalFlags(List<String> enumValues, List<String> mandatoryEnums, int randIdx) {
         List<String> chosenFlags = new ArrayList<>(mandatoryEnums);
         List<String> randomlyChosenFlags = enumValues.subList(0, randIdx);
-        System.out.println(randomlyChosenFlags);
-        System.out.println(chosenFlags);
         for (String randomlyChosenFlag : randomlyChosenFlags) {
             if (!chosenFlags.contains(randomlyChosenFlag)) {
                 chosenFlags.add(randomlyChosenFlag);
             }
         }
-        System.out.println("randidx " + randIdx);
 
         return chosenFlags;
     }

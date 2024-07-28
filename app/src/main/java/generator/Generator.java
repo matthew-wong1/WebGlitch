@@ -292,7 +292,6 @@ public class Generator {
         for (String value : values) {
             parameterList.add(new Parameter(value));
         }
-
     }
 
     public void appendObjectAttribute(String variableName, String fieldName, String value) {
@@ -1093,9 +1092,7 @@ public class Generator {
 
         // loop over all computePassencoders that need printing
         for (String computePassEncoder : toPrintCommandEncoderAndItsPipeline.keySet()) {
-            System.out.println(computePassEncoder);
-            System.out.println("parent of compute pass encoder " + getParentVariable(computePassEncoder));
-            System.out.println("command encoder " + commandEncoder + "\n");
+
             if (!getParentVariable(computePassEncoder).equals(commandEncoder)) {
                 continue;
             }

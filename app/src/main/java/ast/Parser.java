@@ -98,6 +98,7 @@ public class Parser {
                 }
             }
             receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), requirements, sameObjectsReqs);
+            parseReceiverMethodRequirements(receiver, callJsonNode);
         } else {
             receiver = specificReceiver;
         }
@@ -153,6 +154,19 @@ public class Parser {
         }
 
         return nodeToReturn;
+    }
+
+    private void parseReceiverMethodRequirements(String receiver, JsonNode callJsonNode) {
+        if (!callJsonNode.has("conditions")) {
+            return;
+        }
+
+        JsonNode conditionsNode = callJsonNode.get("conditions");
+        if (conditionsNode.has("availableForGettingMappedRange")) {
+            if (generator.getObjectAttributes(receiver, "mapped").equals("false")) {
+                generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUBuffer", "mapAsync", true), null, null, receiver);
+            }
+        }
     }
 
     private void parsePostGenerationRequirements(String receiver, JsonNode postGenerationReqsNode) {

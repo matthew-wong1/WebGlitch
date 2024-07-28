@@ -20,46 +20,36 @@ function loadShader(file) {
     }
 }
 // Seed: -3358482688555237066
-const shader25 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const typedArray51 = new Float32Array([7400, -6652, -5621])
-const typedArray50 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
-const typedArray49 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const typedArray48 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const typedArray47 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const shader24 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
-const typedArray46 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const typedArray45 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const shader23 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const shader22 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const shader21 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const typedArray44 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const shader20 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const typedArray43 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
+const typedArray43 = new Float32Array([9357])
 const typedArray42 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const shader19 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const typedArray41 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
+const typedArray41 = new Uint8Array([-9078, 9693, -1335, -4408, 6616, -773, 2060, 6098, 9934, 4196, 832, -8913, 965, -4022, 4436, 9506, -2694, -6253, 1940, -778, -2899, 9983, -1093, -1008, -339, -2517, -7625, -244, -6684, 2299, 103, 8831, 7892, 1728, -8955, 3318, -8292, -9197, 7480, 5661, -6980, 8961, 3672, -2388, -6043, -2435, 3034, -9287, 2846, -2304, -920, -519, -9119, -2452, 7022, -8926, -3422, 6686, 8729, -5544, 2791, 4760, 6139, -9518, 2842, 1993, 574, 5095, 101, 1623, -5423, 2910, -9028, -7860, 4641, -5840, -1019, 8325, -2857, -7470, -1103, -1795, 9656, 7827, 7741, -3076, -5004, 3377, 9250, -949, -7025, -6056, 7339, 1015, -8397, 4630, 1147, -8984, 5550, 7671, -5383, -2780, -8117, -1917, -9758, 4181, 2432, -6940, 5117, 8913, -3011, -3498, -5604, 8733, 4548, -7927, -3790, -6674, 7744, -1597, -2696, 7562, -9316, 8231, 8014, 4346, -5109, -3744, -1106, 5542, 4892, 2412, -2529, -1173, -5941, -4399, -7327, 1346, -1465, -5927, -8715, -5510, 4585, 7054, -7218, -7566, -9573, -270, 939, -8865, 4921, 9435, 2212, -6178, 3346, -9253, -2411, -5308, 5906, 9493, -6044, 5099, -3546, -1554, -34, -9622, 260, 6471, -9690, -4548, -939, 9361, 7682, -6852, 5857, -270, 3157, 8634, -7302, 4079, -9446, -6190, 944, -1934, 1349, -3509, -2993, -5161, 703, -7510, -9153, -3468, -6775, 190, 6617, 4415, 797, -9651, 4795, 9733, -6693, -6022, 8028, -6245, 5523, -6273, 1298, 4690, -8310, -3866, 7274, 9455, 1923, 8982, -5151, 7428, -4494, 3009, 1311, 5666, 2207, -8866, 531, -6194, -7445, -1432, 1172, 5135, -3109, -6238, -135, 9945, 2801, 1015, -8138, -7340, -5146, -1814, 5137, -3112, 6080, -9668, 3757, 612, -2709, 8709, 1416, -2182, 9159, -4935, 1041, 2644, -730, -6168, 5244, -411, -5722, -5945, -6928, 7328, -2262, 5061, 3154, 7674, 602, 3480, -2297, -6142, -1881, -5461, -9517, 3847, -5797, -3309, 2582, 2450, -3565, 7476, -6450, 8274, 7897, 9447, -5171, 1030, 4479, 715, 9405, 4903, 6249, -2352, -637, -7651, -4016, 7210, -6695, -6546, 5247, -7884, 6634, -8169, -3101, 383, 2051, -6414, -7893, 7797, -3890, 6145, 1696, 4194, -9437, 5655, 2574, 2863, 7292, -3407, 8504, 1273, -3039, 7260, -6647, 4641, 110, 9628, -9655, 4449, -1832, -8035, 7197, 8697, -1611, 3898, -3260, -5101, 6954, 4348, -1718, -8810, -1425, 7041, 6844, 7978, -1819, -8242, -1013, 4710, 8325, -1729, 3990, -9009, 3561, -9748, 3112, 4044, -8841, -9430, -6373, 1272, 2085, 8753])
 const typedArray40 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const typedArray39 = new Float32Array([6360, -2810, 9558, 1697, 3932, -1405, -5546, -4464, -3567, -543, 8351, -5444, -8612, -5320, 2076, 4598, -7069, 4020, 6834, -3736, -6857, -9437, 1649, 6073, -6348, 8150, 7872, 3387, -5773, 6891, 7941, 6531, 5525, 4333, 609, -6734, -2979, -4290, -6143, -581, 5277, 4614, -2733, -1024, -7416, 813, -8151, -6922, 7604, -2233, 3365, -739, 259, -2882, -2966, -3117, -1815, 4244, -5340, -897, 1748, 9065, -7228, -6134, 3734, 8953, -3404, -1017, 482, 2503, 3781, 1299, -4656, -9575, -9554, 1657, 8993, 1331, -3845, 6683, 5656, 264, -1227, 9056, -9659, 6477, -5627, -8677, -9905, -7597, -8044, -2254, 4668, -9156, 8796, -7863, -2516, -7814, 3993, -7843, -1890, 8101, -414, -9903, -7881, 8997, 7809, -5731, 5777, 8912, -3931, 5172, 7329, -9927, 1464, 3379, -6311, 9686, -4208, -29, 7424])
+const shader23 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const typedArray39 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
 const typedArray38 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const shader18 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const typedArray37 = new Int8Array([4201, -3899, 231, -531])
-const typedArray36 = new Float32Array([99, 1952, -4488])
-const typedArray35 = new Float32Array([-6747, 384, -156, 9764, -3208, 5084, 7898, -7643, 8631, -154, 532, 4432, -6962, -7891])
+const typedArray37 = new Uint8Array([150, 70, 43, 68, 72, 93, 63, 3, 183, 151, 92, 60, 76, 35, 220, 145, 218, 41, 20, 253, 167, 52, 142, 101, 213, 48, 121, 26, 214, 81, 179, 223, 193, 2, 227, 92, 253, 187, 11, 222, 231, 31, 209, 196, 41, 242, 17, 90])
+const typedArray36 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
+const typedArray35 = new Float32Array([-1867])
 const typedArray34 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const shader17 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
-const shader16 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const typedArray33 = new Uint8Array([-9078, 9693, -1335, -4408, 6616, -773, 2060, 6098, 9934, 4196, 832, -8913, 965, -4022, 4436, 9506, -2694, -6253, 1940, -778, -2899, 9983, -1093, -1008, -339, -2517, -7625, -244, -6684, 2299, 103, 8831, 7892, 1728, -8955, 3318, -8292, -9197, 7480, 5661, -6980, 8961, 3672, -2388, -6043, -2435, 3034, -9287, 2846, -2304, -920, -519, -9119, -2452, 7022, -8926, -3422, 6686, 8729, -5544, 2791, 4760, 6139, -9518, 2842, 1993, 574, 5095, 101, 1623, -5423, 2910, -9028, -7860, 4641, -5840, -1019, 8325, -2857, -7470, -1103, -1795, 9656, 7827, 7741, -3076, -5004, 3377, 9250, -949, -7025, -6056, 7339, 1015, -8397, 4630, 1147, -8984, 5550, 7671, -5383, -2780, -8117, -1917, -9758, 4181, 2432, -6940, 5117, 8913, -3011, -3498, -5604, 8733, 4548, -7927, -3790, -6674, 7744, -1597, -2696, 7562, -9316, 8231, 8014, 4346, -5109, -3744, -1106, 5542, 4892, 2412, -2529, -1173, -5941, -4399, -7327, 1346, -1465, -5927, -8715, -5510, 4585, 7054, -7218, -7566, -9573, -270, 939, -8865, 4921, 9435, 2212, -6178, 3346, -9253, -2411, -5308, 5906, 9493, -6044, 5099, -3546, -1554, -34, -9622, 260, 6471, -9690, -4548, -939, 9361, 7682, -6852, 5857, -270, 3157, 8634, -7302, 4079, -9446, -6190, 944, -1934, 1349, -3509, -2993, -5161, 703, -7510, -9153, -3468, -6775, 190, 6617, 4415, 797, -9651, 4795, 9733, -6693, -6022, 8028, -6245, 5523, -6273, 1298, 4690, -8310, -3866, 7274, 9455, 1923, 8982, -5151, 7428, -4494, 3009, 1311, 5666, 2207, -8866, 531, -6194, -7445, -1432, 1172, 5135, -3109, -6238, -135, 9945, 2801, 1015, -8138, -7340, -5146, -1814, 5137, -3112, 6080, -9668, 3757, 612, -2709, 8709, 1416, -2182, 9159, -4935, 1041, 2644, -730, -6168, 5244, -411, -5722, -5945, -6928, 7328, -2262, 5061, 3154, 7674, 602, 3480, -2297, -6142, -1881, -5461, -9517, 3847, -5797, -3309, 2582, 2450, -3565, 7476, -6450, 8274, 7897, 9447, -5171, 1030, 4479, 715, 9405, 4903, 6249, -2352, -637, -7651, -4016, 7210, -6695, -6546, 5247, -7884, 6634, -8169, -3101, 383, 2051, -6414, -7893, 7797, -3890, 6145, 1696, 4194, -9437, 5655, 2574, 2863, 7292, -3407, 8504, 1273, -3039, 7260, -6647, 4641, 110, 9628, -9655, 4449, -1832, -8035, 7197, 8697, -1611, 3898, -3260, -5101, 6954, 4348, -1718, -8810, -1425, 7041, 6844, 7978, -1819, -8242, -1013, 4710, 8325, -1729, 3990, -9009, 3561, -9748, 3112, 4044, -8841, -9430, -6373, 1272, 2085, 8753])
+const typedArray33 = new Uint8Array([-8680, 1805, -7458, 6043])
+const shader22 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const shader21 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const shader20 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const shader19 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/2/compute.wgsl');
 const typedArray32 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const shader15 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
+const shader18 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
 const typedArray31 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const typedArray30 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const shader14 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
-const typedArray29 = new Int8Array([-2276, -9229, -9628, -1346, 2765, -5059, 7415, -6298, 8093, 1791, -7617, 7337, 1913, 5731, 9940, 9055, -3855, 5454, -3207, 7600, 8967, -4248, -7271, -5180, -3269, 7998, -9387, -6597, -2971, 8759, -4791, 9894, -1867, 8631, 8795, 6115, -9384, -8223, 4742, -3360, -2147, -5110, -8888, -6561, 8066, -1347, 6533, -7681, 4390, 1542, 2369, 2875, 4583, 2484, 668, -6446, -2644, 7792, 3614, -2466, 4826, -6460, -1944, 3486, -8389, 9623, -7553, -5872, -3451, 2976, 5903, 1531, -4088, -2209, -5622, -5713, -7067, -3758, 6451, 8037, 4778, 2527, 8020, 4737, 1251, -8169, 1981, -231, -1789, -9993, -4773, 2384, 2779, -6979, -8526, 3448, -6499, -6269, -7088, 5514, -1606, -2289, 7743, -1016, 4106, 114, -4006, -822, 5684, -3447, 620, -8985, 3208, 9488, -8556, -5609, 7571, -4960, -9675, 7452, -2505, 2550, -1854, 7470, 4755, -8935, 7893, 9591, -740, -2291, 1278, -7419, -6264, -1005, 3864, -3958, -3883, -3925, -1646, 8573, -2496, -5780, -4744, 8363, 8991, -7153, -4300, -9517, 2608, -2688, -8642, -4988, 3436, 1954, 9309, -157, -1167, 420, 7933, -475, -6050, -1726, 4878, -6205, -4544, 3783, -3812, -7156, -1880, 6226, 6801, -134, -143, 1728, 3505, -7522, 9648, 4307, -67, -290, 564, -7854, -6140, -2423, 6724, -4440, 8239, -6794, -9997, 6224, 9958, -2864, -1189, -1473, -8978, 1309, -4301, -7347, 7906, 6057, -70, -7674, -7650, 6990, 4592, 4621, 739, 2409, -1977, -1154, 7220, -4596, -9723, 5614, 9575, -1976, -9217, 8360, -8482, -3441, 3237, 8919, 7808, 929, -3474, 6190, 9135, -5509, -72, -9289, -4271, -2997, -9622, -3199, 4376, 6197, -1728, -3517, 9797, 8649, -3873, -7838, -8368, 5725, -2285, 9871, 8049, 4919, 2435, -145, -1017, -5044, 8065, -633, 3484, -6151])
+const shader17 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
+const typedArray30 = new Uint8Array([-6098, 6466, 9214, 8768])
+const typedArray29 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
+const shader16 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/compute/1/compute.wgsl');
+const shader15 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
+const shader14 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/vertex.wgsl');
 const shader13 = loadShader('/home/matthew/final_project/WebGlitch/rsrcs/shaders/graphics/helloTriangle/fragment.wgsl');
-const typedArray28 = new Int8Array([-1361, -8706, 9544, -2877, 2255, -4183, 2035, -7567, -6563, -7975, 9127, -3747, -3233, 4967, 9483, -5342, -7219, 2296, -59, 5966, -7831, -5180, -1539, -3690, -9281, -6206, -2791, -6950, -5717, -3953, -8779, 900, -5912, 1327, 8769, -4766, -5225, 906, -7186, -3380, -4864, -7434, 1913, -5458, -7674, -4206, -6342, 724, 6743, 8693, 8457, -7587, 912, -4412, -9379, 9356, -3745, -9049, 3595, -3677, -7532, 9636, -4461, -1882, -5260, 8169, 7739, -6256, -9858, -5700, 6575, -2317, -8774, -1915, 824, -6458, -1251, -2504, -1136, -9307, 3424, -2376, -8298, 9917, 1192, 1839, 3854, 456, 4705, -7952, -82, 7435, 1648, 625, 5836, 232, 9284, -5375, 9092, -9901, 8417, -8320, -2336, 1836, 908, 4508, 7682, -26, 2039, 3404, -571, 3931, -6833, 9721, 2660, 8871, 9867, 6847, 7114, -332, 6634, -2355, 3524, -5599, 9513, -3625, -909, 9762, 8702, 442, 3814, -8860, 7335, -9440, -4751, 9684, 6259, 7541, -876, 2033, -456, 6560, 9927, -9620, 7817, -1040, -1268, 4986, -5118, 3661, 5337, 8065, -4326, -4544, 5319, -5752, -5644, -6841, -7518, -7265, -5066, -784, -4661, -8320])
+const typedArray28 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
 const typedArray27 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
 const typedArray26 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
-const typedArray25 = new Float32Array([3545, -6952, -2208, -5681, -7322, 9703, 8979, -1773, -8178, 7380, 3860, 3186, 1688, 2393, 8198, -9492, 2708, -6286, -1465, -8194, 2959, 3942, -492, 6496, 9813, -5580, -2772, 6263, -6557, -6794, -3443, -2205, -7679, 2844, -5666, 1521, 5002, -2359, 7170, 8171, 9951, -8350, 3188, 1361, 1799, 3933, -8021, 1995, -3204, -1828, 5239, -7405, 9176, 7225, -7863, -1906, -9178, 1324, 6580, 3729, -7690, 7269, 8196, -9862, -2258, -6047, 4949, 5779, 2170, -4502, 8083, 1029, -449, -7413, 2891, 5470, 2995, 1740, 5185, 1609, -7488, -1763, 3763, 4692, -3883, 4035, -7119, -1888, -6819, -4521, 7465, -513, -6494, -9667, 6579, 3335, 5570, 5065, 6779, -948, 4239, 6870, -1827, 51, -2283, -4729, 5620, -9489, 6356, 3108, -4374, -2528, 8092, -4471, 3737, 6031, -7128, 1409, -3790, -1840, -1238, -6636, -904, -3233, 1571, 5455, 9047, -2476, 691, 3407, 5889, -2383, 1883, 4884, -4131, -839, 8829, -3798, -9830, 3373, -6011, -7387, -7808, -8029, 3733, -4629, 9305, 7850, 5393, -1437, -461, -5388, -1483, 3323, -5079, -4113, -7531, 4433, -3505, -8379, -9650, -8982, 5347, -7331, -7465, 3165, 3664, 5997, 5682, 7393, 3027, 4637, 680, 3557, 7489, -5138, -7068, 1788, 1210, 9021, -3351, 9766, 8386, 4950, 4471, 9185, 4644, 9413, -7515, 553, 4152, -659, 5851, -6692, -7117, -9584, -2941, 1508, 1623, 2436, 3910, -8688, 584, 8879, -2372, -5029, 4612, 4262, 8456, -4855, 3912, 3930, 226, -6562, 6989, 5663, -9289, -1917, 4483, -1064, 9555, 3998, -3152, 6017, -752, -6143, 2289, 951, 5562, -971, 9014, -4615, 5762, 380, -4721, -3749, 5284, 483, 8290, 6448, -1478, -5945, 2607, 9256, 5737, 2570, 8573, -4363, 9651, 174, -4585, 6758, -843, -3577, 145, -4247, -561, 9177, -4693, -2472, -3702, 1566, -6621, 1327, 5537, 775, 8684, -9992, -7766, 3675, 5246, -3895, -5626, 5962, -1226, -3130, 7912, -6086, -5197, 8543, -7836, -8862, -6171, 1743, -7574, 5423, -4060, 751, 6031, -8891, 4719, -7450, 9773, -6700, -7129, -3989, 8095, -3843, 8505, 1583, -9382, 9488, -8731, -895, 2944, 8500, -2520, 3298, -4128, 3619, -5115, -2780, -3033, 7523, 5063, -7357, -8634, -4170, 7902, 8409, 8652, 2676, -3014, 6277, 105, -167, -3750, 3028, -4461, -7082, -7460, -2110, -1472, 3053, -7373, -6602, 4379, -9298, -3531, 2505, -7406, -3479, -6150, 560, -2657, -4437, -4612, 8156, -3482, -6532, 1139, -8464, -3401, 8073, 8182, -1724, -2585, 6658, 8231, -2709, 5576, 5336, -3445, -5209, 3119, 4565, 3004, -8949, -6248, -129, 7014, -3341, 7117, 9318, -3229, 3772, 3629, 2142, 9671, -2081, -8490, -8219, 4261, 4243, 2776, -5279, -8894, 8362, -7412, -6744, -6098, 6466, 9214, 8768, -7179, 3012, -3235, 5537, 8290, 9556, -4925, -6599, -667, -8401, 2979, 8792, -6680, 7184, -7185, 2033, 2368, -4382, 3772, 8590, -1777, 4662, 7719, 8071, -5705, 3521, -439, -9026, 7560, -6640, 5251, -4921, -2300])
+const typedArray25 = new Float32Array([2949])
 const typedArray24 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
 const typedArray23 = new Uint8Array([47, 19, 231, 46, 157, 126, 237, 69])
 const typedArray22 = new Float32Array([8663])
@@ -1847,9 +1837,59 @@ async function main() {
         }]
     });
     GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup12);
-    GPUQueue11.writeBuffer(GPUBuffer6, 51030096, typedArray25);
-    const GPUBindGroupLayout4 = GPUComputePipeline8.getBindGroupLayout(0);
-    GPURenderPassEncoder8.end();
+    GPUQueue11.writeBuffer(GPUBuffer0, 4, typedArray25);
+    const GPUBuffer17 = GPUDevice3.createBuffer({
+        label: "GPUBuffer17",
+        mappedAtCreation: false,
+        size: 91395708,
+        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
+    });
+    await GPUBuffer17.mapAsync(GPUMapMode.READ);
+    const GPUTexture13 = GPUDevice1.createTexture({
+        dimension: "2d",
+        sampleCount: 4,
+        format: "bgra8unorm",
+        label: "GPUTexture13",
+        size: {
+            width: 3624,
+            height: 3609,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["bgra8unorm"]
+    });
+    const GPUTextureView17 = GPUTexture13.createView({
+        aspect: "all",
+        dimension: "2d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "bgra8unorm",
+        label: "GPUTextureView17"
+    });
+    const GPUQuerySet17 = GPUDevice1.createQuerySet({
+        count: 3970,
+        label: "GPUQuerySet17",
+        type: "occlusion"
+    });
+    const GPURenderPassEncoder10 = GPUCommandEncoder12.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 0.16310309942552237,
+                g: 0.0745662529151987,
+                b: 0.1814558308275307,
+                a: 0.11125972419544461
+            },
+            loadOp: "load",
+            storeOp: "discard",
+            view: GPUTextureView17
+        }],
+        label: "GPURenderPassEncoder10",
+        maxDrawCount: 2063048928,
+        occlusionQuerySet: GPUQuerySet17
+    });
     const GPUComputePipeline22 = GPUDevice2.createComputePipeline({
         compute: {
             entryPoint: "main",
@@ -1858,44 +1898,9 @@ async function main() {
         label: "GPUComputePipeline22",
         layout: "auto"
     });
-    const GPUComputePipeline23 = GPUDevice2.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule12
-        },
-        label: "GPUComputePipeline23",
-        layout: "auto"
-    });
     const GPUQueue18 = GPUDevice2.queue
     GPUQueue18.writeBuffer(GPUBuffer15, 0, typedArray26);
     const GPUBindGroup13 = GPUDevice2.createBindGroup({
-        label: "GPUComputePipeline23.bindGroup",
-        layout: GPUComputePipeline23.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer15
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer16
-            }
-        }]
-    });
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup13);
-    GPUComputePassEncoder6.setPipeline(GPUComputePipeline22);
-    const GPUComputePipeline24 = GPUDevice2.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule12
-        },
-        label: "GPUComputePipeline24",
-        layout: "auto"
-    });
-    const GPUQueue19 = GPUDevice2.queue
-    GPUQueue19.writeBuffer(GPUBuffer15, 0, typedArray27);
-    const GPUBindGroup14 = GPUDevice2.createBindGroup({
         label: "GPUComputePipeline22.bindGroup",
         layout: GPUComputePipeline22.getBindGroupLayout(0),
         entries: [{
@@ -1910,63 +1915,471 @@ async function main() {
             }
         }]
     });
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup14);
-    GPUComputePassEncoder6.dispatchWorkgroups(40, 23, 32);
-    const GPUSupportedFeatures8 = GPUAdapter1.features
-    const GPUComputePipeline25 = GPUDevice1.createComputePipeline({
+    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup13);
+    const GPUCommandBuffer13 = GPUCommandEncoder16.finish();
+    const GPUCommandEncoder18 = GPUDevice1.createCommandEncoder({
+        label: "GPUCommandEncoder18"
+    });
+    const GPUCommandBuffer14 = GPUCommandEncoder18.finish();
+    GPUQueue13.submit([GPUCommandBuffer14]);
+    const GPUSupportedLimits10 = GPUAdapter2.limits
+    GPUComputePassEncoder6.end();
+    const GPUAdapterInfo6 = GPUAdapter2.info
+    const GPUCommandEncoder19 = GPUDevice0.createCommandEncoder({
+        label: "GPUCommandEncoder19"
+    });
+    const GPUCommandBuffer15 = GPUCommandEncoder19.finish();
+    GPUQueue12.submit([GPUCommandBuffer15]);
+    const GPUQueue19 = GPUDevice1.queue
+    const GPUComputePassEncoder7 = GPUCommandEncoder17.beginComputePass({
+        label: "GPUComputePassEncoder7"
+    });
+    const GPUComputePipeline23 = GPUDevice2.createComputePipeline({
         compute: {
             entryPoint: "main",
-            module: GPUShaderModule8
+            module: GPUShaderModule12
+        },
+        label: "GPUComputePipeline23",
+        layout: "auto"
+    });
+    const GPUQueue20 = GPUDevice2.queue
+    GPUQueue20.writeBuffer(GPUBuffer15, 0, typedArray27);
+    const GPUBindGroup14 = GPUDevice2.createBindGroup({
+        label: "GPUComputePipeline23.bindGroup",
+        layout: GPUComputePipeline23.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer15
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer16
+            }
+        }]
+    });
+    GPUComputePassEncoder7.setBindGroup(0, GPUBindGroup14);
+    const GPUComputePipeline24 = GPUDevice2.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule12
+        },
+        label: "GPUComputePipeline24",
+        layout: "auto"
+    });
+    const GPUComputePipeline25 = GPUDevice2.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule12
         },
         label: "GPUComputePipeline25",
         layout: "auto"
     });
-    GPURenderPassEncoder9.end();
-    const GPUAdapter5 = await navigator.gpu.requestAdapter({
-        powerPreference: "low-power"
+    const GPUQueue21 = GPUDevice2.queue
+    GPUQueue21.writeBuffer(GPUBuffer15, 0, typedArray28);
+    const GPUBindGroup15 = GPUDevice2.createBindGroup({
+        label: "GPUComputePipeline25.bindGroup",
+        layout: GPUComputePipeline25.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer15
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer16
+            }
+        }]
     });
-    const GPUBindGroupLayout5 = GPUComputePipeline24.getBindGroupLayout(0);
-    const string51 = GPUQuerySet1.label
-    const string52 = GPUQuerySet14.label
-    const string53 = GPUQueue6.label
-    const string54 = GPUComputePassEncoder6.label
-    const GPUTextureView17 = GPUTexture9.createView({
-        aspect: "all",
-        dimension: "2d-array",
-        arrayLayerCount: 16,
-        baseArrayLayer: 11,
-        mipLevelCount: 6,
-        baseMipLevel: 1,
-        format: "rg8unorm",
-        label: "GPUTextureView17"
+    GPUComputePassEncoder7.setBindGroup(0, GPUBindGroup15);
+    GPUComputePassEncoder7.setPipeline(GPUComputePipeline24);
+    const string51 = GPUTextureView15.label
+    const GPUShaderModule13 = GPUDevice3.createShaderModule({
+        label: "fragment",
+        code: shader13
     });
-    const string55 = GPUDevice0.label
-    const string56 = GPUQuerySet4.label
-    const GPUBuffer17 = GPUDevice1.createBuffer({
-        label: "GPUBuffer17",
-        mappedAtCreation: true,
-        size: 136335648,
-        usage: GPUBufferUsage.MAP_WRITE
+    const GPUShaderModule14 = GPUDevice3.createShaderModule({
+        label: "vertex",
+        code: shader14
     });
-    const GPUCommandEncoder18 = GPUDevice3.createCommandEncoder({
-        label: "GPUCommandEncoder18"
+    const GPURenderPipeline8 = GPUDevice3.createRenderPipeline({
+        fragment: {
+            entryPoint: "main",
+            module: GPUShaderModule13,
+            targets: [{
+                blend: {
+                    alpha: {
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
+                    },
+                    color: {
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
+                    }
+                },
+                format: "r8unorm",
+                writeMask: GPUColorWrite.GREEN | GPUColorWrite.BLUE | GPUColorWrite.ALL | GPUColorWrite.ALPHA
+            }]
+        },
+        label: "GPURenderPipeline8",
+        layout: "auto",
+        multisample: {
+            count: 4
+        },
+        primitive: {
+            cullMode: "front",
+            frontFace: "cw",
+            topology: "line-strip"
+        },
+        vertex: {
+            entryPoint: "main",
+            module: GPUShaderModule14
+        }
     });
-    const GPUComputePipeline26 = GPUDevice0.createComputePipeline({
+    const string52 = GPUComputePipeline21.label
+    const GPUDevice4 = await GPUAdapter4.requestDevice();
+    const GPUSupportedLimits11 = GPUAdapter1.limits
+    const string53 = GPUDevice2.label
+    const string54 = GPURenderPipeline5.label
+    const string55 = GPUTextureView8.label
+    const GPUShaderModule15 = GPUDevice3.createShaderModule({
+        label: "vertex",
+        code: shader15
+    });
+    const GPUTexture14 = GPUDevice3.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "r32sint",
+        label: "GPUTexture14",
+        size: {
+            width: 928,
+            height: 376,
+            depthOrArrayLayers: 36
+        },
+        mipLevelCount: 7,
+        usage: GPUTextureUsage.STORAGE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["r32sint"]
+    });
+    const GPUBuffer18 = GPUDevice1.createBuffer({
+        label: "GPUBuffer18",
+        mappedAtCreation: false,
+        size: 208409220,
+        usage: GPUBufferUsage.MAP_READ
+    });
+    await GPUBuffer18.mapAsync(GPUMapMode.READ);
+    const string56 = GPURenderPassEncoder9.label
+    const GPUSupportedFeatures8 = GPUDevice4.features
+    const string57 = GPUComputePipeline22.label
+    const string58 = GPUComputePassEncoder7.label
+    const GPUShaderModule16 = GPUDevice4.createShaderModule({
+        label: "compute",
+        code: shader16
+    });
+    const GPUComputePipeline26 = GPUDevice4.createComputePipeline({
         compute: {
             entryPoint: "main",
-            module: GPUShaderModule0
+            module: GPUShaderModule16
         },
         label: "GPUComputePipeline26",
         layout: "auto"
     });
-    const GPUDevice4 = await GPUAdapter5.requestDevice();
-    GPUQueue6.writeBuffer(GPUBuffer6, 63746988, typedArray28);
-    const string57 = GPUQueue1.label
-    const GPUTexture13 = GPUDevice0.createTexture({
+    const GPUQuerySet18 = GPUDevice1.createQuerySet({
+        count: 2533,
+        label: "GPUQuerySet18",
+        type: "occlusion"
+    });
+    const GPUSupportedFeatures9 = GPUDevice1.features
+    GPURenderPassEncoder10.end();
+    const GPUTexture15 = GPUDevice2.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "rg32uint",
+        label: "GPUTexture15",
+        size: {
+            width: 375,
+            height: 138,
+            depthOrArrayLayers: 32
+        },
+        mipLevelCount: 6,
+        usage: GPUTextureUsage.STORAGE_BINDING | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["rg32uint"]
+    });
+    const GPUComputePipeline27 = GPUDevice2.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule12
+        },
+        label: "GPUComputePipeline27",
+        layout: "auto"
+    });
+    const GPUQueue22 = GPUDevice2.queue
+    GPUQueue22.writeBuffer(GPUBuffer15, 0, typedArray29);
+    const GPUBindGroup16 = GPUDevice2.createBindGroup({
+        label: "GPUComputePipeline24.bindGroup",
+        layout: GPUComputePipeline24.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer15
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer16
+            }
+        }]
+    });
+    GPUComputePassEncoder7.setBindGroup(0, GPUBindGroup16);
+    const boolean8 = GPUAdapter2.isFallbackAdapter
+    const GPUSupportedFeatures10 = GPUAdapter4.features
+    const string59 = GPUCommandEncoder12.label
+    GPUComputePassEncoder7.end();
+    const string60 = GPUQuerySet18.label
+    const GPUQueue23 = GPUDevice1.queue
+    const GPUBindGroupLayout4 = GPUComputePipeline26.getBindGroupLayout(0);
+    const GPUAdapter5 = await navigator.gpu.requestAdapter({
+        powerPreference: "high-performance"
+    });
+    GPUCommandEncoder12.copyBufferToBuffer(GPUBuffer13, 0, GPUBuffer8, 40236604, 0);
+    GPUBuffer12.unmap();
+    const WGSLLanguageFeatures7 = navigator.gpu.wgslLanguageFeatures
+    const GPUSupportedLimits12 = GPUAdapter0.limits
+    const string61 = GPUDevice0.label
+    const GPUQuerySet19 = GPUDevice0.createQuerySet({
+        count: 1387,
+        label: "GPUQuerySet19",
+        type: "occlusion"
+    });
+    GPUQueue11.writeBuffer(GPUBuffer0, 4, typedArray30);
+    const GPUComputePipeline28 = GPUDevice4.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule16
+        },
+        label: "GPUComputePipeline28",
+        layout: "auto"
+    });
+    GPUBuffer12.unmap();
+    const GPUBuffer19 = GPUDevice4.createBuffer({
+        label: "GPUBuffer19",
+        mappedAtCreation: false,
+        size: 7630268,
+        usage: GPUBufferUsage.COPY_SRC | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.INDEX
+    });
+    const GPUComputePassEncoder8 = GPUCommandEncoder17.beginComputePass({
+        label: "GPUComputePassEncoder8"
+    });
+    const GPUComputePipeline29 = GPUDevice2.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule12
+        },
+        label: "GPUComputePipeline29",
+        layout: "auto"
+    });
+    GPUComputePassEncoder8.setPipeline(GPUComputePipeline29);
+    const GPUQueue24 = GPUDevice4.queue
+    const GPUTexture16 = GPUDevice4.createTexture({
+        dimension: "2d",
+        sampleCount: 4,
+        format: "r8uint",
+        label: "GPUTexture16",
+        size: {
+            width: 2600,
+            height: 2071,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["r8uint"]
+    });
+    GPUComputePassEncoder8.end();
+    const GPUAdapterInfo7 = GPUAdapter2.info
+    const GPUBindGroupLayout5 = GPUComputePipeline18.getBindGroupLayout(0);
+    const string62 = GPUTextureView14.label
+    GPURenderPassEncoder8.end();
+    const GPUCommandBuffer16 = GPUCommandEncoder2.finish();
+    const GPUSupportedLimits13 = GPUAdapter3.limits
+    const GPUBindGroupLayout6 = GPUComputePipeline0.getBindGroupLayout(0);
+    const string63 = GPURenderPassEncoder9.label
+    const GPUQuerySet20 = GPUDevice3.createQuerySet({
+        count: 2548,
+        label: "GPUQuerySet20",
+        type: "occlusion"
+    });
+    const GPUSupportedLimits14 = GPUAdapter0.limits
+    GPUBuffer15.unmap();
+    const boolean9 = GPUAdapter2.isFallbackAdapter
+    const GPUCommandEncoder20 = GPUDevice3.createCommandEncoder({
+        label: "GPUCommandEncoder20"
+    });
+    const WGSLLanguageFeatures8 = navigator.gpu.wgslLanguageFeatures
+    const GPUTexture17 = GPUDevice4.createTexture({
+        dimension: "1d",
+        sampleCount: 1,
+        format: "rgba16uint",
+        label: "GPUTexture17",
+        size: {
+            width: 3917,
+            height: 1,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["rgba16uint"]
+    });
+    const GPUAdapter6 = await navigator.gpu.requestAdapter({
+        powerPreference: "low-power"
+    });
+    const GPUQuerySet21 = GPUDevice2.createQuerySet({
+        count: 548,
+        label: "GPUQuerySet21",
+        type: "occlusion"
+    });
+    const boolean10 = GPUAdapter1.isFallbackAdapter
+    const GPUAdapterInfo8 = GPUAdapter1.info
+    const GPUComputePipeline30 = GPUDevice4.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule16
+        },
+        label: "GPUComputePipeline30",
+        layout: "auto"
+    });
+    const GPUShaderModule17 = GPUDevice3.createShaderModule({
+        label: "compute",
+        code: shader17
+    });
+    const GPUComputePipeline31 = GPUDevice3.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule17
+        },
+        label: "GPUComputePipeline31",
+        layout: "auto"
+    });
+    const GPUBuffer20 = GPUDevice3.createBuffer({
+        label: "GPUBuffer20",
+        mappedAtCreation: false,
+        size: 8,
+        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.INDIRECT | GPUBufferUsage.INDEX
+    });
+    const GPUBuffer21 = GPUDevice3.createBuffer({
+        label: "GPUBuffer21",
+        mappedAtCreation: false,
+        size: 64,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
+    });
+    const GPUQueue25 = GPUDevice3.queue
+    GPUQueue25.writeBuffer(GPUBuffer20, 0, typedArray31);
+    const GPUBindGroup17 = GPUDevice3.createBindGroup({
+        label: "GPUComputePipeline31.bindGroup",
+        layout: GPUComputePipeline31.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer20
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer21
+            }
+        }]
+    });
+    const GPUCommandEncoder21 = GPUDevice4.createCommandEncoder({
+        label: "GPUCommandEncoder21"
+    });
+    const GPUBuffer22 = GPUDevice4.createBuffer({
+        label: "GPUBuffer22",
+        mappedAtCreation: false,
+        size: 244281360,
+        usage: GPUBufferUsage.VERTEX | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.INDIRECT | GPUBufferUsage.COPY_DST | GPUBufferUsage.UNIFORM
+    });
+    GPURenderPassEncoder9.setPipeline(GPURenderPipeline7);
+    const GPUComputePassEncoder9 = GPUCommandEncoder21.beginComputePass({
+        label: "GPUComputePassEncoder9"
+    });
+    const string64 = GPUComputePassEncoder9.label
+    const GPUComputePipeline32 = GPUDevice4.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule16
+        },
+        label: "GPUComputePipeline32",
+        layout: "auto"
+    });
+    GPUComputePassEncoder9.setPipeline(GPUComputePipeline32);
+    const GPUAdapterInfo9 = GPUAdapter1.info
+    const GPUShaderModule18 = GPUDevice2.createShaderModule({
+        label: "compute",
+        code: shader18
+    });
+    const ArrayBuffer7 = GPUBuffer17.getMappedRange();
+    const GPUComputePipeline33 = GPUDevice1.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule9
+        },
+        label: "GPUComputePipeline33",
+        layout: "auto"
+    });
+    const GPUComputePipeline34 = GPUDevice0.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule0
+        },
+        label: "GPUComputePipeline34",
+        layout: "auto"
+    });
+    const GPUQueue26 = GPUDevice0.queue
+    GPUQueue26.writeBuffer(GPUBuffer0, 0, typedArray32);
+    const GPUBindGroup18 = GPUDevice0.createBindGroup({
+        label: "GPUComputePipeline34.bindGroup",
+        layout: GPUComputePipeline34.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer0
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer1
+            }
+        }]
+    });
+    const string65 = GPUComputePassEncoder9.label
+    const GPUTexture18 = GPUDevice3.createTexture({
+        dimension: "1d",
+        sampleCount: 1,
+        format: "r8snorm",
+        label: "GPUTexture18",
+        size: {
+            width: 3481,
+            height: 1,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.COPY_SRC,
+        viewFormats: ["r8snorm"]
+    });
+    GPURenderPassEncoder9.draw(9);
+    GPUComputePassEncoder9.end();
+    const GPUComputePassEncoder10 = GPUCommandEncoder12.beginComputePass({
+        label: "GPUComputePassEncoder10"
+    });
+    const string66 = GPUComputePassEncoder10.label
+    const string67 = GPUQueue2.label
+    const GPUTexture19 = GPUDevice3.createTexture({
         dimension: "2d",
         sampleCount: 1,
         format: "rgb10a2unorm",
-        label: "GPUTexture13",
+        label: "GPUTexture19",
         size: {
             width: 812,
             height: 1670,
@@ -1976,7 +2389,7 @@ async function main() {
         usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
         viewFormats: ["rgb10a2unorm"]
     });
-    const GPUTextureView18 = GPUTexture13.createView({
+    const GPUTextureView18 = GPUTexture19.createView({
         aspect: "all",
         dimension: "2d-array",
         arrayLayerCount: 1,
@@ -1986,12 +2399,12 @@ async function main() {
         format: "rgb10a2unorm",
         label: "GPUTextureView18"
     });
-    const GPUQuerySet17 = GPUDevice0.createQuerySet({
+    const GPUQuerySet22 = GPUDevice3.createQuerySet({
         count: 1819,
-        label: "GPUQuerySet17",
+        label: "GPUQuerySet22",
         type: "occlusion"
     });
-    const GPURenderPassEncoder10 = GPUCommandEncoder2.beginRenderPass({
+    const GPURenderPassEncoder11 = GPUCommandEncoder20.beginRenderPass({
         colorAttachments: [{
             clearValue: {
                 r: 0.009497334981039995,
@@ -2003,275 +2416,125 @@ async function main() {
             storeOp: "discard",
             view: GPUTextureView18
         }],
-        label: "GPURenderPassEncoder10",
-        maxDrawCount: 1232151955,
-        occlusionQuerySet: GPUQuerySet17
-    });
-    const GPUCommandEncoder19 = GPUDevice4.createCommandEncoder({
-        label: "GPUCommandEncoder19"
-    });
-    const GPURenderPipeline8 = GPUDevice0.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: GPUShaderModule4,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "subtract",
-                        dstFactor: "one-minus-constant",
-                        srcFactor: "constant"
-                    },
-                    color: {
-                        operation: "add",
-                        dstFactor: "one-minus-dst-alpha",
-                        srcFactor: "src-alpha"
-                    }
-                },
-                format: "rgb10a2unorm",
-                writeMask: GPUColorWrite.ALPHA | GPUColorWrite.ALL
-            }]
-        },
-        label: "GPURenderPipeline8",
-        layout: "auto",
-        multisample: {
-            count: 1
-        },
-        primitive: {
-            cullMode: "back",
-            frontFace: "ccw",
-            topology: "triangle-list"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: GPUShaderModule6
-        }
-    });
-    GPURenderPassEncoder10.setPipeline(GPURenderPipeline8);
-    GPURenderPassEncoder10.draw(8);
-    GPURenderPassEncoder10.end();
-    const GPUTexture14 = GPUDevice1.createTexture({
-        dimension: "2d",
-        sampleCount: 4,
-        format: "rgba8unorm",
-        label: "GPUTexture14",
-        size: {
-            width: 927,
-            height: 3249,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["rgba8unorm"]
-    });
-    const GPUTextureView19 = GPUTexture14.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "rgba8unorm",
-        label: "GPUTextureView19"
-    });
-    const GPUQuerySet18 = GPUDevice1.createQuerySet({
-        count: 3768,
-        label: "GPUQuerySet18",
-        type: "occlusion"
-    });
-    const GPURenderPassEncoder11 = GPUCommandEncoder12.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.7376028691557993,
-                g: 0.44111256411538013,
-                b: 0.2369977136577931,
-                a: 0.48378358235005103
-            },
-            loadOp: "load",
-            storeOp: "discard",
-            view: GPUTextureView19
-        }],
         label: "GPURenderPassEncoder11",
-        maxDrawCount: 3563909673,
-        occlusionQuerySet: GPUQuerySet18
+        maxDrawCount: 1232151955,
+        occlusionQuerySet: GPUQuerySet22
     });
-    const GPUShaderModule13 = GPUDevice1.createShaderModule({
+    const GPUCommandEncoder22 = GPUDevice4.createCommandEncoder({
+        label: "GPUCommandEncoder22"
+    });
+    GPURenderPassEncoder9.draw(8);
+    const GPUBuffer23 = GPUDevice3.createBuffer({
+        label: "GPUBuffer23",
+        mappedAtCreation: false,
+        size: 140716712,
+        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
+    });
+    await GPUBuffer23.mapAsync(GPUMapMode.READ);
+    const GPUComputePassEncoder11 = GPUCommandEncoder17.beginComputePass({
+        label: "GPUComputePassEncoder11"
+    });
+    const string68 = GPURenderPassEncoder9.label
+    const GPUBindGroupLayout7 = GPUComputePipeline22.getBindGroupLayout(0);
+    const GPUShaderModule19 = GPUDevice3.createShaderModule({
+        label: "compute",
+        code: shader19
+    });
+    const string69 = GPUTextureView12.label
+    const GPUAdapterInfo10 = GPUAdapter4.info
+    GPUBuffer13.unmap();
+    const string70 = GPUQueue24.label
+    const GPUBuffer24 = GPUDevice0.createBuffer({
+        label: "GPUBuffer24",
+        mappedAtCreation: false,
+        size: 32749704,
+        usage: GPUBufferUsage.MAP_READ
+    });
+    await GPUBuffer24.mapAsync(GPUMapMode.READ);
+    const WGSLLanguageFeatures9 = navigator.gpu.wgslLanguageFeatures
+    const string71 = GPURenderPipeline1.label
+    GPUComputePassEncoder10.end();
+    const GPUShaderModule20 = GPUDevice1.createShaderModule({
         label: "fragment",
-        code: shader13
+        code: shader20
     });
     const GPURenderPipeline9 = GPUDevice1.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: GPUShaderModule13,
+            module: GPUShaderModule20,
             targets: [{
                 blend: {
                     alpha: {
-                        operation: "min",
-                        dstFactor: "one",
-                        srcFactor: "one"
+                        operation: "reverse-subtract",
+                        dstFactor: "one-minus-dst-alpha",
+                        srcFactor: "zero"
                     },
                     color: {
                         operation: "add",
-                        dstFactor: "src-alpha",
-                        srcFactor: "one"
+                        dstFactor: "one",
+                        srcFactor: "dst"
                     }
                 },
-                format: "rgba8unorm",
-                writeMask: GPUColorWrite.BLUE
+                format: "rg16float",
+                writeMask: GPUColorWrite.BLUE | GPUColorWrite.GREEN
             }]
         },
         label: "GPURenderPipeline9",
         layout: "auto",
         multisample: {
-            count: 4
+            count: 1
         },
         primitive: {
             cullMode: "none",
             frontFace: "ccw",
-            topology: "point-list"
+            topology: "triangle-list"
         },
         vertex: {
             entryPoint: "main",
             module: GPUShaderModule7
         }
     });
-    GPURenderPassEncoder11.setPipeline(GPURenderPipeline9);
-    GPURenderPassEncoder11.draw(7);
-    GPURenderPassEncoder11.setVertexBuffer(0, GPUBuffer13);
-    const WGSLLanguageFeatures7 = navigator.gpu.wgslLanguageFeatures
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup14);
-    const GPUTextureView20 = GPUTexture8.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "bgra8unorm-srgb",
-        label: "GPUTextureView20"
+    const GPUQuerySet23 = GPUDevice3.createQuerySet({
+        count: 1952,
+        label: "GPUQuerySet23",
+        type: "occlusion"
     });
-    GPURenderPassEncoder11.end();
-    const GPUBuffer18 = GPUDevice3.createBuffer({
-        label: "GPUBuffer18",
+    const string72 = GPUTextureView7.label
+    const GPUCommandEncoder23 = GPUDevice4.createCommandEncoder({
+        label: "GPUCommandEncoder23"
+    });
+    const GPUCommandBuffer17 = GPUCommandEncoder23.finish();
+    GPUQueue24.submit([GPUCommandBuffer17]);
+    const string73 = GPUBuffer21.label
+    const GPUBuffer25 = GPUDevice0.createBuffer({
+        label: "GPUBuffer25",
         mappedAtCreation: false,
-        size: 113248240,
-        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
+        size: 208790064,
+        usage: GPUBufferUsage.MAP_READ
     });
-    await GPUBuffer18.mapAsync(GPUMapMode.READ);
-    const GPUQueue20 = GPUDevice2.queue
-    const GPUSupportedFeatures9 = GPUDevice0.features
-    const GPUBindGroupLayout6 = GPUComputePipeline8.getBindGroupLayout(0);
-    const GPUTexture15 = GPUDevice3.createTexture({
-        dimension: "2d",
-        sampleCount: 1,
-        format: "rgb10a2unorm",
-        label: "GPUTexture15",
-        size: {
-            width: 1481,
-            height: 148,
-            depthOrArrayLayers: 16
-        },
-        mipLevelCount: 6,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT,
-        viewFormats: ["rgb10a2unorm"]
-    });
-    const GPUTextureView21 = GPUTexture15.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 3,
-        format: "rgb10a2unorm",
-        label: "GPUTextureView21"
-    });
-    const GPUQuerySet19 = GPUDevice3.createQuerySet({
-        count: 3901,
-        label: "GPUQuerySet19",
-        type: "occlusion"
-    });
-    const GPURenderPassEncoder12 = GPUCommandEncoder18.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.18990222161060333,
-                g: 0.970101208476247,
-                b: 0.7781328571994065,
-                a: 0.4505192598760376
-            },
-            loadOp: "load",
-            storeOp: "discard",
-            view: GPUTextureView21
-        }],
-        label: "GPURenderPassEncoder12",
-        maxDrawCount: 2322068975,
-        occlusionQuerySet: GPUQuerySet19
-    });
-    GPURenderPassEncoder12.end();
-    const string58 = GPUBuffer8.label
-    const GPUTexture16 = GPUDevice1.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rgba16float",
-        label: "GPUTexture16",
-        size: {
-            width: 635,
-            height: 234,
-            depthOrArrayLayers: 64
-        },
-        mipLevelCount: 2,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.STORAGE_BINDING,
-        viewFormats: ["rgba16float"]
-    });
-    const GPUTextureView22 = GPUTexture16.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 1,
-        format: "rgba16float",
-        label: "GPUTextureView22"
-    });
-    const GPUQuerySet20 = GPUDevice1.createQuerySet({
-        count: 1690,
-        label: "GPUQuerySet20",
-        type: "occlusion"
-    });
-    const GPURenderPassEncoder13 = GPUCommandEncoder12.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.3267210953781988,
-                g: 0.40056818717525977,
-                b: 0.6590360328607658,
-                a: 0.6382191018014592
-            },
-            loadOp: "load",
-            storeOp: "discard",
-            view: GPUTextureView22,
-            depthSlice: 12
-        }],
-        label: "GPURenderPassEncoder13",
-        maxDrawCount: 2557935507,
-        occlusionQuerySet: GPUQuerySet20
-    });
-    const GPURenderPipeline10 = GPUDevice1.createRenderPipeline({
+    await GPUBuffer25.mapAsync(GPUMapMode.READ);
+    const GPUAdapterInfo11 = GPUAdapter2.info
+    const string74 = GPUBuffer7.label
+    const GPUQueue27 = GPUDevice2.queue
+    const GPURenderPipeline10 = GPUDevice3.createRenderPipeline({
         fragment: {
             entryPoint: "main",
             module: GPUShaderModule13,
             targets: [{
                 blend: {
                     alpha: {
-                        operation: "add",
+                        operation: "subtract",
                         dstFactor: "one-minus-constant",
-                        srcFactor: "dst"
+                        srcFactor: "one-minus-dst-alpha"
                     },
                     color: {
-                        operation: "reverse-subtract",
-                        dstFactor: "dst-alpha",
+                        operation: "max",
+                        dstFactor: "one",
                         srcFactor: "one"
                     }
                 },
-                format: "rgba16float",
-                writeMask: GPUColorWrite.ALL | GPUColorWrite.BLUE | GPUColorWrite.ALPHA
+                format: "rgba8unorm",
+                writeMask: GPUColorWrite.RED | GPUColorWrite.BLUE | GPUColorWrite.GREEN | GPUColorWrite.ALL
             }]
         },
         label: "GPURenderPipeline10",
@@ -2281,52 +2544,60 @@ async function main() {
         },
         primitive: {
             cullMode: "none",
-            frontFace: "ccw",
+            frontFace: "cw",
             topology: "point-list"
         },
         vertex: {
             entryPoint: "main",
-            module: GPUShaderModule7
+            module: GPUShaderModule15
         }
     });
-    GPURenderPassEncoder13.setPipeline(GPURenderPipeline10);
-    const GPUCommandBuffer13 = GPUCommandEncoder19.finish();
-    const GPUSupportedLimits10 = GPUAdapter4.limits
-    const GPUBuffer19 = GPUDevice0.createBuffer({
-        label: "GPUBuffer19",
-        mappedAtCreation: false,
-        size: 219631844,
-        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
+    const string75 = GPURenderPassEncoder9.label
+    const GPUQueue28 = GPUDevice2.queue
+    const GPUSupportedFeatures11 = GPUDevice0.features
+    const GPUBindGroupLayout8 = GPUComputePipeline31.getBindGroupLayout(0);
+    GPURenderPassEncoder9.end();
+    const WGSLLanguageFeatures10 = navigator.gpu.wgslLanguageFeatures
+    const string76 = GPUQuerySet19.label
+    const GPUAdapterInfo12 = GPUAdapter2.info
+    const GPUComputePipeline35 = GPUDevice2.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule18
+        },
+        label: "GPUComputePipeline35",
+        layout: "auto"
     });
-    await GPUBuffer19.mapAsync(GPUMapMode.READ);
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup14);
-    GPURenderPassEncoder13.setPipeline(GPURenderPipeline10);
-    const GPUSupportedLimits11 = GPUDevice0.limits
-    const GPUAdapter6 = await navigator.gpu.requestAdapter({
-        powerPreference: "high-performance"
+    GPUComputePassEncoder11.setPipeline(GPUComputePipeline35);
+    const GPUSupportedLimits15 = GPUAdapter6.limits
+    const string77 = GPUComputePipeline13.label
+    const GPUShaderModule21 = GPUDevice4.createShaderModule({
+        label: "fragment",
+        code: shader21
     });
-    const GPUComputePassEncoder7 = GPUCommandEncoder18.beginComputePass({
-        label: "GPUComputePassEncoder7"
+    const GPUShaderModule22 = GPUDevice4.createShaderModule({
+        label: "vertex",
+        code: shader22
     });
-    const GPURenderPipeline11 = GPUDevice0.createRenderPipeline({
+    const GPURenderPipeline11 = GPUDevice4.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: GPUShaderModule5,
+            module: GPUShaderModule21,
             targets: [{
                 blend: {
                     alpha: {
-                        operation: "reverse-subtract",
-                        dstFactor: "one-minus-dst",
-                        srcFactor: "one-minus-src"
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
                     },
                     color: {
                         operation: "subtract",
-                        dstFactor: "dst",
-                        srcFactor: "one-minus-src-alpha"
+                        dstFactor: "dst-alpha",
+                        srcFactor: "one-minus-dst"
                     }
                 },
-                format: "rgba8unorm",
-                writeMask: GPUColorWrite.GREEN | GPUColorWrite.ALPHA | GPUColorWrite.BLUE
+                format: "bgra8unorm",
+                writeMask: GPUColorWrite.ALL
             }]
         },
         label: "GPURenderPipeline11",
@@ -2335,709 +2606,86 @@ async function main() {
             count: 1
         },
         primitive: {
-            cullMode: "back",
+            cullMode: "none",
             frontFace: "cw",
-            topology: "triangle-strip"
+            topology: "line-strip"
         },
         vertex: {
             entryPoint: "main",
-            module: GPUShaderModule3
+            module: GPUShaderModule22
         }
-    });
-    GPUQueue9.writeBuffer(GPUBuffer8, 26450052, typedArray29);
-    GPUBuffer6.unmap();
-    const GPUAdapter7 = await navigator.gpu.requestAdapter({
-        powerPreference: "low-power"
-    });
-    const GPUQueue21 = GPUDevice2.queue
-    const GPUCommandEncoder20 = GPUDevice0.createCommandEncoder({
-        label: "GPUCommandEncoder20"
-    });
-    const GPUCommandBuffer14 = GPUCommandEncoder20.finish();
-    GPUQueue5.submit([GPUCommandBuffer14]);
-    const GPUShaderModule14 = GPUDevice4.createShaderModule({
-        label: "compute",
-        code: shader14
-    });
-    const GPUComputePipeline27 = GPUDevice4.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule14
-        },
-        label: "GPUComputePipeline27",
-        layout: "auto"
-    });
-    const GPUBuffer20 = GPUDevice4.createBuffer({
-        label: "GPUBuffer20",
-        mappedAtCreation: false,
-        size: 8,
-        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.INDEX | GPUBufferUsage.COPY_SRC | GPUBufferUsage.VERTEX
-    });
-    const GPUBuffer21 = GPUDevice4.createBuffer({
-        label: "GPUBuffer21",
-        mappedAtCreation: false,
-        size: 64,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST
-    });
-    const GPUQueue22 = GPUDevice4.queue
-    GPUQueue22.writeBuffer(GPUBuffer20, 0, typedArray30);
-    const GPUBindGroup15 = GPUDevice4.createBindGroup({
-        label: "GPUComputePipeline27.bindGroup",
-        layout: GPUComputePipeline27.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer20
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer21
-            }
-        }]
-    });
-    GPURenderPassEncoder13.end();
-    const GPUTexture17 = GPUDevice2.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rgba16uint",
-        label: "GPUTexture17",
-        size: {
-            width: 448,
-            height: 180,
-            depthOrArrayLayers: 6
-        },
-        mipLevelCount: 6,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.STORAGE_BINDING,
-        viewFormats: ["rgba16uint"]
-    });
-    const GPUTexture18 = GPUDevice2.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rg8unorm",
-        label: "GPUTexture18",
-        size: {
-            width: 140,
-            height: 646,
-            depthOrArrayLayers: 35
-        },
-        mipLevelCount: 8,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["rg8unorm"]
-    });
-    const GPUTextureView23 = GPUTexture18.createView({
-        aspect: "all",
-        dimension: "3d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 3,
-        format: "rg8unorm",
-        label: "GPUTextureView23"
-    });
-    const GPUQuerySet21 = GPUDevice2.createQuerySet({
-        count: 617,
-        label: "GPUQuerySet21",
-        type: "occlusion"
-    });
-    const GPURenderPassEncoder14 = GPUCommandEncoder15.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.10668795290067024,
-                g: 0.5834460208201233,
-                b: 0.04100063193054615,
-                a: 0.6255635625213231
-            },
-            loadOp: "clear",
-            storeOp: "store",
-            view: GPUTextureView23,
-            depthSlice: 3
-        }],
-        label: "GPURenderPassEncoder14",
-        maxDrawCount: 1426685667,
-        occlusionQuerySet: GPUQuerySet21
-    });
-    GPURenderPassEncoder14.setPipeline(GPURenderPipeline7);
-    GPURenderPassEncoder14.draw(7);
-    const string59 = GPUComputePipeline23.label
-    const boolean8 = GPUAdapter0.isFallbackAdapter
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup14);
-    const GPUCommandEncoder21 = GPUDevice0.createCommandEncoder({
-        label: "GPUCommandEncoder21"
-    });
-    const GPUCommandBuffer15 = GPUCommandEncoder21.finish();
-    GPUQueue6.submit([GPUCommandBuffer15]);
-    const GPUBuffer22 = GPUDevice0.createBuffer({
-        label: "GPUBuffer22",
-        mappedAtCreation: true,
-        size: 600856,
-        usage: GPUBufferUsage.COPY_SRC | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.INDEX
-    });
-    const string60 = GPUTextureView14.label
-    const string61 = GPUCommandEncoder17.label
-    const GPUBuffer23 = GPUDevice0.createBuffer({
-        label: "GPUBuffer23",
-        mappedAtCreation: true,
-        size: 2511892,
-        usage: GPUBufferUsage.COPY_SRC | GPUBufferUsage.UNIFORM | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.INDIRECT
-    });
-    const string62 = GPURenderPipeline10.label
-    const GPUCommandEncoder22 = GPUDevice3.createCommandEncoder({
-        label: "GPUCommandEncoder22"
-    });
-    const string63 = GPUQueue9.label
-    const GPUComputePipeline28 = GPUDevice4.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule14
-        },
-        label: "GPUComputePipeline28",
-        layout: "auto"
-    });
-    const GPUQueue23 = GPUDevice4.queue
-    GPUQueue23.writeBuffer(GPUBuffer20, 0, typedArray31);
-    const GPUBindGroup16 = GPUDevice4.createBindGroup({
-        label: "GPUComputePipeline28.bindGroup",
-        layout: GPUComputePipeline28.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer20
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer21
-            }
-        }]
-    });
-    const string64 = GPURenderPassEncoder14.label
-    const GPUTexture19 = GPUDevice0.createTexture({
-        dimension: "2d",
-        sampleCount: 1,
-        format: "rgba8sint",
-        label: "GPUTexture19",
-        size: {
-            width: 2554,
-            height: 1654,
-            depthOrArrayLayers: 22
-        },
-        mipLevelCount: 11,
-        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC | GPUTextureUsage.STORAGE_BINDING,
-        viewFormats: ["rgba8sint"]
-    });
-    const GPUBuffer24 = GPUDevice0.createBuffer({
-        label: "GPUBuffer24",
-        mappedAtCreation: false,
-        size: 197187356,
-        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
-    });
-    await GPUBuffer24.mapAsync(GPUMapMode.READ);
-    const GPUBuffer25 = GPUDevice2.createBuffer({
-        label: "GPUBuffer25",
-        mappedAtCreation: false,
-        size: 204887972,
-        usage: GPUBufferUsage.MAP_READ
-    });
-    await GPUBuffer25.mapAsync(GPUMapMode.READ);
-    const GPUShaderModule15 = GPUDevice2.createShaderModule({
-        label: "fragment",
-        code: shader15
-    });
-    const string65 = GPUQueue16.label
-    const string66 = GPUQuerySet19.label
-    const GPUComputePipeline29 = GPUDevice4.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule14
-        },
-        label: "GPUComputePipeline29",
-        layout: "auto"
-    });
-    const GPUQueue24 = GPUDevice4.queue
-    GPUQueue24.writeBuffer(GPUBuffer20, 0, typedArray32);
-    const GPUBindGroup17 = GPUDevice4.createBindGroup({
-        label: "GPUComputePipeline29.bindGroup",
-        layout: GPUComputePipeline29.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer20
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer21
-            }
-        }]
-    });
-    const GPUCommandEncoder23 = GPUDevice1.createCommandEncoder({
-        label: "GPUCommandEncoder23"
-    });
-    const string67 = await navigator.gpu.getPreferredCanvasFormat();
-    GPURenderPassEncoder14.end();
-    GPUQueue13.writeBuffer(GPUBuffer8, 66830112, typedArray33);
-    const GPUTexture20 = GPUDevice1.createTexture({
-        dimension: "2d",
-        sampleCount: 1,
-        format: "rgba8unorm-srgb",
-        label: "GPUTexture20",
-        size: {
-            width: 1762,
-            height: 2980,
-            depthOrArrayLayers: 62
-        },
-        mipLevelCount: 5,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST,
-        viewFormats: ["rgba8unorm"]
-    });
-    const GPUTextureView24 = GPUTexture20.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 4,
-        format: "rgba8unorm",
-        label: "GPUTextureView24"
-    });
-    const GPUQuerySet22 = GPUDevice1.createQuerySet({
-        count: 2147,
-        label: "GPUQuerySet22",
-        type: "occlusion"
-    });
-    const GPURenderPassEncoder15 = GPUCommandEncoder23.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.9749756518600784,
-                g: 0.45586526174732567,
-                b: 0.5378194640584995,
-                a: 0.14267830567573048
-            },
-            loadOp: "load",
-            storeOp: "store",
-            view: GPUTextureView24
-        }],
-        label: "GPURenderPassEncoder15",
-        maxDrawCount: 4032809274,
-        occlusionQuerySet: GPUQuerySet22
-    });
-    GPURenderPassEncoder15.setVertexBuffer(0, GPUBuffer13);
-    const GPUComputePassEncoder8 = GPUCommandEncoder12.beginComputePass({
-        label: "GPUComputePassEncoder8"
-    });
-    const GPUShaderModule16 = GPUDevice4.createShaderModule({
-        label: "fragment",
-        code: shader16
-    });
-    const GPUShaderModule17 = GPUDevice4.createShaderModule({
-        label: "vertex",
-        code: shader17
     });
     const GPURenderPipeline12 = GPUDevice4.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: GPUShaderModule16,
+            module: GPUShaderModule21,
             targets: [{
                 blend: {
                     alpha: {
                         operation: "reverse-subtract",
-                        dstFactor: "one-minus-src",
+                        dstFactor: "one",
                         srcFactor: "src"
                     },
                     color: {
                         operation: "subtract",
-                        dstFactor: "dst-alpha",
-                        srcFactor: "constant"
+                        dstFactor: "zero",
+                        srcFactor: "one-minus-dst-alpha"
                     }
                 },
-                format: "rgba8unorm-srgb",
-                writeMask: GPUColorWrite.RED
+                format: "rgba16float",
+                writeMask: GPUColorWrite.GREEN | GPUColorWrite.RED | GPUColorWrite.ALL
             }]
         },
         label: "GPURenderPipeline12",
         layout: "auto",
         multisample: {
-            count: 4
+            count: 1
         },
         primitive: {
             cullMode: "front",
-            frontFace: "ccw",
+            frontFace: "cw",
             topology: "line-list"
         },
         vertex: {
             entryPoint: "main",
-            module: GPUShaderModule17
+            module: GPUShaderModule22
         }
     });
-    GPUComputePassEncoder7.end();
-    const string68 = GPUDevice4.label
-    GPURenderPassEncoder15.setVertexBuffer(0, GPUBuffer13);
-    const GPUTexture21 = GPUDevice4.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rg16float",
-        label: "GPUTexture21",
-        size: {
-            width: 819,
-            height: 556,
-            depthOrArrayLayers: 11
-        },
-        mipLevelCount: 4,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST,
-        viewFormats: ["rg16float"]
-    });
-    const string69 = GPUCommandEncoder12.label
-    const GPUCommandEncoder24 = GPUDevice2.createCommandEncoder({
-        label: "GPUCommandEncoder24"
-    });
-    GPUCommandEncoder24.copyBufferToBuffer(GPUBuffer10, 63635788, GPUBuffer16, 56, 4);
-    const string70 = GPUTextureView24.label
-    const GPUSupportedFeatures10 = GPUDevice2.features
-    const GPUBuffer26 = GPUDevice1.createBuffer({
-        label: "GPUBuffer26",
-        mappedAtCreation: true,
-        size: 191947536,
-        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
-    });
-    const WGSLLanguageFeatures8 = navigator.gpu.wgslLanguageFeatures
-    const WGSLLanguageFeatures9 = navigator.gpu.wgslLanguageFeatures
-    const GPUComputePipeline30 = GPUDevice1.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule8
-        },
-        label: "GPUComputePipeline30",
-        layout: "auto"
-    });
-    const GPUQueue25 = GPUDevice1.queue
-    GPUQueue25.writeBuffer(GPUBuffer13, 0, typedArray34);
-    const GPUBindGroup18 = GPUDevice1.createBindGroup({
-        label: "GPUComputePipeline30.bindGroup",
-        layout: GPUComputePipeline30.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer13
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer14
-            }
-        }]
-    });
-    GPUComputePassEncoder8.setBindGroup(0, GPUBindGroup18);
-    const GPUSupportedFeatures11 = GPUAdapter2.features
-    GPURenderPassEncoder15.setVertexBuffer(0, GPUBuffer13);
-    const string71 = GPUComputePassEncoder6.label
-    const GPUCommandEncoder25 = GPUDevice3.createCommandEncoder({
-        label: "GPUCommandEncoder25"
-    });
-    const GPUCommandBuffer16 = GPUCommandEncoder25.finish();
-    GPUQueue15.submit([GPUCommandBuffer16]);
-    const string72 = GPUDevice3.label
-    GPUQueue20.writeBuffer(GPUBuffer11, 21060704, typedArray35);
-    const string73 = GPUQueue16.label
-    const string74 = GPUQueue23.label
-    const GPUComputePipeline31 = GPUDevice2.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule12
-        },
-        label: "GPUComputePipeline31",
-        layout: "auto"
-    });
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup14);
-    GPUComputePassEncoder6.setPipeline(GPUComputePipeline31);
-    GPURenderPassEncoder15.setVertexBuffer(0, GPUBuffer13);
-    const GPUAdapter8 = await navigator.gpu.requestAdapter({
-        powerPreference: "low-power"
-    });
-    const string75 = GPUComputePassEncoder8.label
-    const boolean9 = GPUAdapter6.isFallbackAdapter
-    const string76 = GPURenderPipeline2.label
-    const string77 = await navigator.gpu.getPreferredCanvasFormat();
-    const string78 = GPUTextureView23.label
-    const GPUAdapter9 = await navigator.gpu.requestAdapter({
-        powerPreference: "low-power"
-    });
-    const GPUAdapter10 = await navigator.gpu.requestAdapter({
-        powerPreference: "low-power"
-    });
-    GPUQueue24.writeBuffer(GPUBuffer21, 32, typedArray36);
-    GPUBuffer8.unmap();
-    const GPUComputePassEncoder9 = GPUCommandEncoder15.beginComputePass({
-        label: "GPUComputePassEncoder9"
-    });
-    const ArrayBuffer7 = GPUBuffer18.getMappedRange();
-    const string79 = GPUTextureView2.label
-    const GPUQuerySet23 = GPUDevice4.createQuerySet({
-        count: 1486,
-        label: "GPUQuerySet23",
-        type: "occlusion"
-    });
-    const boolean10 = GPUAdapter6.isFallbackAdapter
-    GPUQueue19.writeBuffer(GPUBuffer16, 56, typedArray37);
-    const string80 = GPURenderPassEncoder15.label
-    const boolean11 = GPUAdapter7.isFallbackAdapter
-    const GPUShaderModule18 = GPUDevice0.createShaderModule({
-        label: "vertex",
-        code: shader18
-    });
-    const GPUSupportedFeatures12 = GPUDevice4.features
-    const GPUComputePipeline32 = GPUDevice2.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule12
-        },
-        label: "GPUComputePipeline32",
-        layout: "auto"
-    });
-    const GPUBindGroupLayout7 = GPUComputePipeline13.getBindGroupLayout(0);
-    const GPUCommandEncoder26 = GPUDevice4.createCommandEncoder({
-        label: "GPUCommandEncoder26"
-    });
-    const string81 = GPUCommandEncoder17.label
-    const GPUComputePipeline33 = GPUDevice1.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule9
-        },
-        label: "GPUComputePipeline33",
-        layout: "auto"
-    });
-    const GPUQueue26 = GPUDevice1.queue
-    GPUQueue26.writeBuffer(GPUBuffer13, 0, typedArray38);
-    const GPUBindGroup19 = GPUDevice1.createBindGroup({
-        label: "GPUComputePipeline33.bindGroup",
-        layout: GPUComputePipeline33.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer13
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer14
-            }
-        }]
-    });
-    GPUComputePassEncoder8.setBindGroup(0, GPUBindGroup19);
-    const WGSLLanguageFeatures10 = navigator.gpu.wgslLanguageFeatures
-    GPUQueue15.writeBuffer(GPUBuffer18, 16433348, typedArray39);
-    const string82 = GPUComputePipeline0.label
-    const string83 = GPUBuffer10.label
-    const GPUComputePipeline34 = GPUDevice2.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule12
-        },
-        label: "GPUComputePipeline34",
-        layout: "auto"
-    });
-    const GPUComputePipeline35 = GPUDevice2.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule12
-        },
-        label: "GPUComputePipeline35",
-        layout: "auto"
-    });
-    const GPUQueue27 = GPUDevice2.queue
-    GPUQueue27.writeBuffer(GPUBuffer15, 0, typedArray40);
-    const GPUBindGroup20 = GPUDevice2.createBindGroup({
-        label: "GPUComputePipeline31.bindGroup",
-        layout: GPUComputePipeline31.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer15
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer16
-            }
-        }]
-    });
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup20);
-    GPUComputePassEncoder6.setPipeline(GPUComputePipeline34);
+    const string78 = GPUTextureView18.label
     const GPUComputePipeline36 = GPUDevice2.createComputePipeline({
         compute: {
             entryPoint: "main",
-            module: GPUShaderModule12
+            module: GPUShaderModule18
         },
         label: "GPUComputePipeline36",
         layout: "auto"
     });
-    const GPUQueue28 = GPUDevice2.queue
-    GPUQueue28.writeBuffer(GPUBuffer15, 0, typedArray41);
-    const GPUBindGroup21 = GPUDevice2.createBindGroup({
-        label: "GPUComputePipeline34.bindGroup",
-        layout: GPUComputePipeline34.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer15
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer16
-            }
-        }]
-    });
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup21);
-    GPUComputePassEncoder6.dispatchWorkgroups(217, 114, 1);
-    const string84 = GPUComputePassEncoder9.label
-    const GPUBuffer27 = GPUDevice3.createBuffer({
-        label: "GPUBuffer27",
+    GPUComputePassEncoder11.setPipeline(GPUComputePipeline36);
+    const ArrayBuffer8 = GPUBuffer23.getMappedRange();
+    const GPUBuffer26 = GPUDevice1.createBuffer({
+        label: "GPUBuffer26",
         mappedAtCreation: false,
-        size: 110060328,
-        usage: GPUBufferUsage.COPY_SRC | GPUBufferUsage.UNIFORM | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.STORAGE | GPUBufferUsage.INDIRECT
+        size: 74037848,
+        usage: GPUBufferUsage.INDEX
     });
-    const GPUShaderModule19 = GPUDevice4.createShaderModule({
-        label: "vertex",
-        code: shader19
-    });
-    const GPUSupportedFeatures13 = GPUDevice4.features
-    const GPUSupportedLimits12 = GPUDevice2.limits
-    const GPUComputePipeline37 = GPUDevice1.createComputePipeline({
+    const GPUComputePipeline37 = GPUDevice2.createComputePipeline({
         compute: {
             entryPoint: "main",
-            module: GPUShaderModule8
+            module: GPUShaderModule18
         },
         label: "GPUComputePipeline37",
         layout: "auto"
     });
-    const GPUComputePipeline38 = GPUDevice1.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule8
-        },
-        label: "GPUComputePipeline38",
-        layout: "auto"
-    });
-    const GPUQueue29 = GPUDevice1.queue
-    GPUQueue29.writeBuffer(GPUBuffer13, 0, typedArray42);
-    const GPUBindGroup22 = GPUDevice1.createBindGroup({
-        label: "GPUComputePipeline38.bindGroup",
-        layout: GPUComputePipeline38.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer13
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer14
-            }
-        }]
-    });
-    GPUComputePassEncoder8.setBindGroup(0, GPUBindGroup22);
-    GPUComputePassEncoder8.setPipeline(GPUComputePipeline37);
-    const string85 = await navigator.gpu.getPreferredCanvasFormat();
-    const string86 = GPUQueue4.label
-    const GPUBindGroupLayout8 = GPUComputePipeline26.getBindGroupLayout(0);
-    const GPUQuerySet24 = GPUDevice2.createQuerySet({
-        count: 1867,
-        label: "GPUQuerySet24",
-        type: "occlusion"
-    });
-    const string87 = GPUCommandEncoder23.label
-    const GPUComputePipeline39 = GPUDevice4.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule14
-        },
-        label: "GPUComputePipeline39",
-        layout: "auto"
-    });
-    const GPUQueue30 = GPUDevice4.queue
-    GPUQueue30.writeBuffer(GPUBuffer20, 0, typedArray43);
-    const GPUBindGroup23 = GPUDevice4.createBindGroup({
-        label: "GPUComputePipeline39.bindGroup",
-        layout: GPUComputePipeline39.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer20
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer21
-            }
-        }]
-    });
-    const string88 = GPUComputePipeline13.label
-    const GPUComputePassEncoder10 = GPUCommandEncoder24.beginComputePass({
-        label: "GPUComputePassEncoder10"
-    });
-    const GPUCommandEncoder27 = GPUDevice3.createCommandEncoder({
-        label: "GPUCommandEncoder27"
-    });
-    const GPUShaderModule20 = GPUDevice2.createShaderModule({
-        label: "vertex",
-        code: shader20
-    });
-    const GPUCommandEncoder28 = GPUDevice3.createCommandEncoder({
-        label: "GPUCommandEncoder28"
-    });
-    const GPUTexture22 = GPUDevice0.createTexture({
-        dimension: "2d",
-        sampleCount: 1,
-        format: "rgba8unorm-srgb",
-        label: "GPUTexture22",
-        size: {
-            width: 2158,
-            height: 3678,
-            depthOrArrayLayers: 18
-        },
-        mipLevelCount: 9,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST,
-        viewFormats: ["rgba8unorm-srgb"]
-    });
-    const GPUTextureView25 = GPUTexture22.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 8,
-        format: "rgba8unorm-srgb",
-        label: "GPUTextureView25"
-    });
-    const GPUQuerySet25 = GPUDevice0.createQuerySet({
-        count: 2351,
-        label: "GPUQuerySet25",
-        type: "occlusion"
-    });
-    const GPURenderPassEncoder16 = GPUCommandEncoder16.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.23685284218781655,
-                g: 0.02376236596464698,
-                b: 0.7705326863484958,
-                a: 0.9654599866769372
-            },
-            loadOp: "load",
-            storeOp: "discard",
-            view: GPUTextureView25
-        }],
-        label: "GPURenderPassEncoder16",
-        maxDrawCount: 2455199262,
-        occlusionQuerySet: GPUQuerySet25
-    });
-    const GPUAdapterInfo6 = GPUAdapter4.info
-    GPUComputePassEncoder9.end();
-    const GPURenderPipeline13 = GPUDevice4.createRenderPipeline({
+    GPUComputePassEncoder11.setPipeline(GPUComputePipeline37);
+    const string79 = GPUCommandEncoder21.label
+    const GPUQueue29 = GPUDevice2.queue
+    const string80 = GPURenderPipeline12.label
+    const string81 = GPURenderPipeline0.label
+    const ArrayBuffer9 = GPUBuffer25.getMappedRange();
+    const GPURenderPipeline13 = GPUDevice3.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: GPUShaderModule16,
+            module: GPUShaderModule13,
             targets: [{
                 blend: {
                     alpha: {
@@ -3047,12 +2695,12 @@ async function main() {
                     },
                     color: {
                         operation: "reverse-subtract",
-                        dstFactor: "one-minus-src-alpha",
-                        srcFactor: "dst"
+                        dstFactor: "one-minus-dst",
+                        srcFactor: "one-minus-src"
                     }
                 },
-                format: "r16float",
-                writeMask: GPUColorWrite.ALPHA
+                format: "rgb10a2unorm",
+                writeMask: GPUColorWrite.GREEN | GPUColorWrite.RED | GPUColorWrite.ALPHA | GPUColorWrite.ALL
             }]
         },
         label: "GPURenderPipeline13",
@@ -3062,33 +2710,262 @@ async function main() {
         },
         primitive: {
             cullMode: "none",
-            frontFace: "ccw",
+            frontFace: "cw",
             topology: "line-list"
         },
         vertex: {
             entryPoint: "main",
-            module: GPUShaderModule17
+            module: GPUShaderModule14
         }
     });
-    const GPURenderPipeline14 = GPUDevice1.createRenderPipeline({
+    GPURenderPassEncoder11.setPipeline(GPURenderPipeline13);
+    const GPUTexture20 = GPUDevice2.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "rg8unorm",
+        label: "GPUTexture20",
+        size: {
+            width: 658,
+            height: 125,
+            depthOrArrayLayers: 13
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["rg8unorm"]
+    });
+    const GPUTextureView19 = GPUTexture20.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "rg8unorm",
+        label: "GPUTextureView19"
+    });
+    const GPUQuerySet24 = GPUDevice2.createQuerySet({
+        count: 2032,
+        label: "GPUQuerySet24",
+        type: "occlusion"
+    });
+    const GPURenderPassEncoder12 = GPUCommandEncoder15.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 0.8937477662876658,
+                g: 0.02382378015923281,
+                b: 0.5120830883062698,
+                a: 0.08191127797362086
+            },
+            loadOp: "load",
+            storeOp: "discard",
+            view: GPUTextureView19,
+            depthSlice: 6
+        }],
+        label: "GPURenderPassEncoder12",
+        maxDrawCount: 1649507450,
+        occlusionQuerySet: GPUQuerySet24
+    });
+    const string82 = GPUComputePipeline22.label
+    GPUComputePassEncoder11.end();
+    const GPUSupportedLimits16 = GPUAdapter1.limits
+    GPUQueue2.writeBuffer(GPUBuffer0, 4, typedArray33);
+    const GPUComputePassEncoder12 = GPUCommandEncoder21.beginComputePass({
+        label: "GPUComputePassEncoder12"
+    });
+    const GPUComputePipeline38 = GPUDevice4.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule16
+        },
+        label: "GPUComputePipeline38",
+        layout: "auto"
+    });
+    const GPUBuffer27 = GPUDevice4.createBuffer({
+        label: "GPUBuffer27",
+        mappedAtCreation: false,
+        size: 8,
+        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.VERTEX
+    });
+    const GPUBuffer28 = GPUDevice4.createBuffer({
+        label: "GPUBuffer28",
+        mappedAtCreation: false,
+        size: 64,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.INDEX | GPUBufferUsage.VERTEX | GPUBufferUsage.INDIRECT
+    });
+    const GPUQueue30 = GPUDevice4.queue
+    GPUQueue30.writeBuffer(GPUBuffer27, 0, typedArray34);
+    const GPUBindGroup19 = GPUDevice4.createBindGroup({
+        label: "GPUComputePipeline38.bindGroup",
+        layout: GPUComputePipeline38.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer27
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer28
+            }
+        }]
+    });
+    GPUComputePassEncoder12.setBindGroup(0, GPUBindGroup19);
+    const string83 = GPUDevice2.label
+    const ArrayBuffer10 = GPUBuffer18.getMappedRange();
+    GPURenderPassEncoder11.end();
+    GPUQueue22.writeBuffer(GPUBuffer15, 0, typedArray35);
+    const GPUTextureView20 = GPUTexture6.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 1,
+        format: "rg16float",
+        label: "GPUTextureView20"
+    });
+    const string84 = GPUQuerySet7.label
+    const GPUSupportedLimits17 = GPUAdapter6.limits
+    const GPUTextureView21 = GPUTexture9.createView({
+        aspect: "all",
+        dimension: "2d-array",
+        arrayLayerCount: 9,
+        baseArrayLayer: 5,
+        mipLevelCount: 2,
+        baseMipLevel: 5,
+        format: "rg8unorm",
+        label: "GPUTextureView21"
+    });
+    GPUComputePassEncoder12.end();
+    const GPUComputePipeline39 = GPUDevice2.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule12
+        },
+        label: "GPUComputePipeline39",
+        layout: "auto"
+    });
+    const GPUQueue31 = GPUDevice2.queue
+    GPUQueue31.writeBuffer(GPUBuffer15, 0, typedArray36);
+    const GPUBindGroup20 = GPUDevice2.createBindGroup({
+        label: "GPUComputePipeline39.bindGroup",
+        layout: GPUComputePipeline39.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer15
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer16
+            }
+        }]
+    });
+    const string85 = GPURenderPassEncoder12.label
+    const GPUComputePassEncoder13 = GPUCommandEncoder20.beginComputePass({
+        label: "GPUComputePassEncoder13"
+    });
+    const string86 = GPUCommandEncoder15.label
+    GPUCommandEncoder21.copyBufferToBuffer(GPUBuffer28, 52, GPUBuffer22, 55955340, 8);
+    const string87 = GPUCommandEncoder17.label
+    const GPUTexture21 = GPUDevice4.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "rgba8unorm-srgb",
+        label: "GPUTexture21",
+        size: {
+            width: 176,
+            height: 412,
+            depthOrArrayLayers: 7
+        },
+        mipLevelCount: 8,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+        viewFormats: ["rgba8unorm-srgb"]
+    });
+    const GPUTextureView22 = GPUTexture21.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 1,
+        format: "rgba8unorm-srgb",
+        label: "GPUTextureView22"
+    });
+    const GPUQuerySet25 = GPUDevice4.createQuerySet({
+        count: 1995,
+        label: "GPUQuerySet25",
+        type: "occlusion"
+    });
+    const GPURenderPassEncoder13 = GPUCommandEncoder21.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 0.6209996937698486,
+                g: 0.34332705131177654,
+                b: 0.13362493924399121,
+                a: 0.5870296010940929
+            },
+            loadOp: "load",
+            storeOp: "store",
+            view: GPUTextureView22,
+            depthSlice: 0
+        }],
+        label: "GPURenderPassEncoder13",
+        maxDrawCount: 3086853384,
+        occlusionQuerySet: GPUQuerySet25
+    });
+    const GPUAdapterInfo13 = GPUAdapter3.info
+    const GPUBuffer29 = GPUDevice0.createBuffer({
+        label: "GPUBuffer29",
+        mappedAtCreation: true,
+        size: 153147732,
+        usage: GPUBufferUsage.QUERY_RESOLVE
+    });
+    GPUCommandEncoder17.copyBufferToBuffer(GPUBuffer16, 20, GPUBuffer16, 52, 4);
+    const GPUBuffer30 = GPUDevice4.createBuffer({
+        label: "GPUBuffer30",
+        mappedAtCreation: false,
+        size: 112583336,
+        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
+    });
+    await GPUBuffer30.mapAsync(GPUMapMode.READ);
+    const GPUTextureView23 = GPUTexture20.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "rg8unorm",
+        label: "GPUTextureView23"
+    });
+    const GPUSupportedFeatures12 = GPUAdapter3.features
+    const string88 = GPUComputePassEncoder13.label
+    const GPUCommandEncoder24 = GPUDevice2.createCommandEncoder({
+        label: "GPUCommandEncoder24"
+    });
+    const GPUCommandBuffer18 = GPUCommandEncoder24.finish();
+    GPUQueue27.submit([GPUCommandBuffer18]);
+    const GPURenderPipeline14 = GPUDevice0.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: GPUShaderModule13,
+            module: GPUShaderModule1,
             targets: [{
                 blend: {
                     alpha: {
                         operation: "reverse-subtract",
-                        dstFactor: "constant",
-                        srcFactor: "one"
+                        dstFactor: "one",
+                        srcFactor: "one-minus-src-alpha"
                     },
                     color: {
-                        operation: "add",
-                        dstFactor: "one-minus-src",
-                        srcFactor: "one-minus-src"
+                        operation: "subtract",
+                        dstFactor: "src-alpha",
+                        srcFactor: "src-alpha"
                     }
                 },
                 format: "r8unorm",
-                writeMask: GPUColorWrite.GREEN | GPUColorWrite.BLUE | GPUColorWrite.ALPHA | GPUColorWrite.RED
+                writeMask: GPUColorWrite.BLUE | GPUColorWrite.RED
             }]
         },
         label: "GPURenderPipeline14",
@@ -3103,89 +2980,102 @@ async function main() {
         },
         vertex: {
             entryPoint: "main",
-            module: GPUShaderModule7
+            module: GPUShaderModule6
         }
     });
-    const string89 = GPUBuffer17.label
-    const GPUComputePipeline40 = GPUDevice2.createComputePipeline({
+    const string89 = GPUCommandEncoder15.label
+    const GPUComputePassEncoder14 = GPUCommandEncoder22.beginComputePass({
+        label: "GPUComputePassEncoder14"
+    });
+    const string90 = GPUTextureView17.label
+    const GPUComputePipeline40 = GPUDevice3.createComputePipeline({
         compute: {
             entryPoint: "main",
-            module: GPUShaderModule12
+            module: GPUShaderModule19
         },
         label: "GPUComputePipeline40",
         layout: "auto"
     });
-    const GPUQueue31 = GPUDevice2.queue
-    GPUQueue31.writeBuffer(GPUBuffer15, 0, typedArray44);
-    const GPUBindGroup24 = GPUDevice2.createBindGroup({
+    GPUComputePassEncoder13.setPipeline(GPUComputePipeline40);
+    const GPUComputePipeline41 = GPUDevice3.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule19
+        },
+        label: "GPUComputePipeline41",
+        layout: "auto"
+    });
+    const GPUBuffer31 = GPUDevice3.createBuffer({
+        label: "GPUBuffer31",
+        mappedAtCreation: false,
+        size: 48,
+        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.INDIRECT
+    });
+    const GPUBuffer32 = GPUDevice3.createBuffer({
+        label: "GPUBuffer32",
+        mappedAtCreation: false,
+        size: 32,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
+    });
+    const GPUQueue32 = GPUDevice3.queue
+    GPUQueue32.writeBuffer(GPUBuffer31, 0, typedArray37);
+    const GPUBindGroup21 = GPUDevice3.createBindGroup({
         label: "GPUComputePipeline40.bindGroup",
         layout: GPUComputePipeline40.getBindGroupLayout(0),
         entries: [{
             binding: 0,
             resource: {
-                buffer: GPUBuffer15
+                buffer: GPUBuffer31
             }
         }, {
             binding: 1,
             resource: {
-                buffer: GPUBuffer16
+                buffer: GPUBuffer32
             }
         }]
     });
-    GPUComputePassEncoder10.setBindGroup(0, GPUBindGroup24);
-    const GPUSupportedFeatures14 = GPUAdapter8.features
-    GPUBuffer10.unmap();
-    const GPUShaderModule21 = GPUDevice2.createShaderModule({
-        label: "vertex",
-        code: shader21
-    });
-    const GPUTexture23 = GPUDevice4.createTexture({
-        dimension: "3d",
-        sampleCount: 1,
-        format: "rgb10a2unorm",
-        label: "GPUTexture23",
-        size: {
-            width: 800,
-            height: 998,
-            depthOrArrayLayers: 38
+    GPUComputePassEncoder13.setBindGroup(0, GPUBindGroup21);
+    GPUComputePassEncoder13.dispatchWorkgroups(70, 187, 46);
+    const GPUComputePipeline42 = GPUDevice3.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule19
         },
-        mipLevelCount: 3,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["rgb10a2unorm"]
+        label: "GPUComputePipeline42",
+        layout: "auto"
     });
-    const GPUTextureView26 = GPUTexture23.createView({
+    GPUComputePassEncoder13.setBindGroup(0, GPUBindGroup21);
+    GPUComputePassEncoder13.setPipeline(GPUComputePipeline42);
+    GPUComputePassEncoder13.end();
+    const GPUCommandBuffer19 = GPUCommandEncoder12.finish();
+    GPURenderPassEncoder12.setVertexBuffer(0, GPUBuffer16);
+    const ArrayBuffer11 = GPUBuffer29.getMappedRange();
+    const GPUTextureView24 = GPUTexture16.createView({
         aspect: "all",
-        dimension: "3d",
+        dimension: "2d",
         arrayLayerCount: 1,
         baseArrayLayer: 0,
         mipLevelCount: 1,
         baseMipLevel: 0,
-        format: "rgb10a2unorm",
-        label: "GPUTextureView26"
+        format: "r8uint",
+        label: "GPUTextureView24"
     });
-    const GPUQuerySet26 = GPUDevice4.createQuerySet({
-        count: 1613,
-        label: "GPUQuerySet26",
-        type: "occlusion"
+    const GPUTexture22 = GPUDevice3.createTexture({
+        dimension: "1d",
+        sampleCount: 1,
+        format: "bgra8unorm-srgb",
+        label: "GPUTexture22",
+        size: {
+            width: 2694,
+            height: 1,
+            depthOrArrayLayers: 1
+        },
+        mipLevelCount: 1,
+        usage: GPUTextureUsage.COPY_SRC,
+        viewFormats: ["bgra8unorm-srgb"]
     });
-    const GPURenderPassEncoder17 = GPUCommandEncoder26.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.8194713180193921,
-                g: 0.029839518695850886,
-                b: 0.13350761884264672,
-                a: 0.13364210331425797
-            },
-            loadOp: "clear",
-            storeOp: "discard",
-            view: GPUTextureView26,
-            depthSlice: 4
-        }],
-        label: "GPURenderPassEncoder17",
-        maxDrawCount: 2022086977,
-        occlusionQuerySet: GPUQuerySet26
-    });
-    const GPUTextureView27 = GPUTexture4.createView({
+    const boolean11 = GPUAdapter1.isFallbackAdapter
+    const GPUTextureView25 = GPUTexture4.createView({
         aspect: "all",
         dimension: "3d",
         arrayLayerCount: 1,
@@ -3193,12 +3083,122 @@ async function main() {
         mipLevelCount: 1,
         baseMipLevel: 0,
         format: "r16float",
-        label: "GPUTextureView27"
+        label: "GPUTextureView25"
     });
+    const string91 = GPUComputePipeline39.label
+    GPUCommandEncoder17.copyBufferToBuffer(GPUBuffer16, 0, GPUBuffer15, 8, 0);
+    GPUBuffer21.unmap();
+    const string92 = GPUComputePipeline30.label
+    const boolean12 = GPUAdapter6.isFallbackAdapter
+    const GPUComputePipeline43 = GPUDevice4.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule16
+        },
+        label: "GPUComputePipeline43",
+        layout: "auto"
+    });
+    const GPUQueue33 = GPUDevice4.queue
+    GPUQueue33.writeBuffer(GPUBuffer27, 0, typedArray38);
+    const GPUBindGroup22 = GPUDevice4.createBindGroup({
+        label: "GPUComputePipeline43.bindGroup",
+        layout: GPUComputePipeline43.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer27
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer28
+            }
+        }]
+    });
+    GPUComputePassEncoder14.setBindGroup(0, GPUBindGroup22);
+    GPURenderPassEncoder13.setVertexBuffer(0, GPUBuffer28);
+    const GPUSupportedFeatures13 = GPUAdapter4.features
+    const string93 = GPUComputePassEncoder14.label
+    const GPUQuerySet26 = GPUDevice3.createQuerySet({
+        count: 90,
+        label: "GPUQuerySet26",
+        type: "occlusion"
+    });
+    const GPUComputePipeline44 = GPUDevice4.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule16
+        },
+        label: "GPUComputePipeline44",
+        layout: "auto"
+    });
+    const GPUComputePipeline45 = GPUDevice4.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule16
+        },
+        label: "GPUComputePipeline45",
+        layout: "auto"
+    });
+    const GPUQueue34 = GPUDevice4.queue
+    GPUQueue34.writeBuffer(GPUBuffer27, 0, typedArray39);
+    const GPUBindGroup23 = GPUDevice4.createBindGroup({
+        label: "GPUComputePipeline45.bindGroup",
+        layout: GPUComputePipeline45.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer27
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer28
+            }
+        }]
+    });
+    GPUComputePassEncoder14.setBindGroup(0, GPUBindGroup23);
+    GPUComputePassEncoder14.setPipeline(GPUComputePipeline44);
+    const string94 = GPURenderPassEncoder13.label
+    const GPUBindGroupLayout9 = GPUComputePipeline44.getBindGroupLayout(0);
+    const string95 = GPURenderPassEncoder13.label
+    const string96 = GPURenderPassEncoder13.label
+    const GPUSupportedLimits18 = GPUAdapter2.limits
+    const GPUTextureView26 = GPUTexture21.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 3,
+        baseMipLevel: 5,
+        format: "rgba8unorm-srgb",
+        label: "GPUTextureView26"
+    });
+    const string97 = GPUTextureView8.label
+    const GPUBuffer33 = GPUDevice2.createBuffer({
+        label: "GPUBuffer33",
+        mappedAtCreation: false,
+        size: 212440584,
+        usage: GPUBufferUsage.INDIRECT
+    });
+    const string98 = GPUQueue20.label
+    const string99 = GPUQuerySet18.label
+    const GPUSupportedFeatures14 = GPUAdapter5.features
+    const string100 = GPUCommandEncoder17.label
+    const GPUComputePipeline46 = GPUDevice2.createComputePipeline({
+        compute: {
+            entryPoint: "main",
+            module: GPUShaderModule12
+        },
+        label: "GPUComputePipeline46",
+        layout: "auto"
+    });
+    GPUBuffer25.unmap();
+    const GPUQueue35 = GPUDevice1.queue
     const GPURenderPipeline15 = GPUDevice4.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: GPUShaderModule16,
+            module: GPUShaderModule21,
             targets: [{
                 blend: {
                     alpha: {
@@ -3207,13 +3207,13 @@ async function main() {
                         srcFactor: "one"
                     },
                     color: {
-                        operation: "min",
-                        dstFactor: "one",
-                        srcFactor: "one"
+                        operation: "reverse-subtract",
+                        dstFactor: "dst",
+                        srcFactor: "dst-alpha"
                     }
                 },
-                format: "rgb10a2unorm",
-                writeMask: GPUColorWrite.GREEN | GPUColorWrite.ALL
+                format: "rgba8unorm-srgb",
+                writeMask: GPUColorWrite.GREEN | GPUColorWrite.RED | GPUColorWrite.ALL
             }]
         },
         label: "GPURenderPipeline15",
@@ -3224,139 +3224,81 @@ async function main() {
         primitive: {
             cullMode: "front",
             frontFace: "ccw",
-            topology: "triangle-strip"
+            topology: "triangle-list"
         },
         vertex: {
             entryPoint: "main",
-            module: GPUShaderModule17
+            module: GPUShaderModule22
         }
     });
-    GPURenderPassEncoder17.setPipeline(GPURenderPipeline15);
-    const GPURenderPipeline16 = GPUDevice1.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: GPUShaderModule13,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "max",
-                        dstFactor: "one",
-                        srcFactor: "one"
-                    },
-                    color: {
-                        operation: "reverse-subtract",
-                        dstFactor: "one-minus-src",
-                        srcFactor: "zero"
-                    }
-                },
-                format: "rgba8unorm",
-                writeMask: GPUColorWrite.RED | GPUColorWrite.GREEN | GPUColorWrite.ALL
-            }]
-        },
-        label: "GPURenderPipeline16",
-        layout: "auto",
-        multisample: {
-            count: 1
-        },
-        primitive: {
-            cullMode: "none",
-            frontFace: "ccw",
-            topology: "line-strip"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: GPUShaderModule7
-        }
-    });
-    GPURenderPassEncoder15.setPipeline(GPURenderPipeline16);
-    GPURenderPassEncoder15.draw(5);
-    GPURenderPassEncoder15.end();
-    const GPUCommandBuffer17 = GPUCommandEncoder23.finish();
-    const string90 = GPURenderPipeline12.label
-    const GPUQueue32 = GPUDevice4.queue
-    const GPUShaderModule22 = GPUDevice3.createShaderModule({
+    GPURenderPassEncoder13.setPipeline(GPURenderPipeline15);
+    GPURenderPassEncoder13.draw(6);
+    const GPUShaderModule23 = GPUDevice2.createShaderModule({
         label: "fragment",
-        code: shader22
-    });
-    const GPUShaderModule23 = GPUDevice3.createShaderModule({
-        label: "vertex",
         code: shader23
     });
-    const GPURenderPipeline17 = GPUDevice3.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: GPUShaderModule22,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "min",
-                        dstFactor: "one",
-                        srcFactor: "one"
-                    },
-                    color: {
-                        operation: "max",
-                        dstFactor: "one",
-                        srcFactor: "one"
-                    }
-                },
-                format: "rgba8unorm-srgb",
-                writeMask: GPUColorWrite.RED | GPUColorWrite.ALL | GPUColorWrite.ALPHA | GPUColorWrite.BLUE
-            }]
-        },
-        label: "GPURenderPipeline17",
-        layout: "auto",
-        multisample: {
-            count: 4
-        },
-        primitive: {
-            cullMode: "back",
-            frontFace: "cw",
-            topology: "triangle-strip"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: GPUShaderModule23
-        }
-    });
-    const boolean12 = GPUAdapter9.isFallbackAdapter
-    const ArrayBuffer8 = GPUBuffer19.getMappedRange();
-    const GPUBuffer28 = GPUDevice4.createBuffer({
-        label: "GPUBuffer28",
-        mappedAtCreation: true,
-        size: 159538992,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.INDEX | GPUBufferUsage.COPY_SRC | GPUBufferUsage.VERTEX | GPUBufferUsage.INDIRECT | GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.UNIFORM
-    });
-    const string91 = GPUCommandEncoder28.label
-    GPURenderPassEncoder16.end();
-    const GPUComputePassEncoder11 = GPUCommandEncoder2.beginComputePass({
-        label: "GPUComputePassEncoder11"
-    });
-    const GPUCommandEncoder29 = GPUDevice3.createCommandEncoder({
-        label: "GPUCommandEncoder29"
-    });
-    const GPUComputePipeline41 = GPUDevice2.createComputePipeline({
+    const string101 = GPUQueue4.label
+    const string102 = GPUQuerySet7.label
+    const GPUComputePipeline47 = GPUDevice4.createComputePipeline({
         compute: {
             entryPoint: "main",
-            module: GPUShaderModule12
+            module: GPUShaderModule16
         },
-        label: "GPUComputePipeline41",
+        label: "GPUComputePipeline47",
         layout: "auto"
     });
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup21);
-    GPUComputePassEncoder6.setPipeline(GPUComputePipeline41);
-    const GPUComputePipeline42 = GPUDevice2.createComputePipeline({
+    const GPUQueue36 = GPUDevice4.queue
+    GPUQueue36.writeBuffer(GPUBuffer27, 0, typedArray40);
+    const GPUBindGroup24 = GPUDevice4.createBindGroup({
+        label: "GPUComputePipeline47.bindGroup",
+        layout: GPUComputePipeline47.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: {
+                buffer: GPUBuffer27
+            }
+        }, {
+            binding: 1,
+            resource: {
+                buffer: GPUBuffer28
+            }
+        }]
+    });
+    const GPUCommandEncoder25 = GPUDevice1.createCommandEncoder({
+        label: "GPUCommandEncoder25"
+    });
+    const string103 = await navigator.gpu.getPreferredCanvasFormat();
+    GPURenderPassEncoder12.end();
+    GPUQueue30.writeBuffer(GPUBuffer22, 34516092, typedArray41);
+    GPURenderPassEncoder13.setVertexBuffer(0, GPUBuffer28);
+    GPUBuffer24.unmap();
+    GPURenderPassEncoder13.setVertexBuffer(0, GPUBuffer22);
+    const GPUSupportedLimits19 = GPUDevice2.limits
+    const string104 = GPUTextureView26.label
+    const boolean13 = GPUAdapter0.isFallbackAdapter
+    GPURenderPassEncoder13.setVertexBuffer(0, GPUBuffer28);
+    GPURenderPassEncoder13.draw(9);
+    const string105 = GPUComputePipeline34.label
+    const string106 = GPUDevice4.label
+    GPURenderPassEncoder13.end();
+    const GPUQuerySet27 = GPUDevice2.createQuerySet({
+        count: 2309,
+        label: "GPUQuerySet27",
+        type: "occlusion"
+    });
+    const GPUComputePipeline48 = GPUDevice2.createComputePipeline({
         compute: {
             entryPoint: "main",
-            module: GPUShaderModule12
+            module: GPUShaderModule18
         },
-        label: "GPUComputePipeline42",
+        label: "GPUComputePipeline48",
         layout: "auto"
     });
-    const GPUQueue33 = GPUDevice2.queue
-    GPUQueue33.writeBuffer(GPUBuffer15, 0, typedArray45);
+    const GPUQueue37 = GPUDevice2.queue
+    GPUQueue37.writeBuffer(GPUBuffer15, 0, typedArray42);
     const GPUBindGroup25 = GPUDevice2.createBindGroup({
-        label: "GPUComputePipeline41.bindGroup",
-        layout: GPUComputePipeline41.getBindGroupLayout(0),
+        label: "GPUComputePipeline48.bindGroup",
+        layout: GPUComputePipeline48.getBindGroupLayout(0),
         entries: [{
             binding: 0,
             resource: {
@@ -3369,468 +3311,129 @@ async function main() {
             }
         }]
     });
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup25);
-    GPUComputePassEncoder6.dispatchWorkgroups(161, 166, 34);
-    const string92 = GPURenderPipeline17.label
-    const GPUAdapterInfo7 = GPUAdapter8.info
-    const GPUComputePipeline43 = GPUDevice1.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule8
-        },
-        label: "GPUComputePipeline43",
-        layout: "auto"
+    const ArrayBuffer12 = GPUBuffer30.getMappedRange();
+    const GPUAdapter7 = await navigator.gpu.requestAdapter({
+        powerPreference: "high-performance"
     });
-    const GPUComputePipeline44 = GPUDevice1.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule8
-        },
-        label: "GPUComputePipeline44",
-        layout: "auto"
+    const GPUBuffer34 = GPUDevice3.createBuffer({
+        label: "GPUBuffer34",
+        mappedAtCreation: false,
+        size: 171134268,
+        usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST
     });
-    const GPUQueue34 = GPUDevice1.queue
-    GPUQueue34.writeBuffer(GPUBuffer13, 0, typedArray46);
-    const GPUBindGroup26 = GPUDevice1.createBindGroup({
-        label: "GPUComputePipeline37.bindGroup",
-        layout: GPUComputePipeline37.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer13
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer14
-            }
-        }]
+    const GPUCommandEncoder26 = GPUDevice4.createCommandEncoder({
+        label: "GPUCommandEncoder26"
     });
-    GPUComputePassEncoder8.setBindGroup(0, GPUBindGroup26);
-    GPUComputePassEncoder8.setPipeline(GPUComputePipeline43);
-    const GPUTexture24 = GPUDevice2.createTexture({
+    const GPUCommandBuffer20 = GPUCommandEncoder26.finish();
+    GPUQueue34.submit([GPUCommandBuffer20]);
+    const GPUSupportedLimits20 = GPUAdapter0.limits
+    const GPUTexture23 = GPUDevice1.createTexture({
         dimension: "3d",
         sampleCount: 1,
-        format: "r8sint",
-        label: "GPUTexture24",
+        format: "r8unorm",
+        label: "GPUTexture23",
         size: {
-            width: 953,
-            height: 716,
-            depthOrArrayLayers: 27
+            width: 1023,
+            height: 280,
+            depthOrArrayLayers: 53
         },
         mipLevelCount: 5,
-        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["r8sint"]
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["r8unorm"]
     });
-    const GPUShaderModule24 = GPUDevice2.createShaderModule({
-        label: "compute",
-        code: shader24
+    const GPUTextureView27 = GPUTexture23.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 1,
+        baseMipLevel: 0,
+        format: "r8unorm",
+        label: "GPUTextureView27"
     });
-    const GPUQuerySet27 = GPUDevice0.createQuerySet({
-        count: 3467,
-        label: "GPUQuerySet27",
+    const GPUQuerySet28 = GPUDevice1.createQuerySet({
+        count: 1876,
+        label: "GPUQuerySet28",
         type: "occlusion"
     });
-    const GPUComputePipeline45 = GPUDevice0.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule0
-        },
-        label: "GPUComputePipeline45",
-        layout: "auto"
+    const GPURenderPassEncoder14 = GPUCommandEncoder25.beginRenderPass({
+        colorAttachments: [{
+            clearValue: {
+                r: 0.15342568176873883,
+                g: 0.5710242491101597,
+                b: 0.5602970103479872,
+                a: 0.44619493974564906
+            },
+            loadOp: "clear",
+            storeOp: "discard",
+            view: GPUTextureView27,
+            depthSlice: 44
+        }],
+        label: "GPURenderPassEncoder14",
+        maxDrawCount: 3272940953,
+        occlusionQuerySet: GPUQuerySet28
     });
-    const GPUQueue35 = GPUDevice0.queue
-    GPUQueue35.writeBuffer(GPUBuffer0, 0, typedArray47);
-    const GPUBindGroup27 = GPUDevice0.createBindGroup({
-        label: "GPUComputePipeline45.bindGroup",
-        layout: GPUComputePipeline45.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer0
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer1
-            }
-        }]
-    });
-    const string93 = GPUComputePassEncoder10.label
-    const GPUSupportedFeatures15 = GPUDevice0.features
-    const GPUTexture25 = GPUDevice0.createTexture({
-        dimension: "1d",
-        sampleCount: 1,
-        format: "r32uint",
-        label: "GPUTexture25",
-        size: {
-            width: 1241,
-            height: 1,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.COPY_SRC | GPUTextureUsage.TEXTURE_BINDING,
-        viewFormats: ["r32uint"]
-    });
-    const GPUAdapter11 = await navigator.gpu.requestAdapter({
-        powerPreference: "low-power"
-    });
-    const GPUComputePipeline46 = GPUDevice1.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule8
-        },
-        label: "GPUComputePipeline46",
-        layout: "auto"
-    });
-    const GPUComputePipeline47 = GPUDevice1.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule8
-        },
-        label: "GPUComputePipeline47",
-        layout: "auto"
-    });
-    const GPUQueue36 = GPUDevice1.queue
-    GPUQueue36.writeBuffer(GPUBuffer13, 0, typedArray48);
-    const GPUBindGroup28 = GPUDevice1.createBindGroup({
-        label: "GPUComputePipeline43.bindGroup",
-        layout: GPUComputePipeline43.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer13
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer14
-            }
-        }]
-    });
-    GPUComputePassEncoder8.setBindGroup(0, GPUBindGroup28);
-    GPUComputePassEncoder8.setPipeline(GPUComputePipeline46);
-    const GPUComputePipeline48 = GPUDevice1.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule9
-        },
-        label: "GPUComputePipeline48",
-        layout: "auto"
-    });
-    const GPUQueue37 = GPUDevice1.queue
-    GPUQueue37.writeBuffer(GPUBuffer13, 0, typedArray49);
-    const GPUBindGroup29 = GPUDevice1.createBindGroup({
-        label: "GPUComputePipeline46.bindGroup",
-        layout: GPUComputePipeline46.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer13
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer14
-            }
-        }]
-    });
-    GPUComputePassEncoder8.setBindGroup(0, GPUBindGroup29);
-    GPUComputePassEncoder8.dispatchWorkgroups(233, 66, 5);
-    const GPUBuffer29 = GPUDevice3.createBuffer({
-        label: "GPUBuffer29",
-        mappedAtCreation: false,
-        size: 242616996,
-        usage: GPUBufferUsage.MAP_READ
-    });
-    await GPUBuffer29.mapAsync(GPUMapMode.READ);
-    const GPUTexture26 = GPUDevice1.createTexture({
-        dimension: "2d",
-        sampleCount: 4,
-        format: "bgra8unorm-srgb",
-        label: "GPUTexture26",
-        size: {
-            width: 755,
-            height: 1519,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["bgra8unorm-srgb"]
-    });
-    const GPUCommandBuffer18 = GPUCommandEncoder28.finish();
-    const GPUComputePipeline49 = GPUDevice4.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule14
-        },
-        label: "GPUComputePipeline49",
-        layout: "auto"
-    });
-    const string94 = GPUCommandEncoder16.label
-    const string95 = GPUTextureView19.label
-    const GPUCommandEncoder30 = GPUDevice0.createCommandEncoder({
-        label: "GPUCommandEncoder30"
-    });
-    GPUBuffer23.unmap();
-    const GPUComputePassEncoder12 = GPUCommandEncoder30.beginComputePass({
-        label: "GPUComputePassEncoder12"
-    });
-    const GPUBuffer30 = GPUDevice3.createBuffer({
-        label: "GPUBuffer30",
-        mappedAtCreation: false,
-        size: 44264152,
-        usage: GPUBufferUsage.MAP_READ
-    });
-    await GPUBuffer30.mapAsync(GPUMapMode.READ);
-    const GPUBuffer31 = GPUDevice1.createBuffer({
-        label: "GPUBuffer31",
-        mappedAtCreation: false,
-        size: 224103556,
-        usage: GPUBufferUsage.MAP_READ
-    });
-    await GPUBuffer31.mapAsync(GPUMapMode.READ);
-    GPURenderPassEncoder17.draw(2);
-    const GPUComputePipeline50 = GPUDevice2.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule24
-        },
-        label: "GPUComputePipeline50",
-        layout: "auto"
-    });
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup25);
-    GPUComputePassEncoder6.setPipeline(GPUComputePipeline50);
-    const GPUComputePipeline51 = GPUDevice2.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule12
-        },
-        label: "GPUComputePipeline51",
-        layout: "auto"
-    });
-    const GPUBuffer32 = GPUDevice2.createBuffer({
-        label: "GPUBuffer32",
-        mappedAtCreation: false,
-        size: 48,
-        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.INDIRECT
-    });
-    const GPUBuffer33 = GPUDevice2.createBuffer({
-        label: "GPUBuffer33",
-        mappedAtCreation: false,
-        size: 32,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.INDIRECT | GPUBufferUsage.COPY_DST | GPUBufferUsage.INDEX | GPUBufferUsage.VERTEX | GPUBufferUsage.QUERY_RESOLVE
-    });
-    const GPUQueue38 = GPUDevice2.queue
-    GPUQueue38.writeBuffer(GPUBuffer32, 0, typedArray50);
-    const GPUBindGroup30 = GPUDevice2.createBindGroup({
-        label: "GPUComputePipeline50.bindGroup",
-        layout: GPUComputePipeline50.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: GPUBuffer32
-            }
-        }, {
-            binding: 1,
-            resource: {
-                buffer: GPUBuffer33
-            }
-        }]
-    });
-    GPUComputePassEncoder6.setBindGroup(0, GPUBindGroup30);
-    GPUComputePassEncoder6.dispatchWorkgroups(256, 236, 36);
-    const GPUTexture27 = GPUDevice3.createTexture({
-        dimension: "1d",
-        sampleCount: 1,
-        format: "rgba32float",
-        label: "GPUTexture27",
-        size: {
-            width: 4035,
-            height: 1,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC,
-        viewFormats: ["rgba32float"]
-    });
-    const GPURenderPipeline18 = GPUDevice4.createRenderPipeline({
+    const GPURenderPipeline16 = GPUDevice1.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: GPUShaderModule16,
+            module: GPUShaderModule20,
             targets: [{
                 blend: {
                     alpha: {
-                        operation: "reverse-subtract",
-                        dstFactor: "src-alpha",
-                        srcFactor: "one"
+                        operation: "add",
+                        dstFactor: "dst",
+                        srcFactor: "one-minus-dst-alpha"
                     },
                     color: {
-                        operation: "add",
-                        dstFactor: "dst-alpha",
-                        srcFactor: "one-minus-dst-alpha"
+                        operation: "max",
+                        dstFactor: "one",
+                        srcFactor: "one"
                     }
                 },
-                format: "r16float",
-                writeMask: GPUColorWrite.RED
+                format: "r8unorm",
+                writeMask: GPUColorWrite.RED | GPUColorWrite.ALPHA | GPUColorWrite.BLUE
             }]
         },
-        label: "GPURenderPipeline18",
+        label: "GPURenderPipeline16",
         layout: "auto",
         multisample: {
             count: 1
         },
         primitive: {
             cullMode: "back",
-            frontFace: "cw",
-            topology: "line-strip"
+            frontFace: "ccw",
+            topology: "triangle-strip"
         },
         vertex: {
             entryPoint: "main",
-            module: GPUShaderModule17
+            module: GPUShaderModule7
         }
     });
-    const GPUComputePipeline52 = GPUDevice0.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule0
-        },
-        label: "GPUComputePipeline52",
-        layout: "auto"
-    });
-    GPUComputePassEncoder12.setPipeline(GPUComputePipeline52);
-    const string96 = GPUComputePassEncoder12.label
-    const GPUSupportedLimits13 = GPUDevice4.limits
-    const WGSLLanguageFeatures11 = navigator.gpu.wgslLanguageFeatures
-    const string97 = GPUComputePassEncoder8.label
-    const GPUTextureView28 = GPUTexture8.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "bgra8unorm",
-        label: "GPUTextureView28"
-    });
-    const boolean13 = GPUAdapter11.isFallbackAdapter
-    const string98 = GPUTextureView1.label
-    const GPUBindGroupLayout9 = GPUComputePipeline2.getBindGroupLayout(0);
-    const string99 = GPUDevice3.label
-    const string100 = GPUTextureView13.label
-    const GPUBuffer34 = GPUDevice0.createBuffer({
-        label: "GPUBuffer34",
-        mappedAtCreation: false,
-        size: 23106276,
-        usage: GPUBufferUsage.MAP_READ
-    });
-    await GPUBuffer34.mapAsync(GPUMapMode.READ);
-    const GPUComputePassEncoder13 = GPUCommandEncoder22.beginComputePass({
-        label: "GPUComputePassEncoder13"
-    });
-    const GPUSupportedLimits14 = GPUAdapter10.limits
-    const GPUTexture28 = GPUDevice1.createTexture({
-        dimension: "1d",
-        sampleCount: 1,
-        format: "rgba8sint",
-        label: "GPUTexture28",
-        size: {
-            width: 2991,
-            height: 1,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.STORAGE_BINDING,
-        viewFormats: ["rgba8sint"]
-    });
-    const string101 = GPUComputePipeline0.label
-    const string102 = GPUBuffer3.label
-    GPURenderPassEncoder17.setPipeline(GPURenderPipeline15);
-    GPUCommandEncoder29.copyBufferToBuffer(GPUBuffer27, 52967436, GPUBuffer18, 99339508, 13396420);
-    const GPUCommandEncoder31 = GPUDevice2.createCommandEncoder({
-        label: "GPUCommandEncoder31"
-    });
-    GPUQueue16.writeBuffer(GPUBuffer33, 16, typedArray51);
-    const WGSLLanguageFeatures12 = navigator.gpu.wgslLanguageFeatures
-    GPURenderPassEncoder17.end();
-    const string103 = GPUQueue15.label
-    const GPUCommandEncoder32 = GPUDevice0.createCommandEncoder({
-        label: "GPUCommandEncoder32"
-    });
-    const GPUCommandBuffer19 = GPUCommandEncoder32.finish();
-    GPUQueue6.submit([GPUCommandBuffer19]);
-    const GPUComputePassEncoder14 = GPUCommandEncoder18.beginComputePass({
-        label: "GPUComputePassEncoder14"
-    });
-    const string104 = GPUQueue27.label
-    const string105 = GPUQueue28.label
-    const GPUTexture29 = GPUDevice2.createTexture({
-        dimension: "2d",
-        sampleCount: 4,
-        format: "r16float",
-        label: "GPUTexture29",
-        size: {
-            width: 1141,
-            height: 3921,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
-        viewFormats: ["r16float"]
-    });
-    const GPUTextureView29 = GPUTexture29.createView({
-        aspect: "all",
-        dimension: "2d",
-        arrayLayerCount: 1,
-        baseArrayLayer: 0,
-        mipLevelCount: 1,
-        baseMipLevel: 0,
-        format: "r16float",
-        label: "GPUTextureView29"
-    });
-    const GPUQuerySet28 = GPUDevice2.createQuerySet({
-        count: 1876,
-        label: "GPUQuerySet28",
-        type: "occlusion"
-    });
-    const GPURenderPassEncoder18 = GPUCommandEncoder15.beginRenderPass({
-        colorAttachments: [{
-            clearValue: {
-                r: 0.064905644606853,
-                g: 0.6478230572188665,
-                b: 0.12867674886841973,
-                a: 0.15384998191706312
-            },
-            loadOp: "clear",
-            storeOp: "discard",
-            view: GPUTextureView29
-        }],
-        label: "GPURenderPassEncoder18",
-        maxDrawCount: 605406854,
-        occlusionQuerySet: GPUQuerySet28
-    });
-    const GPURenderPipeline19 = GPUDevice2.createRenderPipeline({
+    GPURenderPassEncoder14.setPipeline(GPURenderPipeline16);
+    const GPUQueue38 = GPUDevice4.queue
+    const string107 = GPUComputePipeline38.label
+    const GPURenderPipeline17 = GPUDevice0.createRenderPipeline({
         fragment: {
             entryPoint: "main",
-            module: GPUShaderModule10,
+            module: GPUShaderModule5,
             targets: [{
                 blend: {
                     alpha: {
                         operation: "add",
-                        dstFactor: "dst-alpha",
-                        srcFactor: "one"
+                        dstFactor: "one-minus-dst-alpha",
+                        srcFactor: "dst"
                     },
                     color: {
-                        operation: "min",
-                        dstFactor: "one",
-                        srcFactor: "one"
+                        operation: "reverse-subtract",
+                        dstFactor: "one-minus-constant",
+                        srcFactor: "one-minus-dst"
                     }
                 },
-                format: "r16float",
-                writeMask: GPUColorWrite.RED
+                format: "rgb10a2unorm",
+                writeMask: GPUColorWrite.ALPHA | GPUColorWrite.BLUE | GPUColorWrite.RED | GPUColorWrite.GREEN
             }]
         },
-        label: "GPURenderPipeline19",
+        label: "GPURenderPipeline17",
         layout: "auto",
         multisample: {
             count: 4
@@ -3838,108 +3441,67 @@ async function main() {
         primitive: {
             cullMode: "none",
             frontFace: "cw",
-            topology: "point-list"
-        },
-        vertex: {
-            entryPoint: "main",
-            module: GPUShaderModule21
-        }
-    });
-    GPURenderPassEncoder18.setPipeline(GPURenderPipeline19);
-    GPURenderPassEncoder18.draw(10);
-    const GPURenderPipeline20 = GPUDevice0.createRenderPipeline({
-        fragment: {
-            entryPoint: "main",
-            module: GPUShaderModule5,
-            targets: [{
-                blend: {
-                    alpha: {
-                        operation: "subtract",
-                        dstFactor: "zero",
-                        srcFactor: "src-alpha"
-                    },
-                    color: {
-                        operation: "add",
-                        dstFactor: "dst-alpha",
-                        srcFactor: "dst"
-                    }
-                },
-                format: "rg8unorm",
-                writeMask: GPUColorWrite.ALL | GPUColorWrite.ALPHA
-            }]
-        },
-        label: "GPURenderPipeline20",
-        layout: "auto",
-        multisample: {
-            count: 1
-        },
-        primitive: {
-            cullMode: "front",
-            frontFace: "ccw",
-            topology: "point-list"
+            topology: "triangle-list"
         },
         vertex: {
             entryPoint: "main",
             module: GPUShaderModule6
         }
     });
-    const GPUAdapter12 = await navigator.gpu.requestAdapter({
-        powerPreference: "low-power"
-    });
-    const GPUComputePipeline53 = GPUDevice0.createComputePipeline({
-        compute: {
-            entryPoint: "main",
-            module: GPUShaderModule0
-        },
-        label: "GPUComputePipeline53",
-        layout: "auto"
-    });
-    GPUComputePassEncoder11.setPipeline(GPUComputePipeline53);
-    GPURenderPassEncoder18.draw(3);
-    const GPUBuffer35 = GPUDevice2.createBuffer({
-        label: "GPUBuffer35",
-        mappedAtCreation: true,
-        size: 112803928,
-        usage: GPUBufferUsage.INDIRECT | GPUBufferUsage.COPY_DST | GPUBufferUsage.INDEX | GPUBufferUsage.VERTEX | GPUBufferUsage.UNIFORM | GPUBufferUsage.STORAGE | GPUBufferUsage.QUERY_RESOLVE
-    });
-    const string106 = GPUDevice0.label
-    const GPUCommandEncoder33 = GPUDevice2.createCommandEncoder({
-        label: "GPUCommandEncoder33"
-    });
-    const GPUCommandBuffer20 = GPUCommandEncoder33.finish();
-    GPUQueue19.submit([GPUCommandBuffer20]);
-    const GPUShaderModule25 = GPUDevice1.createShaderModule({
-        label: "vertex",
-        code: shader25
-    });
-    const string107 = GPUTextureView22.label
-    const string108 = GPUQueue26.label
-    GPUComputePassEncoder8.setBindGroup(0, GPUBindGroup29);
-    const string109 = GPUComputePipeline31.label
-    const string110 = GPUQuerySet21.label
-    const GPUTexture30 = GPUDevice2.createTexture({
-        dimension: "1d",
-        sampleCount: 1,
-        format: "rgba16float",
-        label: "GPUTexture30",
-        size: {
-            width: 2000,
-            height: 1,
-            depthOrArrayLayers: 1
-        },
-        mipLevelCount: 1,
-        usage: GPUTextureUsage.COPY_SRC,
-        viewFormats: ["rgba16float"]
-    });
-    const GPUComputePassEncoder15 = GPUCommandEncoder27.beginComputePass({
+    GPUQueue7.writeBuffer(GPUBuffer0, 4, typedArray43);
+    const GPUComputePassEncoder15 = GPUCommandEncoder21.beginComputePass({
         label: "GPUComputePassEncoder15"
     });
-    const GPUQuerySet29 = GPUDevice2.createQuerySet({
-        count: 984,
-        label: "GPUQuerySet29",
-        type: "occlusion"
+    const GPUBuffer35 = GPUDevice4.createBuffer({
+        label: "GPUBuffer35",
+        mappedAtCreation: false,
+        size: 180098188,
+        usage: GPUBufferUsage.MAP_WRITE
     });
-    const GPUSupportedLimits15 = GPUAdapter12.limits
+    const GPUTexture24 = GPUDevice1.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "rgba16uint",
+        label: "GPUTexture24",
+        size: {
+            width: 482,
+            height: 1024,
+            depthOrArrayLayers: 28
+        },
+        mipLevelCount: 3,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.STORAGE_BINDING,
+        viewFormats: ["rgba16uint"]
+    });
+    const string108 = GPUQuerySet11.label
+    const GPUAdapterInfo14 = GPUAdapter4.info
+    const GPUTextureView28 = GPUTexture24.createView({
+        aspect: "all",
+        dimension: "3d",
+        arrayLayerCount: 1,
+        baseArrayLayer: 0,
+        mipLevelCount: 3,
+        baseMipLevel: 0,
+        format: "rgba16uint",
+        label: "GPUTextureView28"
+    });
+    const GPUTexture25 = GPUDevice4.createTexture({
+        dimension: "3d",
+        sampleCount: 1,
+        format: "rgb10a2unorm",
+        label: "GPUTexture25",
+        size: {
+            width: 854,
+            height: 465,
+            depthOrArrayLayers: 22
+        },
+        mipLevelCount: 2,
+        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC,
+        viewFormats: ["rgb10a2unorm"]
+    });
+    const GPUComputePassEncoder16 = GPUCommandEncoder15.beginComputePass({
+        label: "GPUComputePassEncoder16"
+    });
+    const GPUAdapterInfo15 = GPUAdapter3.info
 
 }
 main().catch(console.error);

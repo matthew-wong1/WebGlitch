@@ -37,6 +37,7 @@ async function main() {
 
     const destBuffer = device.createBuffer({
         size: 12,
+        mappedAtCreation: true,
         usage:
             GPUBufferUsage.COPY_DST |
             GPUBufferUsage.MAP_READ
@@ -44,13 +45,7 @@ async function main() {
 
     await destBuffer.mapAsync(GPUMapMode.READ, 0, 12);
 
-    const encoder = device.createCommandEncoder({
-        label: "encoder1"
-    });
 
-    encoder.copyBufferToBuffer(uniformBuffer, 0, destBuffer, 0, uniformBuffer.size);
-    finishedEncoder = encoder.finish()
-    device.queue.submit([finishedEncoder]);
 
 
 

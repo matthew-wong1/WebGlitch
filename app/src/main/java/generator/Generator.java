@@ -1136,6 +1136,12 @@ public class Generator {
             String attributeName = split[1];
             List<String> attributeValues = new ArrayList<>();
             Parser.extractNodeAsList(setAttributesNode.get(fieldName), attributeValues);
+            if (attributeValues.getFirst().startsWith("this")) {
+                String[] splitAttributeValues = attributeValues.getFirst().split("\\.", 2);
+                String actualAttributeValue = getObjectAttributes(variable, splitAttributeValues[1]);
+                attributeValues.clear();
+                attributeValues.add(actualAttributeValue);
+            }
 
             if (typeOfVariableToModify.equals("this") || typeOfVariableToModify.equals("returnVariable")) {
                 setMultipleObjectAttributes(variable, attributeName, attributeValues);

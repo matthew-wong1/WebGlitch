@@ -54,7 +54,7 @@
         }
       ],
       "setAttributes": {
-        "returnVariable.unMapped": ["true"]
+        "returnVariable.mapped": ["this.mappedAtCreation"]
       }
     },
     {

@@ -21,11 +21,11 @@
       ],
       "conditions": {
         "withAttributes": {
-          "GPUBuffer.mappedAtCreation": ["false"]
+          "GPUBuffer.mapped": ["false"]
         }
       },
       "setAttributes": {
-        "this.mappedAtCreation": ["true"]
+        "this.mapped": ["true"]
       }
     },
     {
@@ -36,19 +36,15 @@
       },
       "conditions": {
         "withAttributes": {
-          "GPUBuffer.mappedAtCreation": ["true"],
-          "GPUBuffer.unMapped": ["true"]
+          "GPUBuffer.mapped": ["true"]
         }
-      },
-      "setAttributes": {
-        "this.unMapped": ["false"]
       }
     },
     {
       "name": "unmap",
       "returnType": "none",
       "setAttributes": {
-        "this.unMapped": ["true"]
+        "this.mapped": ["false"]
       }
     }
   ],

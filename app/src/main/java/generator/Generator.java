@@ -208,7 +208,13 @@ public class Generator {
     }
 
     public Set<String> getBuffersUsedFromParentVariable(String parentVariable) {
-        return parentVariableToBuffersUsed.get(parentVariable);
+        Set<String> buffersUsed = parentVariableToBuffersUsed.get(parentVariable);
+
+        if (buffersUsed == null) {
+            return Collections.emptySet();
+        }
+
+        return buffersUsed;
     }
 
     public void generateProgram(String fileNameToUse) {

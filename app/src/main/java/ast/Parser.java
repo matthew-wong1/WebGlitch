@@ -120,7 +120,7 @@ public class Parser {
         ASTNode nodeToReturn;
         String variableWhoseAttributesAreAffected;
 
-        ensureConditionsForReceiverAreMet(receiver, callJsonNode);
+
 
         if (!returnType.equals("none")) {
             AssignmentNode assignmentNode = generator.generateDeclaration(callJsonNode, callNode);
@@ -132,6 +132,8 @@ public class Parser {
             nodeToReturn = callNode;
         }
 
+        // The call hasn't been added to the parameterNode yet
+        ensureConditionsForReceiverAreMet(receiver, callJsonNode);
         generator.setCallState(receiver, callName, isMethod);
 
         if (callJsonNode.has("postGeneration")) {
@@ -203,16 +205,17 @@ public class Parser {
     }
 
     private void ensureBuffersAvailable(String queueName) {
+        System.out.println(generator.objectAttributesTable.get(queueName));
         String commandBuffer = generator.getObjectAttributes(queueName, "commandBuffers");
         String commandEncoder = generator.getParentVariable(commandBuffer);
-
+        Set<String> allBuffersUsed = new HashSet<>();
         // Check all buffers from itself
-        Set<String> buffersUsedByGPUQueue = generator.getBuffersUsedFromParentVariable(queueName);
+        allBuffersUsed.addAll(generator.getBuffersUsedFromParentVariable(queueName));
 
         // Check all buffers from the command encoder
-        buffersUsedByGPUQueue.addAll(generator.getBuffersUsedFromParentVariable(commandEncoder));
+        allBuffersUsed.addAll(generator.getBuffersUsedFromParentVariable(commandEncoder));
 
-        for (String buffer : buffersUsedByGPUQueue) {
+        for (String buffer : allBuffersUsed) {
             if (generator.getObjectAttributes(buffer, "mappedAtCreation").equals("true")) {
                 generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUBuffer", "unmap", true), null, null, buffer);
             }

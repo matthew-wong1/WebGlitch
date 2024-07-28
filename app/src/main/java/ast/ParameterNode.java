@@ -55,7 +55,7 @@ public class ParameterNode extends ASTNode {
         this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
         this.randomUtils = generator.randomUtils;
 
-        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName());
+//        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName());
 
         checkImplementationSpecificCalls(details);
 
@@ -919,13 +919,13 @@ public class ParameterNode extends ASTNode {
     private void ensureBufferCompatibleMapping(List<String> enumValues) {
         String buffer = parentList.getReceiver();
         List<String> bufferUsageValues = generator.getAllObjectAttributes(buffer, "usage");
-        System.out.println("mapmode before removal " + enumValues);
+
         if (bufferUsageValues.contains("GPUBufferUsage.MAP_READ")) {
             enumValues.removeIf(value -> value.equals("GPUMapMode.WRITE"));
         } else {
             enumValues.removeIf(value -> value.equals("GPUMapMode.READ"));
         }
-        System.out.println("after removal " + enumValues);
+
     }
 
     private void ensureUniformStorageCompatible(List<String> mandatoryEnums, List<String> enumValues) {

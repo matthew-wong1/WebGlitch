@@ -26,8 +26,6 @@ const computeShader = loadShader('D:/final_proj/WebGlitch/rsrcs/shaders/compute/
 async function main() {
     const adapter = await navigator.gpu.requestAdapter();
     const device = await adapter.requestDevice();
-    const queue1 = device.queue
-    const queue2 = device.queue
 
     const array = new Uint8Array([1, 2, 3, 4]);
     const buffer = device.createBuffer({
@@ -37,9 +35,17 @@ async function main() {
         usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
     });
 
-    queue1.writeBuffer(buffer, 0 , array);
+    // queue1.writeBuffer(buffer, 0 , array);
     // const encoder = device.createCommandEncoder()
     // queue2.submit([encoder])
+
+    const GPUBuffer4 = device.createBuffer({
+        label: "GPUBuffer4",
+        mappedAtCreation: false,
+        size: 266245468,
+        usage: GPUBufferUsage.MAP_WRITE
+    });
+    const ArrayBuffer1 = GPUBuffer4.getMappedRange();
 
 }
 main().catch(console.error);

@@ -149,7 +149,7 @@ public class Parser {
         generator.addToProgramNode(nodeToReturn);
 
         if (callJsonNode.has("postGeneration")) {
-            parsePostGenerationRequirements(receiver, callsJsonNode.get("postGeneration"));
+            parsePostGenerationRequirements(receiver, callJsonNode.get("postGeneration"));
         }
 
         return nodeToReturn;
@@ -158,7 +158,6 @@ public class Parser {
     private void parsePostGenerationRequirements(String receiver, JsonNode postGenerationReqsNode) {
         List<String> postGenerationRequirements = new ArrayList<>();
         extractNodeAsList(postGenerationReqsNode, postGenerationRequirements);
-
         for (String requirement : postGenerationRequirements) {
             generator.generatePostGenerationRequirement(receiver, requirement);
         }

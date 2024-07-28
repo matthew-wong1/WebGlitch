@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javascript.Require;
 import javascript.JavaScriptStatement;
 import javascript.TypedArray;
+import org.checkerframework.checker.units.qual.A;
 import programprinter.PrettyPrinter;
 
 import java.io.File;
@@ -24,7 +25,8 @@ public class Generator {
     private final String JSON_DIRECTORY_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/interfaces/";
     private final WebGlitchOptions webGlitchOptions = new WebGlitchOptions();
     private final boolean mainOnly;
-    private int numTypedArrays;
+    private int numTypedArrays = 0;
+    private int numComputePassResultBuffers = 0;
 
 
     // Hash map to keep track of state
@@ -1050,8 +1052,8 @@ public class Generator {
         String bindGroup = getObjectAttributes(computePassEncoderName, "bindGroup");
 
         // Test that this works
-        String storageBuffer = getObjectAttributes(bindGroup, "entries.buffer");
-        String size = getObjectAttributes(bindGroup, "entries.size");
+        String storageBuffer = getObjectAttributes(bindGroup, "entries.resource.buffer");
+        String size = getObjectAttributes(storageBuffer, "size");
 
         Map<String, List<String>> copyBufferRequirements = new HashMap<>();
         copyBufferRequirements.put("source", List.of(storageBuffer));
@@ -1071,8 +1073,8 @@ public class Generator {
 
         String pipeline = getObjectAttributes(computePassEncoderName, "pipeline");
         Map<String, String> outBufferToPipeline = new HashMap<>();
-        outBufferToPipeline.put(computePassEncoderName, pipeline);
-        toPrintCommandEncoderAndItsPipeline.put(outBuffer, outBufferToPipeline);
+        outBufferToPipeline.put(outBuffer, pipeline);
+        toPrintCommandEncoderAndItsPipeline.put(computePassEncoderName, outBufferToPipeline);
 
     }
 
@@ -1081,19 +1083,26 @@ public class Generator {
         // Check that you are allowed to print it
         // This is okay because you check what commandBuffer it is submitting
         String commandBuffer = getObjectAttributes(gpuQueueName, "commandBuffers");
+        String commandEncoder = getParentVariable(commandBuffer);
 
+//        if (!toPrintCommandEncoderAndItsPipeline.containsKey(commandBuffer)) {
+//            return;
+//        }
 
-        if (!toPrintCommandEncoderAndItsPipeline.containsKey(commandBuffer)) {
-            return;
-        }
-
-        Map<String, String> computePassEncoderToPipeline = toPrintCommandEncoderAndItsPipeline.get(commandBuffer);
-        toPrintCommandEncoderAndItsPipeline.remove(commandBuffer);
+        List<String> computePassesToRemove = new ArrayList<>();
 
         // loop over all computePassencoders that need printing
-        for (Map.Entry<String, String> entry : computePassEncoderToPipeline.entrySet()) {
-            String outBuffer = entry.getKey();
-            String pipeline = entry.getValue();
+        for (String computePassEncoder : toPrintCommandEncoderAndItsPipeline.keySet()) {
+            System.out.println(computePassEncoder);
+            System.out.println("parent of compute pass encoder " + getParentVariable(computePassEncoder));
+            System.out.println("command encoder " + commandEncoder + "\n");
+            if (!getParentVariable(computePassEncoder).equals(commandEncoder)) {
+                continue;
+            }
+            Map<String, String> outBufferToPipeline = toPrintCommandEncoderAndItsPipeline.get(computePassEncoder);
+            String outBuffer = outBufferToPipeline.keySet().iterator().next();
+            String pipeline = outBufferToPipeline.get(outBuffer);
+            computePassesToRemove.add(computePassEncoder);
 
             // Generate: await outBuffer.mapAsync(GPUMapMode.READ);
             Map<String, List<String>> mapAsyncRequirements = new HashMap<>();
@@ -1104,7 +1113,7 @@ public class Generator {
             String copyArray = generateCall(new ReceiverTypeCallNameCallType("GPUBuffer", "getMappedRange", true), null, null, outBuffer);
 
             // Generate: const outData = copyArray.slice(0);
-            AssignmentNode outArrayAssignment = new AssignmentNode("const", generateRandVarName("ArrayBuffer"));
+            AssignmentNode outArrayAssignment = new AssignmentNode("const", "ComputePassResultBuffer" + numComputePassResultBuffers);
             String outArrayVariableName = outArrayAssignment.getVarName();
             addToSymbolTable("Array", outArrayVariableName);
             JavaScriptStatement spliceStatement = new JavaScriptStatement(copyArray + ".slice(0)");
@@ -1115,6 +1124,7 @@ public class Generator {
             AssignmentNode typedArrayAssignment = new AssignmentNode("const", "typedArray" + numTypedArrays);
             TypedArray typedArray = new TypedArray("Uint8", outArrayVariableName, randomUtils);
             numTypedArrays++;
+            numComputePassResultBuffers++;
             typedArrayAssignment.addNode(typedArray);
             programNode.addNode(typedArrayAssignment);
 
@@ -1123,6 +1133,9 @@ public class Generator {
             programNode.addNode(printStatement);
         }
 
+        for (String computePassEncoder : computePassesToRemove) {
+            toPrintCommandEncoderAndItsPipeline.remove(computePassEncoder);
+        }
     }
 
     // Currently doesn't support setting attributes of another GPUInterfaceType

@@ -216,7 +216,7 @@ public class Parser {
         allBuffersUsed.addAll(generator.getBuffersUsedFromParentVariable(commandEncoder));
 
         for (String buffer : allBuffersUsed) {
-            if (generator.getObjectAttributes(buffer, "mappedAtCreation").equals("true")) {
+            if (generator.getObjectAttributes(buffer, "mapped").equals("true")) {
                 generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUBuffer", "unmap", true), null, null, buffer);
             }
         }

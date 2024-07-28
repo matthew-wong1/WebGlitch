@@ -136,10 +136,6 @@ public class Parser {
         ensureConditionsForReceiverAreMet(receiver, callJsonNode);
         generator.setCallState(receiver, callName, isMethod);
 
-        if (callJsonNode.has("postGeneration")) {
-            parsePostGenerationRequirements(receiver, callsJsonNode.get("postGeneration"));
-        }
-
         generator.setAdditionalAttributes(variableWhoseAttributesAreAffected, callJsonNode);
 
         // Delete object
@@ -151,6 +147,11 @@ public class Parser {
         generator.parseAndSetCallAvailability(receiver, callJsonNode);
 
         generator.addToProgramNode(nodeToReturn);
+
+        if (callJsonNode.has("postGeneration")) {
+            parsePostGenerationRequirements(receiver, callsJsonNode.get("postGeneration"));
+        }
+
         return nodeToReturn;
     }
 

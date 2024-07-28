@@ -37,6 +37,7 @@ public class Generator {
     private final Map<String, Set<String>> callUnavailability = new HashMap<>();
     private final Map<String, Set<String>> interfaceToAvailableCalls = new HashMap<>();
     private final Map<String, String> availableCallsToInterface = new HashMap<>();
+    private final Map<String, Set<String>> parentVariableToBuffersUsed = new HashMap<>();
 
     // Maps parent CommandEncoder to the name of the outBuffer and the corresponding pipeline
     private final Map<String, Map<String, String>> toPrintCommandEncoderAndItsPipeline = new HashMap<>();
@@ -193,6 +194,21 @@ public class Generator {
     // Returns true if proceed with what you want, false otherwise
     public boolean decideBasedOnChance(double percent) {
         return randomUtils.nextDouble(1.0) < percent;
+    }
+
+    public void addToParentVariablesAndTheirBuffersUsed(String parentVariable, String bufferVariable) {
+        if (!parentVariableToBuffersUsed.containsKey(parentVariable)) {
+            parentVariableToBuffersUsed.put(parentVariable, new HashSet<>());
+        }
+        parentVariableToBuffersUsed.get(parentVariable).add(bufferVariable);
+    }
+
+    public void removeFromParentVariablesAndTheirBuffersUsed(String parentVariable) {
+        parentVariableToBuffersUsed.remove(parentVariable);
+    }
+
+    public Set<String> getBuffersUsedFromParentVariable(String parentVariable) {
+        return parentVariableToBuffersUsed.get(parentVariable);
     }
 
     public void generateProgram(String fileNameToUse) {

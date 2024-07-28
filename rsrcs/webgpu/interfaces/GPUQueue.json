@@ -14,7 +14,8 @@
               "withAttributes": {
                 "GPUBuffer.usage": ["GPUBufferUsage.COPY_DST"],
                 "GPUBuffer.mappedAtCreation": ["false"]
-              }
+              },
+              "trackedLifetime": true
             }
           },
           "bufferOffset": {
@@ -50,6 +51,9 @@
           }
         }
       ],
+      "conditions": {
+        "buffersAvailable": true
+      },
       "deletes": "commandBuffers",
       "postGeneration": ["printOutput"]
     }

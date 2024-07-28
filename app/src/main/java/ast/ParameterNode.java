@@ -425,9 +425,16 @@ public class ParameterNode extends ASTNode {
 
         List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
         String cannotBeThisObject = conditionsNode.has("differentTo") ? conditionsNode.get("differentTo").asText() : null;
+        String buffer = generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this, cannotBeThisObject);
+        Parameter newParameter = new Parameter(buffer);
 
-        Parameter newParameter = new Parameter(generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this, cannotBeThisObject));
-
+        if (conditionsNode.has("trackedLifetime")) {
+            String baseReceiver = parentList.getReceiver();
+            if (generator.getVariableType(baseReceiver).equals("GPURenderPassEncoder")) {
+                baseReceiver = generator.getParentVariable(baseReceiver);
+            }
+            generator.addToParentVariablesAndTheirBuffersUsed(baseReceiver, buffer);
+        }
         this.parameters.add(newParameter);
 
         return conditionsNode;

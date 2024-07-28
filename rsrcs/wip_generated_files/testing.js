@@ -27,6 +27,14 @@ async function main() {
     const adapter = await navigator.gpu.requestAdapter();
     const device = await adapter.requestDevice();
 
+    const uniformBuffer = device.createBuffer({
+        size: 12,
+        usage:
+            GPUBufferUsage.UNIFORM |
+            GPUBufferUsage.COPY_SRC |
+            GPUBufferUsage.COPY_DST,
+    });
+
     const destBuffer = device.createBuffer({
         size: 12,
         usage:
@@ -35,19 +43,16 @@ async function main() {
     });
 
     await destBuffer.mapAsync(GPUMapMode.READ, 0, 12);
-    const testBuffer = await destBuffer.getMappedRange();
 
     const encoder = device.createCommandEncoder({
         label: "encoder1"
     });
 
-    const uniformBuffer = device.createBuffer({
-        size: 12,
-        usage:
-            GPUBufferUsage.UNIFORM |
-            GPUBufferUsage.COPY_SRC |
-            GPUBufferUsage.COPY_DST,
-    });
+    encoder.copyBufferToBuffer(uniformBuffer, 0, destBuffer, 0, uniformBuffer.size);
+    finishedEncoder = encoder.finish()
+    device.queue.submit([finishedEncoder]);
+
+
 
     console.log("hi")
 

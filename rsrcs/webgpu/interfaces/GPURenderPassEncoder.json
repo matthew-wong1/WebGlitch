@@ -32,7 +32,8 @@
               "withAttributes": {
                 "GPUBuffer.usage": ["GPUBufferUsage.VERTEX"],
                 "GPUBuffer.mappedAtCreation": ["false"]
-              }
+              },
+              "trackedLifetime": true
             }
           }
         }

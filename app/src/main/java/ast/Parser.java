@@ -112,9 +112,6 @@ public class Parser {
         }
 
 
-        // Ensure prequisite conditions for receiver are met:
-        ensureConditionsForReceiverAreMet(receiver, callJsonNode);
-
         boolean jsonParams = callJsonNode.path("paramType").asText("csv").equals("object");
         boolean isArray = callJsonNode.has("array");
         boolean isAsync = callJsonNode.has("async");
@@ -122,6 +119,8 @@ public class Parser {
         CallNode callNode = new CallNode(receiver, returnType, callName, jsonParams, isArray, isMethod, isAsync, generator, paramsJsonNode, requirements);
         ASTNode nodeToReturn;
         String variableWhoseAttributesAreAffected;
+
+        ensureConditionsForReceiverAreMet(receiver, callJsonNode);
 
         if (!returnType.equals("none")) {
             AssignmentNode assignmentNode = generator.generateDeclaration(callJsonNode, callNode);
@@ -197,6 +196,30 @@ public class Parser {
         if (conditionsNode.has("renderPipelineAvailable")) {
             ensureRenderPipelineAvailable(receiverName);
         }
+
+        if (conditionsNode.has("buffersAvailable")) {
+            ensureBuffersAvailable(receiverName);
+        }
+    }
+
+    private void ensureBuffersAvailable(String queueName) {
+        String commandBuffer = generator.getObjectAttributes(queueName, "commandBuffers");
+        String commandEncoder = generator.getParentVariable(commandBuffer);
+
+        // Check all buffers from itself
+        Set<String> buffersUsedByGPUQueue = generator.getBuffersUsedFromParentVariable(queueName);
+
+        // Check all buffers from the command encoder
+        buffersUsedByGPUQueue.addAll(generator.getBuffersUsedFromParentVariable(commandEncoder));
+
+        for (String buffer : buffersUsedByGPUQueue) {
+            if (generator.getObjectAttributes(buffer, "mappedAtCreation").equals("true")) {
+                generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUBuffer", "unmap", true), null, null, buffer);
+            }
+        }
+
+        generator.removeFromParentVariablesAndTheirBuffersUsed(queueName);
+        generator.removeFromParentVariablesAndTheirBuffersUsed(commandBuffer);
     }
 
     private void ensureRenderPipelineAvailable(String receiverName) {

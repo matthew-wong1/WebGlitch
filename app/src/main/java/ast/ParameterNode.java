@@ -424,7 +424,13 @@ public class ParameterNode extends ASTNode {
         Map<String, List<String>> requirements = parseInterfaceConditions(conditionsNode);
 
         List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
-        String cannotBeThisObject = conditionsNode.has("differentTo") ? conditionsNode.get("differentTo").asText() : null;
+        String fieldToFetchCannotBeThisObjectFrom = conditionsNode.has("differentTo") ? conditionsNode.get("differentTo").asText() : null;
+        String cannotBeThisObject = null;
+        if (fieldToFetchCannotBeThisObjectFrom != null) {
+            cannotBeThisObject = parentList.getParameter(fieldToFetchCannotBeThisObjectFrom);
+        }
+        System.out.println(cannotBeThisObject);
+
         String buffer = generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this, cannotBeThisObject);
         Parameter newParameter = new Parameter(buffer);
 

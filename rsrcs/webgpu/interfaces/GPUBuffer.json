@@ -38,7 +38,10 @@
         "this": ["GPUBuffer.getMappedRange"]
       },
       "conditions": {
-        "availableForGettingMappedRange": true
+        "availableForGettingMappedRange": true,
+        "withAttributes": {
+          "GPUBuffer.usage": ["GPUBufferUsage.MAP_READ", "GPUBufferUsage.MAP_WRITE"]
+        }
       }
     },
     {

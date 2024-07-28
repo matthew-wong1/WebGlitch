@@ -91,6 +91,9 @@ public class Parser {
 
                 if (conditionsNode.has("withAttributes")) {
                     Map<String, List<String>> receiverRequirements = generator.parseAttributeRequirements(conditionsNode);
+                    if (requirements == null) {
+                        requirements = new HashMap<>();
+                    }
                     requirements.putAll(receiverRequirements);
                 }
             }

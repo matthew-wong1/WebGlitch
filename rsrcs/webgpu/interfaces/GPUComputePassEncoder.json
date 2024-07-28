@@ -28,7 +28,7 @@
       },
       "setAvailable": {
         "parents": {
-          "GPUCommandEncoder": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass"]
+          "GPUCommandEncoder": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer"]
         }
       },
       "postGeneration": ["copyComputePassOutput"]

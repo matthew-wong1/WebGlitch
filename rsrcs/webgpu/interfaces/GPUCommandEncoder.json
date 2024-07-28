@@ -30,7 +30,7 @@
         }
       ],
       "setUnavailable": {
-        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass"]
+        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer"]
       }
     },
     {
@@ -46,7 +46,7 @@
         }
       ],
       "setUnavailable": {
-        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass"]
+        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer"]
       }
     },
     {

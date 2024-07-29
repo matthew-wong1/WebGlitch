@@ -2,6 +2,7 @@ package programprinter;
 
 import ast.ASTNode;
 import generator.WebGlitch;
+import generator.WebGlitchOptions;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -15,8 +16,15 @@ public class PrettyPrinter {
     private final String DAWN_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/dawnHeader.js";
     private final String DENO_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/denoHeader.js";
 
-    public void printToFile(ASTNode root, String filePath, long seed, boolean mainOnly) {
+    public void printToFile(ASTNode root, String filePath, long seed, boolean mainOnly, WebGlitchOptions webGlitchOptions) {
         String commentedSeed = "// Seed: " + seed + "\n";
+        String commentedErrorsEnabled = "// Errors ";
+        if (webGlitchOptions.getInvalidParameterChance() > 0) {
+            commentedErrorsEnabled += "enabled";
+        } else {
+            commentedErrorsEnabled += "disabled";
+        }
+        commentedErrorsEnabled += "\n";
         String pathName = filePath;
         // Copy the file
         Path destPath = Path.of(pathName);
@@ -50,7 +58,7 @@ public class PrettyPrinter {
             // Set to append mode
             FileWriter fileWriter = new FileWriter(outFile, true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.println(commentedSeed + root.toString());
+            printWriter.println(commentedSeed + commentedErrorsEnabled + root.toString());
             printWriter.close();
 
         } catch (FileNotFoundException e) {

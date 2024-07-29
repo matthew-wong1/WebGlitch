@@ -241,7 +241,7 @@ public class Generator {
         }
 
         programNode.addNode(new JavaScriptStatement(FOOTER));
-        printer.printToFile(this.programNode, fileNameToUse, randomUtils.getSeed(), this.mainOnly);
+        printer.printToFile(this.programNode, fileNameToUse, randomUtils.getSeed(), this.mainOnly, webGlitchOptions);
     }
 
     public void addToObjectAttributesTable(String variableName, Map<String, List<Parameter>> keyValuePairs) {
@@ -1127,7 +1127,7 @@ public class Generator {
             programNode.addNode(typedArrayAssignment);
 
             // Generate console.log("result", result); + something with an identifying label
-            JavaScriptStatement printStatement = new JavaScriptStatement("console.log(\"" + pipeline + ":\", ..." + typedArrayName +");");
+            JavaScriptStatement printStatement = new JavaScriptStatement("console.log(\"" + pipeline + " has output:\", ..." + typedArrayName +");");
             programNode.addNode(printStatement);
         }
 

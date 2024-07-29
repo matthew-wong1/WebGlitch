@@ -821,7 +821,6 @@ public class ParameterNode extends ASTNode {
 
         // Maybe could prepend mandatory since alway subList from 0?
         List<String> toRemove = new ArrayList<>();
-        List<String> mutexValues = new ArrayList<>();
 
         // Post pass to remove mutually exclusive values
         if (mutexNode != null) {
@@ -829,7 +828,6 @@ public class ParameterNode extends ASTNode {
             for (JsonNode mutex : mutexNode) {
                 ObjectMapper mapper = new ObjectMapper();
                 String mutexFlag = mutex.get("name").asText();
-                mutexValues.add(mutexFlag);
 
                 if (chosenFlags.getFirst().equals(mutexFlag)) {
                     List<String> allowedFlags = mapper.convertValue(mutex.get("allowed"), new TypeReference<>() {
@@ -848,13 +846,9 @@ public class ParameterNode extends ASTNode {
 
 
         }
-        // Hacky workaround
-        if (!Collections.disjoint(mandatoryEnums, mutexValues)) {
-            chosenFlags.clear();
-            chosenFlags.addAll(mandatoryEnums);
-        } else {
-            chosenFlags.removeAll(toRemove);
-        }
+
+        chosenFlags.removeAll(toRemove);
+
 
         return chosenFlags;
 

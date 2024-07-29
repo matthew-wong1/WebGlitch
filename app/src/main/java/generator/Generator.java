@@ -1061,7 +1061,7 @@ public class Generator {
         // Generate outBufferToReadFrom
         Map<String, List<String>> outBufferRequirements = new HashMap<>();
         outBufferRequirements.put("size", List.of(size));
-        outBufferRequirements.put("usage", List.of("GPUBufferUsage.COPY_DST", "GPUBufferUsage.MAP_READ"));
+        outBufferRequirements.put("usage", List.of("GPUBufferUsage.MAP_READ", "GPUBufferUsage.COPY_DST"));
         outBufferRequirements.put("mappedAtCreation", List.of("false"));
         String outBuffer = generateCall(new Generator.ReceiverTypeCallNameCallType("GPUDevice", "createBuffer", true), outBufferRequirements, null, getParentVariable(commandEncoder));
 

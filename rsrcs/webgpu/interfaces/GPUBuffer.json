@@ -39,6 +39,7 @@
       },
       "conditions": {
         "availableForGettingMappedRange": true,
+        "bufferCompatibleMapping": true,
         "withAttributes": {
           "GPUBuffer.usage": ["GPUBufferUsage.MAP_READ", "GPUBufferUsage.MAP_WRITE"]
         }

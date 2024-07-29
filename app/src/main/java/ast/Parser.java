@@ -98,6 +98,9 @@ public class Parser {
                 }
             }
             receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), requirements, sameObjectsReqs);
+            if (parentReceiverType.equals("GPUBuffer") && callName.equals("getMappedRange")) {
+                System.out.println(receiver + ": " + generator.getObjectAttributes(receiver, "usage"));
+            }
             parseReceiverMethodRequirements(receiver, callJsonNode);
         } else {
             receiver = specificReceiver;
@@ -164,6 +167,7 @@ public class Parser {
         JsonNode conditionsNode = callJsonNode.get("conditions");
         if (conditionsNode.has("availableForGettingMappedRange")) {
             if (generator.getObjectAttributes(receiver, "mapped").equals("false")) {
+
                 generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUBuffer", "mapAsync", true), null, null, receiver);
             }
         }

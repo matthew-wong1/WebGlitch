@@ -1118,7 +1118,8 @@ public class Generator {
             programNode.addNode(outArrayAssignment);
 
             // Generate: const result = new Uint8Array(outData);
-            AssignmentNode typedArrayAssignment = new AssignmentNode("const", "typedArray" + numTypedArrays);
+            String typedArrayName = "typedArray" + numTypedArrays;
+            AssignmentNode typedArrayAssignment = new AssignmentNode("const",typedArrayName);
             TypedArray typedArray = new TypedArray("Uint8", outArrayVariableName, randomUtils);
             numTypedArrays++;
             numComputePassResultBuffers++;
@@ -1126,7 +1127,7 @@ public class Generator {
             programNode.addNode(typedArrayAssignment);
 
             // Generate console.log("result", result); + something with an identifying label
-            JavaScriptStatement printStatement = new JavaScriptStatement("console.log(" + pipeline + ", ..." + outArrayVariableName +");");
+            JavaScriptStatement printStatement = new JavaScriptStatement("console.log(" + pipeline + ", ..." + typedArrayName +");");
             programNode.addNode(printStatement);
         }
 

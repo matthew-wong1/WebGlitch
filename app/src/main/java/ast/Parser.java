@@ -98,9 +98,7 @@ public class Parser {
                 }
             }
             receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), requirements, sameObjectsReqs);
-            if (parentReceiverType.equals("GPUBuffer") && callName.equals("getMappedRange")) {
-                System.out.println(receiver + ": " + generator.getObjectAttributes(receiver, "usage"));
-            }
+
             parseReceiverMethodRequirements(receiver, callJsonNode);
         } else {
             receiver = specificReceiver;

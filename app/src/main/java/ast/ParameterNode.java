@@ -83,16 +83,19 @@ public class ParameterNode extends ASTNode {
         if (parameterRequirements == null || parameterRequirements.isEmpty()) {
             return null;
         }
-
+        Map<String, String> customParamMapping = Map.of("mapped", "mappedAtCreation");
         for (Map.Entry<String, List<String>> entry : parameterRequirements.entrySet()) {
             String currentKeyName = entry.getKey();
+            if (customParamMapping.containsKey(currentKeyName) && customParamMapping.get(currentKeyName).equals(this.fieldName)) {
+                return entry.getValue();
+            }
+
             if (currentKeyName.startsWith(this.fieldName)) {
                 if (currentKeyName.contains(".")) {
                     String[] split = currentKeyName.split("\\.", 2);
                     String newKeyName = split[1];
                     this.nestedParameterRequirements.put(newKeyName, entry.getValue());
                 } else if (currentKeyName.equals(this.fieldName)){
-
                     return entry.getValue();
                 }
             }

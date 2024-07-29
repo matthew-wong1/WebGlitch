@@ -722,11 +722,13 @@ public class ParameterNode extends ASTNode {
         }
 
         List<String> mandatoryEnums = parseEnumConditions(conditions, enumValues);
+
         Collections.shuffle(enumValues, randomUtils.getRandom());
         List<String> chosenEnumValues = new ArrayList<>();
 
         if (this.isBitwiseFlags) {
             // Random int between 1 and end of list
+            System.out.println("mandatory enums " + mandatoryEnums);
             chosenEnumValues = pickEnumValuesAsBitwiseFlags(enumValues, mutexNode, mandatoryEnums);
         } else if (isArray) {
             chosenEnumValues = pickEnumValuesAsArray(enumValues, mandatoryEnums);
@@ -821,12 +823,15 @@ public class ParameterNode extends ASTNode {
 
         // Maybe could prepend mandatory since alway subList from 0?
         List<String> toRemove = new ArrayList<>();
+        List<String> mutexValues = new ArrayList<>();
 
         // Post pass to remove mutually exclusive values
         if (mutexNode != null) {
+
             for (JsonNode mutex : mutexNode) {
                 ObjectMapper mapper = new ObjectMapper();
                 String mutexFlag = mutex.get("name").asText();
+                mutexValues.add(mutexFlag);
 
                 if (chosenFlags.getFirst().equals(mutexFlag)) {
                     List<String> allowedFlags = mapper.convertValue(mutex.get("allowed"), new TypeReference<>() {
@@ -841,9 +846,18 @@ public class ParameterNode extends ASTNode {
                     toRemove.add(mutexFlag);
                 }
             }
-        }
 
-        chosenFlags.removeAll(toRemove);
+
+
+        }
+        // Hacky workaround
+        if (!Collections.disjoint(mandatoryEnums, mutexValues)) {
+            chosenFlags.clear();
+            chosenFlags.addAll(mandatoryEnums);
+            System.out.println("mandatory workaround " + chosenFlags);
+        } else {
+            chosenFlags.removeAll(toRemove);
+        }
 
         return chosenFlags;
 
@@ -855,7 +869,6 @@ public class ParameterNode extends ASTNode {
 
         if (individualParameterRequirements != null) {
             mandatoryEnums.addAll(individualParameterRequirements);
-            System.out.println("mandatory enums " + individualParameterRequirements);
         }
 
 

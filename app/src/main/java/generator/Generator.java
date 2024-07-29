@@ -1127,7 +1127,7 @@ public class Generator {
             programNode.addNode(typedArrayAssignment);
 
             // Generate console.log("result", result); + something with an identifying label
-            JavaScriptStatement printStatement = new JavaScriptStatement("console.log(\"" + pipeline + "\", ..." + typedArrayName +");");
+            JavaScriptStatement printStatement = new JavaScriptStatement("console.log(\"" + pipeline + ":\", ..." + typedArrayName +");");
             programNode.addNode(printStatement);
         }
 

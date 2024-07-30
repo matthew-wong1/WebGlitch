@@ -31,8 +31,8 @@ trap cleanup INT
 while true; do
     OUTPUT_FILE="${OUTPUT_DIR}/${i}.js"
     # Execute the java command
-    java -jar "$WEBGLITCH_PATH" -o "$OUTPUT_FILE" -m
-    echo "Running and logging the file"
+    java -jar "$WEBGLITCH_PATH" -o "$OUTPUT_FILE" -m -w
+    echo "Running and logging the file $OUTPUT_FILE"
     bash "$RUNNER_PATH" "$OUTPUT_FILE"
 
     # Increment the counter

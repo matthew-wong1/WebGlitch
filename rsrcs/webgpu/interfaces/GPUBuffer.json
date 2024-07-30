@@ -48,6 +48,11 @@
     {
       "name": "unmap",
       "returnType": "none",
+      "conditions": {
+        "withAttributes": {
+          "GPUBuffer.mapped": ["true"]
+        }
+      },
       "setAttributes": {
         "this.mapped": ["false"]
       }

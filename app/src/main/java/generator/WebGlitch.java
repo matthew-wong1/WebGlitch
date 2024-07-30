@@ -11,7 +11,7 @@ import static java.lang.Integer.parseInt;
 
 public class WebGlitch {
 
-    private static final String DEFAULT_MAX_CALLS = "500";
+    private static final String DEFAULT_MAX_CALLS = "250";
 
     public static void main(String[] args) {
         Options options = setupCLIOptions();

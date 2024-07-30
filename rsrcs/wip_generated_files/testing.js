@@ -36,16 +36,16 @@ async function main() {
     });
 
     // queue1.writeBuffer(buffer, 0 , array);
-    // const encoder = device.createCommandEncoder()
+    const encoder = device.createCommandEncoder()
     // queue2.submit([encoder])
 
     const GPUBuffer4 = device.createBuffer({
         label: "GPUBuffer4",
-        mappedAtCreation: false,
+        mappedAtCreation: true,
         size: 266245468,
-        usage: GPUBufferUsage.MAP_WRITE
+        usage: GPUBufferUsage.COPY_DST
     });
-    const ArrayBuffer1 = GPUBuffer4.getMappedRange();
+    encoder.clearBuffer(GPUBuffer4);
 
 }
 main().catch(console.error);

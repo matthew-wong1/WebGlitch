@@ -119,7 +119,6 @@ public class Generator {
             if (rootJsonNode.has("methods")) {
                 JsonNode methodsJsonNode = rootJsonNode.get("methods");
                 for (JsonNode methodJsonNode : methodsJsonNode) {
-                    System.out.println(methodJsonNode.get("name").asText());
                     addCall(apiInterface, methodJsonNode, receiverType, true);
                 }
             }
@@ -230,7 +229,6 @@ public class Generator {
         this.programNode = new ProgramNode();
         programNode.addNode(new JavaScriptStatement(HEADER));
         ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
-        System.out.println(callProbabilities);
 
         for (int i = 0; i < maxCalls; i++) {
 

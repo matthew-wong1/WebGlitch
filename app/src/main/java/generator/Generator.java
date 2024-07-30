@@ -103,7 +103,7 @@ public class Generator {
         File jsonDirectory = new File(JSON_DIRECTORY_PATH);
         File[] apiInterfaces = jsonDirectory.listFiles();
         assert apiInterfaces != null;
-        Arrays.sort(apiInterfaces, (file1, file2) -> file1.getName().compareToIgnoreCase(file2.getName()));
+        Arrays.sort(apiInterfaces, Comparator.comparing(File::getName));
 
 
         // Get all the names of the interfaces
@@ -119,6 +119,7 @@ public class Generator {
             if (rootJsonNode.has("methods")) {
                 JsonNode methodsJsonNode = rootJsonNode.get("methods");
                 for (JsonNode methodJsonNode : methodsJsonNode) {
+                    System.out.println(methodJsonNode.get("name").asText());
                     addCall(apiInterface, methodJsonNode, receiverType, true);
                 }
             }
@@ -228,12 +229,11 @@ public class Generator {
     public void generateProgram(String fileNameToUse) {
         this.programNode = new ProgramNode();
         programNode.addNode(new JavaScriptStatement(HEADER));
+        ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
+        System.out.println(callProbabilities);
 
         for (int i = 0; i < maxCalls; i++) {
-            ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
-            for (ReceiverTypeCallNameCallType method : methods) {
-                System.out.println(method.callName);
-            }
+
             int randIdx = randomUtils.nextInt(methods.length);
             ReceiverTypeCallNameCallType randMethod = methods[randIdx];
             String fileName = callProbabilities.get(randMethod).fileName;
@@ -328,7 +328,9 @@ public class Generator {
 
         // Limit number of devices that can be generated
         if (symbolTable.get("GPUDevice") != null && symbolTable.get("GPUDevice").size() == webGlitchOptions.getMaxGPUDevices()) {
-            callProbabilities.remove(new ReceiverTypeCallNameCallType("GPUAdapter", "requestDevice", true));
+            ReceiverTypeCallNameCallType receiverTypeCallNameCallType = new ReceiverTypeCallNameCallType("GPUAdapter", "requestDevice", true);
+            String fileName = callProbabilities.get(receiverTypeCallNameCallType).fileName;
+            callProbabilities.put(receiverTypeCallNameCallType, new FileNameCallProbPair(fileName, 0.0));
             interfaceToAvailableCalls.get("GPUAdapter").remove("requestDevice");
         }
 

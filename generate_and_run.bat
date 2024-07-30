@@ -22,7 +22,7 @@ if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 set OUTPUT_FILE=%OUTPUT_DIR%\%i%.js
 :: Execute the java command
 java -jar %WEBGLITCH_PATH% -o %OUTPUT_FILE% -m
-echo Running and logging the file
+echo Running and logging the file %OUTPUT_FILE%
 call %RUNNER_PATH% %OUTPUT_FILE%
 
 :: Increment the counter

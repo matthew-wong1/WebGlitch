@@ -10,7 +10,7 @@ public class ParameterListNode extends ASTNode {
     private final boolean jsonParams;
     private final JsonNode paramsJsonNode;
     private final boolean isArray;
-    public final Map<String, List<Parameter>> allParameters = new HashMap<>();
+    public final Map<String, List<Parameter>> allParameters = new LinkedHashMap<>();
     private final CallNode callNode;
     private final Generator generator;
     private final Map<String, List<String>> requirements;
@@ -30,7 +30,7 @@ public class ParameterListNode extends ASTNode {
         if (requirements == null || requirements.isEmpty()) {
             return null;
         }
-        Map<String, List<String>> finalisedRequirements = new HashMap<>();
+        Map<String, List<String>> finalisedRequirements = new LinkedHashMap<>();
         for (Map.Entry<String, List<String>> requirementsEntry : requirements.entrySet()) {
             if (!requirementsEntry.getKey().contains(".")) {
                 finalisedRequirements.put(requirementsEntry.getKey(), requirementsEntry.getValue());

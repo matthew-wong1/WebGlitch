@@ -32,29 +32,29 @@ public class Generator {
     // Hash map to keep track of state
     // Key: Type of object eg adapter, device
     // Value: Reference to that objet that currently exists
-    private final Map<String, List<String>> symbolTable = new HashMap<>();
-    public final Map<String, Map<String, List<Parameter>>> objectAttributesTable = new HashMap<>();
-    private final Map<String, String> variableToReceiverType = new HashMap<>();
-    private final Map<String, String> variableToReceiverName = new HashMap<>();
-    private final Map<String, Set<String>> callUnavailability = new HashMap<>();
-    private final Map<String, Set<String>> interfaceToAvailableCalls = new HashMap<>();
-    private final Map<String, String> availableCallsToInterface = new HashMap<>();
-    private final Map<String, Set<String>> parentVariableToBuffersUsed = new HashMap<>();
+    private final Map<String, List<String>> symbolTable = new LinkedHashMap<>();
+    public final Map<String, Map<String, List<Parameter>>> objectAttributesTable = new LinkedHashMap<>();
+    private final Map<String, String> variableToReceiverType = new LinkedHashMap<>();
+    private final Map<String, String> variableToReceiverName = new LinkedHashMap<>();
+    private final Map<String, Set<String>> callUnavailability = new LinkedHashMap<>();
+    private final Map<String, Set<String>> interfaceToAvailableCalls = new LinkedHashMap<>();
+    private final Map<String, String> availableCallsToInterface = new LinkedHashMap<>();
+    private final Map<String, Set<String>> parentVariableToBuffersUsed = new LinkedHashMap<>();
 
     // Maps parent CommandEncoder to the name of the outBuffer and the corresponding pipeline
-    private final Map<String, Map<String, String>> toPrintCommandEncoderAndItsPipeline = new HashMap<>();
-    public final Map<String, Map<String, String>> shaderNameToProperties = new HashMap<>();
-    private final Map<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new HashMap<>();
+    private final Map<String, Map<String, String>> toPrintCommandEncoderAndItsPipeline = new LinkedHashMap<>();
+    public final Map<String, Map<String, String>> shaderNameToProperties = new LinkedHashMap<>();
+    private final Map<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new LinkedHashMap<>();
 
     // Stores counts of different webgpu interfaces for variable names and labels
-    private final Map<String, Integer> interfaceCounts = new HashMap<>();
+    private final Map<String, Integer> interfaceCounts = new LinkedHashMap<>();
 
-    private final Map<String, FileNameReceiverTypeCallNameCallType> receiverInits = new HashMap<>();
+    private final Map<String, FileNameReceiverTypeCallNameCallType> receiverInits = new LinkedHashMap<>();
     // Maps method call name to File it's located in and Probability (double)
-    private final Map<ReceiverTypeCallNameCallType, FileNameCallProbPair> callProbabilities = new HashMap<>();
+    private final Map<ReceiverTypeCallNameCallType, FileNameCallProbPair> callProbabilities = new LinkedHashMap<>();
     // Tracks call histories
 //    private final Set<ReceiverNameCallNameCallType> callState = new HashSet<>();
-    private final Map<String, Set<String>> callState = new HashMap<>();
+    private final Map<String, Set<String>> callState = new LinkedHashMap<>();
 
     private final Parser parser = new Parser(this);
     private final int maxCalls;
@@ -152,7 +152,7 @@ public class Generator {
 
     public void addToMapOfGeneratedVariables(String receiverVariable, String newlyGeneratedVariable, String newlyGeneratedVariableType) {
         if (!variableNameToTypeAndGeneratedVariableNames.containsKey(receiverVariable)) {
-            variableNameToTypeAndGeneratedVariableNames.put(receiverVariable, new HashMap<>());
+            variableNameToTypeAndGeneratedVariableNames.put(receiverVariable, new LinkedHashMap<>());
         }
 
         Map<String, Set<String>> allGeneratedVariables = variableNameToTypeAndGeneratedVariableNames.get(receiverVariable);
@@ -229,6 +229,9 @@ public class Generator {
 
         for (int i = 0; i < maxCalls; i++) {
             ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
+            for (ReceiverTypeCallNameCallType method : methods) {
+                System.out.println(method.callName);
+            }
             int randIdx = randomUtils.nextInt(methods.length);
             ReceiverTypeCallNameCallType randMethod = methods[randIdx];
             String fileName = callProbabilities.get(randMethod).fileName;
@@ -250,7 +253,7 @@ public class Generator {
         }
 
         if (!objectAttributesTable.containsKey(variableName)) {
-            objectAttributesTable.put(variableName, new HashMap<>());
+            objectAttributesTable.put(variableName, new LinkedHashMap<>());
         }
 
         Map<String, List<Parameter>> specificObjectAttributesTable = objectAttributesTable.get(variableName);
@@ -416,7 +419,7 @@ public class Generator {
             // this fails when cant find a variable but still ned same object reqs to be genrated
             return null;
         }
-        Map<String, String> sameObjectsReqs = new HashMap<>();
+        Map<String, String> sameObjectsReqs = new LinkedHashMap<>();
 
         if (variablesThatMeetReqs.isEmpty()) {
             for (String sameObjectRequirement : sameObjects) {
@@ -640,7 +643,7 @@ public class Generator {
             if (requiredReceiver == null) {
                 Map<String, List<String>> finalisedRequirements = null;
                 if (requirements != null) {
-                    finalisedRequirements = new HashMap<>();
+                    finalisedRequirements = new LinkedHashMap<>();
                     for (Map.Entry<String, List<String>> entry : requirements.entrySet()) {
                         if (entry.getKey().startsWith(receiverType)) {
                             finalisedRequirements.put(entry.getKey(), entry.getValue());
@@ -737,7 +740,7 @@ public class Generator {
 
     private void addToShaderProperties(String importName, String chosenShaderType, String folderPath) {
         if (!shaderNameToProperties.containsKey(importName)) {
-            shaderNameToProperties.put(importName, new HashMap<>());
+            shaderNameToProperties.put(importName, new LinkedHashMap<>());
         }
 
         Map<String, String> propertiesMap = shaderNameToProperties.get(importName);
@@ -871,7 +874,7 @@ public class Generator {
 
     private void setCallAvailability(JsonNode availabilityNode, boolean isAvailable, ParameterListNode parentList) {
 
-        Map<String, Set<String>> allCalls = new HashMap<>();
+        Map<String, Set<String>> allCalls = new LinkedHashMap<>();
 
 
         availabilityNode.fieldNames().forEachRemaining(fieldName -> {
@@ -1054,12 +1057,12 @@ public class Generator {
         String storageBuffer = getObjectAttributes(bindGroup, "entries.resource.buffer");
         String size = getObjectAttributes(storageBuffer, "size");
 
-        Map<String, List<String>> copyBufferRequirements = new HashMap<>();
+        Map<String, List<String>> copyBufferRequirements = new LinkedHashMap<>();
         copyBufferRequirements.put("source", List.of(storageBuffer));
         copyBufferRequirements.put("sourceOffset", List.of("0"));
 
         // Generate outBufferToReadFrom
-        Map<String, List<String>> outBufferRequirements = new HashMap<>();
+        Map<String, List<String>> outBufferRequirements = new LinkedHashMap<>();
         outBufferRequirements.put("size", List.of(size));
         outBufferRequirements.put("usage", List.of("GPUBufferUsage.MAP_READ", "GPUBufferUsage.COPY_DST"));
         outBufferRequirements.put("mappedAtCreation", List.of("false"));
@@ -1071,7 +1074,7 @@ public class Generator {
         generateCall(new Generator.ReceiverTypeCallNameCallType("GPUCommandEncoder", "copyBufferToBuffer", true), copyBufferRequirements, null, commandEncoder);
 
         String pipeline = getObjectAttributes(computePassEncoderName, "pipeline");
-        Map<String, String> outBufferToPipeline = new HashMap<>();
+        Map<String, String> outBufferToPipeline = new LinkedHashMap<>();
         outBufferToPipeline.put(outBuffer, pipeline);
         toPrintCommandEncoderAndItsPipeline.put(computePassEncoderName, outBufferToPipeline);
 
@@ -1102,7 +1105,7 @@ public class Generator {
             computePassesToRemove.add(computePassEncoder);
 
             // Generate: await outBuffer.mapAsync(GPUMapMode.READ);
-            Map<String, List<String>> mapAsyncRequirements = new HashMap<>();
+            Map<String, List<String>> mapAsyncRequirements = new LinkedHashMap<>();
             mapAsyncRequirements.put("mode", List.of("GPUMapMode.READ"));
             generateCall(new ReceiverTypeCallNameCallType("GPUBuffer","mapAsync", true), mapAsyncRequirements, null, outBuffer);
 
@@ -1163,7 +1166,7 @@ public class Generator {
     }
 
     public Map<String, List<String>> parseAttributeRequirements(JsonNode conditionsNode) {
-        Map<String, List<String>> requirements = new HashMap<>();
+        Map<String, List<String>> requirements = new LinkedHashMap<>();
         JsonNode requiredAttributesNode = conditionsNode.get("withAttributes");
 
         requiredAttributesNode.fieldNames().forEachRemaining(fieldName -> {

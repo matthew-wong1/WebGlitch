@@ -35,10 +35,10 @@ public class ParameterNode extends ASTNode {
     private final Generator generator;
     private final ParameterListNode parentList;
 
-    private final Map<String, ParameterNode> parameterNodeMap = new HashMap<>();
+    private final Map<String, ParameterNode> parameterNodeMap = new LinkedHashMap<>();
     private final List<Parameter> parameters = new ArrayList<>();
     private final List<String> individualParameterRequirements;
-    private final Map<String, List<String>> nestedParameterRequirements = new HashMap<>();
+    private final Map<String, List<String>> nestedParameterRequirements = new LinkedHashMap<>();
 
     public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, Map<String, List<String>> parameterRequirements) throws SkipParameterException {
         this(fieldName, details, isJsonFormat, isRoot, null, generator, parentList, parameterRequirements);
@@ -190,7 +190,7 @@ public class ParameterNode extends ASTNode {
     private void generateTypedArray(JsonNode details) {
         JsonNode conditionsNode = details.has("conditions") ? details.get("conditions") : null;
 
-        Map<String, String> requirements = new HashMap<>();
+        Map<String, String> requirements = new LinkedHashMap<>();
         if (conditionsNode != null) {
             parseTypedArrayRequirements(conditionsNode, requirements);
         }
@@ -252,7 +252,7 @@ public class ParameterNode extends ASTNode {
             return;
         }
 
-        Map<String, List<String>> bufferRequirements = new HashMap<>();
+        Map<String, List<String>> bufferRequirements = new LinkedHashMap<>();
 
         String label = parentList.getParameter("label");
         String[] split = label.split("\\.", 2);
@@ -286,7 +286,7 @@ public class ParameterNode extends ASTNode {
         bufferRequirements.put("GPUBuffer.size", List.of(inputBufferSize));
         bufferRequirements.put("GPUBuffer.usage", List.of("GPUBufferUsage.UNIFORM", "GPUBufferUsage.COPY_DST"));
 
-        Map<String, String> sameObjectRequirements = new HashMap<>();
+        Map<String, String> sameObjectRequirements = new LinkedHashMap<>();
         sameObjectRequirements.put("GPUDevice", generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice"));
 
         // ESSETNIALLY MAKE THE BUFFER
@@ -316,12 +316,12 @@ public class ParameterNode extends ASTNode {
         generateParamAsJson(paramType);
 
         // Make a writeBuffer call, copying input data into the buffer that was generated
-        Map<String, List<String>> writeBufferRequirements = new HashMap<>();
+        Map<String, List<String>> writeBufferRequirements = new LinkedHashMap<>();
         writeBufferRequirements.put("buffer", List.of(inputBufferName));
         writeBufferRequirements.put("bufferOffset", List.of("0"));
         writeBufferRequirements.put("data", List.of(inputValuesVariableName));
 
-        Map<String, String> sameObjectReqs = new HashMap<>();
+        Map<String, String> sameObjectReqs = new LinkedHashMap<>();
         String sameGPUDevice = generator.findBaseReceiver(inputBufferName, "GPUDevice");
         sameObjectReqs.put("GPUDevice", sameGPUDevice);
         // THE PROBLEM HERE IS THAT WRITE BUFFER IS FROM THE SAME GPUDEVICE. BUT GPUQUEUE ISN'T.
@@ -454,7 +454,7 @@ public class ParameterNode extends ASTNode {
         if (conditionsNode.has("withAttributes")) {
             return generator.parseAttributeRequirements(conditionsNode);
         } else if (conditionsNode.has("renderPassCompatible")) {
-            Map<String, List<String>> requirements = new HashMap<>();
+            Map<String, List<String>> requirements = new LinkedHashMap<>();
             // The receiver is GPUCommandEncoder
             // Look at construction and check colorAttachments.view.format
             List<String> requiredColorAttachmentValues = new ArrayList<>();
@@ -484,7 +484,7 @@ public class ParameterNode extends ASTNode {
 
             // (Also look at depth stencil if it exists)
         } else if (conditionsNode.has("computePipelineCompatible")) {
-            Map<String, List<String>> requirements = new HashMap<>();
+            Map<String, List<String>> requirements = new LinkedHashMap<>();
             // Check have setPIpeline called already
             String computePassEncoderName = parentList.getReceiver();
             Set<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);
@@ -1108,7 +1108,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private void ensureTextureCompatible(JsonNode conditions, List<String> enumValues) {
-        Map<String, String> exceptions = new HashMap<>();
+        Map<String, String> exceptions = new LinkedHashMap<>();
         exceptions.put("depth24plus-stencil8", "depth24plus");
         exceptions.put("depth24plus", "depth24plus-stencil8");
 

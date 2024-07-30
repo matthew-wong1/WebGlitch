@@ -230,7 +230,10 @@ public class ParameterNode extends ASTNode {
                 return;
             }
 
-            generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUComputePassEncoder", "setBindGroup", true), null, null, computePassEncoderName);
+            Map<String, String> sameObjectReqs = new HashMap<>();
+            String device = generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice");
+            sameObjectReqs.put("GPUDevice", device);
+            generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUComputePassEncoder", "setBindGroup", true), null, sameObjectReqs, computePassEncoderName);
         }
     }
 

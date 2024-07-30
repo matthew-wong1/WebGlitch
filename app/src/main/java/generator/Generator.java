@@ -103,6 +103,8 @@ public class Generator {
         File jsonDirectory = new File(JSON_DIRECTORY_PATH);
         File[] apiInterfaces = jsonDirectory.listFiles();
         assert apiInterfaces != null;
+        Arrays.sort(apiInterfaces, (file1, file2) -> file1.getName().compareToIgnoreCase(file2.getName()));
+
 
         // Get all the names of the interfaces
 //        List<String> interfaceNames = Arrays.stream(apiInterfaces).map(file -> file.getName().substring(0, file.getName().lastIndexOf('.'))).toList();

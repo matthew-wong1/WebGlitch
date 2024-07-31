@@ -387,11 +387,11 @@ public class Generator {
 
     private Map<String, String> findAllVariablesThatMeetReqs(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName, ParameterNode parameterNode) {
         List<String> allVariables = symbolTable.get(receiverType);
-        if (receiverName == null) {
-            return null;
-        }
 
         if (allVariables == null) {
+            if (receiverName == null) {
+                return null;
+            }
             Map<String, String> requiredSameObjects = new HashMap<>();
             requiredSameObjects.put("GPUDevice", findBaseReceiver(receiverName, "GPUDevice"));
             return requiredSameObjects;

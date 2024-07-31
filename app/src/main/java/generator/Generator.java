@@ -23,7 +23,7 @@ public class Generator {
     private final String WEBGLITCH_PATH = WebGlitch.getPath();
     private final String SHADERS_PATH = WEBGLITCH_PATH + "/rsrcs/shaders/";
     private final String JSON_DIRECTORY_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/interfaces/";
-    private final WebGlitchOptions webGlitchOptions = new WebGlitchOptions();
+    private final WebGlitchOptions webGlitchOptions;
     private final boolean mainOnly;
     private int numTypedArrays = 0;
     private int numComputePassResultBuffers = 0;
@@ -71,6 +71,8 @@ public class Generator {
         } else {
             this.randomUtils = new RandomUtils();
         }
+
+        this.webGlitchOptions = new WebGlitchOptions(randomUtils);
 
         try {
             this.initializeReceiverInitsAndCallProbs();
@@ -237,7 +239,6 @@ public class Generator {
         List<ReceiverTypeCallNameCallType> methodsAsList = Arrays.asList(methods);
         Collections.shuffle(methodsAsList, randomUtils.getRandom());
         List<ReceiverTypeCallNameCallType> selectedMethods = methodsAsList.subList(0, numAvailableCalls);
-        System.out.println(selectedMethods);
 
         for (int i = 0; i < maxCalls; i++) {
 

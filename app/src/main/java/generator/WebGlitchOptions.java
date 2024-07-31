@@ -20,7 +20,7 @@ public class WebGlitchOptions {
     private final double printComputePassOutputChance;
     private final double generateNonConstChance;
 
-    public WebGlitchOptions() {
+    public WebGlitchOptions(RandomUtils randomUtils) {
         ObjectMapper mapper = new ObjectMapper();
         String filePath = WebGlitch.getPath() + "/" + CONFIG_FILE_NAME;
         JsonNode configNode = null;
@@ -32,11 +32,16 @@ public class WebGlitchOptions {
 
         Parser.extractNodeAsList(configNode.get("disabledCalls"), disabledCalls);
         this.invalidParameterChance = configNode.get("invalidParameterChance").asDouble();
-        this.percentOfAvailableCallsToGenerate = configNode.get("percentOfAvailableCallsToGenerate").asDouble();
+        this.letRandomPercentOfCallsBeAvailable = configNode.get("letRandomPercentOfCallsBeAvailable").asBoolean();
+        if (letRandomPercentOfCallsBeAvailable) {
+            this.percentOfAvailableCallsToGenerate = randomUtils.nextDouble(1.0);
+        } else {
+            this.percentOfAvailableCallsToGenerate = configNode.get("percentOfAvailableCallsToGenerate").asDouble();
+        }
         this.generateNewRequiredObjectChance = configNode.get("generateNewRequiredObjectChance").asDouble();
         this.printComputePassOutputChance = configNode.get("printComputePassOutputChance").asDouble();
         this.maxGPUDevices = configNode.get("maxGPUDevices").asInt();
-        this.letRandomPercentOfCallsBeAvailable = configNode.get("letRandomPercentOfCallsBeAvailable").asBoolean();
+
         this.generateNonConstChance = configNode.get("generateNonConstChance").asDouble();
 
         if (!isValidPercentage(invalidParameterChance) || !isValidPercentage(percentOfAvailableCallsToGenerate) || !isValidPercentage(generateNewRequiredObjectChance) || !isValidPercentage(printComputePassOutputChance)) {

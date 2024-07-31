@@ -436,15 +436,16 @@ public class ParameterNode extends ASTNode {
             cannotBeThisObject = parentList.getParameter(fieldToFetchCannotBeThisObjectFrom);
         }
 
-        String buffer = generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this, cannotBeThisObject);
-        Parameter newParameter = new Parameter(buffer);
+
+        String webGPUObject = generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this, cannotBeThisObject);
+        Parameter newParameter = new Parameter(webGPUObject);
 
         if (conditionsNode.has("trackedLifetime")) {
             String baseReceiver = parentList.getReceiver();
             if (generator.getVariableType(baseReceiver).equals("GPURenderPassEncoder")) {
                 baseReceiver = generator.getParentVariable(baseReceiver);
             }
-            generator.addToParentVariablesAndTheirBuffersUsed(baseReceiver, buffer);
+            generator.addToParentVariablesAndTheirBuffersUsed(baseReceiver, webGPUObject);
         }
         this.parameters.add(newParameter);
 

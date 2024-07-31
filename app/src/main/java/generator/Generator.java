@@ -227,13 +227,22 @@ public class Generator {
 
     public void generateProgram(String fileNameToUse) {
         this.programNode = new ProgramNode();
+
+
+
         programNode.addNode(new JavaScriptStatement(HEADER));
         ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
+        double percentOfAvailableCalls = webGlitchOptions.getPercentOfAvailableCallsToGenerate();
+        int numAvailableCalls = (int) Math.floor(percentOfAvailableCalls * methods.length);
+        List<ReceiverTypeCallNameCallType> methodsAsList = Arrays.asList(methods);
+        Collections.shuffle(methodsAsList, randomUtils.getRandom());
+        List<ReceiverTypeCallNameCallType> selectedMethods = methodsAsList.subList(0, numAvailableCalls);
+        System.out.println(selectedMethods);
 
         for (int i = 0; i < maxCalls; i++) {
 
-            int randIdx = randomUtils.nextInt(methods.length);
-            ReceiverTypeCallNameCallType randMethod = methods[randIdx];
+            int randIdx = randomUtils.nextInt(selectedMethods.size());
+            ReceiverTypeCallNameCallType randMethod = selectedMethods.get(randIdx);
             String fileName = callProbabilities.get(randMethod).fileName;
 
             try {

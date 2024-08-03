@@ -18,38 +18,7 @@ public class Parser {
         this.generator = generator;
     }
 
-    //        public static void main(String[] args) {
-    //
-    //            try {
-    //                parseAndBuildAST("./app/webgpu/gpu.json");
-    //            } catch(IOException e) {
-    //                System.err.println("Failed to find file: " + e.getMessage());
-    //            }
-    //        }
     public ASTNode parseAndBuildRandCall(String filePath, Generator.ReceiverTypeCallNameCallType callDetails) throws IOException {
-
-        // Open file
-//        ObjectMapper mapper = new ObjectMapper();
-//        JsonNode rootJsonNode = mapper.readTree(new File(filePath));
-
-//        List<String> options = new ArrayList<>(Arrays.asList("methods", "attributes"));
-//        String option;
-//
-//        if (!rootJsonNode.has("attributes")) {
-//            option = options.getFirst();
-//        } else if (!rootJsonNode.has("methods")) {
-//            option = options.getLast();
-//        } else {
-//            option = options.get(rand.nextInt(options.size()));
-//        }
-
-        // Pick a random method from the length of 'methods'
-//        int randIdx = rand.nextInt(callsJsonNode.size());
-//        JsonNode methodJsonNode = callsJsonNode.get(randIdx);
-//
-//        String receiverType = rootJsonNode.get("receiverType").asText();
-//        String callName = methodJsonNode.get("name").asText(); // Required field
-
 
         return parseAndBuildCall(filePath, callDetails.callName(), callDetails.receiverType(), callDetails.isMethod(), null, null, null);
 

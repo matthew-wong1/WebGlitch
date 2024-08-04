@@ -1045,8 +1045,10 @@ public class ParameterNode extends ASTNode {
 
         String width = parentList.getParameter("GPUTexture.size.width");
         String height = parentList.getParameter("GPUTexture.size.height");
+        int arrayLayerCount = Integer.parseInt(parentList.getParameter("GPUTexture.size.depthOrArrayLayers"));
 
-        if (!width.equals(height)) {
+
+        if (!width.equals(height) || arrayLayerCount < 6) {
             enumValues.removeIf(CUBE_TEXTURES::contains);
         }
 

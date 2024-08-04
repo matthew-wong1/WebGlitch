@@ -128,8 +128,8 @@
             "constraints": {
               "dimension": {
                 "1d": 1,
-                "2d": 64,
-                "3d": 64
+                "2d": 48,
+                "3d": 48
               },
               "sampleCount": {
                 "4": 1

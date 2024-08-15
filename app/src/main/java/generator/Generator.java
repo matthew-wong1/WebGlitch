@@ -20,10 +20,8 @@ public class Generator {
     private final String DEFAULT_CONTEXT_NAME = "context";
     private final String HEADER = "\nasync function main() {";
     private final String FOOTER = "\n}main().then(() => {\n" +
-            "    process.exit(0);\n" +
             "}).catch(error => {\n" +
             "    console.log(error);\n" +
-            "    process.exit(1);\n" +
             "});";
     private final String WEBGLITCH_PATH = WebGlitch.getPath();
     private final String SHADERS_PATH = WEBGLITCH_PATH + "/rsrcs/shaders/";

@@ -18,7 +18,7 @@ trap cleanup INT
 # Loop to run Java command repeatedly
 while true; do
     OUTPUT_FILE="${OUTPUT_DIR}/${i}.js"
-    bash "$WEBGLITCH_DIR/webglitch.sh" -o "$OUTPUT_FILE" -m -w
+    bash "$WEBGLITCH_DIR/webglitch.sh" -o "$OUTPUT_FILE" -m -w "$@"
     echo "Running and logging the file $OUTPUT_FILE"
     bash "$RUNNER_PATH" "$OUTPUT_FILE"
     ((i++))

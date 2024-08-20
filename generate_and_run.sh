@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Set constants
-WEBGLITCH_PATH="/Users/matthew/Documents/msc/final_proj/WebGlitch/app/build/libs/app.jar"
+WEBGLITCH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 RUNNER_PATH="/Users/matthew/Documents/msc/final_proj/WebGlitchRunner/run.sh"
 OUTPUT_DIR="/Users/matthew/Documents/msc/final_proj/WebGlitchFiles/files"
+i=1
 
 # Function to handle interrupt signal
 cleanup() {
@@ -17,14 +18,9 @@ trap cleanup INT
 # Loop to run Java command repeatedly
 while true; do
     OUTPUT_FILE="${OUTPUT_DIR}/${i}.js"
-    # Execute the java command
-    java -jar "$WEBGLITCH_PATH" -o "$OUTPUT_FILE" -m -w
+    bash "$WEBGLITCH_DIR/webglitch.sh" -o "$OUTPUT_FILE" -m -w
     echo "Running and logging the file $OUTPUT_FILE"
     bash "$RUNNER_PATH" "$OUTPUT_FILE"
-
-    # Increment the counter
     ((i++))
 
-    # Remove or modify the line below to control loop exit
-    # [[ "$i" -gt "$NUM_FILES" ]] && break
 done

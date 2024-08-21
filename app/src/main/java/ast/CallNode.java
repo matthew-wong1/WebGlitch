@@ -22,11 +22,16 @@ public class CallNode extends ASTNode {
         this.receiver = receiver;
         this.callName = callName;
 
-        String typeScriptModifier;
-        if (generator.getCtsCompatible() && receiver.contains("Adapter")) {
-            typeScriptModifier = "!";
-        } else {
-            typeScriptModifier = "";
+        String typeScriptModifier = "";
+        if (generator.getCtsCompatible()) {
+            if (receiver.contains("Adapter")) {
+                typeScriptModifier = "!";
+            }
+
+            String entryPointToRemove = "navigator.";
+            if (receiver.contains(entryPointToRemove)) {
+                receiver = receiver.substring(entryPointToRemove.length());
+            }
         }
 
         this.fullCallName = receiver + typeScriptModifier + "." + callName;

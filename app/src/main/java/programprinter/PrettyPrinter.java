@@ -12,11 +12,14 @@ import java.util.List;
 
 public class PrettyPrinter {
     private final String WEBGLITCH_PATH = WebGlitch.getPath();
-    private final String REQUIRED_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/requiredHeader.js";
+    private final String LOAD_SHADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/loadShaderHeader.js";
+    private final String LOAD_SHADER_CTS_PATH = WEBGLITCH_PATH + "/rsrcs/js/loadShaderHeaderCTS.ts";
+
+    private final String CTS_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/ctsHeader.ts";
     private final String DAWN_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/dawnHeader.js";
     private final String DENO_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/denoHeader.js";
 
-    public void printToFile(ASTNode root, String filePath, long seed, boolean mainOnly, WebGlitchOptions webGlitchOptions) {
+    public void printToFile(ASTNode root, String filePath, long seed, boolean mainOnly, boolean ctsCompatible, WebGlitchOptions webGlitchOptions) {
         String commentedSeed = "// Seed: " + seed + "\n";
         String commentedErrorsEnabled = "// Errors ";
         if (webGlitchOptions.getInvalidParameterChance() > 0) {
@@ -34,8 +37,10 @@ public class PrettyPrinter {
         openOptions.add(StandardOpenOption.TRUNCATE_EXISTING);
 
         if (!mainOnly) {
+            String HEADER_PATH = ctsCompatible ? CTS_HEADER_PATH : DAWN_HEADER_PATH;
+
             try {
-                Files.copy(Path.of(DAWN_HEADER_PATH), destPath, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(Path.of(HEADER_PATH), destPath, StandardCopyOption.REPLACE_EXISTING);
                 openOptions.add(StandardOpenOption.APPEND);
                 openOptions.remove(StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e) {
@@ -44,7 +49,9 @@ public class PrettyPrinter {
         }
 
         try {
-            FileChannel requiredHeader = FileChannel.open(Paths.get(REQUIRED_HEADER_PATH), StandardOpenOption.READ);
+            String LOAD_SHADER_HEADER_PATH = ctsCompatible ? LOAD_SHADER_CTS_PATH : LOAD_SHADER_PATH;
+
+            FileChannel requiredHeader = FileChannel.open(Paths.get(LOAD_SHADER_HEADER_PATH), StandardOpenOption.READ);
             FileChannel destFile = FileChannel.open(Paths.get(pathName), openOptions.toArray(new StandardOpenOption[0]));
             destFile.transferFrom(requiredHeader, destFile.size(), requiredHeader.size());
         } catch (IOException e) {

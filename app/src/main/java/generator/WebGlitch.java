@@ -25,10 +25,11 @@ public class WebGlitch {
             specificSeed = Long.parseLong(cmd.getOptionValue("s"));
         }
         boolean wgpuCompatibilityMode = cmd.hasOption("w");
+        boolean ctsCompatiblityMode = cmd.hasOption("c");
 
         String filePathToUse = cmd.getOptionValue("o");
 
-        Generator generator = new Generator(maxCallsToGenerate, wgpuCompatibilityMode, specificSeed, generateMainFunctionOnly);
+        Generator generator = new Generator(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly);
 
         generator.generateProgram(filePathToUse);
     }
@@ -55,6 +56,7 @@ public class WebGlitch {
         Option filePath = new Option("o", "output", true, "Output path");
         Option mainOnly = new Option("m", "mainOnly", false, "Generate only the main function");
         Option wgpuCompatible = new Option("w", "wgpu", false, "Ensures generated programs are wgpu compatible.");
+        Option ctsCompatible = new Option("c", "cts", false, "Ensures generated programs are CTS compatible.");
 
         maxCalls.setType(Integer.class);
         maxCalls.setRequired(false);
@@ -71,6 +73,10 @@ public class WebGlitch {
         wgpuCompatible.setRequired(false);
         wgpuCompatible.setType(Boolean.class);
 
+        ctsCompatible.setRequired(false);
+        ctsCompatible.setType(Boolean.class);
+
+        options.addOption(ctsCompatible);
         options.addOption(maxCalls);
         options.addOption(seed);
         options.addOption(filePath);

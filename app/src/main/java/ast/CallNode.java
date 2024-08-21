@@ -21,7 +21,15 @@ public class CallNode extends ASTNode {
     public CallNode(String receiver, String returnType, String callName, boolean jsonParams, boolean isArray, boolean isMethod, boolean isAsync, Generator generator, JsonNode paramsJsonNode, Map<String, List<String>> requirements) {
         this.receiver = receiver;
         this.callName = callName;
-        this.fullCallName = receiver + "." + callName;
+
+        String typeScriptModifier;
+        if (generator.getCtsCompatible() && receiver.contains("Adapter")) {
+            typeScriptModifier = "!";
+        } else {
+            typeScriptModifier = "";
+        }
+
+        this.fullCallName = receiver + typeScriptModifier + "." + callName;
         this.isMethod = isMethod;
         this.generator = generator;
         this.returnType = returnType;

@@ -18,17 +18,22 @@ public class Generator {
     public final RandomUtils randomUtils;
     private final PrettyPrinter printer = new PrettyPrinter();
     private final String DEFAULT_CONTEXT_NAME = "context";
-    private final String HEADER = "\nasync function main() {";
-    private final String FOOTER = "\n}main().then(() => {\n" +
+    private final String HEADER_DEFAULT = "\nasync function main() {";
+    private final String FOOTER_DEFAULT = "\n}main().then(() => {\n" +
             "}).catch(error => {\n" +
             "    console.log(error);\n" +
             "});";
+    private final String HEADER_CTS = "\nasync function main(gpu: GPU) {";
+    private final String FOOTER_CTS = "\n}";
+    private final String HEADER;
+    private final String FOOTER;
     private final String WEBGLITCH_PATH = WebGlitch.getPath();
     private final String SHADERS_PATH = WEBGLITCH_PATH + "/rsrcs/shaders/";
     private final String JSON_DIRECTORY_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/interfaces/";
     private final WebGlitchOptions webGlitchOptions;
     private final boolean mainOnly;
     private int numTypedArrays = 0;
+    private final boolean ctsCompatible;
     private int numComputePassResultBuffers = 0;
 
 
@@ -64,10 +69,11 @@ public class Generator {
     private final boolean wgpuCompatible;
     private ASTNode programNode;
 
-    public Generator(int maxCalls, boolean wgpuCompatible, Long seed, boolean mainOnly) {
+    public Generator(int maxCalls, boolean wgpuCompatible, boolean ctsCompatible, Long seed, boolean mainOnly) {
         this.maxCalls = maxCalls;
         this.wgpuCompatible = wgpuCompatible;
         this.mainOnly = mainOnly;
+        this.ctsCompatible = ctsCompatible;
 
         if (seed != null) {
             this.randomUtils = new RandomUtils(seed);
@@ -76,6 +82,9 @@ public class Generator {
         }
 
         this.webGlitchOptions = new WebGlitchOptions(randomUtils);
+
+        HEADER = ctsCompatible ? HEADER_CTS : HEADER_DEFAULT;
+        FOOTER = ctsCompatible ? FOOTER_CTS : FOOTER_DEFAULT;
 
         try {
             this.initializeReceiverInitsAndCallProbs();
@@ -88,7 +97,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        Generator generator = new Generator(500,  false, null, false);
+        Generator generator = new Generator(500,  false, false, null, false);
         generator.generateProgram("./output/1.js");
     }
 
@@ -105,6 +114,8 @@ public class Generator {
     }
 
     public WebGlitchOptions getWebGlitchOptions() { return webGlitchOptions; }
+
+    public boolean getCtsCompatible() { return this.ctsCompatible; }
 
     private void initializeReceiverInitsAndCallProbs() throws IOException {
         File jsonDirectory = new File(JSON_DIRECTORY_PATH);
@@ -259,7 +270,7 @@ public class Generator {
         }
 
         programNode.addNode(new JavaScriptStatement(FOOTER));
-        printer.printToFile(this.programNode, fileNameToUse, randomUtils.getSeed(), this.mainOnly, webGlitchOptions);
+        printer.printToFile(this.programNode, fileNameToUse, randomUtils.getSeed(), this.mainOnly, this.ctsCompatible, webGlitchOptions);
     }
 
     public void addToObjectAttributesTable(String variableName, Map<String, List<Parameter>> keyValuePairs) {

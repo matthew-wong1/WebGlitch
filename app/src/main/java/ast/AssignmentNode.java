@@ -1,6 +1,9 @@
 package ast;
 
 
+import generator.RandomUtils;
+import generator.WebGlitchOptions;
+
 public class AssignmentNode extends ASTNode {
 
     private static final String operator = "=";
@@ -8,8 +11,14 @@ public class AssignmentNode extends ASTNode {
     private final String varName;
 
     // Kind means type of declaration eg var, let, const
-    public AssignmentNode(String prefix, String varName) {
-        this.prefix = prefix;
+    public AssignmentNode(String prefix, String varName, RandomUtils randomUtils, WebGlitchOptions webGlitchOptions) {
+
+        if (randomUtils.randomChanceIsSuccessful(webGlitchOptions.getGenerateConstChance())) {
+            this.prefix = prefix;
+        } else {
+            this.prefix = "";
+        }
+
         this.varName = varName;
     }
 

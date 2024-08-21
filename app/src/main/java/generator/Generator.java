@@ -631,7 +631,7 @@ public class Generator {
         String varName = generateRandVarName(returnType);
 
         // Create the ASTNode
-        AssignmentNode newRootNode = new AssignmentNode("const", varName);
+        AssignmentNode newRootNode = new AssignmentNode("const", varName, randomUtils, webGlitchOptions);
         newRootNode.addNode(rootASTNode);
 
         this.addToSymbolTable(returnType, varName);
@@ -703,7 +703,7 @@ public class Generator {
 
         switch (type) {
             case "typedArray":
-                assignmentNode = new AssignmentNode("const", "typedArray" + numTypedArrays);
+                assignmentNode = new AssignmentNode("const", "typedArray" + numTypedArrays, randomUtils, webGlitchOptions);
                 TypedArray typedArray = null;
 
                 if (values == null) {
@@ -740,7 +740,7 @@ public class Generator {
                 String folderPath = SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
                 String fullPath = folderPath + shaderSubType + ".wgsl";
 
-                assignmentNode = new AssignmentNode("const",  "shader" + shaderNameToProperties.size());
+                assignmentNode = new AssignmentNode("const",  "shader" + shaderNameToProperties.size(), randomUtils, webGlitchOptions);
                 Require requireStatement = new Require(fullPath, true);
                 assignmentNode.addNode(requireStatement);
                 String importName = assignmentNode.getVarName();
@@ -1133,7 +1133,7 @@ public class Generator {
             String copyArray = generateCall(new ReceiverTypeCallNameCallType("GPUBuffer", "getMappedRange", true), null, null, outBuffer);
 
             // Generate: const outData = copyArray.slice(0);
-            AssignmentNode outArrayAssignment = new AssignmentNode("const", "ComputePassResultBuffer" + numComputePassResultBuffers);
+            AssignmentNode outArrayAssignment = new AssignmentNode("const", "ComputePassResultBuffer" + numComputePassResultBuffers, randomUtils, webGlitchOptions);
             String outArrayVariableName = outArrayAssignment.getVarName();
             addToSymbolTable("Array", outArrayVariableName);
             JavaScriptStatement spliceStatement = new JavaScriptStatement(copyArray + ".slice(0)");
@@ -1142,7 +1142,7 @@ public class Generator {
 
             // Generate: const result = new Uint8Array(outData);
             String typedArrayName = "typedArray" + numTypedArrays;
-            AssignmentNode typedArrayAssignment = new AssignmentNode("const",typedArrayName);
+            AssignmentNode typedArrayAssignment = new AssignmentNode("const",typedArrayName, randomUtils, webGlitchOptions);
             TypedArray typedArray = new TypedArray("Uint8", outArrayVariableName, randomUtils);
             numTypedArrays++;
             numComputePassResultBuffers++;

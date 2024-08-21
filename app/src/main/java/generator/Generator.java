@@ -374,12 +374,18 @@ public class Generator {
 
     public String getRandomReceiver(String receiverType, String callName) {
 
-        return getRandomReceiver(receiverType, callName, null, null, null, null, null);
+        return getRandomReceiver(receiverType, callName, null, null, null, null, null, null);
 
 
     }
 
-    public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName, ParameterNode parameterNode, String cannotBeThisObject) {
+    public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName, ParameterNode parameterNode, String cannotBeThisObject, Boolean forceGenerateNewObject) {
+        // null on forceGenerateNewObject means undecided
+        // True or false means it has already been rolled
+        if (forceGenerateNewObject == null) {
+            forceGenerateNewObject = randomUtils.randomChanceIsSuccessful(webGlitchOptions.getGenerateNewRequiredObjectChance());
+        }
+
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
@@ -389,7 +395,7 @@ public class Generator {
             variablesThatMeetReqs.remove(cannotBeThisObject);
         }
 
-        if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty()) {
+        if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty() || forceGenerateNewObject) {
             // pass in same objects here
             return parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
         }
@@ -656,11 +662,13 @@ public class Generator {
     public String determineReceiver(String receiverType, String callName, boolean hasRequirements, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
         if (hasRequirements) {
             String requiredReceiver = null;
+            boolean forceGenerateNewObject = randomUtils.randomChanceIsSuccessful(webGlitchOptions.getGenerateNewRequiredObjectChance());
+
             if (sameObjectsReqs != null) {
                 requiredReceiver = sameObjectsReqs.get(receiverType);
             }
 
-            if (requiredReceiver == null) {
+            if (requiredReceiver == null || forceGenerateNewObject) {
                 Map<String, List<String>> finalisedRequirements = null;
                 if (requirements != null) {
                     finalisedRequirements = new LinkedHashMap<>();
@@ -671,7 +679,7 @@ public class Generator {
                     }
                 }
 
-                return getRandomReceiver(receiverType, callName, finalisedRequirements, null, null, null, null);
+                return getRandomReceiver(receiverType, callName, finalisedRequirements, null, null, null, null, forceGenerateNewObject);
             }
 
             return requiredReceiver;

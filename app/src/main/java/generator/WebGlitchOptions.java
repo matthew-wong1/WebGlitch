@@ -18,7 +18,8 @@ public class WebGlitchOptions {
     private final int maxGPUDevices;
     private final boolean letRandomPercentOfCallsBeAvailable;
     private final double printComputePassOutputChance;
-    private final double generateNonConstChance;
+    private final double generateConstChance;
+    private final double generateAwaitChance;
 
     public WebGlitchOptions(RandomUtils randomUtils) {
         ObjectMapper mapper = new ObjectMapper();
@@ -42,7 +43,8 @@ public class WebGlitchOptions {
         this.printComputePassOutputChance = configNode.get("printComputePassOutputChance").asDouble();
         this.maxGPUDevices = configNode.get("maxGPUDevices").asInt();
 
-        this.generateNonConstChance = configNode.get("generateNonConstChance").asDouble();
+        this.generateConstChance = configNode.get("generateConstChance").asDouble();
+        this.generateAwaitChance = configNode.get("generateAwaitChance").asDouble();
 
         if (!isValidPercentage(invalidParameterChance) || !isValidPercentage(percentOfAvailableCallsToGenerate) || !isValidPercentage(generateNewRequiredObjectChance) || !isValidPercentage(printComputePassOutputChance)) {
             System.err.println("Error in config.json: Any percentage must be between 0 and 1 inclusive");
@@ -83,9 +85,11 @@ public class WebGlitchOptions {
         return printComputePassOutputChance;
     }
 
-    public double getGenerateNonConstChance() {
-        return generateNonConstChance;
+    public double getGenerateConstChance() {
+        return generateConstChance;
     }
+
+    public double getGenerateAwaitChance() { return generateAwaitChance; }
 
     public boolean getLetRandomPercentOfCallsBeAvailable() {
         return letRandomPercentOfCallsBeAvailable;

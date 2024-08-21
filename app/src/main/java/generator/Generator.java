@@ -104,6 +104,8 @@ public class Generator {
         return randomUtils;
     }
 
+    public WebGlitchOptions getWebGlitchOptions() { return webGlitchOptions; }
+
     private void initializeReceiverInitsAndCallProbs() throws IOException {
         File jsonDirectory = new File(JSON_DIRECTORY_PATH);
         File[] apiInterfaces = jsonDirectory.listFiles();

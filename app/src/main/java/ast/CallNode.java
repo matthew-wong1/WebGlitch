@@ -5,6 +5,7 @@ import generator.Generator;
 
 import java.util.List;
 import java.util.Map;
+import generator.RandomUtils;
 
 public class CallNode extends ASTNode {
 
@@ -49,7 +50,10 @@ public class CallNode extends ASTNode {
             String fullCall = "";
 
             if (isAsync) {
-                fullCall += "await ";
+                RandomUtils random = generator.getRandomUtils();
+                if (random.randomChanceIsSuccessful(generator.getWebGlitchOptions().getGenerateAwaitChance())) {
+                    fullCall += "await ";
+                }
             }
 
             fullCall += this.fullCallName + "(" + subnodes.getFirst().toString() + ");";

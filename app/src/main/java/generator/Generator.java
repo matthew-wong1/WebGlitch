@@ -674,15 +674,14 @@ public class Generator {
         if (hasRequirements) {
             String requiredReceiver = null;
             boolean forceGenerateNewObject = randomUtils.randomChanceIsSuccessful(webGlitchOptions.getGenerateNewRequiredObjectChance());
-            boolean skipReceiverChecks = randomUtils.randomChanceIsSuccessful(webGlitchOptions.getInvalidParameterChance());
 
-            if (sameObjectsReqs != null && !skipReceiverChecks) {
+            if (sameObjectsReqs != null) {
                 requiredReceiver = sameObjectsReqs.get(receiverType);
             }
 
             if (requiredReceiver == null || forceGenerateNewObject) {
                 Map<String, List<String>> finalisedRequirements = null;
-                if (requirements != null && !skipReceiverChecks) {
+                if (requirements != null) {
                     finalisedRequirements = new LinkedHashMap<>();
                     for (Map.Entry<String, List<String>> entry : requirements.entrySet()) {
                         if (entry.getKey().startsWith(receiverType)) {

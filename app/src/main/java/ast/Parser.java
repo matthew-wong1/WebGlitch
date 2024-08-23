@@ -68,13 +68,15 @@ public class Parser {
             }
             receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), requirements, sameObjectsReqs);
 
-            parseReceiverMethodRequirements(receiver, callJsonNode);
+            if (!generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
+                parseReceiverMethodRequirements(receiver, callJsonNode);
+            }
         } else {
             receiver = specificReceiver;
         }
 
         // First generate any prerequisite methodCalls
-        if (callJsonNode.has("prerequisiteMethods")) {
+        if (callJsonNode.has("prerequisiteMethods") && !generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
             JsonNode prerequisiteMethodsJsonNode = callJsonNode.get("prerequisiteMethods");
             for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
 
@@ -104,13 +106,16 @@ public class Parser {
         }
 
         // The call hasn't been added to the parameterNode yet
-        ensureConditionsForReceiverAreMet(receiver, callJsonNode);
+        if (!generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
+            ensureConditionsForReceiverAreMet(receiver, callJsonNode);
+        }
+
         generator.setCallState(receiver, callName, isMethod);
 
         generator.setAdditionalAttributes(variableWhoseAttributesAreAffected, callJsonNode);
 
         // Delete object
-        if (callJsonNode.has("deletes")) {
+        if (callJsonNode.has("deletes") && !generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
             deleteRequirements(callJsonNode, parentReceiverType, receiver);
 
         }
@@ -119,7 +124,7 @@ public class Parser {
 
         generator.addToProgramNode(nodeToReturn);
 
-        if (callJsonNode.has("postGeneration")) {
+        if (callJsonNode.has("postGeneration") && !generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
             parsePostGenerationRequirements(receiver, callJsonNode.get("postGeneration"));
         }
 

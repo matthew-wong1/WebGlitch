@@ -12,7 +12,7 @@ import java.util.List;
 public class WebGlitchOptions {
     private static final String CONFIG_FILE_NAME = "config.json";
     private final List<String> disabledCalls = new ArrayList<>();
-    private final double invalidParameterChance;
+    private final double skipValidityCheckChance;
     private final double percentOfAvailableCallsToGenerate;
     private final double generateNewRequiredObjectChance;
     private final int maxGPUDevices;
@@ -32,7 +32,7 @@ public class WebGlitchOptions {
         }
 
         Parser.extractNodeAsList(configNode.get("disabledCalls"), disabledCalls);
-        this.invalidParameterChance = configNode.get("invalidParameterChance").asDouble();
+        this.skipValidityCheckChance = configNode.get("skipValidityCheckChance").asDouble();
         this.letRandomPercentOfCallsBeAvailable = configNode.get("letRandomPercentOfCallsBeAvailable").asBoolean();
         if (letRandomPercentOfCallsBeAvailable) {
             this.percentOfAvailableCallsToGenerate = randomUtils.nextDouble(1.0);
@@ -46,7 +46,7 @@ public class WebGlitchOptions {
         this.generateConstChance = configNode.get("generateConstChance").asDouble();
         this.generateAwaitChance = configNode.get("generateAwaitChance").asDouble();
 
-        if (!isValidPercentage(invalidParameterChance) || !isValidPercentage(percentOfAvailableCallsToGenerate) || !isValidPercentage(generateNewRequiredObjectChance) || !isValidPercentage(printComputePassOutputChance)) {
+        if (!isValidPercentage(skipValidityCheckChance) || !isValidPercentage(percentOfAvailableCallsToGenerate) || !isValidPercentage(generateNewRequiredObjectChance) || !isValidPercentage(printComputePassOutputChance)) {
             System.err.println("Error in config.json: Any percentage must be between 0 and 1 inclusive");
             System.exit(1);
         }
@@ -69,8 +69,8 @@ public class WebGlitchOptions {
         return disabledCalls;
     }
 
-    public double getInvalidParameterChance() {
-        return invalidParameterChance;
+    public double getSkipValidityCheckChance() {
+        return skipValidityCheckChance;
     }
 
     public double getPercentOfAvailableCallsToGenerate() {

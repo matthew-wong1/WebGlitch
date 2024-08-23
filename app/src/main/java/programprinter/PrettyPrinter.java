@@ -22,7 +22,7 @@ public class PrettyPrinter {
     public void printToFile(ASTNode root, String filePath, long seed, boolean mainOnly, boolean ctsCompatible, WebGlitchOptions webGlitchOptions) {
         String commentedSeed = "// Seed: " + seed + "\n";
         String commentedErrorsEnabled = "// Errors ";
-        if (webGlitchOptions.getInvalidParameterChance() > 0) {
+        if (webGlitchOptions.getSkipValidityCheckChance() > 0) {
             commentedErrorsEnabled += "enabled";
         } else {
             commentedErrorsEnabled += "disabled";

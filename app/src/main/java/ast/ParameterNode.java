@@ -30,6 +30,7 @@ public class ParameterNode extends ASTNode {
     private int numSubParams = 0;
     private boolean isString;
     private boolean isBitwiseFlags;
+    private final boolean skipValidityChecks;
 
 
     private final Generator generator;
@@ -54,6 +55,7 @@ public class ParameterNode extends ASTNode {
         this.isJsonArray = details.has("arrayType");
         this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
         this.randomUtils = generator.randomUtils;
+        this.skipValidityChecks = randomUtils.randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance());
 
 //        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using receiver " + parentList.getReceiver());
 
@@ -123,7 +125,7 @@ public class ParameterNode extends ASTNode {
 
         if (details.has("enum")) {
             generateEnumVal(details, paramType);
-        } else if (this.individualParameterRequirements != null && !this.individualParameterRequirements.isEmpty()) {
+        } else if (this.individualParameterRequirements != null && !this.individualParameterRequirements.isEmpty() && !skipValidityChecks) {
             // Also if are multiple choices and since it's not an enum, pick one of them at random
             String parameterValue = individualParameterRequirements.get(randomUtils.nextInt(0, individualParameterRequirements.size()));
 
@@ -191,7 +193,7 @@ public class ParameterNode extends ASTNode {
         JsonNode conditionsNode = details.has("conditions") ? details.get("conditions") : null;
 
         Map<String, String> requirements = new LinkedHashMap<>();
-        if (conditionsNode != null) {
+        if (conditionsNode != null && !skipValidityChecks) {
             parseTypedArrayRequirements(conditionsNode, requirements);
         }
         String arrayVariableName = generator.generateTopLevelStatement("typedArray", null, null, requirements);
@@ -218,7 +220,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private void parsePostGenerationConditions(JsonNode conditions) {
-        if (conditions == null) {
+        if (conditions == null || skipValidityChecks) {
             return;
         }
 
@@ -251,7 +253,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private void generateArrayOfBindGroupEntries(String paramType, JsonNode conditionsNode) {
-        if (conditionsNode == null || !conditionsNode.has("computeShaderCompatible")) {
+        if (conditionsNode == null || !conditionsNode.has("computeShaderCompatible") || skipValidityChecks) {
             return;
         }
 
@@ -336,7 +338,7 @@ public class ParameterNode extends ASTNode {
 
         JsonNode conditionsNode = details.has("conditions") ? details.get("conditions") : null;
         List<String> sameObjectRequirements = null;
-        if (conditionsNode != null) {
+        if (conditionsNode != null && !skipValidityChecks) {
             sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
         }
 
@@ -344,7 +346,7 @@ public class ParameterNode extends ASTNode {
 
 
         // Label should be the first paramter to be generated
-        if (conditionsNode != null && conditionsNode.has("computeShaderCompatible")) {
+        if (conditionsNode != null && conditionsNode.has("computeShaderCompatible") && !skipValidityChecks) {
             String label = parentList.getParameter("label");
 
             if (!label.contains(".")) {
@@ -366,7 +368,7 @@ public class ParameterNode extends ASTNode {
     private void generateBoolean(JsonNode details) {
         String generatedValue;
 
-        if (details.has("conditions")) {
+        if (details.has("conditions") && !skipValidityChecks) {
             generatedValue = parseBooleanConditions(details.get("conditions"));
         } else {
             generatedValue = String.valueOf(randomUtils.nextBoolean());
@@ -406,7 +408,7 @@ public class ParameterNode extends ASTNode {
 
         String chosenShaderType;
 
-        if (SHADER_TYPES.contains(preDeterminedType)) {
+        if (SHADER_TYPES.contains(preDeterminedType) && !skipValidityChecks) {
             chosenShaderType = preDeterminedType;
 
         } else {
@@ -419,7 +421,7 @@ public class ParameterNode extends ASTNode {
     }
 
     private JsonNode findAndSetWebGPUInterface(String paramType, JsonNode details) {
-        if (!details.has("conditions")) {
+        if (!details.has("conditions") || skipValidityChecks) {
             this.parameters.add(new Parameter(generator.getRandomReceiver(paramType, parentList.getCallName())));
             return null;
         }
@@ -542,7 +544,7 @@ public class ParameterNode extends ASTNode {
 
         NumericConstraints numericConstraints = new NumericConstraints(paramType);
 
-        if (details.has("conditions")) {
+        if (details.has("conditions") && !skipValidityChecks) {
 
             parseNumericConditions(details.get("conditions"), numericConstraints);
         }
@@ -870,7 +872,7 @@ public class ParameterNode extends ASTNode {
         }
 
 
-        if (conditions == null) {
+        if (skipValidityChecks || conditions == null) {
             return mandatoryEnums;
         }
 

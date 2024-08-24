@@ -1,5 +1,5 @@
 {
-  "skipValidityCheckChance": 0,
+  "skipValidityCheckChance": 0.5,
   "letRandomPercentOfCallsBeAvailable": false,
   "percentOfAvailableCallsToGenerate": 1.0,
   "generateNewRequiredObjectChance": 0,

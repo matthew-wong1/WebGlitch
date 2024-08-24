@@ -31,6 +31,7 @@ public class ParameterNode extends ASTNode {
     private boolean isString;
     private boolean isBitwiseFlags;
     private final boolean skipValidityChecks;
+    private final boolean skipValidityChecksEnabledGlobally;
 
 
     private final Generator generator;
@@ -56,6 +57,7 @@ public class ParameterNode extends ASTNode {
         this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
         this.randomUtils = generator.randomUtils;
         this.skipValidityChecks = randomUtils.randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance());
+        this.skipValidityChecksEnabledGlobally = generator.getWebGlitchOptions().getSkipValidityCheckChance() > 0;
 
 //        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using receiver " + parentList.getReceiver());
 
@@ -729,22 +731,36 @@ public class ParameterNode extends ASTNode {
         if (!enumNode.isBoolean()) {
             Parser.extractNodeAsList(enumNode, enumValues);
         }
+        System.out.println(this.fieldName);
+        System.out.println(parentList.getCallName());
+        List<String> allEnumValues = new ArrayList<>(enumValues);
 
         List<String> mandatoryEnums = parseEnumConditions(conditions, enumValues);
-
+        Collections.shuffle(allEnumValues, randomUtils.getRandom());
         Collections.shuffle(enumValues, randomUtils.getRandom());
+
+        List<String> valuesToChooseFrom;
+        if (enumValues.isEmpty() && skipValidityChecksEnabledGlobally) {
+            valuesToChooseFrom = allEnumValues;
+        } else {
+            valuesToChooseFrom = enumValues;
+        }
+
         List<String> chosenEnumValues = new ArrayList<>();
 
         if (this.isBitwiseFlags) {
             // Random int between 1 and end of list
-            chosenEnumValues = pickEnumValuesAsBitwiseFlags(enumValues, mutexNode, mandatoryEnums);
+            chosenEnumValues = pickEnumValuesAsBitwiseFlags(valuesToChooseFrom, mutexNode, mandatoryEnums);
         } else if (isArray) {
-            chosenEnumValues = pickEnumValuesAsArray(enumValues, mandatoryEnums);
+            chosenEnumValues = pickEnumValuesAsArray(valuesToChooseFrom, mandatoryEnums);
         } else if (mandatoryEnums.isEmpty()) {
-            chosenEnumValues = pickARandomEnumValue(enumValues, mandatoryEnums);
+            chosenEnumValues = pickARandomEnumValue(valuesToChooseFrom, mandatoryEnums);
         } else { // pick one randomly from the mandatory enums
-            enumValues.removeIf(value -> !mandatoryEnums.contains(value));
-            chosenEnumValues.add(enumValues.getFirst());
+            // If values to choose from doesn't contain any values from mandatory enums
+            if (!(skipValidityChecksEnabledGlobally && Collections.disjoint(valuesToChooseFrom, mandatoryEnums))) {
+                valuesToChooseFrom.removeIf(value -> !mandatoryEnums.contains(value));
+            }
+            chosenEnumValues.add(valuesToChooseFrom.getFirst());
         }
 
         // Add mandatory enums uniquely
@@ -872,8 +888,19 @@ public class ParameterNode extends ASTNode {
         }
 
 
-        if (skipValidityChecks || conditions == null) {
+
+        if (conditions == null) {
             return mandatoryEnums;
+        }
+
+        // Is an issue because your allEnumVAlues is empty because the values are in constraints because enum was boolean
+        // check through all examples of enum boolean but not inFile
+        if (conditions.has("constraints")) {
+            parseConstraints(conditions, enumValues);
+        }
+
+        if (skipValidityChecks) {
+            return new ArrayList<>();
         }
 
         if (conditions.has("textureCompatible")) {
@@ -900,11 +927,6 @@ public class ParameterNode extends ASTNode {
 
         if(conditions.has("multiSamplingCompatible")) {
             ensureMultiSamplingCompatible(enumValues, mandatoryEnums);
-        }
-
-
-        if (conditions.has("constraints")) {
-            parseConstraints(conditions, enumValues);
         }
 
         if (conditions.has("cubeCompatible")) {

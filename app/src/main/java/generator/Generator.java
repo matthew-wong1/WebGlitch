@@ -1030,12 +1030,12 @@ public class Generator {
         String dimension = parent.getParameter("dimension");
 
         // Needs to find from itself first, then go looking for Global Attributes table
-        int width = Integer.parseInt(parent.getParameter("size.width"));
-        int height = Integer.parseInt(parent.getParameter("size.height"));
-        int depthOrArrayLayer = Integer.parseInt(parent.getParameter("size.depthOrArrayLayers"));
+        long width = Long.parseLong(parent.getParameter("size.width"));
+        long height = Long.parseLong(parent.getParameter("size.height"));
+        long depthOrArrayLayer = Long.parseLong(parent.getParameter("size.depthOrArrayLayers"));
 
         // Formula from documentation
-        int maxDimensionValue;
+        long maxDimensionValue;
 
         switch (dimension) {
             case "1d":

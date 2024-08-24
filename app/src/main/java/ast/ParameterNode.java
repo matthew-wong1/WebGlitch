@@ -59,7 +59,7 @@ public class ParameterNode extends ASTNode {
         this.skipValidityChecks = randomUtils.randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance());
         this.skipValidityChecksEnabledGlobally = generator.getWebGlitchOptions().getSkipValidityCheckChance() > 0;
 
-//        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using receiver " + parentList.getReceiver());
+        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using receiver " + parentList.getReceiver());
 
         checkImplementationSpecificCalls(details);
 
@@ -731,8 +731,7 @@ public class ParameterNode extends ASTNode {
         if (!enumNode.isBoolean()) {
             Parser.extractNodeAsList(enumNode, enumValues);
         }
-        System.out.println(this.fieldName);
-        System.out.println(parentList.getCallName());
+
         List<String> allEnumValues = new ArrayList<>(enumValues);
 
         List<String> mandatoryEnums = parseEnumConditions(conditions, enumValues);
@@ -1069,7 +1068,7 @@ public class ParameterNode extends ASTNode {
 
         String width = parentList.getParameter("GPUTexture.size.width");
         String height = parentList.getParameter("GPUTexture.size.height");
-        int arrayLayerCount = Integer.parseInt(parentList.getParameter("GPUTexture.size.depthOrArrayLayers"));
+        long arrayLayerCount = Long.parseLong(parentList.getParameter("GPUTexture.size.depthOrArrayLayers"));
 
 
         if (!width.equals(height) || arrayLayerCount < 6) {

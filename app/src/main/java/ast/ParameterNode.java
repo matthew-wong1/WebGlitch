@@ -290,7 +290,13 @@ public class ParameterNode extends ASTNode {
 
         // Parse shaderRequirementsNode for inputBuffer
         List<String> inputBufferValues = new ArrayList<>();
-        Parser.extractNodeAsList(shaderRequirementsNode.get("inputBuffer"), inputBufferValues);
+
+        // Try catch for invalid parameters where graphics shader used instead of compute shader
+        try {
+            Parser.extractNodeAsList(shaderRequirementsNode.get("inputBuffer"), inputBufferValues);
+        } catch (NullPointerException e) {
+            return;
+        }
 
         // Generate the input array as a top level statement
         String inputValuesVariableName = generator.generateTopLevelStatement("typedArray", "Uint8", inputBufferValues, null);

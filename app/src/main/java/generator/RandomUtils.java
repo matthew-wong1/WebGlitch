@@ -29,6 +29,8 @@ public class RandomUtils {
     }
 
     public synchronized long nextLong(long lowerBound, long upperBound) {
+        System.out.println(lowerBound);
+        System.out.println(upperBound);
         return random.nextLong(lowerBound, upperBound);
     }
 

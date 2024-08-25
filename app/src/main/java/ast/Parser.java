@@ -149,7 +149,12 @@ public class Parser {
         List<String> postGenerationRequirements = new ArrayList<>();
         extractNodeAsList(postGenerationReqsNode, postGenerationRequirements);
         for (String requirement : postGenerationRequirements) {
-            generator.generatePostGenerationRequirement(receiver, requirement);
+            // Skip generation if error occurs due to previous invalid call
+            try {
+                generator.generatePostGenerationRequirement(receiver, requirement);
+            } catch (NullPointerException e) {
+            }
+
         }
     }
 

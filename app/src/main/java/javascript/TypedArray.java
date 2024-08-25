@@ -22,7 +22,7 @@ public class TypedArray extends ASTNode {
         this.randomUtils = randomUtils;
     }
 
-    public TypedArray(int maxBytes, RandomUtils randomUtils) {
+    public TypedArray(long maxBytes, RandomUtils randomUtils) {
         this.dataVariable = null;
         this.randomUtils = randomUtils;
         this.type = TYPES.get(randomUtils.nextInt(TYPES.size()));
@@ -31,7 +31,7 @@ public class TypedArray extends ASTNode {
         // SIZE OF DATA WHEN CONVERTED TO BYTES IS MULTIPEL OF 4
 
         int elementSizeInBytes = getElementSizeInBytes() / 8;
-        int numValues = generateForSizeThatIsMultipleOf4Bytes(elementSizeInBytes, maxBytes);
+        long numValues = generateForSizeThatIsMultipleOf4Bytes(elementSizeInBytes, maxBytes);
 
 
         for (int i = 0; i < numValues; i++) {
@@ -46,21 +46,25 @@ public class TypedArray extends ASTNode {
         valuesToUse.forEach(v -> this.values.add(Integer.parseInt(v)));
     }
 
-    private int generateForSizeThatIsMultipleOf4Bytes(int elementSizeInBytes, int maxBytes) {
-        int maxValuesToGenerate = MAX_SIZE;
+    private long generateForSizeThatIsMultipleOf4Bytes(int elementSizeInBytes, long maxBytes) {
+        long maxValuesToGenerate = MAX_SIZE;
 
         if (maxBytes != -1) {
-            int absoluteMaximumValuesToGenerate = maxBytes / elementSizeInBytes;
+            long absoluteMaximumValuesToGenerate = maxBytes / elementSizeInBytes;
             maxValuesToGenerate = Math.min(maxValuesToGenerate, absoluteMaximumValuesToGenerate);
         }
 
-        int numValues;
+        long numValues;
         if (maxValuesToGenerate == 1) {
             numValues = 1;
         } else {
-            numValues = randomUtils.nextInt(maxValuesToGenerate - MIN_SIZE) + MIN_SIZE;
+            numValues = randomUtils.nextLong(maxValuesToGenerate - MIN_SIZE) + MIN_SIZE;
         }
-        int totalBytes = numValues * elementSizeInBytes;
+        long totalBytes = numValues * elementSizeInBytes;
+
+        if (numValues < 0 || numValues > maxValuesToGenerate) {
+            return randomUtils.nextLong(MAX_SIZE);
+        }
 
         while (totalBytes % 4 != 0) {
             numValues++;

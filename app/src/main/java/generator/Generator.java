@@ -726,9 +726,9 @@ public class Generator {
                 TypedArray typedArray = null;
 
                 if (values == null) {
-                    int maxBytes = -1;
+                    long maxBytes = -1;
                     if (requirements != null && requirements.containsKey("maxBytes")) {
-                        maxBytes = Integer.parseInt(requirements.get("maxBytes"));
+                        maxBytes = Long.parseLong(requirements.get("maxBytes"));
                     }
                     typedArray = new TypedArray(maxBytes, randomUtils);
                 } else {

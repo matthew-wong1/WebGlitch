@@ -32,6 +32,9 @@ public class RandomUtils {
     }
 
     public synchronized long nextLong(long bound) {
+        if (bound <= 0) {
+            return -1 * random.nextLong(-1 * bound);
+        }
         return random.nextLong(bound);
     }
 

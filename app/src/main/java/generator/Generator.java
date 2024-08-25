@@ -985,15 +985,15 @@ public class Generator {
         String sourceGPUBuffer = parentList.getParameter("source");
         String destGPUBuffer = parentList.getParameter("destination");
 
-        int sourceSize = Integer.parseInt(getObjectAttributes(sourceGPUBuffer, "size"));
-        int destSize = Integer.parseInt(getObjectAttributes(destGPUBuffer, "size"));
+        long sourceSize = Long.parseLong(getObjectAttributes(sourceGPUBuffer, "size"));
+        long destSize = Long.parseLong(getObjectAttributes(destGPUBuffer, "size"));
 
-        int sourceOffset = Integer.parseInt(parentList.getParameter("sourceOffset"));
-        int destOffset = Integer.parseInt(parentList.getParameter("destinationOffset"));
+        long sourceOffset = Long.parseLong(parentList.getParameter("sourceOffset"));
+        long destOffset = Long.parseLong(parentList.getParameter("destinationOffset"));
 
-        int maxSizeForSource = sourceSize - sourceOffset;
-        int maxSizeForDest = destSize - destOffset;
-        int overallMaxSize = Math.min(maxSizeForSource, maxSizeForDest);
+        long maxSizeForSource = sourceSize - sourceOffset;
+        long maxSizeForDest = destSize - destOffset;
+        long overallMaxSize = Math.min(maxSizeForSource, maxSizeForDest);
 
         return String.valueOf(overallMaxSize);
     }
@@ -1011,7 +1011,7 @@ public class Generator {
         long parentDepthOrArrayLayersValue = Long.parseLong(generator.getObjectAttributes(textureViewParentName, "size.depthOrArrayLayers"));
         long baseMipLevelValue = Long.parseLong(generator.getObjectAttributes(textureViewVariableName, "baseMipLevel"));
 
-        int maxValue = (int) Math.max(parentDepthOrArrayLayersValue / Math.pow(2, baseMipLevelValue), 1);
+        long maxValue = (long) Math.max(parentDepthOrArrayLayersValue / Math.pow(2, baseMipLevelValue), 1);
 
         // -1 since max value is inclusvie
         return String.valueOf(maxValue - 1);

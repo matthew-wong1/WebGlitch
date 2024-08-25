@@ -17,10 +17,17 @@ public class RandomUtils {
     }
 
     public synchronized int nextInt(int bound) {
+        if (bound <= 0) {
+            return -1 * random.nextInt(-1 * bound);
+        }
         return random.nextInt(bound);
     }
 
     public synchronized int nextInt(int lowerBound, int upperBound) {
+        if (lowerBound > upperBound) {
+            return random.nextInt(upperBound, lowerBound);
+        }
+
         return random.nextInt(lowerBound, upperBound);
     }
 
@@ -29,16 +36,24 @@ public class RandomUtils {
     }
 
     public synchronized long nextLong(long lowerBound, long upperBound) {
-        System.out.println(lowerBound);
-        System.out.println(upperBound);
+        if (lowerBound > upperBound) {
+            return random.nextLong(upperBound, lowerBound);
+        }
+
         return random.nextLong(lowerBound, upperBound);
     }
 
     public synchronized double nextDouble(double bound) {
+        if (bound <= 0) {
+            return -1 * random.nextDouble(-1 * bound);
+        }
         return random.nextDouble(bound);
     }
 
     public synchronized double nextDouble(double lowerBound, double upperBound) {
+        if (lowerBound > upperBound) {
+            return random.nextDouble(upperBound, lowerBound);
+        }
         return random.nextDouble(lowerBound, upperBound);
     }
 

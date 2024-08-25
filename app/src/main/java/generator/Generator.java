@@ -1008,8 +1008,8 @@ public class Generator {
         }
 
         String textureViewParentName = generator.getParentVariable(textureViewVariableName);
-        int parentDepthOrArrayLayersValue = Integer.parseInt(generator.getObjectAttributes(textureViewParentName, "size.depthOrArrayLayers"));
-        int baseMipLevelValue = Integer.parseInt(generator.getObjectAttributes(textureViewVariableName, "baseMipLevel"));
+        long parentDepthOrArrayLayersValue = Long.parseLong(generator.getObjectAttributes(textureViewParentName, "size.depthOrArrayLayers"));
+        long baseMipLevelValue = Long.parseLong(generator.getObjectAttributes(textureViewVariableName, "baseMipLevel"));
 
         int maxValue = (int) Math.max(parentDepthOrArrayLayersValue / Math.pow(2, baseMipLevelValue), 1);
 

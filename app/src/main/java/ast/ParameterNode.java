@@ -264,9 +264,20 @@ public class ParameterNode extends ASTNode {
         String label = parentList.getParameter("label");
         String[] split = label.split("\\.", 2);
         String computePipelineName = split[0];
-        String computeShaderModule = generator.getObjectAttributes(computePipelineName, "compute.module");
-        String computeShader = generator.getObjectAttributes(computeShaderModule, "code");
-        String shaderFolderPath = generator.getShaderProperties(computeShader, "path");
+
+        String computeShaderModule;
+        String computeShader;
+        String shaderFolderPath;
+
+        try {
+            computeShaderModule = generator.getObjectAttributes(computePipelineName, "compute.module");
+            computeShader = generator.getObjectAttributes(computeShaderModule, "code");
+            shaderFolderPath = generator.getShaderProperties(computeShader, "path");
+        } catch (NullPointerException e) {
+            return;
+        }
+
+
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode shaderRequirementsNode = null;

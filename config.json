@@ -1,9 +1,9 @@
 {
-  "skipValidityCheckChance": 0.5,
+  "skipValidityCheckChance": 0.1,
   "letRandomPercentOfCallsBeAvailable": false,
   "percentOfAvailableCallsToGenerate": 1.0,
   "generateNewRequiredObjectChance": 0,
-  "printComputePassOutputChance": 1.0,
+  "printComputePassOutputChance": 0.5,
   "generateConstChance": 1,
   "generateAwaitChance": 1,
   "maxGPUDevices": 5

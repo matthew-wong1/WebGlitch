@@ -6,7 +6,7 @@ i=1001
 MAX_FILES=2000
 
 while [ $i -le $MAX_FILES ]; do
-    OUTPUT_FILE="${OUTPUT_DIR}/${i}.spec.js"
+    OUTPUT_FILE="${OUTPUT_DIR}/${i}.spec.ts"
     bash "$WEBGLITCH_DIR/webglitch.sh" -o "$OUTPUT_FILE" -c
     ((i++))
 done

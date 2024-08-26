@@ -10,6 +10,7 @@ import org.checkerframework.checker.units.qual.A;
 import programprinter.PrettyPrinter;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -751,8 +752,14 @@ public class Generator {
                         chosenBaseShaderType = "graphics";
                 }
                 File shadersDirectory = new File(SHADERS_PATH + chosenBaseShaderType);
-                File[] files = shadersDirectory.listFiles();
+                File[] files = shadersDirectory.listFiles(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        return !name.startsWith(".");
+                    }
+                });
                 assert files != null;
+
                 String chosenFolderName = files[randomUtils.nextInt(files.length)].getName();
 
 

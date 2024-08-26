@@ -59,7 +59,7 @@ public class ParameterNode extends ASTNode {
         this.skipValidityChecks = randomUtils.randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance());
         this.skipValidityChecksEnabledGlobally = generator.getWebGlitchOptions().getSkipValidityCheckChance() > 0;
 
-        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using receiver " + parentList.getReceiver());
+//        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using receiver " + parentList.getReceiver());
 
         checkImplementationSpecificCalls(details);
 
@@ -285,7 +285,7 @@ public class ParameterNode extends ASTNode {
         try {
             shaderRequirementsNode = mapper.readTree(new File(shaderFolderPath + "requirements.json"));
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            return;
         }
 
         // Parse shaderRequirementsNode for inputBuffer

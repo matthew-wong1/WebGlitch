@@ -2,7 +2,7 @@ if (!navigator.gpu) {
     throw new Error("WebGPU not supported on this browser");
 }
 
-function loadShaderHeader(file) {
+function loadShader(file) {
     try {
         const data = fs.readFileSync(file, 'utf8');
         return data;

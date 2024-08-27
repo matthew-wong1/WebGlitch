@@ -222,8 +222,60 @@
       ]
     },
     {
+      "name": "createRenderPipelineAsync",
+      "paramType": "object",
+      "async": true,
+      "returnType": "GPURenderPipeline",
+      "properties": [
+        {
+          "fragment": {
+            "type": "fragment",
+            "optional": true
+          },
+          "label": {
+            "type": "string",
+            "optional": true
+          },
+          "layout": {
+            "type": "gpuLayout"
+          },
+          "multisample": {
+            "type": "multisample",
+            "optional": true
+          },
+          "primitive": {
+            "type": "primitive",
+            "optional": true
+          },
+          "vertex": {
+            "type": "vertex"
+          }
+        }
+      ]
+    },
+    {
       "name": "createComputePipeline",
       "paramType": "object",
+      "returnType": "GPUComputePipeline",
+      "properties": [
+        {
+          "compute": {
+            "type": "compute"
+          },
+          "label": {
+            "type": "string",
+            "optional": true
+          },
+          "layout": {
+            "type": "gpuLayout"
+          }
+        }
+      ]
+    },
+    {
+      "name": "createComputePipelineAsync",
+      "paramType": "object",
+      "async": true,
       "returnType": "GPUComputePipeline",
       "properties": [
         {

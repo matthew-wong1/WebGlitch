@@ -69,6 +69,24 @@
       }
     },
     {
+      "name": "setStencilReference",
+      "returnType": "none",
+      "properties": [
+        {
+          "reference": {
+            "type": "uint",
+            "conditions": {
+              "min": 1,
+              "max": 10
+            }
+          }
+        }
+      ],
+      "conditions": {
+        "renderPipelineAvailable": true
+      }
+    },
+    {
       "name": "end",
       "returnType": "none",
       "conditions": {

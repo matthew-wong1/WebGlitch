@@ -3,6 +3,10 @@
   "requirements": ["GPUQueue"],
   "methods": [
     {
+      "name": "onSubmittedWorkDone",
+      "returnType": "none"
+    },
+    {
       "name": "writeBuffer",
       "returnType": "none",
       "properties": [

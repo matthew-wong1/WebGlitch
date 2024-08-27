@@ -253,6 +253,7 @@ public class Generator {
         ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
         double percentOfAvailableCalls = webGlitchOptions.getPercentOfAvailableCallsToGenerate();
         int numAvailableCalls = (int) Math.floor(percentOfAvailableCalls * methods.length);
+        System.out.println("Num calls: " + numAvailableCalls);
         List<ReceiverTypeCallNameCallType> methodsAsList = Arrays.asList(methods);
         Collections.shuffle(methodsAsList, randomUtils.getRandom());
         List<ReceiverTypeCallNameCallType> selectedMethods = methodsAsList.subList(0, numAvailableCalls);

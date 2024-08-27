@@ -141,6 +141,8 @@ public class ParameterNode extends ASTNode {
             this.parameters.add(new Parameter(generator.generateRandVarName(parentList.getCallNode().getReturnType())));
         } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
             generateNumber(details, paramType);
+        } else if (paramType.equals("markerLabel")) {
+            this.parameters.add(new Parameter("\"Debug marker\""));
         } else if (paramType.equals("boolean")) {
             generateBoolean(details);
         } else if (paramType.equals("typedArray")) {

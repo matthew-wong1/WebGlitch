@@ -30,7 +30,7 @@
         }
       ],
       "setUnavailable": {
-        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer"]
+        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer"]
       }
     },
     {
@@ -46,7 +46,7 @@
         }
       ],
       "setUnavailable": {
-        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer"]
+        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer"]
       }
     },
     {
@@ -116,6 +116,35 @@
               },
               "divisible": 4
             }
+          }
+        }
+      ]
+    },
+    {
+      "name": "clearBuffer",
+      "returnType": "none",
+      "properties": [
+        {
+          "buffer": {
+            "type": "GPUBuffer",
+            "conditions": {
+              "same": ["GPUDevice"],
+              "withAttributes": {
+                "GPUBuffer.usage": ["GPUBufferUsage.COPY_DST"],
+                "GPUBuffer.mapped": ["false"]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "insertDebugMarker",
+      "returnType": "none",
+      "properties": [
+        {
+          "markerLabel": {
+            "type": "markerLabel"
           }
         }
       ]

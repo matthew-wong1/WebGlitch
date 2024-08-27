@@ -1,0 +1,17 @@
+{
+  "receiverType": "GPUShaderModule",
+  "requirements": ["GPUShaderModule"],
+  "methods": [
+    {
+      "name": "getCompilationInfo",
+      "returnType": "GPUCompilationInfo",
+      "async": true
+    }
+  ],
+  "attributes": [
+    {
+      "name": "label",
+      "returnType": "string"
+    }
+  ]
+}

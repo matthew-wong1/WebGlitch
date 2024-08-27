@@ -3,6 +3,17 @@
   "requirements": ["GPUComputePassEncoder"],
   "methods": [
     {
+      "name": "insertDebugMarker",
+      "returnType": "none",
+      "properties": [
+        {
+          "markerLabel": {
+            "type": "markerLabel"
+          }
+        }
+      ]
+    },
+    {
       "name": "setPipeline",
       "returnType": "none",
       "properties": [

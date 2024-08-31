@@ -190,6 +190,10 @@ public class Parser {
             ensureCommandEncodingFinished(receiverName);
         }
 
+        if (conditionsNode.has("noActiveDebugGroups")) {
+            ensureNoActiveDebugGroups(receiverName);
+        }
+
         if (conditionsNode.has("renderPipelineAvailable")) {
             ensureRenderPipelineAvailable(receiverName);
         }
@@ -197,6 +201,53 @@ public class Parser {
         if (conditionsNode.has("buffersAvailable")) {
             ensureBuffersAvailable(receiverName);
         }
+
+        if (conditionsNode.has("debugGroupAvailable")) {
+            ensureDebugGroupAvailable(receiverName);
+        }
+    }
+
+    private void ensureNoActiveDebugGroups(String receiverName) {
+        int remainingDebugGroups = outstandingDebugGroups(receiverName);
+        if (remainingDebugGroups == 0) {
+            return;
+        }
+
+        for (int i = remainingDebugGroups - 1; i > 0; i--) {
+            String receiverType = generator.getVariableType(receiverName);
+            generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "popDebugGroup", true), null, null, receiverName);
+        }
+    }
+
+    private void ensureDebugGroupAvailable(String receiverName) {
+
+        int remainingDebugGroups = outstandingDebugGroups(receiverName);
+
+        if (remainingDebugGroups == 0) {
+            String receiverType = generator.getVariableType(receiverName);
+            generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "pushDebugGroup", true), null, null, receiverName);
+        }
+    }
+
+    private int outstandingDebugGroups(String receiverName) {
+        List<String> callHistory = generator.getFromCallState(receiverName);
+        if (callHistory == null) {
+            return 0;
+        }
+
+        int pushDebugGroupCount = 0;
+        int popDebugGroupCount = 0;
+
+        for (String call : callHistory) {
+            if (call.equals("pushDebugGroup")) {
+                pushDebugGroupCount++;
+            }
+            if (call.equals("popDebugGroup")) {
+                popDebugGroupCount++;
+            }
+        }
+
+        return pushDebugGroupCount - popDebugGroupCount;
     }
 
     private void ensureBuffersAvailable(String queueName) {

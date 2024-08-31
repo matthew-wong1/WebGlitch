@@ -36,7 +36,7 @@ public class WebGlitch {
         generator.generateProgram(filePathToUse);
 
         // Uncomment this for metrics about the programs you generated
-        printCallDistributionMetrics(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly, filePathToUse);
+//        printCallDistributionMetrics(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly, filePathToUse);
 
     }
 

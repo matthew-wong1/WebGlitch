@@ -63,7 +63,7 @@ public class Generator {
     private final Map<ReceiverTypeCallNameCallType, FileNameCallProbPair> callProbabilities = new LinkedHashMap<>();
     // Tracks call histories
 //    private final Set<ReceiverNameCallNameCallType> callState = new HashSet<>();
-    private final Map<String, Set<String>> callState = new LinkedHashMap<>();
+    private final Map<String, List<String>> callState = new LinkedHashMap<>();
 
     private final Parser parser = new Parser(this);
     private final int maxCalls;
@@ -842,7 +842,7 @@ public class Generator {
         }
 
         if (!callState.containsKey(receiver)) {
-            callState.put(receiver, new HashSet<>());
+            callState.put(receiver, new ArrayList<>());
         }
         callState.get(receiver).add(callName);
 
@@ -1074,7 +1074,7 @@ public class Generator {
         return String.valueOf(max);
     }
 
-    public Set<String> getFromCallState(String receiverName) {
+    public List<String> getFromCallState(String receiverName) {
         return callState.get(receiverName);
     }
 
@@ -1096,7 +1096,7 @@ public class Generator {
             return;
         }
 
-        Set<String> callHistory = getFromCallState(computePassEncoderName);
+        List<String> callHistory = getFromCallState(computePassEncoderName);
         if (callHistory == null) {
             return;
         }

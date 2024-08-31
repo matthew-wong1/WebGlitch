@@ -46,7 +46,7 @@
         }
       ],
       "setUnavailable": {
-        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer"]
+        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer", "GPUCommandEncoder.pushDebugGroup", "GPUCommandEncoder.popDebugGroup"]
       }
     },
     {
@@ -148,6 +148,31 @@
           }
         }
       ]
+    },
+    {
+      "name": "pushDebugGroup",
+      "returnType": "none",
+      "properties": [
+        {
+          "markerLabel": {
+            "type": "markerLabel"
+          }
+        }
+      ]
+    },
+    {
+      "name": "pushDebugGroup",
+      "returnType": "none",
+      "properties": [
+        {
+          "markerLabel": {
+            "type": "markerLabel"
+          }
+        }
+      ],
+      "conditions": {
+        "debugGroupAvailable": true
+      }
     }
   ],
   "attributes": [

@@ -231,7 +231,7 @@ public class ParameterNode extends ASTNode {
         // Set a compatible bindgroup
         if (conditions.has("bindGroupCompatible")) {
             String computePassEncoderName = parentList.getReceiver();
-            Set<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);
+            List<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);
             if (computePassEncoderCallState == null || !computePassEncoderCallState.contains("setBindGroup")) {
                 return;
             }
@@ -514,7 +514,7 @@ public class ParameterNode extends ASTNode {
             Map<String, List<String>> requirements = new LinkedHashMap<>();
             // Check have setPIpeline called already
             String computePassEncoderName = parentList.getReceiver();
-            Set<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);
+            List<String> computePassEncoderCallState = generator.getFromCallState(computePassEncoderName);
 
             // If not, pick a random bindGroup (ie return)
             if (computePassEncoderCallState == null) {

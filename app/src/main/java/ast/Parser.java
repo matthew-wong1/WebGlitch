@@ -219,7 +219,7 @@ public class Parser {
 
     private void ensureRenderPipelineAvailable(String receiverName) {
         // To do .draw, need to have .setPipeline
-        Set<String> callHistory = generator.getFromCallState(receiverName);
+        List<String> callHistory = generator.getFromCallState(receiverName);
         if (callHistory != null && callHistory.contains("setPipeline")) {
             return;
         }
@@ -245,7 +245,7 @@ public class Parser {
 
         // 2) Check their callState - what methods have been called on them (ie add this tracking)
         for (String childPassEncoder : allChildPassEncoders) {
-            Set<String> callHistory = generator.getFromCallState(childPassEncoder);
+            List<String> callHistory = generator.getFromCallState(childPassEncoder);
 
             // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that call
             if (callHistory == null || !callHistory.contains("end")) {

@@ -6,6 +6,8 @@ import org.apache.commons.cli.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 
@@ -32,7 +34,23 @@ public class WebGlitch {
         Generator generator = new Generator(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly);
 
         generator.generateProgram(filePathToUse);
+
+        // Uncomment this for metrics about the programs you generated
+        printCallDistributionMetrics(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly, filePathToUse);
+
     }
+
+    private static void printCallDistributionMetrics(int maxCallsToGenerate, boolean wgpuCompatibilityMode, boolean ctsCompatiblityMode, Long specificSeed, boolean generateMainFunctionOnly, String filePathToUse) {
+        Map<String, Integer> cumulativeCallDistribution = new HashMap<>();
+        for (int i = 0; i < 1000; i++) {
+            System.out.println("Generating program " + i);
+            Generator generator = new Generator(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly);
+            Map<String, Integer> callDistribution = generator.generateProgram(filePathToUse);
+            callDistribution.forEach((k, v) -> cumulativeCallDistribution.merge(k, v, Integer::sum));
+        }
+        System.out.println(cumulativeCallDistribution);
+    }
+
 
     private static CommandLine checkCLIOptions(String[] args, Options options) {
         CommandLineParser parser = new DefaultParser();

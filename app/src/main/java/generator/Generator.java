@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javascript.Require;
 import javascript.JavaScriptStatement;
 import javascript.TypedArray;
-import org.checkerframework.checker.units.qual.A;
 import programprinter.PrettyPrinter;
 
 import java.io.File;
@@ -49,6 +48,7 @@ public class Generator {
     private final Map<String, Set<String>> interfaceToAvailableCalls = new LinkedHashMap<>();
     private final Map<String, String> availableCallsToInterface = new LinkedHashMap<>();
     private final Map<String, Set<String>> parentVariableToBuffersUsed = new LinkedHashMap<>();
+    private final Map<String, Integer> programCallDistribution = new HashMap<>();
 
     // Maps parent CommandEncoder to the name of the outBuffer and the corresponding pipeline
     private final Map<String, Map<String, String>> toPrintCommandEncoderAndItsPipeline = new LinkedHashMap<>();
@@ -244,7 +244,7 @@ public class Generator {
         programNode.addNode(node);
     }
 
-    public void generateProgram(String fileNameToUse) {
+    public Map<String, Integer> generateProgram(String fileNameToUse) {
         this.programNode = new ProgramNode();
 
 
@@ -253,7 +253,7 @@ public class Generator {
         ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
         double percentOfAvailableCalls = webGlitchOptions.getPercentOfAvailableCallsToGenerate();
         int numAvailableCalls = (int) Math.floor(percentOfAvailableCalls * methods.length);
-        System.out.println("Num calls: " + numAvailableCalls);
+//        System.out.println("Num calls: " + numAvailableCalls);
         List<ReceiverTypeCallNameCallType> methodsAsList = Arrays.asList(methods);
         Collections.shuffle(methodsAsList, randomUtils.getRandom());
         List<ReceiverTypeCallNameCallType> selectedMethods = methodsAsList.subList(0, numAvailableCalls);
@@ -273,6 +273,7 @@ public class Generator {
 
         programNode.addNode(new JavaScriptStatement(FOOTER));
         printer.printToFile(this.programNode, fileNameToUse, randomUtils.getSeed(), this.mainOnly, this.ctsCompatible, webGlitchOptions);
+        return programCallDistribution;
     }
 
     public void addToObjectAttributesTable(String variableName, Map<String, List<Parameter>> keyValuePairs) {
@@ -637,11 +638,22 @@ public class Generator {
             System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }
 
+        updateProgramCallDistribution(receiverType, callName);
+
         if (receiver instanceof AssignmentNode) {
             return ((AssignmentNode) receiver).getVarName();
         } else {
             return null;
         }
+    }
+
+    private void updateProgramCallDistribution(String receiverType, String callName) {
+        String fullName = receiverType + "." + callName;
+        if (!programCallDistribution.containsKey(fullName)) {
+            programCallDistribution.put(fullName, 0);
+        }
+
+        programCallDistribution.put(fullName, programCallDistribution.get(fullName) + 1);
     }
 
     public AssignmentNode generateDeclaration(JsonNode methodJsonNode, CallNode rootASTNode) {

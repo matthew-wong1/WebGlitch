@@ -68,7 +68,10 @@
             "optional": true
           }
         }
-      ]
+      ],
+      "setAttributes": {
+        "returnVariable.numDebugGroups": [0]
+      }
     },
     {
       "name": "createQuerySet",

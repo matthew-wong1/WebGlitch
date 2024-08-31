@@ -181,11 +181,6 @@ public class Parser {
 
         JsonNode conditionsNode = callJsonNode.get("conditions");
 
-        if (conditionsNode.has("renderPassEncodingFinished") || conditionsNode.has("computePassEncodingFinished")) {
-            // WIP
-            return;
-        }
-
         if (conditionsNode.has("commandEncodingFinished")) {
             ensureCommandEncodingFinished(receiverName);
         }
@@ -204,6 +199,11 @@ public class Parser {
 
         if (conditionsNode.has("debugGroupAvailable")) {
             ensureDebugGroupAvailable(receiverName);
+        }
+
+        if (conditionsNode.has("renderPassEncodingFinished") || conditionsNode.has("computePassEncodingFinished")) {
+            // WIP
+            return;
         }
     }
 

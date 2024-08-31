@@ -30,7 +30,7 @@
         }
       ],
       "setUnavailable": {
-        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer"]
+        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer", "GPUCommandEncoder.pushDebugGroup", "GPUCommandEncoder.popDebugGroup"]
       }
     },
     {

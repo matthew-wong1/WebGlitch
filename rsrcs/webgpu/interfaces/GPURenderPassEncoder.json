@@ -69,6 +69,18 @@
       }
     },
     {
+      "name": "setBlendConstant",
+      "returnType": "none",
+      "properties": [
+        {
+          "color": {
+            "type": "clearValue",
+            "optional": true
+          }
+        }
+      ]
+    },
+    {
       "name": "setStencilReference",
       "returnType": "none",
       "properties": [

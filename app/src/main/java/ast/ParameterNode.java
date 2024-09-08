@@ -153,6 +153,10 @@ public class ParameterNode extends ASTNode {
             this.parameters.add(new Parameter(encodeAsString("auto")));
         } else if (paramType.equals("shader")) {
             this.parameters.add(new Parameter(this.chooseRandomShader()));
+        } else if (paramType.equals("vertexShader")) {
+            generateVertexShader();
+        } else if (paramType.equals("vertexBufferRequirements")) {
+            generateVertexBufferRequirements();
         } else if (paramType.equals("bufferSlot") || paramType.equals("bindGroupIndex")) {
             this.parameters.add(new Parameter("0"));
         } else if (paramType.equals("bindGroupLayout")) {
@@ -191,6 +195,37 @@ public class ParameterNode extends ASTNode {
             generator.parseAndSetCallAvailabilityIfNoParameters(additionalConditionsNode, parentList);
         }
 
+    }
+
+    private void generateVertexBufferRequirements() {
+        String fragmentShaderModule = parentList.getParameter("fragment.module");
+        String fragmentShader = generator.getObjectAttributes(fragmentShaderModule, "code");
+        String shaderFolderPath = generator.getShaderProperties(fragmentShader, "path");
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode shaderRequirementsNode = null;
+
+        try {
+            shaderRequirementsNode = mapper.readTree(new File(shaderFolderPath + "requirements.json"));
+        } catch (IOException e) {
+            return;
+        }
+
+        String vertexBufferLayout = shaderRequirementsNode.get("vertexBufferLayout").asText();
+        this.parameters.add(new Parameter("[" + vertexBufferLayout + "]"));
+
+    }
+
+    private void generateVertexShader() {
+        String fragmentShaderModule = parentList.getParameter("fragment.module");
+        String fragmentShader = generator.getObjectAttributes(fragmentShaderModule, "code");
+        String specificDevice = generator.getParentVariable(fragmentShaderModule);
+        String shaderFolderPath = generator.getShaderProperties(fragmentShader, "path");
+        String vertexPath = shaderFolderPath + "vertex.wgsl";
+        Map<String, List<String>> vertexShaderRequirements = new HashMap<>();
+        vertexShaderRequirements.put("label", List.of("specificVertex"));
+        vertexShaderRequirements.put("code", List.of("loadShader(" + "'" + vertexPath + "')"));
+        String vertexShaderModule = generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUDevice", "createShaderModule", true), vertexShaderRequirements, null, specificDevice);
+        this.parameters.add(new Parameter(vertexShaderModule));
     }
 
     private void generateTypedArray(JsonNode details) {
@@ -426,6 +461,11 @@ public class ParameterNode extends ASTNode {
 
         // THIS SHOULD BE FINDNESTEDPARAMETER
         String preDeterminedType = parentList.getParameter("label");
+
+        if (preDeterminedType.equals("specificVertex")) {
+            return individualParameterRequirements.getFirst();
+        }
+
 
         String chosenShaderType;
 

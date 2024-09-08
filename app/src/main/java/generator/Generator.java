@@ -779,6 +779,7 @@ public class Generator {
                 String folderPath = SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
                 String fullPath = folderPath + shaderSubType + ".wgsl";
 
+
                 assignmentNode = new AssignmentNode("const",  "shader" + shaderNameToProperties.size(), randomUtils, webGlitchOptions);
                 Require requireStatement = new Require(fullPath, true);
                 assignmentNode.addNode(requireStatement);
@@ -788,8 +789,9 @@ public class Generator {
                 varName += shaderSubType + "." + importName;
 
                 // Later on, add available objects eg for improting JS objects
-                this.addToShaderProperties(importName, chosenBaseShaderType, folderPath);
+                this.addToShaderProperties(importName, chosenBaseShaderType, folderPath, requireStatement);
                 break;
+
         }
 
         this.programNode.addNodeToFront(astNodeToPrepend);
@@ -797,7 +799,7 @@ public class Generator {
         return varName;
     }
 
-    private void addToShaderProperties(String importName, String chosenShaderType, String folderPath) {
+    private void addToShaderProperties(String importName, String chosenShaderType, String folderPath, Require requireStatement) {
         if (!shaderNameToProperties.containsKey(importName)) {
             shaderNameToProperties.put(importName, new LinkedHashMap<>());
         }

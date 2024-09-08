@@ -34,7 +34,6 @@ public class WebGlitch {
         Generator generator = new Generator(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly);
 
         generator.generateProgram(filePathToUse);
-
         // Uncomment this for metrics about the programs you generated
 //        printCallDistributionMetrics(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly, filePathToUse);
 

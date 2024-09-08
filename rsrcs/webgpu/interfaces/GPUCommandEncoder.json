@@ -185,25 +185,19 @@
             "conditions": {
               "same": ["GPUDevice"]
             }
-          }
-        },
-        {
+          },
           "firstQuery": {
             "type": "uint",
             "conditions": {
               "max": 0
             }
-          }
-        },
-        {
+          },
           "queryCount": {
             "type": "uint",
             "conditions": {
               "max": 1
             }
-          }
-        },
-        {
+          },
           "destination": {
             "type": "GPUBuffer",
             "conditions": {
@@ -213,9 +207,7 @@
                 "GPUBuffer.mapped": ["false"]
               }
             }
-          }
-        },
-        {
+          },
           "destinationOffset": {
             "type": "uint",
             "conditions": {

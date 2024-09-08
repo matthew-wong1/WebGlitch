@@ -368,13 +368,10 @@
         "type": "shaderEntryPoint"
       },
       "module": {
-        "type": "GPUShaderModule",
-        "conditions": {
-          "same": ["GPUDevice"],
-          "withAttributes": {
-            "GPUShaderModule.label": ["vertex"]
-          }
-        }
+        "type": "vertexShader"
+      },
+      "buffers": {
+        "type": "vertexBufferRequirements"
       }
     }
   ],

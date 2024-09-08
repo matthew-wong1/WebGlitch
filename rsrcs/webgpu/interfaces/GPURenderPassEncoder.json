@@ -163,7 +163,7 @@
       },
       "setAvailable": {
         "parents": {
-          "GPUCommandEncoder": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer"]
+          "GPUCommandEncoder": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer", "GPUCommandEncoder.resolveQuerySet"]
         }
       }
     }

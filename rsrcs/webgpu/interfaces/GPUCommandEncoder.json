@@ -30,7 +30,7 @@
         }
       ],
       "setUnavailable": {
-        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer", "GPUCommandEncoder.pushDebugGroup", "GPUCommandEncoder.popDebugGroup"]
+        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer", "GPUCommandEncoder.pushDebugGroup", "GPUCommandEncoder.popDebugGroup", "GPUCommandEncoder.resolveQuerySet"]
       }
     },
     {
@@ -46,7 +46,7 @@
         }
       ],
       "setUnavailable": {
-        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer", "GPUCommandEncoder.pushDebugGroup", "GPUCommandEncoder.popDebugGroup"]
+        "this": ["GPUCommandEncoder.beginRenderPass", "GPUCommandEncoder.beginComputePass", "GPUCommandEncoder.copyBufferToBuffer", "GPUCommandEncoder.insertDebugMarker", "GPUCommandEncoder.clearBuffer", "GPUCommandEncoder.pushDebugGroup", "GPUCommandEncoder.popDebugGroup", "GPUCommandEncoder.resolveQuerySet"]
       }
     },
     {
@@ -174,6 +174,56 @@
       "conditions": {
         "debugGroupAvailable": true
       }
+    },
+    {
+      "name": "resolveQuerySet",
+      "returnType": "none",
+      "properties": [
+        {
+          "querySet": {
+            "type": "GPUQuerySet",
+            "conditions": {
+              "same": ["GPUDevice"]
+            }
+          }
+        },
+        {
+          "firstQuery": {
+            "type": "uint",
+            "conditions": {
+              "max": 0
+            }
+          }
+        },
+        {
+          "queryCount": {
+            "type": "uint",
+            "conditions": {
+              "max": 1
+            }
+          }
+        },
+        {
+          "destination": {
+            "type": "GPUBuffer",
+            "conditions": {
+              "same": ["GPUDevice"],
+              "withAttributes": {
+                "GPUBuffer.usage": ["GPUBufferUsage.QUERY_RESOLVE"],
+                "GPUBuffer.mapped": ["false"]
+              }
+            }
+          }
+        },
+        {
+          "destinationOffset": {
+            "type": "uint",
+            "conditions": {
+              "max": 0
+            }
+          }
+        }
+      ]
     }
   ],
   "attributes": [

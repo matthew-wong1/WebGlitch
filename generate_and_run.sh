@@ -20,7 +20,7 @@ while true; do
     OUTPUT_FILE="${OUTPUT_DIR}/${i}.js"
     bash "$WEBGLITCH_DIR/webglitch.sh" -o "$OUTPUT_FILE" -m -w "$@"
     echo "Running and logging the file $OUTPUT_FILE"
-    bash "$RUNNER_PATH" -o "$OUTPUT_FILE" -b all
+    bash "$RUNNER_PATH" -o "$OUTPUT_FILE" -b all 2>/dev/null
     ((i++))
 
 done

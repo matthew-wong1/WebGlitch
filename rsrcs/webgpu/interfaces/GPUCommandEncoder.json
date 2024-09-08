@@ -53,8 +53,8 @@
       "name": "finish",
       "returnType": "GPUCommandBuffer",
       "conditions": {
-        "commandEncodingFinished": true,
-        "noActiveDebugGroups": true
+        "noActiveDebugGroups": true,
+        "commandEncodingFinished": true
       },
       "setUnavailable": {
         "this": ["all"],

@@ -32,8 +32,9 @@
       "name": "end",
       "returnType": "none",
       "conditions": {
-        "computePassEncodingFinished": true,
-        "noActiveDebugGroups": true
+        "noActiveDebugGroups": true,
+        "computePassEncodingFinished": true
+
       },
       "setUnavailable": {
         "this": ["all"]

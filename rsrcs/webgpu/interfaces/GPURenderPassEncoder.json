@@ -115,8 +115,8 @@
       "name": "end",
       "returnType": "none",
       "conditions": {
-        "renderPassEncodingFinished": true,
-        "noActiveDebugGroups": true
+        "noActiveDebugGroups": true,
+        "renderPassEncodingFinished": true
       },
       "setUnavailable": {
         "this": ["all"]

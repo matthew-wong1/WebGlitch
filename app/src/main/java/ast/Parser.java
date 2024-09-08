@@ -208,12 +208,14 @@ public class Parser {
     }
 
     private void ensureNoActiveDebugGroups(String receiverName) {
+        System.out.println("in here");
         int remainingDebugGroups = outstandingDebugGroups(receiverName);
+        System.out.println(remainingDebugGroups);
         if (remainingDebugGroups == 0) {
             return;
         }
 
-        for (int i = remainingDebugGroups - 1; i > 0; i--) {
+        for (int i = remainingDebugGroups; i > 0; i--) {
             String receiverType = generator.getVariableType(receiverName);
             generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "popDebugGroup", true), null, null, receiverName);
         }

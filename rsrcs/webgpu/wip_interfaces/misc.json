@@ -104,21 +104,6 @@
           "readCompatible": "stencil"
         }
       }
-    },
-    {
-      "name": "createRenderBundleEncoder",
-      "paramType": "object",
-      "returnType": "GPURenderBundleEncoder",
-      "properties": [
-        {
-          "colorFormats": {
-            "type": "gpuTextureFormat",
-            "enum": true,
-            "inFile": true,
-            "array": true
-          }
-        }
-      ]
     }
   ]
 }

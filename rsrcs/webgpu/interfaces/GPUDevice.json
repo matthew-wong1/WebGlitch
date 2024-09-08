@@ -325,6 +325,25 @@
     {
       "name": "createSampler",
       "returnType": "GPUSampler"
+    },
+    {
+      "name": "createRenderBundleEncoder",
+      "paramType": "object",
+      "returnType": "GPURenderBundleEncoder",
+      "properties": [
+        {
+          "colorFormats": {
+            "type": "gpuTextureFormat",
+            "enum": true,
+            "inFile": true,
+            "array": true,
+            "conditions": {
+              "colorRenderable": true,
+              "renderBundleCompatibleFormats": true
+            }
+          }
+        }
+      ]
     }
   ],
   "attributes": [

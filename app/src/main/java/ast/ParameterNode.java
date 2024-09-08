@@ -930,7 +930,6 @@ public class ParameterNode extends ASTNode {
             ensureTextureDimensionAndSampleCompatible(enumValues);
         }
 
-
         if (conditions.has("textureFormatCompatible")) {
             ensureTextureFormatCompatible(enumValues);
         }
@@ -965,6 +964,10 @@ public class ParameterNode extends ASTNode {
             ensureColorRenderable(enumValues);
         }
 
+        if (conditions.has("renderBundleCompatibleFormats")) {
+            ensureRenderBundleCompatibleFormats(enumValues);
+        }
+
         if (conditions.has("readCompatible")) {
             ensureReadCompatible(conditions.get("readCompatible").asText());
         }
@@ -978,6 +981,15 @@ public class ParameterNode extends ASTNode {
         }
 
         return mandatoryEnums;
+    }
+
+    private void ensureRenderBundleCompatibleFormats(List<String> enumValues) {
+        Collections.shuffle(enumValues, randomUtils.getRandom());
+
+        // temporarily just return 1
+        String onlyValue = enumValues.getFirst();
+        enumValues.clear();
+        enumValues.add(onlyValue);
     }
 
     private void ensureBufferCompatibleMapping(List<String> enumValues) {

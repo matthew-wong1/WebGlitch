@@ -208,9 +208,7 @@ public class Parser {
     }
 
     private void ensureNoActiveDebugGroups(String receiverName) {
-        System.out.println("in here");
         int remainingDebugGroups = outstandingDebugGroups(receiverName);
-        System.out.println(remainingDebugGroups);
         if (remainingDebugGroups == 0) {
             return;
         }

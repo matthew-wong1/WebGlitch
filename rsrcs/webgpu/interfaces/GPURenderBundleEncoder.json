@@ -1,0 +1,98 @@
+{
+  "receiverType": "GPURenderBundleEncoder",
+  "requirements": ["GPURenderBundleEncoder"],
+  "methods": [
+    {
+      "name": "insertDebugMarker",
+      "returnType": "none",
+      "properties": [
+        {
+          "markerLabel": {
+            "type": "markerLabel"
+          }
+        }
+      ]
+    },
+    {
+      "name": "pushDebugGroup",
+      "returnType": "none",
+      "properties": [
+        {
+          "markerLabel": {
+            "type": "markerLabel"
+          }
+        }
+      ]
+    },
+    {
+      "name": "popDebugGroup",
+      "returnType": "none",
+      "properties": [
+        {
+          "markerLabel": {
+            "type": "markerLabel"
+          }
+        }
+      ],
+      "conditions": {
+        "debugGroupAvailable": true
+      }
+    },
+    {
+      "name": "setVertexBuffer",
+      "returnType": "none",
+      "properties": [
+        {
+          "slot": {
+            "type": "bufferSlot"
+          },
+          "buffer": {
+            "type": "GPUBuffer",
+            "conditions": {
+              "same": ["GPUDevice"],
+              "withAttributes": {
+                "GPUBuffer.usage": ["GPUBufferUsage.VERTEX"],
+                "GPUBuffer.mappedAtCreation": ["false"]
+              },
+              "trackedLifetime": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "setIndexBuffer",
+      "returnType": "none",
+      "properties": [
+        {
+          "buffer": {
+            "type": "GPUBuffer",
+            "conditions": {
+              "same": ["GPUDevice"],
+              "withAttributes": {
+                "GPUBuffer.usage": ["GPUBufferUsage.INDEX"],
+                "GPUBuffer.mappedAtCreation": ["false"]
+              },
+              "trackedLifetime": true
+            }
+          }
+        },
+        {
+          "indexFormat": {
+            "type": "string",
+            "enum": [
+              "uint16",
+              "uint32"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "attributes": [
+    {
+      "name": "label",
+      "returnType": "string"
+    }
+  ]
+}

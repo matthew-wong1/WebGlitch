@@ -341,6 +341,10 @@
               "colorRenderable": true,
               "renderBundleCompatibleFormats": true
             }
+          },
+          "label": {
+            "type": "string",
+            "optional": true
           }
         }
       ]

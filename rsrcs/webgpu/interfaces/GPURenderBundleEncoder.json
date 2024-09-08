@@ -87,6 +87,16 @@
           }
         }
       ]
+    },
+    {
+      "name": "finish",
+      "returnType": "GPURenderBundle",
+      "conditions": {
+        "noActiveDebugGroups": true
+      },
+      "setUnavailable": {
+        "this": ["all"]
+      }
     }
   ],
   "attributes": [

@@ -3,6 +3,11 @@
   "requirements": ["GPUBuffer"],
   "methods": [
     {
+      "name": "destroy",
+      "returnType": "none",
+      "deletes": true
+    },
+    {
       "name": "mapAsync",
       "returnType": "none",
       "async": true,

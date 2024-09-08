@@ -87,6 +87,34 @@
       }
     },
     {
+      "name": "setIndexBuffer",
+      "returnType": "none",
+      "properties": [
+        {
+          "buffer": {
+            "type": "GPUBuffer",
+            "conditions": {
+              "same": ["GPUDevice"],
+              "withAttributes": {
+                "GPUBuffer.usage": ["GPUBufferUsage.INDEX"],
+                "GPUBuffer.mappedAtCreation": ["false"]
+              },
+              "trackedLifetime": true
+            }
+          }
+        },
+        {
+          "indexFormat": {
+            "type": "string",
+            "enum": [
+              "uint16",
+              "uint32"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "name": "pushDebugGroup",
       "returnType": "none",
       "properties": [

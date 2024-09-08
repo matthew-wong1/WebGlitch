@@ -34,6 +34,10 @@ public class TypedArray extends ASTNode {
         long numValues = generateForSizeThatIsMultipleOf4Bytes(elementSizeInBytes, maxBytes);
 
 
+        generateRandomValues(randomUtils, numValues);
+    }
+
+    private void generateRandomValues(RandomUtils randomUtils, long numValues) {
         for (int i = 0; i < numValues; i++) {
             values.add(randomUtils.nextInt(RANGE * 2 + 1) - RANGE);
         }
@@ -43,7 +47,9 @@ public class TypedArray extends ASTNode {
         this.dataVariable = null;
         this.type = type;
         this.randomUtils = randomUtils;
-        valuesToUse.forEach(v -> this.values.add(Integer.parseInt(v)));
+//        valuesToUse.forEach(v -> this.values.add(Integer.parseInt(v)));
+
+        generateRandomValues(randomUtils, valuesToUse.size());
     }
 
     private long generateForSizeThatIsMultipleOf4Bytes(int elementSizeInBytes, long maxBytes) {

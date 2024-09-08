@@ -501,6 +501,7 @@ public class ParameterNode extends ASTNode {
 
 
         String webGPUObject = generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this, cannotBeThisObject, null);
+        generator.addToCallUnavailability(webGPUObject, Set.of("destroy"));
         Parameter newParameter = new Parameter(webGPUObject);
 
         if (conditionsNode.has("trackedLifetime")) {

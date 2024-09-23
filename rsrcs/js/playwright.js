@@ -15,7 +15,7 @@ if (!scriptFilePath) {
     const scriptContent = fs.readFileSync(scriptFilePath, 'utf8');
 
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         executablePath: '/Users/matthew/Documents/msc/final_proj/WebGlitch/rsrcs/browsers/chromium-131.0.6734.0-mac-asan/Chromium.app/Contents/MacOS/Chromium',
         args: [
             '--enable-unsafe-webgpu',

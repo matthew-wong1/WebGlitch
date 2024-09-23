@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const puppeteer = require('puppeteer-core');
 const fs = require('fs');
 const path = require('path');
 
@@ -13,8 +14,9 @@ if (!scriptFilePath) {
 (async () => {
     const scriptContent = fs.readFileSync(scriptFilePath, 'utf8');
 
-    const browser = await chromium.launch({
+    const browser = await puppeteer.launch({
         headless: false,
+        executablePath: '/Users/matthew/Documents/msc/final_proj/WebGlitch/rsrcs/browsers/chromium-131.0.6734.0-mac-asan/Chromium.app/Contents/MacOS/Chromium',
         args: [
             '--enable-unsafe-webgpu',
             '--unsafely-treat-insecure-origin-as-secure=http://localhost:8080'

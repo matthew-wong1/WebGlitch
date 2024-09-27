@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer-core');
 const fs = require('fs');
-const path = require('path');
 
 // Get the JavaScript file path from the command-line arguments
 const scriptFilePath = process.argv[2];
@@ -10,29 +9,22 @@ if (!scriptFilePath) {
     process.exit(1);
 }
 
+const browserType = process.env.BROWSER;
+const executablePath = process.env.EXECUTABLE_PATH;
+
 (async () => {
     const scriptContent = fs.readFileSync(scriptFilePath, 'utf8');
 
-    // executablePath: '/vol/bitbucket/klw19/chromium/src/out/Default/chrome',
-    // const browser = await puppeteer.launch({
-    // 	timeout: 60000,
-    // 	protocolTimeout: 60000,
-    //     headless: false,
-    // 	executablePath: '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary',
-    // });
-
     const browser = await puppeteer.launch({
-        browser: "firefox",
+        browser: browserType,
         timeout: 60000,
         protocolTimeout: 60000,
         headless: false,
-        executablePath: '/Applications/Firefox Nightly.app/Contents/MacOS/firefox',
+        executablePath: executablePath,
     });
 
     // executablePath: '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'
-
-    // const context = await puppeteer.newContext({ignoreHTTPSErrors: true});
-    // const page = await context.newPage();
+    // '/Applications/Firefox Nightly.app/Contents/MacOS/firefox'
 
     const page = await browser.newPage();
 
@@ -42,18 +34,6 @@ if (!scriptFilePath) {
         const location = msg.location();
         console.log(`${text}`);
     });
-    // page
-    //   .on('console', message =>
-    //     console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
-    //   .on('pageerror', ({ message }) => console.log(message))
-    //   .on('response', response =>
-    //     console.log(`${response.status()} ${response.url()}`))
-    //   .on('requestfailed', request =>
-    //     console.log(`${request.failure().errorText} ${request.url()}`))
-    //   page.on('pageerror', error => console.error(`[Page Error] ${error.message}`));
-    //   page.on('requestfailed', request => {
-    //       console.log(`Request failed: ${request.failure().errorText} ${request.url()}`);
-    //   });
 
     await page.goto('http://localhost:8080/index.html');
 

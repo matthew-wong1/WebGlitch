@@ -31,7 +31,6 @@ if not os.path.exists(webglitch_jar_path):
 # Argument parsing
 parser = argparse.ArgumentParser(description="Run WebGlitch Java program")
 parser.add_argument('--run', action='store_true', help="Run in a loop, generating and executing files.")
-parser.add_argument('--coverage', action='store_true', help="Run with coverage.")
 parser.add_argument('--cts', action='store_true', help="Ensure generated programs are CTS compatible.")
 args = parser.parse_args()
 
@@ -68,6 +67,8 @@ def gen_cts(num_files):
 
 if args.run:
     run_loop(args.run)
+elif args.cts:
+    gen_cts(args.cts)
 else:
     run_webglitch(sys.argv[1:])
 

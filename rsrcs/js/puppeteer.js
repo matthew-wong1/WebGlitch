@@ -23,7 +23,7 @@ const executablePath = process.env.EXECUTABLE_PATH;
         executablePath: executablePath,
     });
 
-    // executablePath: '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'
+    // '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'
     // '/Applications/Firefox Nightly.app/Contents/MacOS/firefox'
 
     const page = await browser.newPage();

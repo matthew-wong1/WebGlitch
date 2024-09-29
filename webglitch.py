@@ -57,6 +57,14 @@ def run_webglitch(args_to_use):
         print(f"Error running Java command: {e}")
         sys.exit(e.returncode)
 
+def gen_cts(num_files):
+    global i
+
+    while i <= num_files:
+        output_file = os.path.join(OUTPUT_DIR, f"{i}.spec.ts")
+        run_webglitch(["-o", output_file, "-c"])
+        i += 1 
+
 
 if args.run:
     run_loop(args.run)

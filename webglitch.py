@@ -4,8 +4,10 @@ import sys
 import signal
 import argparse
 
-RUNNER_PATH = "/Users/matthew/Documents/msc/final_proj/WebGlitchRunner/run.py"
-OUTPUT_DIR = "/Users/matthew/Documents/msc/final_proj/WebGlitchFiles/files"
+RUNNER_PATH = "D:/final_proj/WebGlitchRunner"
+# RUNNER_PATH = "/Users/matthew/Documents/msc/final_proj/WebGlitchRunner/run.py"
+OUTPUT_DIR = "D:/final_proj/WebGlitchFiles/files"
+# OUTPUT_DIR = "/Users/matthew/Documents/msc/final_proj/WebGlitchFiles/files"
 i = 1 
 
 
@@ -29,7 +31,7 @@ if not os.path.exists(webglitch_jar_path):
     sys.exit(1)
 
 # Argument parsing
-parser = argparse.ArgumentParser(description="Run WebGlitch Java program")
+parser = argparse.ArgumentParser(description="Run WebGlitch programs")
 parser.add_argument('--run', action='store_true', help="Run in a loop, generating and executing files.")
 parser.add_argument('--cts', action='store_true', help="Ensure generated programs are CTS compatible.")
 args = parser.parse_args()

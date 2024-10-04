@@ -21,10 +21,10 @@ python3 webglich.py <.jar options>
 
 // To generate and execute generated programs (requires WebGlitchRunner)
 // supported platforms: 'all', 'all_runtimes', 'all_browsers', 'dawn', 'wgpu', 'chrome', 'firefox'
-python3 webglitch.py --run=<platform>
+python3 webglitch.py --run <platform>
 
 // To generate programs in the CTS format:
-python3 webglitch.py --cts=<num_files>
+python3 webglitch.py --cts <num_files>
 ```
 * Please update the `RUNNER_PATH and OUTPUT_DIR variables` first in `webglitch.py`
 * You can also use the scripts `webglitch.sh` and `webglitch.bat` to integrate with other tools (no need to specify paths)

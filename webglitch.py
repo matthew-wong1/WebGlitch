@@ -4,7 +4,7 @@ import sys
 import signal
 import argparse
 
-RUNNER_PATH = "D:/final_proj/WebGlitchRunner"
+RUNNER_PATH = "D:/final_proj/WebGlitchRunner/run.py"
 # RUNNER_PATH = "/Users/matthew/Documents/msc/final_proj/WebGlitchRunner/run.py"
 OUTPUT_DIR = "D:/final_proj/WebGlitchFiles/files"
 # OUTPUT_DIR = "/Users/matthew/Documents/msc/final_proj/WebGlitchFiles/files"
@@ -32,20 +32,21 @@ if not os.path.exists(webglitch_jar_path):
 
 # Argument parsing
 parser = argparse.ArgumentParser(description="Run WebGlitch programs")
-parser.add_argument('--run', action='store_true', help="Run in a loop, generating and executing files.")
-parser.add_argument('--cts', action='store_true', help="Ensure generated programs are CTS compatible.")
+parser.add_argument('--run', type=str, help="Run in a loop, generating and executing files.")
+parser.add_argument('--cts', type=int, help="Ensure generated programs are CTS compatible.")
 args = parser.parse_args()
 
 def run_loop(platform):
     global i
     while True:
-        output_file = os.path.join(OUTPUT_DIR, f"{i}.js")
+        output_file = os.path.join(OUTPUT_DIR, f"{i}.js").replace("\\", "/")
         
         # Run webglitch.sh
         run_webglitch(["-o", output_file, "-m", "-w"])
         
         # Run the WebGlitchRunner script
         runner_command = [sys.executable, RUNNER_PATH, "-o", output_file, "-b", platform]
+        print(runner_command)
         print(f"Running and logging the file {output_file}")
         subprocess.run(runner_command, stderr=subprocess.DEVNULL)
         
@@ -62,7 +63,7 @@ def gen_cts(num_files):
     global i
 
     while i <= num_files:
-        output_file = os.path.join(OUTPUT_DIR, f"{i}.spec.ts")
+        output_file = os.path.join(OUTPUT_DIR, f"{i}.spec.ts").replace("\\", "/")
         run_webglitch(["-o", output_file, "-c"])
         i += 1 
 

@@ -19,7 +19,7 @@ const executablePath = process.env.EXECUTABLE_PATH;
         browser: browserType,
         timeout: 60000,
         protocolTimeout: 60000,
-        headless: true,
+        headless: false,
         executablePath: executablePath,
     });
 
@@ -33,6 +33,16 @@ const executablePath = process.env.EXECUTABLE_PATH;
         const type = msg.type();
         const location = msg.location();
         console.log(`${text}`);
+    });
+
+    await page.evaluateOnNewDocument(() => {
+        window.addEventListener('error', (e) => {
+            console.log(`Global error: ${e.message} at ${e.filename}:${e.lineno}:${e.colno}`);
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error(`Unhandled rejection: ${event.reason}`);
+        });
     });
 
     await page.goto('http://localhost:8080/index.html');

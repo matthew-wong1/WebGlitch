@@ -200,10 +200,20 @@ public class ParameterNode extends ASTNode {
     private void generateVertexBufferRequirements() {
         String fragmentShaderModule = parentList.getParameter("fragment.module");
         String fragmentShader = generator.getObjectAttributes(fragmentShaderModule, "code");
-        String shaderFolderPath = WebGlitch.getShadersPrefixPath() + generator.getShaderProperties(fragmentShader, "path");
+
+        String shaderFolderPath = "";
+        try {
+            shaderFolderPath = WebGlitch.getShadersPrefixPath() + generator.getShaderProperties(fragmentShader, "path");
+        } catch (NullPointerException e) {
+            this.parameters.add(new Parameter("[]"));
+            return;
+        }
+
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode shaderRequirementsNode = null;
+
+
 
         try {
             shaderRequirementsNode = mapper.readTree(new File(shaderFolderPath + "requirements.json"));
@@ -211,7 +221,12 @@ public class ParameterNode extends ASTNode {
             return;
         }
 
-        String vertexBufferLayout = shaderRequirementsNode.get("vertexBufferLayout").asText();
+        String vertexBufferLayout = "";
+
+        if (shaderRequirementsNode != null && shaderRequirementsNode.has("vertexBufferLayout")) {
+            vertexBufferLayout = shaderRequirementsNode.get("vertexBufferLayout").asText();
+        }
+
         this.parameters.add(new Parameter("[" + vertexBufferLayout + "]"));
 
     }
@@ -220,7 +235,15 @@ public class ParameterNode extends ASTNode {
         String fragmentShaderModule = parentList.getParameter("fragment.module");
         String fragmentShader = generator.getObjectAttributes(fragmentShaderModule, "code");
         String specificDevice = generator.getParentVariable(fragmentShaderModule);
-        String shaderFolderPath = WebGlitch.getShadersPrefixPath() + generator.getShaderProperties(fragmentShader, "path");
+
+        String shaderFolderPath = "";
+        try {
+            shaderFolderPath = WebGlitch.getShadersPrefixPath() + generator.getShaderProperties(fragmentShader, "path");
+        } catch (NullPointerException e) {
+            this.parameters.add(new Parameter(this.chooseRandomShader()));
+            return;
+        }
+
         String vertexPath = shaderFolderPath + "vertex.wgsl";
         Map<String, List<String>> vertexShaderRequirements = new HashMap<>();
         vertexShaderRequirements.put("label", List.of("specificVertex"));
@@ -364,7 +387,15 @@ public class ParameterNode extends ASTNode {
 
         // Set requirements for storage buffer
         // storage usage: storage, COPY_SRC
-        String storageBufferSize = shaderRequirementsNode.get("storageBufferSize").asText();
+
+        // Try catch for invalid parameters where vertex shader used instead of compute shader
+        String storageBufferSize = "";
+        try {
+            storageBufferSize = shaderRequirementsNode.get("storageBufferSize").asText();
+        } catch (NullPointerException e) {
+            return;
+        }
+
         bufferRequirements.put("GPUBuffer.size", List.of(storageBufferSize));
         bufferRequirements.put("GPUBuffer.usage", List.of("GPUBufferUsage.STORAGE", "GPUBufferUsage.COPY_SRC"));
 

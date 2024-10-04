@@ -4,6 +4,8 @@ A WebGPU program generator for fuzz testing.
 ## Requirements:
 1. Gradle 8.9+
 2. Node v20+
+3. Python 3.10+
+4. Java 21.0+
 
 ## Building:
 ```console
@@ -16,8 +18,8 @@ npm install
 ```console
 ./webglich.py
 ```
-
-* You can also use the scripts `webglitch.sh` and `webglitch.bat` to integrate with other tools
+* Please update the `RUNNER_PATH and OUTPUT_DIR variables` first in `webglitch.py`
+* You can also use the scripts `webglitch.sh` and `webglitch.bat` to integrate with other tools (no need to specify paths)
 
 ## Features:
 1. All generated API calls can be guaranteed to be valid 

@@ -3,7 +3,7 @@ package generator;
 import ast.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javascript.Require;
+import javascript.LoadShaderCall;
 import javascript.JavaScriptStatement;
 import javascript.TypedArray;
 import programprinter.PrettyPrinter;
@@ -28,7 +28,6 @@ public class Generator {
     private final String HEADER;
     private final String FOOTER;
     private final String WEBGLITCH_PATH = WebGlitch.getPath();
-    private final String SHADERS_PATH = WEBGLITCH_PATH + "/rsrcs/shaders/";
     private final String JSON_DIRECTORY_PATH = WEBGLITCH_PATH + "/rsrcs/webgpu/interfaces/";
     private final WebGlitchOptions webGlitchOptions;
     private final boolean mainOnly;
@@ -764,7 +763,8 @@ public class Generator {
                     default:
                         chosenBaseShaderType = "graphics";
                 }
-                File shadersDirectory = new File(SHADERS_PATH + chosenBaseShaderType);
+                File shadersDirectory = new File(WebGlitch.getShadersFullPath() + chosenBaseShaderType);
+
                 File[] files = shadersDirectory.listFiles(new FilenameFilter() {
                     @Override
                     public boolean accept(File dir, String name) {
@@ -775,21 +775,21 @@ public class Generator {
 
                 String chosenFolderName = files[randomUtils.nextInt(files.length)].getName();
 
-
-                String folderPath = SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
+                String folderPath = WebGlitch.getShadersSubPath() + chosenBaseShaderType + "/" + chosenFolderName + "/";
+//                String folderPath = SHADERS_PATH + chosenBaseShaderType + "/" + chosenFolderName + "/";
                 String fullPath = folderPath + shaderSubType + ".wgsl";
 
 
                 assignmentNode = new AssignmentNode("const",  "shader" + shaderNameToProperties.size(), randomUtils, webGlitchOptions);
-                Require requireStatement = new Require(fullPath, true);
-                assignmentNode.addNode(requireStatement);
+                LoadShaderCall loadShaderCallStatement = new LoadShaderCall(fullPath);
+                assignmentNode.addNode(loadShaderCallStatement);
                 String importName = assignmentNode.getVarName();
                 astNodeToPrepend = assignmentNode;
 
                 varName += shaderSubType + "." + importName;
 
                 // Later on, add available objects eg for improting JS objects
-                this.addToShaderProperties(importName, chosenBaseShaderType, folderPath, requireStatement);
+                this.addToShaderProperties(importName, chosenBaseShaderType, folderPath, loadShaderCallStatement);
                 break;
 
         }
@@ -799,7 +799,7 @@ public class Generator {
         return varName;
     }
 
-    private void addToShaderProperties(String importName, String chosenShaderType, String folderPath, Require requireStatement) {
+    private void addToShaderProperties(String importName, String chosenShaderType, String folderPath, LoadShaderCall loadShaderCallStatement) {
         if (!shaderNameToProperties.containsKey(importName)) {
             shaderNameToProperties.put(importName, new LinkedHashMap<>());
         }

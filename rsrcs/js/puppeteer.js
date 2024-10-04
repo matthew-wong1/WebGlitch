@@ -19,7 +19,7 @@ const executablePath = process.env.EXECUTABLE_PATH;
         browser: browserType,
         timeout: 60000,
         protocolTimeout: 60000,
-        headless: false,
+        headless: true,
         executablePath: executablePath,
     });
 

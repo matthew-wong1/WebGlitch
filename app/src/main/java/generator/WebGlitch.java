@@ -1,11 +1,7 @@
 package generator;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.cli.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +10,8 @@ import static java.lang.Integer.parseInt;
 public class WebGlitch {
 
     private static final String DEFAULT_MAX_CALLS = "500";
+    private static final String SHADERS_WITHIN_WEBGLITCH_SUB_PATH = "/rsrcs/html/";
+    private static final String SHADERS_SUB_PATH = "shaders/";
 
     public static void main(String[] args) {
         Options options = setupCLIOptions();
@@ -105,4 +103,10 @@ public class WebGlitch {
     public static String getPath() {
         return System.getProperty("user.dir").replace("\\", "/");
     }
+
+    public static String getShadersFullPath() { return getPath() + SHADERS_WITHIN_WEBGLITCH_SUB_PATH + getShadersSubPath(); }
+
+    public static String getShadersPrefixPath() { return getPath() + SHADERS_WITHIN_WEBGLITCH_SUB_PATH; }
+
+    public static String getShadersSubPath() { return SHADERS_SUB_PATH; }
 }

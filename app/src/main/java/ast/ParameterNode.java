@@ -200,7 +200,8 @@ public class ParameterNode extends ASTNode {
     private void generateVertexBufferRequirements() {
         String fragmentShaderModule = parentList.getParameter("fragment.module");
         String fragmentShader = generator.getObjectAttributes(fragmentShaderModule, "code");
-        String shaderFolderPath = generator.getShaderProperties(fragmentShader, "path");
+        String shaderFolderPath = WebGlitch.getShadersPrefixPath() + generator.getShaderProperties(fragmentShader, "path");
+
         ObjectMapper mapper = new ObjectMapper();
         JsonNode shaderRequirementsNode = null;
 
@@ -219,7 +220,7 @@ public class ParameterNode extends ASTNode {
         String fragmentShaderModule = parentList.getParameter("fragment.module");
         String fragmentShader = generator.getObjectAttributes(fragmentShaderModule, "code");
         String specificDevice = generator.getParentVariable(fragmentShaderModule);
-        String shaderFolderPath = generator.getShaderProperties(fragmentShader, "path");
+        String shaderFolderPath = WebGlitch.getShadersPrefixPath() + generator.getShaderProperties(fragmentShader, "path");
         String vertexPath = shaderFolderPath + "vertex.wgsl";
         Map<String, List<String>> vertexShaderRequirements = new HashMap<>();
         vertexShaderRequirements.put("label", List.of("specificVertex"));
@@ -309,7 +310,7 @@ public class ParameterNode extends ASTNode {
         try {
             computeShaderModule = generator.getObjectAttributes(computePipelineName, "compute.module");
             computeShader = generator.getObjectAttributes(computeShaderModule, "code");
-            shaderFolderPath = generator.getShaderProperties(computeShader, "path");
+            shaderFolderPath = WebGlitch.getShadersPrefixPath() + generator.getShaderProperties(computeShader, "path");
         } catch (NullPointerException e) {
             return;
         }

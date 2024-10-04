@@ -2,21 +2,24 @@ if (!navigator.gpu) {
     throw new Error("WebGPU not supported on this browser");
 }
 
-let pathPrefix = ""
-async function loadShader(filePath) {
+function loadShader(filePath) {
+    // In-browser execution
+    if (pathPrefix === "") {
+        return fetch(filePath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to load shader: ${response.statusText}`);
+                }
+                return response.text();
+            })
+            .catch(err => {
+                console.error('Failed to load shader:', err);
+            });
+    }
+
+    // In-runtime execution
     try {
-        // In-browser execution (since relative paths being used)
-        if (pathPrefix === "") {
-            const response = await fetch(filePath);
-            if (!response.ok) {
-                throw new Error(`Failed to load shader: ${response.statusText}`);
-            }
-            return await response.text();
-        }
-
-        // In-runtime execution (not an issue in-browser since this is never reached)
-        return await fs.readFile(filePath, 'utf8');
-
+        return fs.readFileSync(filePath, 'utf8');  // No async or await needed for sync
     } catch (err) {
         console.error('Failed to load shader:', err);
     }

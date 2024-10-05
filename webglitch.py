@@ -46,7 +46,7 @@ def run_loop(platform):
         
         # Run the WebGlitchRunner script
         runner_command = [sys.executable, RUNNER_PATH, "-o", output_file, "-b", platform]
-        print(runner_command)
+
         print(f"Running and logging the file {output_file}")
         subprocess.run(runner_command, stderr=subprocess.DEVNULL)
         

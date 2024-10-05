@@ -21,6 +21,11 @@ const executablePath = process.env.EXECUTABLE_PATH;
         protocolTimeout: 60000,
         headless: false,
         executablePath: executablePath,
+        args: [
+            '--enable-unsafe-webgpu',
+            '--disable-web-security',
+            '--allow-file-access-from-files'
+        ]
     });
 
     // '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'
@@ -28,11 +33,31 @@ const executablePath = process.env.EXECUTABLE_PATH;
 
     const page = await browser.newPage();
 
-    page.on('console', msg => {
-        const text = msg.text();
-        const type = msg.type();
-        const location = msg.location();
-        console.log(`${text}`);
+    // page.on('console', msg => {
+    //     const text = msg.text();
+    //     const type = msg.type();
+    //     const location = msg.location();
+    //     console.log(`${text}`);
+    // });
+
+    page.on('console', async (msg) => {
+        if (msg.type() === 'error') {
+            const errorArgs = await Promise.all(msg.args().map(arg => arg.jsonValue()));
+            // console.log("Error from browser context:", ...errorArgs);
+            errorArgs.forEach(arg => {
+                if (arg && typeof arg === 'object') {
+                    if (arg.name) {
+                        // If 'name' exists, print 'name: message'
+                        console.log(`${arg.name}: ${arg.message}`);
+                    } else if (arg.message) {
+                        // If no 'name', just print 'message'
+                        console.log(arg.message);
+                    }
+                }
+            });
+        } else {
+            console.log(msg.text());
+        }
     });
 
     await page.evaluateOnNewDocument(() => {

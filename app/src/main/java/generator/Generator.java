@@ -19,10 +19,19 @@ public class Generator {
     private final PrettyPrinter printer = new PrettyPrinter();
     private final String DEFAULT_CONTEXT_NAME = "context";
     private final String HEADER_DEFAULT = "\nasync function main() {";
-    private final String FOOTER_DEFAULT = "\n}main().then(() => {\n" +
-            "}).catch(error => {\n" +
-            "    console.log(error);\n" +
-            "});";
+//    private final String FOOTER_DEFAULT = "\n}main().then(() => {\n" +
+//            "}).catch(error => {\n" +
+//            "    console.log(error);\n" +
+//            "});";
+    private final String FOOTER_DEFAULT = "main()\n" +
+        "\t.then(() => {})\n" +
+        "\t.catch((error) => {\n" +
+        "\t\tconsole.error(\"Caught error in main():\", {\n" +
+        "\t\t\tmessage: error.message,\n" +
+        "\t\t\tstack: error.stack,\n" +
+        "\t\t\tname: error.name,\n" +
+        "\t\t});\n" +
+        "\t});";
     private final String HEADER_CTS = "\nasync function main(gpu: GPU) {";
     private final String FOOTER_CTS = "\n}";
     private final String HEADER;

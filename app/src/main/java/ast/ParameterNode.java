@@ -112,7 +112,7 @@ public class ParameterNode extends ASTNode {
     private void checkImplementationSpecificCalls(JsonNode details) throws SkipParameterException {
         boolean wgpuCompatible = generator.getWgpuCompatible();
 
-        if (wgpuCompatible && details.has("dawnOnly")) {
+        if ((wgpuCompatible && details.has("dawnOnly")) || generator.getFirefoxCompatible() && details.has("excludeFirefox")) {
             throw new SkipParameterException("Platform incompatible parameters are skipped");
         }
     }
@@ -1378,6 +1378,11 @@ public class ParameterNode extends ASTNode {
         Set<String> resultantSet = new HashSet<>(constraintsList.getFirst());
         for (List<String> constraint : constraintsList) {
             resultantSet.retainAll(constraint);
+        }
+
+        // hacky way for firefox compatibility
+        if (generator.getFirefoxCompatible() && resultantSet.contains("2d-array")) {
+            resultantSet.remove("2d-array");
         }
 
         ArrayList<String> resultantSetAsList = new ArrayList<>(resultantSet);

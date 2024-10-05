@@ -76,13 +76,22 @@ public class Generator {
     private final Parser parser = new Parser(this);
     private final int maxCalls;
     private final boolean wgpuCompatible;
+    private final boolean firefoxCompatible;
     private ASTNode programNode;
 
-    public Generator(int maxCalls, boolean wgpuCompatible, boolean ctsCompatible, Long seed, boolean mainOnly) {
+    public Generator(int maxCalls, Map<String, Boolean> compatibilityModes, boolean ctsCompatible, Long seed, boolean mainOnly) {
         this.maxCalls = maxCalls;
-        this.wgpuCompatible = wgpuCompatible;
         this.mainOnly = mainOnly;
         this.ctsCompatible = ctsCompatible;
+
+        if (compatibilityModes.get("firefox")) {
+            wgpuCompatible = true;
+            firefoxCompatible = true;
+        } else {
+            wgpuCompatible = compatibilityModes.get("wgpu");
+            firefoxCompatible = false;
+        }
+
 
         if (seed != null) {
             this.randomUtils = new RandomUtils(seed);
@@ -105,11 +114,6 @@ public class Generator {
         System.out.println("Generating file using seed: " + randomUtils.getSeed());
     }
 
-    public static void main(String[] args) {
-        Generator generator = new Generator(500,  false, false, null, false);
-        generator.generateProgram("./output/1.js");
-    }
-
     public String getParentVariable(String childVariable) {
         return variableToReceiverName.get(childVariable);
     }
@@ -117,6 +121,8 @@ public class Generator {
     public boolean getWgpuCompatible() {
         return wgpuCompatible;
     }
+
+    public boolean getFirefoxCompatible() { return firefoxCompatible; }
 
     public RandomUtils getRandomUtils() {
         return randomUtils;

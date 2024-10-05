@@ -25,23 +25,28 @@ public class WebGlitch {
             specificSeed = Long.parseLong(cmd.getOptionValue("s"));
         }
         boolean wgpuCompatibilityMode = cmd.hasOption("w");
+        boolean firefoxCompatibilityMode = cmd.hasOption("f");
         boolean ctsCompatiblityMode = cmd.hasOption("c");
+
+        Map<String, Boolean> compatibilityModes = new HashMap<>();
+        compatibilityModes.put("wgpu", wgpuCompatibilityMode);
+        compatibilityModes.put("firefox", firefoxCompatibilityMode);
 
         String filePathToUse = cmd.getOptionValue("o");
 
-        Generator generator = new Generator(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly);
+        Generator generator = new Generator(maxCallsToGenerate, compatibilityModes, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly);
 
         generator.generateProgram(filePathToUse);
         // Uncomment this for metrics about the programs you generated
-//        printCallDistributionMetrics(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly, filePathToUse);
+//        printCallDistributionMetrics(maxCallsToGenerate, compatibilityModes, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly, filePathToUse);
 
     }
 
-    private static void printCallDistributionMetrics(int maxCallsToGenerate, boolean wgpuCompatibilityMode, boolean ctsCompatiblityMode, Long specificSeed, boolean generateMainFunctionOnly, String filePathToUse) {
+    private static void printCallDistributionMetrics(int maxCallsToGenerate, Map<String, Boolean> compatibilityModes, boolean ctsCompatiblityMode, Long specificSeed, boolean generateMainFunctionOnly, String filePathToUse) {
         Map<String, Integer> cumulativeCallDistribution = new HashMap<>();
         for (int i = 0; i < 1000; i++) {
             System.out.println("Generating program " + i);
-            Generator generator = new Generator(maxCallsToGenerate, wgpuCompatibilityMode, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly);
+            Generator generator = new Generator(maxCallsToGenerate, compatibilityModes, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly);
             Map<String, Integer> callDistribution = generator.generateProgram(filePathToUse);
             callDistribution.forEach((k, v) -> cumulativeCallDistribution.merge(k, v, Integer::sum));
         }
@@ -71,6 +76,7 @@ public class WebGlitch {
         Option filePath = new Option("o", "output", true, "Output path");
         Option mainOnly = new Option("m", "mainOnly", false, "Generate only the main function");
         Option wgpuCompatible = new Option("w", "wgpu", false, "Ensures generated programs are wgpu compatible.");
+        Option firefoxCompatible = new Option("f", "firefox", false, "Ensures generated programs are firefox compatible.");
         Option ctsCompatible = new Option("c", "cts", false, "Ensures generated programs are CTS compatible.");
 
         maxCalls.setType(Integer.class);
@@ -88,6 +94,9 @@ public class WebGlitch {
         wgpuCompatible.setRequired(false);
         wgpuCompatible.setType(Boolean.class);
 
+        firefoxCompatible.setRequired(false);
+        firefoxCompatible.setType(Boolean.class);
+
         ctsCompatible.setRequired(false);
         ctsCompatible.setType(Boolean.class);
 
@@ -97,6 +106,7 @@ public class WebGlitch {
         options.addOption(filePath);
         options.addOption(mainOnly);
         options.addOption(wgpuCompatible);
+        options.addOption(firefoxCompatible);
         return options;
     }
 

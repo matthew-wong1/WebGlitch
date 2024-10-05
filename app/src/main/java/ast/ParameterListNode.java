@@ -81,7 +81,8 @@ public class ParameterListNode extends ASTNode {
                     this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this, this.requirements));
                 } catch (SkipParameterException e) {
 //                    System.out.println("Skipping parameter " + fieldName);
-                    List<String> allowedFieldSkips = Arrays.asList("stripIndexFormat", "depthSlice", "depthLoadOp", "depthStoreOp", "stencilLoadOp", "stencilStoreOp");
+                    // Sanity check
+                    List<String> allowedFieldSkips = Arrays.asList("stripIndexFormat", "depthSlice", "depthLoadOp", "depthStoreOp", "stencilLoadOp", "stencilStoreOp", "occlusionQuerySet");
                     if(!allowedFieldSkips.contains(fieldName)) {
                         System.err.println("Skipped unskippable parameter for field " + fieldName);
                         System.exit(1);

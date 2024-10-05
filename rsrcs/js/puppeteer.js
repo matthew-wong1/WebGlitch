@@ -37,11 +37,11 @@ const executablePath = process.env.EXECUTABLE_PATH;
 
     await page.evaluateOnNewDocument(() => {
         window.addEventListener('error', (e) => {
-            console.log(`Global error: ${e.message} at ${e.filename}:${e.lineno}:${e.colno}`);
+            console.log(e.message)
         });
 
         window.addEventListener('unhandledrejection', (event) => {
-            console.error(`Unhandled rejection: ${event.reason}`);
+            console.log(event.reason)
         });
     });
 
@@ -52,7 +52,7 @@ const executablePath = process.env.EXECUTABLE_PATH;
 
     // Wait for the WebGPU code to execute
     // await page.waitForTimeout(5000);
-    await new Promise(r => setTimeout(r, 10000))
+    await new Promise(r => setTimeout(r, 20000))
 
     // Close the browser
     await browser.close();

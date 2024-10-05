@@ -2,6 +2,10 @@ if (!navigator.gpu) {
     throw new Error("WebGPU not supported on this browser");
 }
 
+if (typeof pathPrefix === "undefined") {
+	globalThis.pathPrefix = "";
+}
+
 function loadShader(filePath) {
     // In-browser execution
     if (pathPrefix === "") {
@@ -24,12 +28,3 @@ function loadShader(filePath) {
         console.error('Failed to load shader:', err);
     }
 }
-
-// function loadShader(file) {
-//     try {
-//         const data = fs.readFileSync(file, 'utf8');
-//         return data;
-//     } catch (err) {
-//         console.error('Failed to load shader:', err);
-//     }
-// }

@@ -23,7 +23,7 @@ public class Generator {
 //            "}).catch(error => {\n" +
 //            "    console.log(error);\n" +
 //            "});";
-    private final String FOOTER_DEFAULT = "main()\n" +
+    private final String FOOTER_DEFAULT = "} main()\n" +
         "\t.then(() => {})\n" +
         "\t.catch((error) => {\n" +
         "\t\tconsole.error(\"Caught error in main():\", {\n" +
@@ -641,7 +641,7 @@ public class Generator {
         ASTNode receiver = null;
 
         try {
-            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, receiverType, isMethod, requirements, sameObjectsReqs, specificReceiver);
+            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, isMethod, requirements, sameObjectsReqs, specificReceiver);
         } catch (IOException e) {
             System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }
@@ -1254,6 +1254,24 @@ public class Generator {
         }
 
         return requirements;
+    }
+
+    public void addErrorLoggingForVariable(String variableWhoseAttributesAreAffected) {
+
+        String EVENT_LISTENER = ".addEventListener(\"uncapturederror\", async (event) => {\n" +
+                "\t\tconst errorDetails = {\n" +
+                "\t\t\tmessage: event.error.message,\n" +
+                "\t\t\tstack: event.error.stack,\n" +
+                "\t\t\tname: event.error.name,\n" +
+                "\t\t};\n" +
+                "\t\tconsole.error(errorDetails);\n" +
+                "\t});";
+
+        if (!variableWhoseAttributesAreAffected.toLowerCase().contains("device")) {
+            return;
+        }
+
+        programNode.addNode(new JavaScriptStatement(variableWhoseAttributesAreAffected + EVENT_LISTENER));
     }
 
     public record FileNameCallProbPair(String fileName, Double callProbability) {

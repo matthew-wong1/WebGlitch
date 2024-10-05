@@ -20,14 +20,14 @@ public class Parser {
 
     public ASTNode parseAndBuildRandCall(String filePath, Generator.ReceiverTypeCallNameCallType callDetails) throws IOException {
 
-        return parseAndBuildCall(filePath, callDetails.callName(), callDetails.receiverType(), callDetails.isMethod(), null, null, null);
+        return parseAndBuildCall(filePath, callDetails.callName(), callDetails.isMethod(), null, null, null);
 
     }
 
 
 
 
-    public ASTNode parseAndBuildCall(String filePath, String callName, String currentReceiverType, boolean isMethod, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs, String specificReceiver) throws IOException {
+    public ASTNode parseAndBuildCall(String filePath, String callName, boolean isMethod, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs, String specificReceiver) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootJsonNode = mapper.readTree(new File(filePath));
 
@@ -123,6 +123,8 @@ public class Parser {
         generator.parseAndSetCallAvailability(receiver, callJsonNode);
 
         generator.addToProgramNode(nodeToReturn);
+
+        generator.addErrorLoggingForVariable(variableWhoseAttributesAreAffected);
 
         if (callJsonNode.has("postGeneration") && !generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
             parsePostGenerationRequirements(receiver, callJsonNode.get("postGeneration"));

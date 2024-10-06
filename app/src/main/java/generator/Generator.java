@@ -169,9 +169,15 @@ public class Generator {
     }
 
     private void addCall(File apiInterface, JsonNode callJsonNode, String receiverType, boolean isMethod) {
+        List<String> firefoxExcludedCalls = Arrays.asList("createQuerySet");
+
         String returnType = callJsonNode.get("returnType").asText();
         String callName = callJsonNode.get("name").asText();
         String fileName = apiInterface.getName();
+
+        if (firefoxExcludedCalls.contains(callName) && firefoxCompatible) {
+            return;
+        }
 
         List<String> ignoredTypes = new ArrayList<>(Arrays.asList("string", "none", "boolean"));
 

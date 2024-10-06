@@ -42,7 +42,7 @@ def run_loop(platform):
         output_file = os.path.join(OUTPUT_DIR, f"{i}.js").replace("\\", "/")
         
         # Run webglitch.sh
-        run_webglitch(["-o", output_file, "-m", "-w"])
+        run_webglitch(["-o", output_file, "-m", "-f"])
         
         # Run the WebGlitchRunner script
         runner_command = [sys.executable, RUNNER_PATH, "-o", output_file, "-b", platform]

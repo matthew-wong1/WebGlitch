@@ -77,7 +77,7 @@ const executablePath = process.env.EXECUTABLE_PATH;
 
     // Wait for the WebGPU code to execute
     // await page.waitForTimeout(5000);
-    await new Promise(r => setTimeout(r, 20000))
+    await new Promise(r => setTimeout(r, 10000))
 
     // Close the browser
     await browser.close();

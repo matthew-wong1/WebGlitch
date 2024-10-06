@@ -247,7 +247,7 @@ public class ParameterNode extends ASTNode {
         String vertexPath = shaderFolderPath + "vertex.wgsl";
         Map<String, List<String>> vertexShaderRequirements = new HashMap<>();
         vertexShaderRequirements.put("label", List.of("specificVertex"));
-        vertexShaderRequirements.put("code", List.of("loadShader(" + "'" + vertexPath + "')"));
+        vertexShaderRequirements.put("code", List.of("await loadShader(globalThis.pathPrefix +" + "'" + generator.getShaderProperties(fragmentShader, "path") + "vertex.wgsl" + "')"));
         String vertexShaderModule = generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUDevice", "createShaderModule", true), vertexShaderRequirements, null, specificDevice);
         this.parameters.add(new Parameter(vertexShaderModule));
     }

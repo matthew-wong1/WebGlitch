@@ -169,14 +169,18 @@ public class Generator {
     }
 
     private void addCall(File apiInterface, JsonNode callJsonNode, String receiverType, boolean isMethod) {
-        List<String> firefoxExcludedCalls = Arrays.asList("createQuerySet");
+        List<String> firefoxExcludedCalls = Arrays.asList("createQuerySet", "resolveQuerySet");
+        List<String> firefoxExcludedFiles = Arrays.asList("GPUQuerySet.json");
 
         String returnType = callJsonNode.get("returnType").asText();
         String callName = callJsonNode.get("name").asText();
         String fileName = apiInterface.getName();
 
-        if (firefoxExcludedCalls.contains(callName) && firefoxCompatible) {
-            return;
+        if (firefoxCompatible) {
+            if (firefoxExcludedCalls.contains(callName) || firefoxExcludedFiles.contains(fileName)) {
+                return;
+            }
+
         }
 
         List<String> ignoredTypes = new ArrayList<>(Arrays.asList("string", "none", "boolean"));
@@ -811,7 +815,10 @@ public class Generator {
 
                 // Later on, add available objects eg for improting JS objects
                 this.addToShaderProperties(importName, chosenBaseShaderType, folderPath, loadShaderCallStatement);
-                break;
+
+                // add to back instead - refactor out later
+                this.programNode.addNode(assignmentNode);
+                return varName;
 
         }
 

@@ -972,12 +972,16 @@ public class ParameterNode extends ASTNode {
 
     private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) throws SkipParameterException {
         List<String> mandatoryEnums = new ArrayList<>();
-
+        List<String> firefoxIncompatibleEnums = Arrays.asList("rgb10a2uint");
 
         if (individualParameterRequirements != null) {
             mandatoryEnums.addAll(individualParameterRequirements);
         }
 
+        if (generator.getFirefoxCompatible()) {
+            mandatoryEnums.removeAll(firefoxIncompatibleEnums);
+            enumValues.removeAll(firefoxIncompatibleEnums);
+        }
 
 
         if (conditions == null) {

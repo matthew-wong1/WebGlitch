@@ -1,5 +1,5 @@
 # WebGlitch
-A WebGPU program generator for fuzz testing. 
+A WebGPU program generator for fuzz testing. Developed as part of a final year project at Imperial College London.
 
 ## Requirements:
 1. Gradle 8.9+
@@ -27,6 +27,7 @@ python3 webglitch.py --run <platform>
 python3 webglitch.py --cts <num_files>
 ```
 * Please update the `RUNNER_PATH and OUTPUT_DIR variables` first in `webglitch.py`
+* You may find WebGlitchRunner here: https://github.com/matthew-wong1/WebGlitchRunner
 * You can also use the scripts `webglitch.sh` and `webglitch.bat` to integrate with other tools (no need to specify paths)
 
 ## Features:
@@ -38,4 +39,5 @@ python3 webglitch.py --cts <num_files>
 
 ## In progress:
 * Code is undergoing refactoring to remove tech debt
+* Code is undergoing updating so you don't have to specify as many paths
 * Changes are being made to how API calls are defined in JSON to make it more streamlined

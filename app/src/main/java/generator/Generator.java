@@ -19,19 +19,9 @@ public class Generator {
     private final PrettyPrinter printer = new PrettyPrinter();
     private final String DEFAULT_CONTEXT_NAME = "context";
     private final String HEADER_DEFAULT = "\nasync function main() {";
-//    private final String FOOTER_DEFAULT = "\n}main().then(() => {\n" +
-//            "}).catch(error => {\n" +
-//            "    console.log(error);\n" +
-//            "});";
-    private final String FOOTER_DEFAULT = "} main()\n" +
-        "\t.then(() => {})\n" +
-        "\t.catch((error) => {\n" +
-        "\t\tconsole.error(\"Caught error in main():\", {\n" +
-        "\t\t\tmessage: error.message,\n" +
-        "\t\t\tstack: error.stack,\n" +
-        "\t\t\tname: error.name,\n" +
-        "\t\t});\n" +
-        "\t});";
+    private final String FOOTER_DEFAULT = "} main()\n" + "\t.then(() => {})\n" + "\t.catch((error) => {\n" + "\t" +
+            "\tconsole.error(\"Caught error in main():\", {\n" + "\t\t\tmessage: error.message,\n" + "\t\t\tstack: " +
+            "error.stack,\n" + "\t\t\tname: error.name,\n" + "\t\t});\n" + "\t});";
     private final String HEADER_CTS = "\nasync function main(gpu: GPU) {";
     private final String FOOTER_CTS = "\n}";
     private final String HEADER;
@@ -61,7 +51,8 @@ public class Generator {
     // Maps parent CommandEncoder to the name of the outBuffer and the corresponding pipeline
     private final Map<String, Map<String, String>> toPrintCommandEncoderAndItsPipeline = new LinkedHashMap<>();
     public final Map<String, Map<String, String>> shaderNameToProperties = new LinkedHashMap<>();
-    private final Map<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames = new LinkedHashMap<>();
+    private final Map<String, Map<String, Set<String>>> variableNameToTypeAndGeneratedVariableNames =
+            new LinkedHashMap<>();
 
     // Stores counts of different webgpu interfaces for variable names and labels
     private final Map<String, Integer> interfaceCounts = new LinkedHashMap<>();
@@ -79,7 +70,11 @@ public class Generator {
     private final boolean firefoxCompatible;
     private ASTNode programNode;
 
-    public Generator(int maxCalls, Map<String, Boolean> compatibilityModes, boolean ctsCompatible, Long seed, boolean mainOnly) {
+    public Generator(int maxCalls,
+                     Map<String, Boolean> compatibilityModes,
+                     boolean ctsCompatible,
+                     Long seed,
+                     boolean mainOnly) {
         this.maxCalls = maxCalls;
         this.mainOnly = mainOnly;
         this.ctsCompatible = ctsCompatible;
@@ -122,15 +117,21 @@ public class Generator {
         return wgpuCompatible;
     }
 
-    public boolean getFirefoxCompatible() { return firefoxCompatible; }
+    public boolean getFirefoxCompatible() {
+        return firefoxCompatible;
+    }
 
     public RandomUtils getRandomUtils() {
         return randomUtils;
     }
 
-    public WebGlitchOptions getWebGlitchOptions() { return webGlitchOptions; }
+    public WebGlitchOptions getWebGlitchOptions() {
+        return webGlitchOptions;
+    }
 
-    public boolean getCtsCompatible() { return this.ctsCompatible; }
+    public boolean getCtsCompatible() {
+        return this.ctsCompatible;
+    }
 
     private void initializeReceiverInitsAndCallProbs() throws IOException {
         File jsonDirectory = new File(JSON_DIRECTORY_PATH);
@@ -140,7 +141,8 @@ public class Generator {
 
 
         // Get all the names of the interfaces
-//        List<String> interfaceNames = Arrays.stream(apiInterfaces).map(file -> file.getName().substring(0, file.getName().lastIndexOf('.'))).toList();
+//        List<String> interfaceNames = Arrays.stream(apiInterfaces).map(file -> file.getName().substring(0, file
+//        .getName().lastIndexOf('.'))).toList();
 //        System.out.println(interfaceNames);
 
         for (File apiInterface : apiInterfaces) {
@@ -186,21 +188,26 @@ public class Generator {
         List<String> ignoredTypes = new ArrayList<>(Arrays.asList("string", "none", "boolean"));
 
         if (!ignoredTypes.contains(returnType)) {
-            receiverInits.put(returnType, new FileNameReceiverTypeCallNameCallType(fileName, receiverType, callName, isMethod, returnType));
+            receiverInits.put(returnType,
+                    new FileNameReceiverTypeCallNameCallType(fileName, receiverType, callName, isMethod, returnType));
         }
 
         // READ FROM CONFIG FILE HERE
-        callProbabilities.put(new ReceiverTypeCallNameCallType(receiverType, callName, isMethod), new FileNameCallProbPair(fileName, 0.0));
+        callProbabilities.put(new ReceiverTypeCallNameCallType(receiverType, callName, isMethod),
+                new FileNameCallProbPair(fileName, 0.0));
         addToInterfacesAvailableCalls(receiverType, callName);
         availableCallsToInterface.put(callName, receiverType);
     }
 
-    public void addToMapOfGeneratedVariables(String receiverVariable, String newlyGeneratedVariable, String newlyGeneratedVariableType) {
+    public void addToMapOfGeneratedVariables(String receiverVariable,
+                                             String newlyGeneratedVariable,
+                                             String newlyGeneratedVariableType) {
         if (!variableNameToTypeAndGeneratedVariableNames.containsKey(receiverVariable)) {
             variableNameToTypeAndGeneratedVariableNames.put(receiverVariable, new LinkedHashMap<>());
         }
 
-        Map<String, Set<String>> allGeneratedVariables = variableNameToTypeAndGeneratedVariableNames.get(receiverVariable);
+        Map<String, Set<String>> allGeneratedVariables = variableNameToTypeAndGeneratedVariableNames.get(
+                receiverVariable);
         if (!allGeneratedVariables.containsKey(newlyGeneratedVariableType)) {
             allGeneratedVariables.put(newlyGeneratedVariableType, new HashSet<>());
         }
@@ -220,7 +227,8 @@ public class Generator {
         String receiverVariable = variableToReceiverName.get(newlyGeneratedVariable);
 
 
-        Set<String> generatedVariables = variableNameToTypeAndGeneratedVariableNames.get(receiverVariable).get(newlyGeneratedVariableType);
+        Set<String> generatedVariables = variableNameToTypeAndGeneratedVariableNames.get(receiverVariable)
+                .get(newlyGeneratedVariableType);
         if (generatedVariables != null) {
             generatedVariables.remove(newlyGeneratedVariable);
         }
@@ -272,9 +280,9 @@ public class Generator {
         this.programNode = new ProgramNode();
 
 
-
         programNode.addNode(new JavaScriptStatement(HEADER));
-        ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet().toArray(new ReceiverTypeCallNameCallType[0]);
+        ReceiverTypeCallNameCallType[] methods = callProbabilities.keySet()
+                .toArray(new ReceiverTypeCallNameCallType[0]);
         double percentOfAvailableCalls = webGlitchOptions.getPercentOfAvailableCallsToGenerate();
         int numAvailableCalls = (int) Math.floor(percentOfAvailableCalls * methods.length);
 //        System.out.println("Num calls: " + numAvailableCalls);
@@ -296,7 +304,12 @@ public class Generator {
         }
 
         programNode.addNode(new JavaScriptStatement(FOOTER));
-        printer.printToFile(this.programNode, fileNameToUse, randomUtils.getSeed(), this.mainOnly, this.ctsCompatible, webGlitchOptions);
+        printer.printToFile(this.programNode,
+                fileNameToUse,
+                randomUtils.getSeed(),
+                this.mainOnly,
+                this.ctsCompatible,
+                webGlitchOptions);
         return programCallDistribution;
     }
 
@@ -378,8 +391,11 @@ public class Generator {
         variableToReceiverType.put(variableName, returnedObjectType);
 
         // Limit number of devices that can be generated
-        if (symbolTable.get("GPUDevice") != null && symbolTable.get("GPUDevice").size() == webGlitchOptions.getMaxGPUDevices()) {
-            ReceiverTypeCallNameCallType receiverTypeCallNameCallType = new ReceiverTypeCallNameCallType("GPUAdapter", "requestDevice", true);
+        if (symbolTable.get("GPUDevice") != null && symbolTable.get("GPUDevice")
+                .size() == webGlitchOptions.getMaxGPUDevices()) {
+            ReceiverTypeCallNameCallType receiverTypeCallNameCallType = new ReceiverTypeCallNameCallType("GPUAdapter",
+                    "requestDevice",
+                    true);
             String fileName = callProbabilities.get(receiverTypeCallNameCallType).fileName;
             callProbabilities.put(receiverTypeCallNameCallType, new FileNameCallProbPair(fileName, 0.0));
             interfaceToAvailableCalls.get("GPUAdapter").remove("requestDevice");
@@ -417,17 +433,31 @@ public class Generator {
 
     }
 
-    public String getRandomReceiver(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, String receiverName, ParameterNode parameterNode, String cannotBeThisObject, Boolean forceGenerateNewObject) {
+    public String getRandomReceiver(String receiverType,
+                                    String callName,
+                                    Map<String, List<String>> requirements,
+                                    List<String> sameObjects,
+                                    String receiverName,
+                                    ParameterNode parameterNode,
+                                    String cannotBeThisObject,
+                                    Boolean forceGenerateNewObject) {
         // null on forceGenerateNewObject means undecided
         // True or false means it has already been rolled
         if (forceGenerateNewObject == null) {
-            forceGenerateNewObject = randomUtils.randomChanceIsSuccessful(webGlitchOptions.getGenerateNewRequiredObjectChance());
+            forceGenerateNewObject =
+                    randomUtils.randomChanceIsSuccessful(webGlitchOptions.getGenerateNewRequiredObjectChance());
         }
 
         // Maybe getRandomReceiver calls this one method, passing null for requirements
         // Then this one passes requirements into generateCall
         List<String> variablesThatMeetReqs = new ArrayList<>();
-        Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType, callName, requirements, sameObjects, variablesThatMeetReqs, receiverName, parameterNode);
+        Map<String, String> sameObjectReqs = findAllVariablesThatMeetReqs(receiverType,
+                callName,
+                requirements,
+                sameObjects,
+                variablesThatMeetReqs,
+                receiverName,
+                parameterNode);
 
         if (cannotBeThisObject != null) {
             variablesThatMeetReqs.remove(cannotBeThisObject);
@@ -444,7 +474,13 @@ public class Generator {
 
     }
 
-    private Map<String, String> findAllVariablesThatMeetReqs(String receiverType, String callName, Map<String, List<String>> requirements, List<String> sameObjects, List<String> variablesThatMeetReqs, String receiverName, ParameterNode parameterNode) {
+    private Map<String, String> findAllVariablesThatMeetReqs(String receiverType,
+                                                             String callName,
+                                                             Map<String, List<String>> requirements,
+                                                             List<String> sameObjects,
+                                                             List<String> variablesThatMeetReqs,
+                                                             String receiverName,
+                                                             ParameterNode parameterNode) {
         List<String> allVariables = symbolTable.get(receiverType);
 
         if (allVariables == null) {
@@ -460,7 +496,11 @@ public class Generator {
         if (requirements != null || sameObjects != null) {
             // Filter out those that don't meet the requirement,
             // And then need to generate one with the requirement
-            addVariablesThatMeetReqsToList(receiverType, allVariables, variablesThatMeetReqs, requirements, parameterNode);
+            addVariablesThatMeetReqsToList(receiverType,
+                    allVariables,
+                    variablesThatMeetReqs,
+                    requirements,
+                    parameterNode);
             sameObjectsReqs = ensureSameObjectRequirementsMet(variablesThatMeetReqs, sameObjects, receiverName);
         } else {
             variablesThatMeetReqs.addAll(allVariables);
@@ -469,7 +509,8 @@ public class Generator {
         // Remove variables if call is unavailable to them
         List<String> unavailableVariables = new ArrayList<>();
         for (String variableThatMeetsReqs : variablesThatMeetReqs) {
-            if (callUnavailability.containsKey(variableThatMeetsReqs) && callUnavailability.get(variableThatMeetsReqs).contains(receiverType + "." + callName)) {
+            if (callUnavailability.containsKey(variableThatMeetsReqs) && callUnavailability.get(variableThatMeetsReqs)
+                    .contains(receiverType + "." + callName)) {
                 unavailableVariables.add(variableThatMeetsReqs);
             }
         }
@@ -480,7 +521,9 @@ public class Generator {
 
     }
 
-    private Map<String, String> ensureSameObjectRequirementsMet(List<String> variablesThatMeetReqs, List<String> sameObjects, String receiverName) {
+    private Map<String, String> ensureSameObjectRequirementsMet(List<String> variablesThatMeetReqs,
+                                                                List<String> sameObjects,
+                                                                String receiverName) {
         if (sameObjects == null) {
             // this fails when cant find a variable but still ned same object reqs to be genrated
             return null;
@@ -494,7 +537,6 @@ public class Generator {
             }
             return sameObjectsReqs;
         }
-
 
 
         List<String> toRemove = new ArrayList<>();
@@ -515,14 +557,19 @@ public class Generator {
     public String findBaseReceiver(String variableName, String objectType) {
         String currentVariable = variableName;
 
-        while (variableToReceiverName.containsKey(currentVariable) && !variableToReceiverType.get(currentVariable).equals(objectType)) {
+        while (variableToReceiverName.containsKey(currentVariable) && !variableToReceiverType.get(currentVariable)
+                .equals(objectType)) {
             currentVariable = variableToReceiverName.get(currentVariable);
         }
 
         return currentVariable;
     }
 
-    private void addVariablesThatMeetReqsToList(String paramType, List<String> allVariables, List<String> variablesThatMeetReqs, Map<String, List<String>> requirements, ParameterNode parameterNode) {
+    private void addVariablesThatMeetReqsToList(String paramType,
+                                                List<String> allVariables,
+                                                List<String> variablesThatMeetReqs,
+                                                Map<String, List<String>> requirements,
+                                                ParameterNode parameterNode) {
         if (requirements == null) {
             return;
         }
@@ -625,26 +672,37 @@ public class Generator {
         // modify valuesList
     }
 
-    private String parseCallInfoFromReceiverTypeAndGenerateCall(String receiverType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
+    private String parseCallInfoFromReceiverTypeAndGenerateCall(String receiverType,
+                                                                Map<String, List<String>> requirements,
+                                                                Map<String, String> sameObjectsReqs) {
         FileNameReceiverTypeCallNameCallType initInfo = receiverInits.get(receiverType);
 
         String initMethodName = initInfo.callName;
         String initReceiverType = initInfo.receiverType;
         boolean initIsMethod = initInfo.methodCall;
-        // need a loop. Go to receiverInit that matches sameobjectReqs. Then back track, pass in new sameobject reqs for the level above and so forth
+        // need a loop. Go to receiverInit that matches sameobjectReqs. Then back track, pass in new sameobject reqs
+        // for the level above and so forth
         if (sameObjectsReqs != null && !sameObjectsReqs.isEmpty()) {
             while (!sameObjectsReqs.containsKey(initInfo.receiverType)) {
-                String newVariableRequirement = parseCallInfoFromReceiverTypeAndGenerateCall(initInfo.receiverType, requirements, sameObjectsReqs);
+                String newVariableRequirement = parseCallInfoFromReceiverTypeAndGenerateCall(initInfo.receiverType,
+                        requirements,
+                        sameObjectsReqs);
                 sameObjectsReqs.clear();
                 sameObjectsReqs.put(initInfo.receiverType, newVariableRequirement);
             }
         }
 
         // PArse requirements to filter out those that are relevant
-        return generateCall(new ReceiverTypeCallNameCallType(initReceiverType, initMethodName, initIsMethod), requirements, sameObjectsReqs, null);
+        return generateCall(new ReceiverTypeCallNameCallType(initReceiverType, initMethodName, initIsMethod),
+                requirements,
+                sameObjectsReqs,
+                null);
     }
 
-    public String generateCall(ReceiverTypeCallNameCallType receiverTypeCallNameCallType, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs, String specificReceiver) {
+    public String generateCall(ReceiverTypeCallNameCallType receiverTypeCallNameCallType,
+                               Map<String, List<String>> requirements,
+                               Map<String, String> sameObjectsReqs,
+                               String specificReceiver) {
 //        if (callState.contains(receiverNameCallNameCallType)) {
 //            return;
 //        }
@@ -657,7 +715,12 @@ public class Generator {
         ASTNode receiver = null;
 
         try {
-            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName, callName, isMethod, requirements, sameObjectsReqs, specificReceiver);
+            receiver = parser.parseAndBuildCall(JSON_DIRECTORY_PATH + fileName,
+                    callName,
+                    isMethod,
+                    requirements,
+                    sameObjectsReqs,
+                    specificReceiver);
         } catch (IOException e) {
             System.err.println("Failed to open JSON file: " + fileName + ". " + e.getMessage());
         }
@@ -708,10 +771,15 @@ public class Generator {
         this.variableToReceiverName.remove(varName);
     }
 
-    public String determineReceiver(String receiverType, String callName, boolean hasRequirements, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs) {
+    public String determineReceiver(String receiverType,
+                                    String callName,
+                                    boolean hasRequirements,
+                                    Map<String, List<String>> requirements,
+                                    Map<String, String> sameObjectsReqs) {
         if (hasRequirements) {
             String requiredReceiver = null;
-            boolean forceGenerateNewObject = randomUtils.randomChanceIsSuccessful(webGlitchOptions.getGenerateNewRequiredObjectChance());
+            boolean forceGenerateNewObject =
+                    randomUtils.randomChanceIsSuccessful(webGlitchOptions.getGenerateNewRequiredObjectChance());
 
             if (sameObjectsReqs != null) {
                 requiredReceiver = sameObjectsReqs.get(receiverType);
@@ -728,7 +796,14 @@ public class Generator {
                     }
                 }
 
-                return getRandomReceiver(receiverType, callName, finalisedRequirements, null, null, null, null, forceGenerateNewObject);
+                return getRandomReceiver(receiverType,
+                        callName,
+                        finalisedRequirements,
+                        null,
+                        null,
+                        null,
+                        null,
+                        forceGenerateNewObject);
             }
 
             return requiredReceiver;
@@ -745,10 +820,13 @@ public class Generator {
 //    }
 
     public String generateTopLevelStatement(String type) {
-        return generateTopLevelStatement(type, null,null, null);
+        return generateTopLevelStatement(type, null, null, null);
     }
 
-    public String generateTopLevelStatement(String type, String subType, List<String> values, Map<String, String> requirements) {
+    public String generateTopLevelStatement(String type,
+                                            String subType,
+                                            List<String> values,
+                                            Map<String, String> requirements) {
         ASTNode astNodeToPrepend = null;
         AssignmentNode assignmentNode = null;
         String varName = "";
@@ -760,7 +838,10 @@ public class Generator {
 
         switch (type) {
             case "typedArray":
-                assignmentNode = new AssignmentNode("const", "typedArray" + numTypedArrays, randomUtils, webGlitchOptions);
+                assignmentNode = new AssignmentNode("const",
+                        "typedArray" + numTypedArrays,
+                        randomUtils,
+                        webGlitchOptions);
                 TypedArray typedArray = null;
 
                 if (values == null) {
@@ -805,7 +886,10 @@ public class Generator {
                 String fullPath = folderPath + shaderSubType + ".wgsl";
 
 
-                assignmentNode = new AssignmentNode("const",  "shader" + shaderNameToProperties.size(), randomUtils, webGlitchOptions);
+                assignmentNode = new AssignmentNode("const",
+                        "shader" + shaderNameToProperties.size(),
+                        randomUtils,
+                        webGlitchOptions);
                 LoadShaderCall loadShaderCallStatement = new LoadShaderCall(fullPath);
                 assignmentNode.addNode(loadShaderCallStatement);
                 String importName = assignmentNode.getVarName();
@@ -827,7 +911,10 @@ public class Generator {
         return varName;
     }
 
-    private void addToShaderProperties(String importName, String chosenShaderType, String folderPath, LoadShaderCall loadShaderCallStatement) {
+    private void addToShaderProperties(String importName,
+                                       String chosenShaderType,
+                                       String folderPath,
+                                       LoadShaderCall loadShaderCallStatement) {
         if (!shaderNameToProperties.containsKey(importName)) {
             shaderNameToProperties.put(importName, new LinkedHashMap<>());
         }
@@ -876,11 +963,13 @@ public class Generator {
         }
         callState.get(receiver).add(callName);
 
-        //        generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName, isMethod));
+        //        generator.addToCallState(new Generator.ReceiverNameCallNameCallType(currentReceiverType, callName,
+        //        isMethod));
 //        if (callJsonNode.has("resets")) {
 //            JsonNode resetMethodsJsonNode = callJsonNode.get("resets");
 //            for (JsonNode resetMethod : resetMethodsJsonNode) {
-//                generator.removeFromCallState(new Generator.ReceiverNameCallNameCallType(resetMethod.get("receiverType").asText(), resetMethod.get("name").asText(), true));
+//                generator.removeFromCallState(new Generator.ReceiverNameCallNameCallType(resetMethod.get
+//                ("receiverType").asText(), resetMethod.get("name").asText(), true));
 //            }
 //        }
     }
@@ -903,7 +992,10 @@ public class Generator {
         }
     }
 
-    private void parseCallAvailabilityInfo(String receiver, JsonNode availabilityNode, List<String> callsToChangeAvailabilityOf, boolean setAvailable) {
+    private void parseCallAvailabilityInfo(String receiver,
+                                           JsonNode availabilityNode,
+                                           List<String> callsToChangeAvailabilityOf,
+                                           boolean setAvailable) {
         if (availabilityNode.has("this")) {
             Parser.extractNodeAsList(availabilityNode.get("this"), callsToChangeAvailabilityOf);
             setCallAvailability(callsToChangeAvailabilityOf, receiver, setAvailable);
@@ -954,7 +1046,7 @@ public class Generator {
             callsToChangeAvailabilityOf.clear();
             String receiverType = variableToReceiverType.get(receiver);
             Set<String> allCalls = this.interfaceToAvailableCalls.get(receiverType);
-            allCalls = allCalls.stream().map(callName -> receiverType + "." +callName).collect(Collectors.toSet());
+            allCalls = allCalls.stream().map(callName -> receiverType + "." + callName).collect(Collectors.toSet());
             callsToChangeAvailabilityOf.addAll(allCalls);
         }
 
@@ -1013,7 +1105,10 @@ public class Generator {
     }
 
 
-    public String generateCustomConstraint(String customValidation, ParameterListNode parent, ParameterNode parameterNode, Generator generator) {
+    public String generateCustomConstraint(String customValidation,
+                                           ParameterListNode parent,
+                                           ParameterNode parameterNode,
+                                           Generator generator) {
         switch (customValidation) {
             case "mipLevelCount":
                 return calculateMipLevelCount(parent);
@@ -1049,7 +1144,10 @@ public class Generator {
     }
 
     private String calculateDepthSlice(ParameterNode parameterNode, Generator generator) {
-        String textureViewVariableName = parameterNode.getRootParameterNode().findNestedParameterNode("view").getParameter().getValue();
+        String textureViewVariableName = parameterNode.getRootParameterNode()
+                .findNestedParameterNode("view")
+                .getParameter()
+                .getValue();
 
         String viewDimensionValue = generator.getObjectAttributes(textureViewVariableName, "dimension");
 
@@ -1058,7 +1156,8 @@ public class Generator {
         }
 
         String textureViewParentName = generator.getParentVariable(textureViewVariableName);
-        long parentDepthOrArrayLayersValue = Long.parseLong(generator.getObjectAttributes(textureViewParentName, "size.depthOrArrayLayers"));
+        long parentDepthOrArrayLayersValue = Long.parseLong(generator.getObjectAttributes(textureViewParentName,
+                "size.depthOrArrayLayers"));
         long baseMipLevelValue = Long.parseLong(generator.getObjectAttributes(textureViewVariableName, "baseMipLevel"));
 
         long maxValue = (long) Math.max(parentDepthOrArrayLayersValue / Math.pow(2, baseMipLevelValue), 1);
@@ -1131,8 +1230,10 @@ public class Generator {
             return;
         }
 
-        // All these prerequisites mustve been set already - want to minimize numebr of calls that are generated as a requirement
-        if (!callHistory.contains("setPipeline") || !callHistory.contains("setBindGroup") || !callHistory.contains("dispatchWorkgroups")) {
+        // All these prerequisites mustve been set already - want to minimize numebr of calls that are generated as a
+        // requirement
+        if (!callHistory.contains("setPipeline") || !callHistory.contains("setBindGroup") || !callHistory.contains(
+                "dispatchWorkgroups")) {
             return;
         }
 
@@ -1155,12 +1256,18 @@ public class Generator {
         outBufferRequirements.put("size", List.of(size));
         outBufferRequirements.put("usage", List.of("GPUBufferUsage.MAP_READ", "GPUBufferUsage.COPY_DST"));
         outBufferRequirements.put("mappedAtCreation", List.of("false"));
-        String outBuffer = generateCall(new Generator.ReceiverTypeCallNameCallType("GPUDevice", "createBuffer", true), outBufferRequirements, null, getParentVariable(commandEncoder));
+        String outBuffer = generateCall(new Generator.ReceiverTypeCallNameCallType("GPUDevice", "createBuffer", true),
+                outBufferRequirements,
+                null,
+                getParentVariable(commandEncoder));
 
         copyBufferRequirements.put("destination", List.of(outBuffer));
         copyBufferRequirements.put("destinationOffset", List.of("0"));
         copyBufferRequirements.put("size", List.of(size));
-        generateCall(new Generator.ReceiverTypeCallNameCallType("GPUCommandEncoder", "copyBufferToBuffer", true), copyBufferRequirements, null, commandEncoder);
+        generateCall(new Generator.ReceiverTypeCallNameCallType("GPUCommandEncoder", "copyBufferToBuffer", true),
+                copyBufferRequirements,
+                null,
+                commandEncoder);
 
         String pipeline = getObjectAttributes(computePassEncoderName, "pipeline");
         Map<String, String> outBufferToPipeline = new LinkedHashMap<>();
@@ -1196,13 +1303,22 @@ public class Generator {
             // Generate: await outBuffer.mapAsync(GPUMapMode.READ);
             Map<String, List<String>> mapAsyncRequirements = new LinkedHashMap<>();
             mapAsyncRequirements.put("mode", List.of("GPUMapMode.READ"));
-            generateCall(new ReceiverTypeCallNameCallType("GPUBuffer","mapAsync", true), mapAsyncRequirements, null, outBuffer);
+            generateCall(new ReceiverTypeCallNameCallType("GPUBuffer", "mapAsync", true),
+                    mapAsyncRequirements,
+                    null,
+                    outBuffer);
 
             // Generate: const copyArray = outBuffer.getMappedRange();
-            String copyArray = generateCall(new ReceiverTypeCallNameCallType("GPUBuffer", "getMappedRange", true), null, null, outBuffer);
+            String copyArray = generateCall(new ReceiverTypeCallNameCallType("GPUBuffer", "getMappedRange", true),
+                    null,
+                    null,
+                    outBuffer);
 
             // Generate: const outData = copyArray.slice(0);
-            AssignmentNode outArrayAssignment = new AssignmentNode("const", "ComputePassResultBuffer" + numComputePassResultBuffers, randomUtils, webGlitchOptions);
+            AssignmentNode outArrayAssignment = new AssignmentNode("const",
+                    "ComputePassResultBuffer" + numComputePassResultBuffers,
+                    randomUtils,
+                    webGlitchOptions);
             String outArrayVariableName = outArrayAssignment.getVarName();
             addToSymbolTable("Array", outArrayVariableName);
             JavaScriptStatement spliceStatement = new JavaScriptStatement(copyArray + ".slice(0)");
@@ -1211,7 +1327,10 @@ public class Generator {
 
             // Generate: const result = new Uint8Array(outData);
             String typedArrayName = "typedArray" + numTypedArrays;
-            AssignmentNode typedArrayAssignment = new AssignmentNode("const",typedArrayName, randomUtils, webGlitchOptions);
+            AssignmentNode typedArrayAssignment = new AssignmentNode("const",
+                    typedArrayName,
+                    randomUtils,
+                    webGlitchOptions);
             TypedArray typedArray = new TypedArray("Uint8", outArrayVariableName, randomUtils);
             numTypedArrays++;
             numComputePassResultBuffers++;
@@ -1219,7 +1338,8 @@ public class Generator {
             programNode.addNode(typedArrayAssignment);
 
             // Generate console.log("result", result); + something with an identifying label
-            JavaScriptStatement printStatement = new JavaScriptStatement("console.log(\"" + pipeline + " has output:\", ..." + typedArrayName +");");
+            JavaScriptStatement printStatement = new JavaScriptStatement("console.log(\"" + pipeline + " has " +
+                    "output:\", ..." + typedArrayName + ");");
             programNode.addNode(printStatement);
         }
 
@@ -1277,14 +1397,8 @@ public class Generator {
 
     public void addErrorLoggingForVariable(String variableWhoseAttributesAreAffected) {
 
-        String EVENT_LISTENER = ".addEventListener(\"uncapturederror\", async (event) => {\n" +
-                "\t\tconst errorDetails = {\n" +
-                "\t\t\tmessage: event.error.message,\n" +
-                "\t\t\tstack: event.error.stack,\n" +
-                "\t\t\tname: event.error.name,\n" +
-                "\t\t};\n" +
-                "\t\tconsole.error(errorDetails);\n" +
-                "\t});";
+        String EVENT_LISTENER = ".addEventListener(\"uncapturederror\", async (event) => {\n" + "\t\tconst " +
+                "errorDetails = {\n" + "\t\t\tmessage: event.error.message,\n" + "\t\t\tstack: event.error.stack,\n" + "\t\t\tname: event.error.name,\n" + "\t\t};\n" + "\t\tconsole.error(errorDetails);\n" + "\t});";
 
         if (!variableWhoseAttributesAreAffected.toLowerCase().contains("device")) {
             return;
@@ -1296,7 +1410,8 @@ public class Generator {
     public record FileNameCallProbPair(String fileName, Double callProbability) {
     }
 
-    public record FileNameReceiverTypeCallNameCallType(String fileName, String receiverType, String callName, boolean methodCall, String returnType) {
+    public record FileNameReceiverTypeCallNameCallType(String fileName, String receiverType, String callName,
+                                                       boolean methodCall, String returnType) {
     }
 
     public record ReceiverTypeCallNameCallType(String receiverType, String callName, boolean isMethod) {

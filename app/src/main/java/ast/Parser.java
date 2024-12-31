@@ -18,16 +18,20 @@ public class Parser {
         this.generator = generator;
     }
 
-    public ASTNode parseAndBuildRandCall(String filePath, Generator.ReceiverTypeCallNameCallType callDetails) throws IOException {
+    public ASTNode parseAndBuildRandCall(String filePath,
+                                         Generator.ReceiverTypeCallNameCallType callDetails) throws IOException {
 
         return parseAndBuildCall(filePath, callDetails.callName(), callDetails.isMethod(), null, null, null);
 
     }
 
 
-
-
-    public ASTNode parseAndBuildCall(String filePath, String callName, boolean isMethod, Map<String, List<String>> requirements, Map<String, String> sameObjectsReqs, String specificReceiver) throws IOException {
+    public ASTNode parseAndBuildCall(String filePath,
+                                     String callName,
+                                     boolean isMethod,
+                                     Map<String, List<String>> requirements,
+                                     Map<String, String> sameObjectsReqs,
+                                     String specificReceiver) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootJsonNode = mapper.readTree(new File(filePath));
 
@@ -49,7 +53,6 @@ public class Parser {
         }
 
 
-
         String returnType = callJsonNode.get("returnType").asText();
         String parentReceiverType = rootJsonNode.get("receiverType").asText();
         String receiver;
@@ -59,16 +62,22 @@ public class Parser {
                 JsonNode conditionsNode = callJsonNode.get("conditions");
 
                 if (conditionsNode.has("withAttributes")) {
-                    Map<String, List<String>> receiverRequirements = generator.parseAttributeRequirements(conditionsNode);
+                    Map<String, List<String>> receiverRequirements =
+                            generator.parseAttributeRequirements(conditionsNode);
                     if (requirements == null) {
                         requirements = new LinkedHashMap<>();
                     }
                     requirements.putAll(receiverRequirements);
                 }
             }
-            receiver = generator.determineReceiver(parentReceiverType, callName, rootJsonNode.has("requirements"), requirements, sameObjectsReqs);
+            receiver = generator.determineReceiver(parentReceiverType,
+                    callName,
+                    rootJsonNode.has("requirements"),
+                    requirements,
+                    sameObjectsReqs);
 
-            if (!generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
+            if (!generator.getRandomUtils()
+                    .randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
                 parseReceiverMethodRequirements(receiver, callJsonNode);
             }
         } else {
@@ -76,11 +85,13 @@ public class Parser {
         }
 
         // First generate any prerequisite methodCalls
-        if (callJsonNode.has("prerequisiteMethods") && !generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
+        if (callJsonNode.has("prerequisiteMethods") && !generator.getRandomUtils()
+                .randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
             JsonNode prerequisiteMethodsJsonNode = callJsonNode.get("prerequisiteMethods");
             for (JsonNode prerequisiteMethod : prerequisiteMethodsJsonNode) {
 
-                generator.generateCall(new Generator.ReceiverTypeCallNameCallType(prerequisiteMethod.get("receiverType").asText(), prerequisiteMethod.get("name").asText(), true), null, sameObjectsReqs, receiver);
+                generator.generateCall(new Generator.ReceiverTypeCallNameCallType(prerequisiteMethod.get("receiverType")
+                        .asText(), prerequisiteMethod.get("name").asText(), true), null, sameObjectsReqs, receiver);
             }
         }
 
@@ -89,10 +100,18 @@ public class Parser {
         boolean isArray = callJsonNode.has("array");
         boolean isAsync = callJsonNode.has("async");
         JsonNode paramsJsonNode = callJsonNode.path("properties");
-        CallNode callNode = new CallNode(receiver, returnType, callName, jsonParams, isArray, isMethod, isAsync, generator, paramsJsonNode, requirements);
+        CallNode callNode = new CallNode(receiver,
+                returnType,
+                callName,
+                jsonParams,
+                isArray,
+                isMethod,
+                isAsync,
+                generator,
+                paramsJsonNode,
+                requirements);
         ASTNode nodeToReturn;
         String variableWhoseAttributesAreAffected;
-
 
 
         if (!returnType.equals("none")) {
@@ -106,7 +125,8 @@ public class Parser {
         }
 
         // The call hasn't been added to the parameterNode yet
-        if (!generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
+        if (!generator.getRandomUtils()
+                .randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
             ensureConditionsForReceiverAreMet(receiver, callJsonNode);
         }
 
@@ -115,7 +135,8 @@ public class Parser {
         generator.setAdditionalAttributes(variableWhoseAttributesAreAffected, callJsonNode);
 
         // Delete object
-        if (callJsonNode.has("deletes") && !generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
+        if (callJsonNode.has("deletes") && !generator.getRandomUtils()
+                .randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
             deleteRequirements(callJsonNode, parentReceiverType, receiver);
 
         }
@@ -126,7 +147,8 @@ public class Parser {
 
         generator.addErrorLoggingForVariable(variableWhoseAttributesAreAffected);
 
-        if (callJsonNode.has("postGeneration") && !generator.getRandomUtils().randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
+        if (callJsonNode.has("postGeneration") && !generator.getRandomUtils()
+                .randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
             parsePostGenerationRequirements(receiver, callJsonNode.get("postGeneration"));
         }
 
@@ -142,7 +164,10 @@ public class Parser {
         if (conditionsNode.has("availableForGettingMappedRange")) {
             if (generator.getObjectAttributes(receiver, "mapped").equals("false")) {
 
-                generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUBuffer", "mapAsync", true), null, null, receiver);
+                generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUBuffer", "mapAsync", true),
+                        null,
+                        null,
+                        receiver);
             }
         }
     }
@@ -217,7 +242,10 @@ public class Parser {
 
         for (int i = remainingDebugGroups; i > 0; i--) {
             String receiverType = generator.getVariableType(receiverName);
-            generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "popDebugGroup", true), null, null, receiverName);
+            generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "popDebugGroup", true),
+                    null,
+                    null,
+                    receiverName);
         }
     }
 
@@ -227,7 +255,10 @@ public class Parser {
 
         if (remainingDebugGroups == 0) {
             String receiverType = generator.getVariableType(receiverName);
-            generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "pushDebugGroup", true), null, null, receiverName);
+            generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "pushDebugGroup", true),
+                    null,
+                    null,
+                    receiverName);
         }
     }
 
@@ -262,7 +293,10 @@ public class Parser {
 
         for (String buffer : allBuffersUsed) {
             if (generator.getObjectAttributes(buffer, "mapped").equals("true")) {
-                generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUBuffer", "unmap", true), null, null, buffer);
+                generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUBuffer", "unmap", true),
+                        null,
+                        null,
+                        buffer);
             }
         }
 
@@ -277,7 +311,10 @@ public class Parser {
             return;
         }
 
-        generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPURenderPassEncoder", "setPipeline", true), null, null, receiverName);
+        generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPURenderPassEncoder", "setPipeline", true),
+                null,
+                null,
+                receiverName);
 
     }
 
@@ -300,10 +337,14 @@ public class Parser {
         for (String childPassEncoder : allChildPassEncoders) {
             List<String> callHistory = generator.getFromCallState(childPassEncoder);
 
-            // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that call
+            // 3) if callState does not include GPUComputePassEncoder.end or GPURenderPassEncoder.end, generate that
+            // call
             if (callHistory == null || !callHistory.contains("end")) {
                 String receiverType = generator.getVariableType(childPassEncoder);
-                generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "end", true), null, null, childPassEncoder);
+                generator.generateCall(new Generator.ReceiverTypeCallNameCallType(receiverType, "end", true),
+                        null,
+                        null,
+                        childPassEncoder);
             }
         }
     }
@@ -312,7 +353,8 @@ public class Parser {
         ObjectMapper mapper = new ObjectMapper();
         List<String> listValues;
         try {
-            listValues = mapper.readValue(jsonList, new TypeReference<ArrayList<String>>(){});
+            listValues = mapper.readValue(jsonList, new TypeReference<ArrayList<String>>() {
+            });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -325,9 +367,8 @@ public class Parser {
             return;
         }
 
-        enumNode.forEach(
-                enumValue -> {
-                    enumValues.add(enumValue.asText());
-                });
+        enumNode.forEach(enumValue -> {
+            enumValues.add(enumValue.asText());
+        });
     }
 }

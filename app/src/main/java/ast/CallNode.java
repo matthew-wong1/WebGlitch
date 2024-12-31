@@ -5,6 +5,7 @@ import generator.Generator;
 
 import java.util.List;
 import java.util.Map;
+
 import generator.RandomUtils;
 
 public class CallNode extends ASTNode {
@@ -18,7 +19,16 @@ public class CallNode extends ASTNode {
     private final Generator generator;
     private final boolean isAsync;
 
-    public CallNode(String receiver, String returnType, String callName, boolean jsonParams, boolean isArray, boolean isMethod, boolean isAsync, Generator generator, JsonNode paramsJsonNode, Map<String, List<String>> requirements) {
+    public CallNode(String receiver,
+                    String returnType,
+                    String callName,
+                    boolean jsonParams,
+                    boolean isArray,
+                    boolean isMethod,
+                    boolean isAsync,
+                    Generator generator,
+                    JsonNode paramsJsonNode,
+                    Map<String, List<String>> requirements) {
         this.receiver = receiver;
         this.callName = callName;
 
@@ -77,7 +87,9 @@ public class CallNode extends ASTNode {
         return this.fullCallName;
     }
 
-    public String getReturnType() { return returnType; }
+    public String getReturnType() {
+        return returnType;
+    }
 
     public Generator getGenerator() {
         return generator;

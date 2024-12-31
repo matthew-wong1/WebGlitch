@@ -34,19 +34,33 @@ public class WebGlitch {
 
         String filePathToUse = cmd.getOptionValue("o");
 
-        Generator generator = new Generator(maxCallsToGenerate, compatibilityModes, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly);
+        Generator generator = new Generator(maxCallsToGenerate,
+                compatibilityModes,
+                ctsCompatiblityMode,
+                specificSeed,
+                generateMainFunctionOnly);
 
         generator.generateProgram(filePathToUse);
         // Uncomment this for metrics about the programs you generated
-//        printCallDistributionMetrics(maxCallsToGenerate, compatibilityModes, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly, filePathToUse);
+//        printCallDistributionMetrics(maxCallsToGenerate, compatibilityModes, ctsCompatiblityMode, specificSeed,
+//        generateMainFunctionOnly, filePathToUse);
 
     }
 
-    private static void printCallDistributionMetrics(int maxCallsToGenerate, Map<String, Boolean> compatibilityModes, boolean ctsCompatiblityMode, Long specificSeed, boolean generateMainFunctionOnly, String filePathToUse) {
+    private static void printCallDistributionMetrics(int maxCallsToGenerate,
+                                                     Map<String, Boolean> compatibilityModes,
+                                                     boolean ctsCompatiblityMode,
+                                                     Long specificSeed,
+                                                     boolean generateMainFunctionOnly,
+                                                     String filePathToUse) {
         Map<String, Integer> cumulativeCallDistribution = new HashMap<>();
         for (int i = 0; i < 1000; i++) {
             System.out.println("Generating program " + i);
-            Generator generator = new Generator(maxCallsToGenerate, compatibilityModes, ctsCompatiblityMode, specificSeed, generateMainFunctionOnly);
+            Generator generator = new Generator(maxCallsToGenerate,
+                    compatibilityModes,
+                    ctsCompatiblityMode,
+                    specificSeed,
+                    generateMainFunctionOnly);
             Map<String, Integer> callDistribution = generator.generateProgram(filePathToUse);
             callDistribution.forEach((k, v) -> cumulativeCallDistribution.merge(k, v, Integer::sum));
         }
@@ -76,7 +90,10 @@ public class WebGlitch {
         Option filePath = new Option("o", "output", true, "Output path");
         Option mainOnly = new Option("m", "mainOnly", false, "Generate only the main function");
         Option wgpuCompatible = new Option("w", "wgpu", false, "Ensures generated programs are wgpu compatible.");
-        Option firefoxCompatible = new Option("f", "firefox", false, "Ensures generated programs are firefox compatible.");
+        Option firefoxCompatible = new Option("f",
+                "firefox",
+                false,
+                "Ensures generated programs are firefox compatible.");
         Option ctsCompatible = new Option("c", "cts", false, "Ensures generated programs are CTS compatible.");
 
         maxCalls.setType(Integer.class);
@@ -114,9 +131,15 @@ public class WebGlitch {
         return System.getProperty("user.dir").replace("\\", "/");
     }
 
-    public static String getShadersFullPath() { return getPath() + SHADERS_WITHIN_WEBGLITCH_SUB_PATH + getShadersSubPath(); }
+    public static String getShadersFullPath() {
+        return getPath() + SHADERS_WITHIN_WEBGLITCH_SUB_PATH + getShadersSubPath();
+    }
 
-    public static String getShadersPrefixPath() { return getPath() + SHADERS_WITHIN_WEBGLITCH_SUB_PATH; }
+    public static String getShadersPrefixPath() {
+        return getPath() + SHADERS_WITHIN_WEBGLITCH_SUB_PATH;
+    }
 
-    public static String getShadersSubPath() { return SHADERS_SUB_PATH; }
+    public static String getShadersSubPath() {
+        return SHADERS_SUB_PATH;
+    }
 }

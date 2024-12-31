@@ -15,7 +15,11 @@ public class ParameterListNode extends ASTNode {
     private final Generator generator;
     private final Map<String, List<String>> requirements;
 
-    public ParameterListNode(CallNode callNode, JsonNode paramsJsonNode, boolean isJsonParams, boolean isArray, Map<String, List<String>> requirements) {
+    public ParameterListNode(CallNode callNode,
+                             JsonNode paramsJsonNode,
+                             boolean isJsonParams,
+                             boolean isArray,
+                             Map<String, List<String>> requirements) {
         this.jsonParams = isJsonParams;
         this.paramsJsonNode = paramsJsonNode;
         this.isArray = isArray;
@@ -73,17 +77,23 @@ public class ParameterListNode extends ASTNode {
                 JsonNode paramDetails = param.get(fieldName);
 
                 // Possible bug in future here if eg requirement stored as size.width but parameter called size
-
-                //                if (paramDetails.has("optional")) {
-//
-//                }
                 try {
-                    this.addNode(new ParameterNode(fieldName, paramDetails, jsonParams, true, generator, this, this.requirements));
+                    this.addNode(new ParameterNode(fieldName,
+                            paramDetails,
+                            jsonParams,
+                            true,
+                            generator,
+                            this,
+                            this.requirements));
                 } catch (SkipParameterException e) {
-//                    System.out.println("Skipping parameter " + fieldName);
-                    // Sanity check
-                    List<String> allowedFieldSkips = Arrays.asList("stripIndexFormat", "depthSlice", "depthLoadOp", "depthStoreOp", "stencilLoadOp", "stencilStoreOp", "occlusionQuerySet");
-                    if(!allowedFieldSkips.contains(fieldName)) {
+                    List<String> allowedFieldSkips = Arrays.asList("stripIndexFormat",
+                            "depthSlice",
+                            "depthLoadOp",
+                            "depthStoreOp",
+                            "stencilLoadOp",
+                            "stencilStoreOp",
+                            "occlusionQuerySet");
+                    if (!allowedFieldSkips.contains(fieldName)) {
                         System.err.println("Skipped unskippable parameter for field " + fieldName);
                         System.exit(1);
                     }
@@ -94,7 +104,8 @@ public class ParameterListNode extends ASTNode {
 
     }
 
-    // Returning NULL because it's being stored on another object. You need to hard code for textureFormatCompatible to go looking from ObjectAttributes on generator
+    // Returning NULL because it's being stored on another object. You need to hard code for textureFormatCompatible
+    // to go looking from ObjectAttributes on generator
     public String getParameter(String fieldName) {
         List<Parameter> parameter = allParameters.get(fieldName);
 
@@ -127,6 +138,7 @@ public class ParameterListNode extends ASTNode {
             parameters.forEach(p -> System.out.println(p.getValue()));
         });
     }
+
     public List<String> getAllParameters(String fieldName) {
         List<Parameter> parameters = allParameters.get(fieldName);
         if (parameters == null || parameters.isEmpty()) {

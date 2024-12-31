@@ -42,11 +42,24 @@ public class ParameterNode extends ASTNode {
     private final List<String> individualParameterRequirements;
     private final Map<String, List<String>> nestedParameterRequirements = new LinkedHashMap<>();
 
-    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, Generator generator, ParameterListNode parentList, Map<String, List<String>> parameterRequirements) throws SkipParameterException {
+    public ParameterNode(String fieldName,
+                         JsonNode details,
+                         boolean isJsonFormat,
+                         boolean isRoot,
+                         Generator generator,
+                         ParameterListNode parentList,
+                         Map<String, List<String>> parameterRequirements) throws SkipParameterException {
         this(fieldName, details, isJsonFormat, isRoot, null, generator, parentList, parameterRequirements);
     }
 
-    public ParameterNode(String fieldName, JsonNode details, boolean isJsonFormat, boolean isRoot, ParameterNode parentParameterNode, Generator generator, ParameterListNode parentList, Map<String, List<String>> parameterRequirements) throws SkipParameterException {
+    public ParameterNode(String fieldName,
+                         JsonNode details,
+                         boolean isJsonFormat,
+                         boolean isRoot,
+                         ParameterNode parentParameterNode,
+                         Generator generator,
+                         ParameterListNode parentList,
+                         Map<String, List<String>> parameterRequirements) throws SkipParameterException {
         this.isJsonFormat = isJsonFormat;
         this.generator = generator;
         this.parentList = parentList;
@@ -56,10 +69,12 @@ public class ParameterNode extends ASTNode {
         this.isJsonArray = details.has("arrayType");
         this.individualParameterRequirements = parseParameterRequirements(parameterRequirements);
         this.randomUtils = generator.randomUtils;
-        this.skipValidityChecks = randomUtils.randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance());
+        this.skipValidityChecks = randomUtils.randomChanceIsSuccessful(generator.getWebGlitchOptions()
+                .getSkipValidityCheckChance());
         this.skipValidityChecksEnabledGlobally = generator.getWebGlitchOptions().getSkipValidityCheckChance() > 0;
 
-//        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using receiver " + parentList.getReceiver());
+//        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using
+//        receiver " + parentList.getReceiver());
 
         checkImplementationSpecificCalls(details);
 
@@ -90,7 +105,8 @@ public class ParameterNode extends ASTNode {
         Map<String, String> customParamMapping = Map.of("mapped", "mappedAtCreation");
         for (Map.Entry<String, List<String>> entry : parameterRequirements.entrySet()) {
             String currentKeyName = entry.getKey();
-            if (customParamMapping.containsKey(currentKeyName) && customParamMapping.get(currentKeyName).equals(this.fieldName)) {
+            if (customParamMapping.containsKey(currentKeyName) && customParamMapping.get(currentKeyName)
+                    .equals(this.fieldName)) {
                 return entry.getValue();
             }
 
@@ -99,7 +115,7 @@ public class ParameterNode extends ASTNode {
                     String[] split = currentKeyName.split("\\.", 2);
                     String newKeyName = split[1];
                     this.nestedParameterRequirements.put(newKeyName, entry.getValue());
-                } else if (currentKeyName.equals(this.fieldName)){
+                } else if (currentKeyName.equals(this.fieldName)) {
                     return entry.getValue();
                 }
             }
@@ -112,7 +128,8 @@ public class ParameterNode extends ASTNode {
     private void checkImplementationSpecificCalls(JsonNode details) throws SkipParameterException {
         boolean wgpuCompatible = generator.getWgpuCompatible();
 
-        if ((wgpuCompatible && details.has("dawnOnly")) || generator.getFirefoxCompatible() && details.has("excludeFirefox")) {
+        if ((wgpuCompatible && details.has("dawnOnly")) || generator.getFirefoxCompatible() && details.has(
+                "excludeFirefox")) {
             throw new SkipParameterException("Platform incompatible parameters are skipped");
         }
     }
@@ -129,7 +146,8 @@ public class ParameterNode extends ASTNode {
             generateEnumVal(details, paramType);
         } else if (this.individualParameterRequirements != null && !this.individualParameterRequirements.isEmpty() && !skipValidityChecks) {
             // Also if are multiple choices and since it's not an enum, pick one of them at random
-            String parameterValue = individualParameterRequirements.get(randomUtils.nextInt(0, individualParameterRequirements.size()));
+            String parameterValue = individualParameterRequirements.get(randomUtils.nextInt(0,
+                    individualParameterRequirements.size()));
 
             // can't be a label otherwise generates qutoes twice
             if (paramType.equals("string") && !fieldName.equals("label")) {
@@ -139,7 +157,8 @@ public class ParameterNode extends ASTNode {
             this.parameters.add(new Parameter(parameterValue));
         } else if (isString) {
             this.parameters.add(new Parameter(generator.generateRandVarName(parentList.getCallNode().getReturnType())));
-        } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals("double")) {
+        } else if (paramType.equals("uint") || paramType.equals("int") || paramType.equals("rgba") || paramType.equals(
+                "double")) {
             generateNumber(details, paramType);
         } else if (paramType.equals("markerLabel")) {
             this.parameters.add(new Parameter("\"Debug marker\""));
@@ -174,7 +193,7 @@ public class ParameterNode extends ASTNode {
 
         // how does this work for triply nested?
         // Maybe the parent adds it and continually does .getFieldName
-        if(!this.isRoot) {
+        if (!this.isRoot) {
             return;
         }
 
@@ -214,7 +233,6 @@ public class ParameterNode extends ASTNode {
         JsonNode shaderRequirementsNode = null;
 
 
-
         try {
             shaderRequirementsNode = mapper.readTree(new File(shaderFolderPath + "requirements.json"));
         } catch (IOException e) {
@@ -247,8 +265,12 @@ public class ParameterNode extends ASTNode {
         String vertexPath = shaderFolderPath + "vertex.wgsl";
         Map<String, List<String>> vertexShaderRequirements = new HashMap<>();
         vertexShaderRequirements.put("label", List.of("specificVertex"));
-        vertexShaderRequirements.put("code", List.of("await loadShader(globalThis.pathPrefix +" + "'" + generator.getShaderProperties(fragmentShader, "path") + "vertex.wgsl" + "')"));
-        String vertexShaderModule = generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUDevice", "createShaderModule", true), vertexShaderRequirements, null, specificDevice);
+        vertexShaderRequirements.put("code",
+                List.of("await loadShader(globalThis.pathPrefix +" + "'" + generator.getShaderProperties(fragmentShader,
+                        "path") + "vertex.wgsl" + "')"));
+        String vertexShaderModule = generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUDevice",
+                "createShaderModule",
+                true), vertexShaderRequirements, null, specificDevice);
         this.parameters.add(new Parameter(vertexShaderModule));
     }
 
@@ -298,7 +320,9 @@ public class ParameterNode extends ASTNode {
             Map<String, String> sameObjectReqs = new HashMap<>();
             String device = generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice");
             sameObjectReqs.put("GPUDevice", device);
-            generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUComputePassEncoder", "setBindGroup", true), null, sameObjectReqs, computePassEncoderName);
+            generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUComputePassEncoder",
+                    "setBindGroup",
+                    true), null, sameObjectReqs, computePassEncoderName);
         }
     }
 
@@ -310,7 +334,7 @@ public class ParameterNode extends ASTNode {
                 generateArrayOfBindGroupEntries(paramType, conditionsNode);
                 break;
             default:
-                System.err.println("reacheed unreachable area with arrayType " + arrayType );
+                System.err.println("reacheed unreachable area with arrayType " + arrayType);
         }
 
     }
@@ -339,7 +363,6 @@ public class ParameterNode extends ASTNode {
         }
 
 
-
         ObjectMapper mapper = new ObjectMapper();
         JsonNode shaderRequirementsNode = null;
 
@@ -360,7 +383,10 @@ public class ParameterNode extends ASTNode {
         }
 
         // Generate the input array as a top level statement
-        String inputValuesVariableName = generator.generateTopLevelStatement("typedArray", "Uint8", inputBufferValues, null);
+        String inputValuesVariableName = generator.generateTopLevelStatement("typedArray",
+                "Uint8",
+                inputBufferValues,
+                null);
 
         // Set the size as bufferName.byteLength() - see if this is possible when generating a parameter\
         String inputBufferSize = String.valueOf(inputBufferValues.size());
@@ -375,7 +401,14 @@ public class ParameterNode extends ASTNode {
         sameObjectRequirements.put("GPUDevice", generator.findBaseReceiver(parentList.getReceiver(), "GPUDevice"));
 
         // ESSETNIALLY MAKE THE BUFFER
-        String inputBufferName = generator.getRandomReceiver("GPUBuffer", "getMappedRange", bufferRequirements, List.of("GPUDevice"), parentList.getReceiver(), this, null, null);
+        String inputBufferName = generator.getRandomReceiver("GPUBuffer",
+                "getMappedRange",
+                bufferRequirements,
+                List.of("GPUDevice"),
+                parentList.getReceiver(),
+                this,
+                null,
+                null);
 
         nestedParameterRequirements.put("binding", List.of("0"));
         nestedParameterRequirements.put("resource.buffer", List.of(inputBufferName));
@@ -399,8 +432,16 @@ public class ParameterNode extends ASTNode {
         bufferRequirements.put("GPUBuffer.size", List.of(storageBufferSize));
         bufferRequirements.put("GPUBuffer.usage", List.of("GPUBufferUsage.STORAGE", "GPUBufferUsage.COPY_SRC"));
 
-//        String storageBufferName = generator.determineReceiver("GPUBuffer", "getMappedRange", true, bufferRequirements, sameObjectRequirements);
-        String storageBufferName = generator.getRandomReceiver("GPUBuffer", "getMappedRange", bufferRequirements, List.of("GPUDevice"), parentList.getReceiver(), this, null, null);
+//        String storageBufferName = generator.determineReceiver("GPUBuffer", "getMappedRange", true,
+//        bufferRequirements, sameObjectRequirements);
+        String storageBufferName = generator.getRandomReceiver("GPUBuffer",
+                "getMappedRange",
+                bufferRequirements,
+                List.of("GPUDevice"),
+                parentList.getReceiver(),
+                this,
+                null,
+                null);
         nestedParameterRequirements.put("binding", List.of("1"));
         nestedParameterRequirements.put("resource.size", List.of(storageBufferSize));
         nestedParameterRequirements.put("resource.buffer", List.of(storageBufferName));
@@ -418,8 +459,18 @@ public class ParameterNode extends ASTNode {
         String sameGPUDevice = generator.findBaseReceiver(inputBufferName, "GPUDevice");
         sameObjectReqs.put("GPUDevice", sameGPUDevice);
         // THE PROBLEM HERE IS THAT WRITE BUFFER IS FROM THE SAME GPUDEVICE. BUT GPUQUEUE ISN'T.
-        String gpuQueueName = generator.getRandomReceiver("GPUQueue", "writeBuffer", null, List.of("GPUDevice"), parentList.getReceiver(), this, null, null);
-        generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUQueue", "writeBuffer", true), writeBufferRequirements, sameObjectReqs, gpuQueueName);
+        String gpuQueueName = generator.getRandomReceiver("GPUQueue",
+                "writeBuffer",
+                null,
+                List.of("GPUDevice"),
+                parentList.getReceiver(),
+                this,
+                null,
+                null);
+        generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUQueue", "writeBuffer", true),
+                writeBufferRequirements,
+                sameObjectReqs,
+                gpuQueueName);
     }
 
     private void generateBindGroupLayout(JsonNode details) {
@@ -427,10 +478,18 @@ public class ParameterNode extends ASTNode {
         JsonNode conditionsNode = details.has("conditions") ? details.get("conditions") : null;
         List<String> sameObjectRequirements = null;
         if (conditionsNode != null && !skipValidityChecks) {
-            sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
+            sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same")
+                    .toString()) : null;
         }
 
-        String pipelineVariableName = generator.getRandomReceiver("GPUComputePipeline", "getBindGroupLayout", null, sameObjectRequirements, parentList.getReceiver(), this, null, null);
+        String pipelineVariableName = generator.getRandomReceiver("GPUComputePipeline",
+                "getBindGroupLayout",
+                null,
+                sameObjectRequirements,
+                parentList.getReceiver(),
+                this,
+                null,
+                null);
 
 
         // Label should be the first paramter to be generated
@@ -478,7 +537,7 @@ public class ParameterNode extends ASTNode {
 
     private String chooseShaderOfType(String type) {
         // expects type of shader.subtype where subtype is compute, vertex, or fragment
-        String shaderImportName = generator.generateTopLevelStatement("shader."  + type);
+        String shaderImportName = generator.generateTopLevelStatement("shader." + type);
         String[] splitNames = shaderImportName.split("\\.");
 
         // Set label as 'compute' or 'graphics' based on folder in which found the shader
@@ -524,15 +583,25 @@ public class ParameterNode extends ASTNode {
         JsonNode conditionsNode = details.get("conditions");
         Map<String, List<String>> requirements = parseInterfaceConditions(conditionsNode);
 
-        List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get("same").toString()) : null;
-        String fieldToFetchCannotBeThisObjectFrom = conditionsNode.has("differentTo") ? conditionsNode.get("differentTo").asText() : null;
+        List<String> sameObjectRequirements = conditionsNode.has("same") ? Parser.getListFromJson(conditionsNode.get(
+                "same").toString()) : null;
+        String fieldToFetchCannotBeThisObjectFrom = conditionsNode.has("differentTo") ? conditionsNode.get(
+                "differentTo")
+                .asText() : null;
         String cannotBeThisObject = null;
         if (fieldToFetchCannotBeThisObjectFrom != null) {
             cannotBeThisObject = parentList.getParameter(fieldToFetchCannotBeThisObjectFrom);
         }
 
 
-        String webGPUObject = generator.getRandomReceiver(paramType, parentList.getCallName(), requirements, sameObjectRequirements, parentList.getReceiver(), this, cannotBeThisObject, null);
+        String webGPUObject = generator.getRandomReceiver(paramType,
+                parentList.getCallName(),
+                requirements,
+                sameObjectRequirements,
+                parentList.getReceiver(),
+                this,
+                cannotBeThisObject,
+                null);
         generator.addToCallUnavailability(webGPUObject, Set.of("destroy"));
         Parameter newParameter = new Parameter(webGPUObject);
 
@@ -663,7 +732,10 @@ public class ParameterNode extends ASTNode {
 
             if (valueNode.has("customValidation")) {
 
-                value[0] = Long.parseLong(generator.generateCustomConstraint(valueNode.get("customValidation").asText(), parentList, this, generator));
+                value[0] = Long.parseLong(generator.generateCustomConstraint(valueNode.get("customValidation").asText(),
+                        parentList,
+                        this,
+                        generator));
             } else if (valueNode.has("constraints")) {
                 parseNumericConstraints(valueNode, value);
             } else if (valueNode.has("comparison")) {
@@ -707,7 +779,7 @@ public class ParameterNode extends ASTNode {
                 JsonNode constraintValue = constraintNode.get(flagValue);
                 try {
                     value[0] = Long.parseLong(constraintValue.asText());
-                } catch(NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     // Stored as a variable
                     value[0] = Long.parseLong(parentList.getParameter(constraintValue.asText()));
                 }
@@ -736,7 +808,7 @@ public class ParameterNode extends ASTNode {
         if (subNode.has("otherParams")) {
             List<String> otherFieldNames = Parser.getListFromJson(subNode.get("otherParams").toString());
             String parametersOperator = subNode.get("operator").asText();
-            switch(parametersOperator) {
+            switch (parametersOperator) {
                 case "+":
                     for (String otherFieldName : otherFieldNames) {
                         parameterTotal += Long.parseLong(parentList.getParameter(otherFieldName));
@@ -784,7 +856,14 @@ public class ParameterNode extends ASTNode {
                 JsonNode paramDetails = param.get(nestedFieldName);
 
                 try {
-                    ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName, paramDetails, true, false, this, generator, parentList, nestedParameterRequirements);
+                    ParameterNode nestedParameterNode = new ParameterNode(nestedFieldName,
+                            paramDetails,
+                            true,
+                            false,
+                            this,
+                            generator,
+                            parentList,
+                            nestedParameterRequirements);
                     this.addNode(nestedParameterNode);
                     this.numSubParams += 1;
                 } catch (SkipParameterException e) {
@@ -923,7 +1002,9 @@ public class ParameterNode extends ASTNode {
         return chosenFlags;
     }
 
-    private List<String> pickEnumValuesAsBitwiseFlags(List<String> enumValues, JsonNode mutexNode, List<String> mandatoryEnums) {
+    private List<String> pickEnumValuesAsBitwiseFlags(List<String> enumValues,
+                                                      JsonNode mutexNode,
+                                                      List<String> mandatoryEnums) {
         int range = enumValues.size() - 1;
         int randIdx;
         if (range == 0) {
@@ -960,7 +1041,6 @@ public class ParameterNode extends ASTNode {
             }
 
 
-
         }
 
         chosenFlags.removeAll(toRemove);
@@ -970,7 +1050,8 @@ public class ParameterNode extends ASTNode {
 
     }
 
-    private List<String> parseEnumConditions(JsonNode conditions, List<String> enumValues) throws SkipParameterException {
+    private List<String> parseEnumConditions(JsonNode conditions,
+                                             List<String> enumValues) throws SkipParameterException {
         List<String> mandatoryEnums = new ArrayList<>();
         List<String> firefoxIncompatibleEnums = Arrays.asList("rgb10a2uint");
 
@@ -988,7 +1069,8 @@ public class ParameterNode extends ASTNode {
             return mandatoryEnums;
         }
 
-        // Is an issue because your allEnumVAlues is empty because the values are in constraints because enum was boolean
+        // Is an issue because your allEnumVAlues is empty because the values are in constraints because enum was
+        // boolean
         // check through all examples of enum boolean but not inFile
         if (conditions.has("constraints")) {
             parseConstraints(conditions, enumValues);
@@ -1019,7 +1101,7 @@ public class ParameterNode extends ASTNode {
             ensureTextureUsageCompatible(conditions, enumValues);
         }
 
-        if(conditions.has("multiSamplingCompatible")) {
+        if (conditions.has("multiSamplingCompatible")) {
             ensureMultiSamplingCompatible(enumValues, mandatoryEnums);
         }
 
@@ -1101,7 +1183,9 @@ public class ParameterNode extends ASTNode {
         String viewName = this.rootParameterNode.findNestedParameterNode("view").getParameter().getValue();
         String format = generator.getObjectAttributes(viewName, "format");
 
-        String readOnlyValue = this.rootParameterNode.findNestedParameterNode(readOnlyParameter).getParameter().getValue();
+        String readOnlyValue = this.rootParameterNode.findNestedParameterNode(readOnlyParameter)
+                .getParameter()
+                .getValue();
 
         if (!format.contains(formatName) || readOnlyValue.equals("true")) {
             throw new SkipParameterException("Not providing load or store operations when readOnly is true");
@@ -1208,7 +1292,8 @@ public class ParameterNode extends ASTNode {
 
             List<String> incompatibleBaseTextures = new ArrayList<>();
             Parser.extractNodeAsList(texturesEnumNode.get("enum"), incompatibleBaseTextures);
-            incompatibleBaseTextures.removeIf(texture -> !(texture.startsWith("stencil") || texture.startsWith("depth")));
+            incompatibleBaseTextures.removeIf(texture -> !(texture.startsWith("stencil") || texture.startsWith("depth"
+            )));
 
             List<String> compressedTextures = new ArrayList<>();
             Parser.extractNodeAsList(texturesEnumNode.get("compressedFormats"), compressedTextures);
@@ -1249,8 +1334,10 @@ public class ParameterNode extends ASTNode {
         exceptions.put("depth24plus-stencil8", "depth24plus");
         exceptions.put("depth24plus", "depth24plus-stencil8");
 
-        String compatibleTexture = findCompatibleTexture(parentList.getParameter(conditions.get("textureCompatible").asText()));
-        enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)) || (exceptions.containsKey(compatibleTexture) && exceptions.get(compatibleTexture).equals(flag)));
+        String compatibleTexture = findCompatibleTexture(parentList.getParameter(conditions.get("textureCompatible")
+                .asText()));
+        enumValues.removeIf(flag -> !(flag.startsWith(compatibleTexture)) || (exceptions.containsKey(compatibleTexture) && exceptions.get(
+                compatibleTexture).equals(flag)));
     }
 
     private void ensureTextureAspectCompatible(List<String> enumValues, boolean hasViewFormatsCompatible) {
@@ -1266,8 +1353,8 @@ public class ParameterNode extends ASTNode {
         }
 
         String currentTexture = generator.getObjectAttributes(parentList.getReceiver(), "format");
-        if ((currentTexture.contains("depth") && currentTexture.contains("stencil")) ||
-        (!currentTexture.contains("depth") && !currentTexture.contains("stencil"))) {
+        if ((currentTexture.contains("depth") && currentTexture.contains("stencil")) || (!currentTexture.contains(
+                "depth") && !currentTexture.contains("stencil"))) {
             enumValues.removeIf(value -> value.startsWith("depth") || value.startsWith("stencil"));
         } else if (currentTexture.contains("depth")) {
             enumValues.removeIf(value -> value.startsWith("stencil"));
@@ -1356,9 +1443,12 @@ public class ParameterNode extends ASTNode {
 
         newEnumNode.fieldNames().forEachRemaining(fieldName -> {
             String constraintValue;
-            if (fieldName.startsWith("inner" )) {
+            if (fieldName.startsWith("inner")) {
                 String[] split = fieldName.split("\\.", 2);
-                constraintValue = this.getRootParameterNode().findNestedParameterNode(split[1]).getParameter().getValue();
+                constraintValue = this.getRootParameterNode()
+                        .findNestedParameterNode(split[1])
+                        .getParameter()
+                        .getValue();
             } else {
                 constraintValue = parentList.getParameter(fieldName);
             }
@@ -1415,7 +1505,9 @@ public class ParameterNode extends ASTNode {
 
 
             } else {
-                valueToPrint = new StringBuilder(subnodes.stream().map(ASTNode::toString).collect(Collectors.joining(",", "{", "}")));
+                valueToPrint = new StringBuilder(subnodes.stream()
+                        .map(ASTNode::toString)
+                        .collect(Collectors.joining(",", "{", "}")));
             }
 
             if (isArray) {
@@ -1423,7 +1515,8 @@ public class ParameterNode extends ASTNode {
             }
         } else {
             List<String> parameterValues = this.parameters.stream().map(Parameter::toString).toList();
-            valueToPrint = new StringBuilder(formatParam(parameterValues, new ParamFormatting(isArray, isString, isBitwiseFlags)));
+            valueToPrint = new StringBuilder(formatParam(parameterValues,
+                    new ParamFormatting(isArray, isString, isBitwiseFlags)));
         }
 
         if (isJsonFormat) {
@@ -1447,8 +1540,7 @@ public class ParameterNode extends ASTNode {
             valueToPrint.append(unformattedValuesToPrint.get(i));
 
 
-
-            if (count == (this.numSubParams-1)) {
+            if (count == (this.numSubParams - 1)) {
                 valueToPrint.append("}");
                 count = 0;
             } else {
@@ -1466,7 +1558,9 @@ public class ParameterNode extends ASTNode {
     private String formatParam(List<String> parameterValues, ParamFormatting paramFormatting) {
         String valueToPrint;
         if (paramFormatting.isArray()) {
-            valueToPrint = parameterValues.stream().map(s -> paramFormatting.isString() ? "\"" + s + "\"" : s).collect(Collectors.joining(", ", "[", "]"));
+            valueToPrint = parameterValues.stream()
+                    .map(s -> paramFormatting.isString() ? "\"" + s + "\"" : s)
+                    .collect(Collectors.joining(", ", "[", "]"));
         } else if (paramFormatting.isBitwiseFlags()) {
             valueToPrint = String.join(" | ", parameterValues);
         } else if (paramFormatting.isString()) {

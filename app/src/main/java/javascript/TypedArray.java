@@ -95,6 +95,6 @@ public class TypedArray extends ASTNode {
         if (dataVariable != null) {
             return baseStructure + "(" + dataVariable + ")";
         }
-        return  baseStructure + values.stream().map(Objects::toString).collect(Collectors.joining(",", "([", "])"));
+        return baseStructure + values.stream().map(Objects::toString).collect(Collectors.joining(",", "([", "])"));
     }
 }

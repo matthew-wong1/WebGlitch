@@ -46,7 +46,8 @@ public class WebGlitchOptions {
         this.generateConstChance = configNode.get("generateConstChance").asDouble();
         this.generateAwaitChance = configNode.get("generateAwaitChance").asDouble();
 
-        if (!isValidPercentage(skipValidityCheckChance) || !isValidPercentage(percentOfAvailableCallsToGenerate) || !isValidPercentage(generateNewRequiredObjectChance) || !isValidPercentage(printComputePassOutputChance)) {
+        if (!isValidPercentage(skipValidityCheckChance) || !isValidPercentage(percentOfAvailableCallsToGenerate) || !isValidPercentage(
+                generateNewRequiredObjectChance) || !isValidPercentage(printComputePassOutputChance)) {
             System.err.println("Error in config.json: Any percentage must be between 0 and 1 inclusive");
             System.exit(1);
         }
@@ -89,7 +90,9 @@ public class WebGlitchOptions {
         return generateConstChance;
     }
 
-    public double getGenerateAwaitChance() { return generateAwaitChance; }
+    public double getGenerateAwaitChance() {
+        return generateAwaitChance;
+    }
 
     public boolean getLetRandomPercentOfCallsBeAvailable() {
         return letRandomPercentOfCallsBeAvailable;

@@ -27,6 +27,7 @@ public class WebGlitch {
         boolean wgpuCompatibilityMode = cmd.hasOption("w");
         boolean firefoxCompatibilityMode = cmd.hasOption("f");
         boolean ctsCompatiblityMode = cmd.hasOption("c");
+        boolean clusterFuzzCompatibilityMode = cmd.hasOption("z");
 
         Map<String, Boolean> compatibilityModes = new HashMap<>();
         compatibilityModes.put("wgpu", wgpuCompatibilityMode);
@@ -38,12 +39,16 @@ public class WebGlitch {
                 compatibilityModes,
                 ctsCompatiblityMode,
                 specificSeed,
-                generateMainFunctionOnly);
+                generateMainFunctionOnly,
+                clusterFuzzCompatibilityMode);
 
         generator.generateProgram(filePathToUse);
         // Uncomment this for metrics about the programs you generated
 //        printCallDistributionMetrics(maxCallsToGenerate, compatibilityModes, ctsCompatiblityMode, specificSeed,
 //        generateMainFunctionOnly, filePathToUse);
+
+        // CLFZ compatibility mode:
+        // generate within an html file
 
     }
 
@@ -52,7 +57,8 @@ public class WebGlitch {
                                                      boolean ctsCompatiblityMode,
                                                      Long specificSeed,
                                                      boolean generateMainFunctionOnly,
-                                                     String filePathToUse) {
+                                                     String filePathToUse,
+                                                     boolean clusterFuzzCompatibilityMode) {
         Map<String, Integer> cumulativeCallDistribution = new HashMap<>();
         for (int i = 0; i < 1000; i++) {
             System.out.println("Generating program " + i);
@@ -60,7 +66,8 @@ public class WebGlitch {
                     compatibilityModes,
                     ctsCompatiblityMode,
                     specificSeed,
-                    generateMainFunctionOnly);
+                    generateMainFunctionOnly,
+                    clusterFuzzCompatibilityMode);
             Map<String, Integer> callDistribution = generator.generateProgram(filePathToUse);
             callDistribution.forEach((k, v) -> cumulativeCallDistribution.merge(k, v, Integer::sum));
         }
@@ -95,6 +102,10 @@ public class WebGlitch {
                 false,
                 "Ensures generated programs are firefox compatible.");
         Option ctsCompatible = new Option("c", "cts", false, "Ensures generated programs are CTS compatible.");
+        Option clusterFuzzCompatible = new Option("z",
+                "clfzz",
+                false,
+                "Ensures generated programs are ClusterFuzz compatible.");
 
         maxCalls.setType(Integer.class);
         maxCalls.setRequired(false);
@@ -117,6 +128,9 @@ public class WebGlitch {
         ctsCompatible.setRequired(false);
         ctsCompatible.setType(Boolean.class);
 
+        clusterFuzzCompatible.setRequired(false);
+        clusterFuzzCompatible.setType(Boolean.class);
+
         options.addOption(ctsCompatible);
         options.addOption(maxCalls);
         options.addOption(seed);
@@ -124,6 +138,7 @@ public class WebGlitch {
         options.addOption(mainOnly);
         options.addOption(wgpuCompatible);
         options.addOption(firefoxCompatible);
+        options.addOption(clusterFuzzCompatible);
         return options;
     }
 

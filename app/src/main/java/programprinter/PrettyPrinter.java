@@ -18,12 +18,14 @@ public class PrettyPrinter {
     private final String CTS_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/ctsHeader.ts";
     private final String DAWN_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/dawnHeader.js";
     private final String DENO_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/denoHeader.js";
+    private final String SKELETON_HTML_PATH = WEBGLITCH_PATH + "/rsrcs/html/skeleton.html";
 
     public void printToFile(ASTNode root,
                             String filePath,
                             long seed,
                             boolean mainOnly,
                             boolean ctsCompatible,
+                            boolean clusterFuzzCompatible,
                             WebGlitchOptions webGlitchOptions) {
         String commentedSeed = "// Seed: " + seed + "\n";
         String commentedErrorsEnabled = "// Errors ";
@@ -86,6 +88,34 @@ public class PrettyPrinter {
         } catch (IOException | InterruptedException e) {
             System.err.println("Error formatting JavaScript");
             e.printStackTrace();
+        }
+
+        if (clusterFuzzCompatible) {
+            String baseFileName = filePath.split("\\.", 2)[0];
+            String testCaseFile = baseFileName + ".html";
+
+            try {
+                // Copy skeleton HTML file to target destination
+                Files.copy(Paths.get(SKELETON_HTML_PATH), Path.of(testCaseFile), StandardCopyOption.REPLACE_EXISTING);
+
+                // Concatenate generated JS to HTML file
+                BufferedWriter writer = new BufferedWriter(new FileWriter(testCaseFile, true));
+                BufferedReader reader = new BufferedReader(new FileReader(filePath));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+
+                // Add </script></body></html> back in
+                writer.write("\n</script>\n</body>\n</html>");
+
+                // Delete redundant generated JS file
+                Files.delete(destPath);
+            } catch (IOException e) {
+                System.err.println("Error generating HTML file " + filePath + ": " + e.getMessage());
+            }
+
         }
     }
 

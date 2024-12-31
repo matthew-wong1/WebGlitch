@@ -68,13 +68,15 @@ public class Generator {
     private final int maxCalls;
     private final boolean wgpuCompatible;
     private final boolean firefoxCompatible;
+    private final boolean clusterFuzzCompatible;
     private ASTNode programNode;
 
     public Generator(int maxCalls,
                      Map<String, Boolean> compatibilityModes,
                      boolean ctsCompatible,
                      Long seed,
-                     boolean mainOnly) {
+                     boolean mainOnly,
+                     boolean clusterFuzzCompatibilityMode) {
         this.maxCalls = maxCalls;
         this.mainOnly = mainOnly;
         this.ctsCompatible = ctsCompatible;
@@ -87,6 +89,7 @@ public class Generator {
             firefoxCompatible = false;
         }
 
+        clusterFuzzCompatible = clusterFuzzCompatibilityMode;
 
         if (seed != null) {
             this.randomUtils = new RandomUtils(seed);
@@ -309,6 +312,7 @@ public class Generator {
                 randomUtils.getSeed(),
                 this.mainOnly,
                 this.ctsCompatible,
+                this.clusterFuzzCompatible,
                 webGlitchOptions);
         return programCallDistribution;
     }

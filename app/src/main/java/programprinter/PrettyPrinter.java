@@ -58,10 +58,11 @@ public class PrettyPrinter {
         try {
             String LOAD_SHADER_HEADER_PATH = ctsCompatible ? LOAD_SHADER_CTS_PATH : LOAD_SHADER_PATH;
 
-            FileChannel requiredHeader = FileChannel.open(Paths.get(LOAD_SHADER_HEADER_PATH), StandardOpenOption.READ);
-            FileChannel destFile = FileChannel.open(Paths.get(pathName),
-                    openOptions.toArray(new StandardOpenOption[0]));
-            destFile.transferFrom(requiredHeader, destFile.size(), requiredHeader.size());
+            try (FileChannel requiredHeader = FileChannel.open(Paths.get(LOAD_SHADER_HEADER_PATH), StandardOpenOption.READ);
+                 FileChannel destFile = FileChannel.open(Paths.get(pathName),
+                         openOptions.toArray(new StandardOpenOption[0]))) {
+                destFile.transferFrom(requiredHeader, destFile.size(), requiredHeader.size());
+            }
         } catch (IOException e) {
             System.err.println("Error copying headers: " + e.getMessage());
         }
@@ -71,10 +72,10 @@ public class PrettyPrinter {
             File outFile = destPath.toFile();
 
             // Set to append mode
-            FileWriter fileWriter = new FileWriter(outFile, true);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.println(commentedSeed + commentedErrorsEnabled + root.toString());
-            printWriter.close();
+            try (FileWriter fileWriter = new FileWriter(outFile, true);
+                 PrintWriter printWriter = new PrintWriter(fileWriter)) {
+                printWriter.println(commentedSeed + commentedErrorsEnabled + root.toString());
+            }
 
         } catch (FileNotFoundException e) {
             System.err.println("Failed to find file " + filePath + ": " + e.getMessage());
@@ -99,16 +100,15 @@ public class PrettyPrinter {
                 Files.copy(Paths.get(SKELETON_HTML_PATH), Path.of(testCaseFile), StandardCopyOption.REPLACE_EXISTING);
 
                 // Concatenate generated JS to HTML file
-                BufferedWriter writer = new BufferedWriter(new FileWriter(testCaseFile, true));
-                BufferedReader reader = new BufferedReader(new FileReader(filePath));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    writer.write(line);
-                    writer.newLine();
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(testCaseFile, true));
+                     BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        writer.write(line);
+                        writer.newLine();
+                    }
+                    writer.write("\n</script>\n</body>\n</html>");
                 }
-
-                // Add </script></body></html> back in
-                writer.write("\n</script>\n</body>\n</html>");
 
                 // Delete redundant generated JS file
                 Files.delete(destPath);

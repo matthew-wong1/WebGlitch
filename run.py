@@ -10,6 +10,7 @@ webglitch_dir = os.path.dirname(os.path.realpath(__file__))
 webglitch_jar_path = os.path.join(webglitch_dir, 'app', 'build', 'libs', 'app.jar')
 
 def run_webglitch(args_to_use):
+    print(webglitch_jar_path)
     try:
         subprocess.run(['java', '-jar', webglitch_jar_path] + args_to_use, check=True)
     except subprocess.CalledProcessError as e:
@@ -45,7 +46,7 @@ input_dir = args.input_dir
 output_dir = args.output_dir
 no_of_files = args.no_of_files
 
-if no_of_files <= 0:
+if not no_of_files or no_of_files <= 0:
     raise ValueError("Number of files to generate must be greater than 0")
 
 # Output dir must include all dependencies to execute testcase so need copy shaders folder over

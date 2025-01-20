@@ -1,0 +1,25 @@
+FROM gcr.io/clusterfuzz-images/chromium:1edb7e3-201812190610
+
+# Download and install Eclipse Temurin:
+ENV JAVA_HOME=/opt/java/openjdk
+COPY --from=amd64/eclipse-temurin:21 $JAVA_HOME $JAVA_HOME
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+
+# Download and install Gradle:
+RUN curl -s "https://get.sdkman.io" | bash
+
+SHELL ["/bin/bash", "-c"]
+
+RUN source "/root/.sdkman/bin/sdkman-init.sh" \
+    && sdk install gradle 8.12
+
+USER root
+
+WORKDIR /root
+
+COPY . /root
+
+# Install WebGlitch dependencies and build
+RUN ./gradlew build
+
+CMD ["/bin/bash"]

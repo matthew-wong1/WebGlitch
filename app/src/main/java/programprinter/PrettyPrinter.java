@@ -83,15 +83,15 @@ public class PrettyPrinter {
             System.err.println("Failed to append to file " + filePath + ": " + e.getMessage());
         }
 
-        try {
-            this.formatJavaScript(pathName.replace('/', File.separatorChar));
+        if (!clusterFuzzCompatible) {
+            try {
+                this.formatJavaScript(pathName.replace('/', File.separatorChar));
 
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Error formatting JavaScript");
-            e.printStackTrace();
-        }
-
-        if (clusterFuzzCompatible) {
+            } catch (IOException | InterruptedException e) {
+                System.err.println("Error formatting JavaScript");
+                e.printStackTrace();
+            }
+        } else {
             String baseFileName = filePath.split("\\.", 2)[0];
             String testCaseFile = baseFileName + ".html";
 
@@ -115,7 +115,6 @@ public class PrettyPrinter {
             } catch (IOException e) {
                 System.err.println("Error generating HTML file " + filePath + ": " + e.getMessage());
             }
-
         }
     }
 

@@ -1,6 +1,7 @@
 # Generated JS files
 output/
 wgpu_playground/
+jdk/
 
 # Compiled class file
 *.class

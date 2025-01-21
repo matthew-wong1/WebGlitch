@@ -7,12 +7,12 @@ import subprocess
 import sys
 
 webglitch_dir = os.path.dirname(os.path.realpath(__file__))
+java_path = os.path.join(webglitch_dir, 'jdk', 'bin', 'java')
 webglitch_jar_path = os.path.join(webglitch_dir, 'app', 'build', 'libs', 'app.jar')
 
 def run_webglitch(args_to_use):
-    print(webglitch_jar_path)
     try:
-        subprocess.run(['java', '-jar', webglitch_jar_path] + args_to_use, check=True)
+        subprocess.run([java_path, '-jar', webglitch_jar_path] + args_to_use, check=True)
     except subprocess.CalledProcessError as e:
         print("Error running Java command: " + str(e))
         sys.exit(e.returncode)

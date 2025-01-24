@@ -19,6 +19,7 @@ public class PrettyPrinter {
     private final String DAWN_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/dawnHeader.js";
     private final String DENO_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/denoHeader.js";
     private final String SKELETON_HTML_PATH = WEBGLITCH_PATH + "/rsrcs/html/skeleton.html";
+    private final String CL_FUZZ_HEADER_PATH = WEBGLITCH_PATH + "/rsrcs/js/clFuzzHeader.js";
 
     public void printToFile(ASTNode root,
                             String filePath,
@@ -43,7 +44,7 @@ public class PrettyPrinter {
         openOptions.add(StandardOpenOption.WRITE);
         openOptions.add(StandardOpenOption.TRUNCATE_EXISTING);
 
-        if (!mainOnly) {
+        if (!(mainOnly | clusterFuzzCompatible)) {
             String HEADER_PATH = ctsCompatible ? CTS_HEADER_PATH : DAWN_HEADER_PATH;
 
             try {
@@ -56,9 +57,16 @@ public class PrettyPrinter {
         }
 
         try {
-            String LOAD_SHADER_HEADER_PATH = ctsCompatible ? LOAD_SHADER_CTS_PATH : LOAD_SHADER_PATH;
+            String load_shader_header_path = "";
+            if (ctsCompatible) {
+                load_shader_header_path = LOAD_SHADER_CTS_PATH;
+            } else if (clusterFuzzCompatible) {
+                load_shader_header_path = CL_FUZZ_HEADER_PATH;
+            } else {
+                load_shader_header_path = LOAD_SHADER_PATH;
+            }
 
-            try (FileChannel requiredHeader = FileChannel.open(Paths.get(LOAD_SHADER_HEADER_PATH), StandardOpenOption.READ);
+            try (FileChannel requiredHeader = FileChannel.open(Paths.get(load_shader_header_path), StandardOpenOption.READ);
                  FileChannel destFile = FileChannel.open(Paths.get(pathName),
                          openOptions.toArray(new StandardOpenOption[0]))) {
                 destFile.transferFrom(requiredHeader, destFile.size(), requiredHeader.size());

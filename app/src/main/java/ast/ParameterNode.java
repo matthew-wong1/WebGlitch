@@ -225,6 +225,7 @@ public class ParameterNode extends ASTNode {
             shaderFolderPath = WebGlitch.getShadersPrefixPath() + generator.getShaderProperties(fragmentShader, "path");
         } catch (NullPointerException e) {
             this.parameters.add(new Parameter("[]"));
+            System.err.println(e.getMessage());
             return;
         }
 
@@ -259,6 +260,7 @@ public class ParameterNode extends ASTNode {
             shaderFolderPath = WebGlitch.getShadersPrefixPath() + generator.getShaderProperties(fragmentShader, "path");
         } catch (NullPointerException e) {
             this.parameters.add(new Parameter(this.chooseRandomShader()));
+            System.err.println(e.getMessage());
             return;
         }
 
@@ -359,6 +361,7 @@ public class ParameterNode extends ASTNode {
             computeShader = generator.getObjectAttributes(computeShaderModule, "code");
             shaderFolderPath = WebGlitch.getShadersPrefixPath() + generator.getShaderProperties(computeShader, "path");
         } catch (NullPointerException e) {
+            System.err.println(e.getMessage());
             return;
         }
 
@@ -379,6 +382,7 @@ public class ParameterNode extends ASTNode {
         try {
             Parser.extractNodeAsList(shaderRequirementsNode.get("inputBuffer"), inputBufferValues);
         } catch (NullPointerException e) {
+            System.err.println(e.getMessage());
             return;
         }
 
@@ -426,6 +430,7 @@ public class ParameterNode extends ASTNode {
         try {
             storageBufferSize = shaderRequirementsNode.get("storageBufferSize").asText();
         } catch (NullPointerException e) {
+            System.err.println(e.getMessage());
             return;
         }
 

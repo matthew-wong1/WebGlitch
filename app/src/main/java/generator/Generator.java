@@ -1295,7 +1295,6 @@ public class Generator {
 
         // loop over all computePassencoders that need printing
         for (String computePassEncoder : toPrintCommandEncoderAndItsPipeline.keySet()) {
-
             if (!getParentVariable(computePassEncoder).equals(commandEncoder)) {
                 continue;
             }

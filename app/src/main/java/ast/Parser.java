@@ -180,6 +180,7 @@ public class Parser {
             try {
                 generator.generatePostGenerationRequirement(receiver, requirement);
             } catch (NullPointerException e) {
+                System.err.println(e.getMessage());
             }
 
         }

@@ -11,6 +11,6 @@ public class LoadShaderCall extends ASTNode {
 
     @Override
     public String toString() {
-        return "await loadShader (globalThis.pathPrefix + '" + fullPath + "');";
+        return "await loadShader(globalThis.pathPrefix + '" + fullPath + "');";
     }
 }

@@ -18,6 +18,7 @@ public class WebGlitchOptions {
     private final int maxGPUDevices;
     private final boolean letRandomPercentOfCallsBeAvailable;
     private final double printComputePassOutputChance;
+    private final double printAllQueuedComputePassOutputsChance;
     private final double generateConstChance;
     private final double generateAwaitChance;
 
@@ -41,13 +42,19 @@ public class WebGlitchOptions {
         }
         this.generateNewRequiredObjectChance = configNode.get("generateNewRequiredObjectChance").asDouble();
         this.printComputePassOutputChance = configNode.get("printComputePassOutputChance").asDouble();
+        this.printAllQueuedComputePassOutputsChance = configNode.get("printAllQueuedComputePassOutputsChance").asDouble();
         this.maxGPUDevices = configNode.get("maxGPUDevices").asInt();
 
         this.generateConstChance = configNode.get("generateConstChance").asDouble();
         this.generateAwaitChance = configNode.get("generateAwaitChance").asDouble();
 
-        if (!isValidPercentage(skipValidityCheckChance) || !isValidPercentage(percentOfAvailableCallsToGenerate) || !isValidPercentage(
-                generateNewRequiredObjectChance) || !isValidPercentage(printComputePassOutputChance)) {
+        if (
+                isInvalidValidPercentage(skipValidityCheckChance)
+                || isInvalidValidPercentage(percentOfAvailableCallsToGenerate)
+                || isInvalidValidPercentage(generateNewRequiredObjectChance)
+                || isInvalidValidPercentage(printComputePassOutputChance)
+                || isInvalidValidPercentage(printAllQueuedComputePassOutputsChance)
+        ) {
             System.err.println("Error in config.json: Any percentage must be between 0 and 1 inclusive");
             System.exit(1);
         }
@@ -58,8 +65,8 @@ public class WebGlitchOptions {
         }
     }
 
-    private boolean isValidPercentage(double value) {
-        return value >= 0 && value <= 1.0;
+    private boolean isInvalidValidPercentage(double value) {
+        return !(value >= 0) || !(value <= 1.0);
     }
 
     private boolean isValidAmount(int amount) {
@@ -85,6 +92,8 @@ public class WebGlitchOptions {
     public double getPrintComputePassOutputChance() {
         return printComputePassOutputChance;
     }
+
+    public double getPrintAllQueuedComputePassOutputsChance() { return printAllQueuedComputePassOutputsChance; }
 
     public double getGenerateConstChance() {
         return generateConstChance;

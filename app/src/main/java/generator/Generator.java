@@ -306,6 +306,10 @@ public class Generator {
             }
         }
 
+        if (randomUtils.randomChanceIsSuccessful(webGlitchOptions.getPrintAllQueuedComputePassOutputsChance())) {
+            submitAllQueuedComputePassEncoders();
+        }
+
         programNode.addNode(new JavaScriptStatement(FOOTER));
         printer.printToFile(this.programNode,
                 fileNameToUse,
@@ -315,6 +319,69 @@ public class Generator {
                 this.clusterFuzzCompatible,
                 webGlitchOptions);
         return programCallDistribution;
+    }
+
+    private void submitAllQueuedComputePassEncoders() {
+        // Loop over all ComputePassEncoders for printing
+        // Create set of commandEncoderNames
+        Set<String> unfinishedCommandEncoders = new HashSet<>();
+
+        computePassEncoderLoop:
+        for (String computePassEncoder : toPrintCommandEncoderAndItsPipeline.keySet()) {
+            // Only add command encoders whose buffers are still valid
+            String commandEncoder = getParentVariable(computePassEncoder);
+            Set<String> buffers = getBuffersUsedFromParentVariable(commandEncoder);
+            for (String buffer : buffers) {
+                // Skip commandEncoder if destroyed
+                if (!symbolTable.get("GPUBuffer").contains(buffer)) {
+                    continue computePassEncoderLoop;
+                }
+            }
+
+            unfinishedCommandEncoders.add(commandEncoder);
+        }
+
+        Set<String> commandBuffers = new HashSet<>();
+
+        for (String unfinishedCommandEncoder : unfinishedCommandEncoders) {
+            // Skip generating call if commandBuffer already created from this
+            if (callUnavailability.containsKey(unfinishedCommandEncoder)
+                && callUnavailability.get(unfinishedCommandEncoder).contains("GPUCommandEncoder.finish")
+            ) {
+                continue;
+            }
+
+            // Call .finish() and store resultant commandBuffer
+            commandBuffers.add(
+                    generateCall(
+                            new ReceiverTypeCallNameCallType("GPUCommandEncoder", "finish", true),
+                            null,
+                            null,
+                            unfinishedCommandEncoder
+                    )
+            );
+        }
+
+        // Get the resultant CommandBuffer and create GPUQueue from same parent
+        // Then call GPUQueue.submit, passing it as the argument
+        for (String commandBuffer : commandBuffers) {
+            String parentDevice = getParentVariable(getParentVariable(commandBuffer));
+            String gpuQueue = generateCall(
+                    new ReceiverTypeCallNameCallType("GPUDevice", "queue", false),
+                    null,
+                    null,
+                    parentDevice
+            );
+            Map<String, List<String>> requirements = new HashMap<>();
+            requirements.put("commandBuffers", List.of(commandBuffer));
+
+            generateCall(
+                    new ReceiverTypeCallNameCallType("GPUQueue", "submit", true),
+                    requirements,
+                    null,
+                    gpuQueue
+            );
+        }
     }
 
     public void addToObjectAttributesTable(String variableName, Map<String, List<Parameter>> keyValuePairs) {
@@ -575,6 +642,7 @@ public class Generator {
                                                 Map<String, List<String>> requirements,
                                                 ParameterNode parameterNode) {
         if (requirements == null) {
+            variablesThatMeetReqs.addAll(allVariables);
             return;
         }
 

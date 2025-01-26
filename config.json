@@ -4,7 +4,8 @@
   "percentOfAvailableCallsToGenerate": 1.0,
   "generateNewRequiredObjectChance": 0,
   "printComputePassOutputChance": 1.0,
+  "printAllQueuedComputePassOutputsChance": 0,
   "generateConstChance": 1,
   "generateAwaitChance": 1,
-  "maxGPUDevices": 5
+  "maxGPUDevices": 1
 }

@@ -73,8 +73,7 @@ public class ParameterNode extends ASTNode {
                 .getSkipValidityCheckChance());
         this.skipValidityChecksEnabledGlobally = generator.getWebGlitchOptions().getSkipValidityCheckChance() > 0;
 
-//        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using
-//        receiver " + parentList.getReceiver());
+//        System.out.println("generating " + fieldName + " for call " + getParentList().getCallName() + " using receiver " + parentList.getReceiver());
 
         checkImplementationSpecificCalls(details);
 
@@ -597,7 +596,6 @@ public class ParameterNode extends ASTNode {
         if (fieldToFetchCannotBeThisObjectFrom != null) {
             cannotBeThisObject = parentList.getParameter(fieldToFetchCannotBeThisObjectFrom);
         }
-
 
         String webGPUObject = generator.getRandomReceiver(paramType,
                 parentList.getCallName(),

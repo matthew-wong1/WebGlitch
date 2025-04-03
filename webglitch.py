@@ -4,10 +4,10 @@ import sys
 import signal
 import argparse
 
-RUNNER_PATH = "D:/final_proj/WebGlitchRunner/run.py"
-# RUNNER_PATH = "/Users/matthew/Documents/msc/final_proj/WebGlitchRunner/run.py"
-OUTPUT_DIR = "D:/final_proj/WebGlitchFiles/files"
-# OUTPUT_DIR = "/Users/matthew/Documents/msc/final_proj/WebGlitchFiles/files"
+# RUNNER_PATH = "D:/final_proj/WebGlitchRunner/run.py"
+RUNNER_PATH = "/Users/matthew/Documents/msc/final_proj/WebGlitchRunner/run.py"
+# OUTPUT_DIR = "D:/final_proj/WebGlitchFiles/files"
+OUTPUT_DIR = "/Users/matthew/Documents/msc/final_proj/WebGlitchFiles/files"
 i = 1 
 
 

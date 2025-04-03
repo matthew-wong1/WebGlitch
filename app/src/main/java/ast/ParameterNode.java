@@ -411,6 +411,7 @@ public class ParameterNode extends ASTNode {
                 parentList.getReceiver(),
                 this,
                 null,
+                null,
                 null);
 
         nestedParameterRequirements.put("binding", List.of("0"));
@@ -445,6 +446,7 @@ public class ParameterNode extends ASTNode {
                 parentList.getReceiver(),
                 this,
                 null,
+                null,
                 null);
         nestedParameterRequirements.put("binding", List.of("1"));
         nestedParameterRequirements.put("resource.size", List.of(storageBufferSize));
@@ -470,6 +472,7 @@ public class ParameterNode extends ASTNode {
                 parentList.getReceiver(),
                 this,
                 null,
+                null,
                 null);
         generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUQueue", "writeBuffer", true),
                 writeBufferRequirements,
@@ -492,6 +495,7 @@ public class ParameterNode extends ASTNode {
                 sameObjectRequirements,
                 parentList.getReceiver(),
                 this,
+                null,
                 null,
                 null);
 
@@ -596,6 +600,10 @@ public class ParameterNode extends ASTNode {
         if (fieldToFetchCannotBeThisObjectFrom != null) {
             cannotBeThisObject = parentList.getParameter(fieldToFetchCannotBeThisObjectFrom);
         }
+        String allAttributesAlive = null;
+        if (conditionsNode.has("allAttributesAlive")) {
+            allAttributesAlive = conditionsNode.get("allAttributesAlive").asText();
+        }
 
         String webGPUObject = generator.getRandomReceiver(paramType,
                 parentList.getCallName(),
@@ -604,7 +612,8 @@ public class ParameterNode extends ASTNode {
                 parentList.getReceiver(),
                 this,
                 cannotBeThisObject,
-                null);
+                null,
+                allAttributesAlive);
         generator.addToCallUnavailability(webGPUObject, Set.of("destroy"));
         Parameter newParameter = new Parameter(webGPUObject);
 

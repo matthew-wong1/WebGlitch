@@ -52,12 +52,13 @@ public class Parser {
             System.exit(1);
         }
 
-
         String returnType = callJsonNode.get("returnType").asText();
         String parentReceiverType = rootJsonNode.get("receiverType").asText();
         String receiver;
         if (specificReceiver == null) {
             // Check attributres required for receiver
+            String allAttributesAlive = null;
+
             if (callJsonNode.has("conditions")) {
                 JsonNode conditionsNode = callJsonNode.get("conditions");
 
@@ -69,12 +70,18 @@ public class Parser {
                     }
                     requirements.putAll(receiverRequirements);
                 }
+
+                if (conditionsNode.has("allAttributesAlive")) {
+                    // Check if "this" or "parent"
+                    allAttributesAlive = conditionsNode.get("allAttributesAlive").asText();
+                }
             }
             receiver = generator.determineReceiver(parentReceiverType,
                     callName,
                     rootJsonNode.has("requirements"),
                     requirements,
-                    sameObjectsReqs);
+                    sameObjectsReqs,
+                    allAttributesAlive);
 
             if (!generator.getRandomUtils()
                     .randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {
@@ -145,7 +152,7 @@ public class Parser {
 
         generator.addToProgramNode(nodeToReturn);
 
-        generator.addErrorLoggingForVariable(variableWhoseAttributesAreAffected);
+//        generator.addErrorLoggingForVariable(variableWhoseAttributesAreAffected);
 
         if (callJsonNode.has("postGeneration") && !generator.getRandomUtils()
                 .randomChanceIsSuccessful(generator.getWebGlitchOptions().getSkipValidityCheckChance())) {

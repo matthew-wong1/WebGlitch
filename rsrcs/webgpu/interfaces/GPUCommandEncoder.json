@@ -206,7 +206,8 @@
               "withAttributes": {
                 "GPUBuffer.usage": ["GPUBufferUsage.QUERY_RESOLVE"],
                 "GPUBuffer.mapped": ["false"]
-              }
+              },
+              "trackedLifetime": true
             }
           },
           "destinationOffset": {

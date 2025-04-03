@@ -45,7 +45,7 @@ public class Generator {
     private final Map<String, Set<String>> callUnavailability = new LinkedHashMap<>();
     private final Map<String, Set<String>> interfaceToAvailableCalls = new LinkedHashMap<>();
     private final Map<String, String> availableCallsToInterface = new LinkedHashMap<>();
-    private final Map<String, Set<String>> parentVariableToBuffersUsed = new LinkedHashMap<>();
+    public final Map<String, Set<String>> parentVariableToBuffersUsed = new LinkedHashMap<>();
     private final Map<String, Integer> programCallDistribution = new HashMap<>();
 
     // Maps parent CommandEncoder to the name of the outBuffer and the corresponding pipeline
@@ -326,19 +326,10 @@ public class Generator {
         // Create set of commandEncoderNames
         Set<String> unfinishedCommandEncoders = new HashSet<>();
 
-        computePassEncoderLoop:
         for (String computePassEncoder : toPrintCommandEncoderAndItsPipeline.keySet()) {
-            // Only add command encoders whose buffers are still valid
-            String commandEncoder = getParentVariable(computePassEncoder);
-            Set<String> buffers = getBuffersUsedFromParentVariable(commandEncoder);
-            for (String buffer : buffers) {
-                // Skip commandEncoder if destroyed
-                if (!symbolTable.get("GPUBuffer").contains(buffer)) {
-                    continue computePassEncoderLoop;
-                }
+            if (isValidToSubmit(computePassEncoder)) {
+                unfinishedCommandEncoders.add(computePassEncoder);
             }
-
-            unfinishedCommandEncoders.add(commandEncoder);
         }
 
         Set<String> commandBuffers = new HashSet<>();
@@ -412,6 +403,10 @@ public class Generator {
         }
 
         return objectAttributesTable.get(variableName).get(fieldName).getFirst().getValue();
+    }
+
+    public Map<String, List<Parameter>> getEveryObjectAttribute(String variableName) {
+        return objectAttributesTable.get(variableName);
     }
 
     // TODO: Make the fieldName if it doesn't exist
@@ -497,11 +492,23 @@ public class Generator {
         }
     }
 
+    public boolean isInSymbolTable(String variableName) {
+        return symbolTable.containsKey(variableName);
+    }
+
     public String getRandomReceiver(String receiverType, String callName) {
 
-        return getRandomReceiver(receiverType, callName, null, null, null, null, null, null);
-
-
+        return getRandomReceiver(
+                receiverType,
+                callName,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
     }
 
     public String getRandomReceiver(String receiverType,
@@ -511,7 +518,8 @@ public class Generator {
                                     String receiverName,
                                     ParameterNode parameterNode,
                                     String cannotBeThisObject,
-                                    Boolean forceGenerateNewObject) {
+                                    Boolean forceGenerateNewObject,
+                                    String variableWhoseAttributesMustBeAlive) {
         // null on forceGenerateNewObject means undecided
         // True or false means it has already been rolled
         if (forceGenerateNewObject == null) {
@@ -534,6 +542,38 @@ public class Generator {
             variablesThatMeetReqs.remove(cannotBeThisObject);
         }
 
+        if (
+                variableWhoseAttributesMustBeAlive != null
+                && symbolTable.containsKey(receiverType)
+                && !variablesThatMeetReqs.isEmpty()
+        ) {
+            List<String> invalidVariables = new ArrayList<>();
+            List<String> variablesToCheck = new ArrayList<>();
+            Map<String, String> parentToChildMap = new HashMap<>();
+            if (variableWhoseAttributesMustBeAlive.equals("parent")) {
+                for (String variable : variablesThatMeetReqs) {
+                    String parentVar = getParentVariable(variable);
+                    parentToChildMap.put(parentVar, variable);
+                    variablesToCheck.add(parentVar);
+                }
+            }
+
+            // Get object attributes and check each variable
+            for (String variableToCheck : variablesToCheck) {
+                if (!isValidToSubmit(variableToCheck)) {
+                    if (variableWhoseAttributesMustBeAlive.equals("parent")) {
+                        invalidVariables.add(parentToChildMap.get(variableToCheck));
+                    } else {
+                        invalidVariables.add(variableToCheck);
+                    }
+                }
+            }
+
+            if (!invalidVariables.isEmpty()) {
+                variablesThatMeetReqs.removeAll(invalidVariables);
+            }
+        }
+
         if (!symbolTable.containsKey(receiverType) || variablesThatMeetReqs.isEmpty() || forceGenerateNewObject) {
             // pass in same objects here
             return parseCallInfoFromReceiverTypeAndGenerateCall(receiverType, requirements, sameObjectReqs);
@@ -543,6 +583,30 @@ public class Generator {
 
         return variablesThatMeetReqs.get(randIdx);
 
+    }
+
+    private boolean isValidToSubmit(String variableToCheck) {
+        Map<String, List<Parameter>> objectAttributes = getEveryObjectAttribute(variableToCheck);
+        if (objectAttributes == null) {
+            return true;
+        }
+
+        for (List<Parameter> parameters : objectAttributes.values()) {
+            for (Parameter parameter : parameters) {
+                String value = parameter.getValue();
+                // Uppercase means it's a WebGPU object
+                if (value.isEmpty() || !Character.isUpperCase(value.charAt(0))) {
+                    continue;
+                }
+
+                // Check if WebGPU object still exists in symbol table (ie not deleted)
+                if (!isInSymbolTable(value)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     private Map<String, String> findAllVariablesThatMeetReqs(String receiverType,
@@ -847,7 +911,8 @@ public class Generator {
                                     String callName,
                                     boolean hasRequirements,
                                     Map<String, List<String>> requirements,
-                                    Map<String, String> sameObjectsReqs) {
+                                    Map<String, String> sameObjectsReqs,
+                                    String variableWhoseAttributesMustBeAlive) {
         if (hasRequirements) {
             String requiredReceiver = null;
             boolean forceGenerateNewObject =
@@ -875,7 +940,8 @@ public class Generator {
                         null,
                         null,
                         null,
-                        forceGenerateNewObject);
+                        forceGenerateNewObject,
+                        variableWhoseAttributesMustBeAlive);
             }
 
             return requiredReceiver;

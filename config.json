@@ -7,5 +7,5 @@
   "printAllQueuedComputePassOutputsChance": 0,
   "generateConstChance": 1,
   "generateAwaitChance": 1,
-  "maxGPUDevices": 1
+  "maxGPUDevices": 5
 }

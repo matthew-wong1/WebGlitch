@@ -48,7 +48,8 @@
             "conditions": {
               "same": [
                 "GPUDevice"
-              ]
+              ],
+              "allAttributesAlive": "parent"
             },
             "array": true
           }

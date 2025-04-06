@@ -41,6 +41,7 @@ public class Generator {
     private final Map<String, List<String>> symbolTable = new LinkedHashMap<>();
     public final Map<String, Map<String, List<Parameter>>> objectAttributesTable = new LinkedHashMap<>();
     private final Map<String, String> variableToReceiverType = new LinkedHashMap<>();
+    private final Map<String, List<String>> parentToChildVariables = new LinkedHashMap<>();
     private final Map<String, String> variableToReceiverName = new LinkedHashMap<>();
     private final Map<String, Set<String>> callUnavailability = new LinkedHashMap<>();
     private final Map<String, Set<String>> interfaceToAvailableCalls = new LinkedHashMap<>();
@@ -561,11 +562,7 @@ public class Generator {
             // Get object attributes and check each variable
             for (String variableToCheck : variablesToCheck) {
                 if (!isValidToSubmit(variableToCheck)) {
-                    if (variableWhoseAttributesMustBeAlive.equals("parent")) {
-                        invalidVariables.add(parentToChildMap.get(variableToCheck));
-                    } else {
-                        invalidVariables.add(variableToCheck);
-                    }
+                    invalidVariables.add(parentToChildMap.get(variableToCheck));
                 }
             }
 
@@ -585,8 +582,25 @@ public class Generator {
 
     }
 
+    private boolean hasBeenDestroyed(List<String> callHistory) {
+        if (callHistory == null) {
+            return false;
+        }
+
+        return callHistory.contains("destroy");
+    }
+
+    private boolean isNotAWebGPUObject(String var) {
+        return (var.isEmpty() || !Character.isUpperCase(var.charAt(0)));
+    }
+
+
     private boolean isValidToSubmit(String variableToCheck) {
+        if (isNotAWebGPUObject(variableToCheck)) {
+            return true;
+        }
         Map<String, List<Parameter>> objectAttributes = getEveryObjectAttribute(variableToCheck);
+
         if (objectAttributes == null) {
             return true;
         }
@@ -595,18 +609,32 @@ public class Generator {
             for (Parameter parameter : parameters) {
                 String value = parameter.getValue();
                 // Uppercase means it's a WebGPU object
-                if (value.isEmpty() || !Character.isUpperCase(value.charAt(0))) {
+                if (isNotAWebGPUObject(value)) {
                     continue;
                 }
 
-                // Check if WebGPU object still exists in symbol table (ie not deleted)
-                if (!isInSymbolTable(value)) {
+                // Check if has been deleted
+                if (hasBeenDestroyed(getFromCallState(value))) {
                     return false;
+                }
+
+                List<String> childVariables = getAllChildVariables(value);
+                for (String childVariable : childVariables) {
+                    if (!isValidToSubmit(childVariable)) {
+                        return false;
+                    }
                 }
             }
         }
 
         return true;
+    }
+
+    private List<String> getAllChildVariables(String parentVar) {
+        if (!parentToChildVariables.containsKey(parentVar)) {
+            return new ArrayList<>();
+        }
+        return parentToChildVariables.get(parentVar);
     }
 
     private Map<String, String> findAllVariablesThatMeetReqs(String receiverType,
@@ -889,7 +917,12 @@ public class Generator {
         newRootNode.addNode(rootASTNode);
 
         this.addToSymbolTable(returnType, varName);
-        this.addToVariableToReceiverNameTable(varName, rootASTNode.getReceiver());
+
+        String receiver = rootASTNode.getReceiver();
+        if (Character.isUpperCase(returnType.charAt(0))) {
+            addToTrackedChildVars(varName, receiver);
+        }
+        this.addToVariableToReceiverNameTable(varName, receiver);
         this.addToObjectAttributesTable(varName, rootASTNode.getParameters());
         addToMapOfGeneratedVariables(rootASTNode.getReceiver(), varName, returnType);
 
@@ -897,6 +930,13 @@ public class Generator {
         // or could add as receiver attribute. Then recursive search
 
         return newRootNode;
+    }
+
+    private void addToTrackedChildVars(String childVar, String parentVar) {
+        if (!parentToChildVariables.containsKey(parentVar)) {
+            parentToChildVariables.put(parentVar, new ArrayList<>());
+        }
+        parentToChildVariables.get(parentVar).add(childVar);
     }
 
     private void addToVariableToReceiverNameTable(String varName, String receiver) {

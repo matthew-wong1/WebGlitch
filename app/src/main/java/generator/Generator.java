@@ -324,14 +324,24 @@ public class Generator {
 
     private void submitAllQueuedComputePassEncoders() {
         // Loop over all ComputePassEncoders for printing
-        // Create set of commandEncoderNames
+        // Create set of commandEncoderName
+        Set<String> invalidCommandEncoders = new HashSet<>();
         Set<String> unfinishedCommandEncoders = new HashSet<>();
 
         for (String computePassEncoder : toPrintCommandEncoderAndItsPipeline.keySet()) {
+
+            String parentCommandEncoder = getParentVariable(computePassEncoder);
+
             if (isValidToSubmit(computePassEncoder)) {
-                unfinishedCommandEncoders.add(computePassEncoder);
+                unfinishedCommandEncoders.add(parentCommandEncoder);
+            } else {
+                invalidCommandEncoders.add(parentCommandEncoder);
             }
         }
+
+        unfinishedCommandEncoders.removeAll(invalidCommandEncoders);
+//        System.out.println("invalid command encoders " + invalidCommandEncoders);
+//        System.out.println("unfinished command encoders " + unfinishedCommandEncoders);
 
         Set<String> commandBuffers = new HashSet<>();
 
@@ -600,11 +610,7 @@ public class Generator {
 
 
     private boolean isValidToSubmit(String variableToCheck) {
-        if (isNotAWebGPUObject(variableToCheck)) {
-            return true;
-        }
         Map<String, List<Parameter>> objectAttributes = getEveryObjectAttribute(variableToCheck);
-
         if (objectAttributes == null) {
             return true;
         }
@@ -612,14 +618,16 @@ public class Generator {
         for (List<Parameter> parameters : objectAttributes.values()) {
             for (Parameter parameter : parameters) {
                 String value = parameter.getValue();
-                // Uppercase means it's a WebGPU object
-//                if (isNotAWebGPUObject(value)) {
-//                    continue;
-//                }
 
                 // Check if has been deleted
-                if (hasBeenDestroyed(getFromCallState(value))) {
-                    return false;
+                Set<String> valuesToCheckIfDestroyed = new HashSet<>();
+                valuesToCheckIfDestroyed.add(value);
+                valuesToCheckIfDestroyed.addAll(getBuffersUsedFromParentVariable(value));
+
+                for (String valueToCheck : valuesToCheckIfDestroyed) {
+                    if (hasBeenDestroyed(getFromCallState(valueToCheck))) {
+                        return false;
+                    }
                 }
 
                 List<String> childVariables = getAllChildVariables(value);
@@ -966,7 +974,7 @@ public class Generator {
                 requiredReceiver = sameObjectsReqs.get(receiverType);
             }
 
-            if (requiredReceiver == null || forceGenerateNewObject) {
+            if (requiredReceiver == null) {
                 Map<String, List<String>> finalisedRequirements = null;
                 if (requirements != null) {
                     finalisedRequirements = new LinkedHashMap<>();

@@ -335,7 +335,7 @@ public class ParameterNode extends ASTNode {
                 generateArrayOfBindGroupEntries(paramType, conditionsNode);
                 break;
             default:
-                System.err.println("reacheed unreachable area with arrayType " + arrayType);
+                System.err.println("reached unreachable area with arrayType " + arrayType);
         }
 
     }
@@ -417,6 +417,7 @@ public class ParameterNode extends ASTNode {
         nestedParameterRequirements.put("binding", List.of("0"));
         nestedParameterRequirements.put("resource.buffer", List.of(inputBufferName));
         nestedParameterRequirements.put("resource.size", List.of(inputBufferSize));
+        generator.addToParentVariablesAndTheirBuffersUsed(computePipelineName, inputBufferName);
 
         // Generate parameter for input buffer
         generateParamAsJson(paramType);
@@ -451,6 +452,7 @@ public class ParameterNode extends ASTNode {
         nestedParameterRequirements.put("binding", List.of("1"));
         nestedParameterRequirements.put("resource.size", List.of(storageBufferSize));
         nestedParameterRequirements.put("resource.buffer", List.of(storageBufferName));
+        generator.addToParentVariablesAndTheirBuffersUsed(computePipelineName, storageBufferName);
 
         // Generate parameter for storage buffer
         generateParamAsJson(paramType);
@@ -618,16 +620,21 @@ public class ParameterNode extends ASTNode {
         Parameter newParameter = new Parameter(webGPUObject);
 
         if (conditionsNode.has("trackedLifetime")) {
-            String baseReceiver = parentList.getReceiver();
-            if (generator.getVariableType(baseReceiver).equals("GPURenderPassEncoder")) {
-                baseReceiver = generator.getParentVariable(baseReceiver);
-            }
-            generator.addToParentVariablesAndTheirBuffersUsed(baseReceiver, webGPUObject);
+            updateTrackedLifetimes(webGPUObject);
         }
         this.parameters.add(newParameter);
 
         return conditionsNode;
 
+    }
+
+    private void updateTrackedLifetimes(String webGPUObject) {
+        String baseReceiver = parentList.getReceiver();
+
+        if (generator.getVariableType(baseReceiver).equals("GPURenderPassEncoder")) {
+            baseReceiver = generator.getParentVariable(baseReceiver);
+        }
+        generator.addToParentVariablesAndTheirBuffersUsed(baseReceiver, webGPUObject);
     }
 
     private Map<String, List<String>> parseInterfaceConditions(JsonNode conditionsNode) {

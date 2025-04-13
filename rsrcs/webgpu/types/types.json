@@ -406,8 +406,7 @@
       "buffer": {
         "type": "GPUBuffer",
         "conditions": {
-          "same": ["GPUDevice"],
-          "trackedLifetime": true
+          "same": ["GPUDevice"]
         }
       }
     }

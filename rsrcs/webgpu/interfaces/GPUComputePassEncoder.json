@@ -58,7 +58,8 @@
             "type": "GPUBindGroup",
             "conditions": {
               "computePipelineCompatible": true,
-              "same": ["GPUDevice"]
+              "same": ["GPUDevice"],
+              "allAttributesAlive": "this"
             }
           }
         }

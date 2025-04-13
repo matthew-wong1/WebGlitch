@@ -557,12 +557,16 @@ public class Generator {
                     parentToChildMap.put(parentVar, variable);
                     variablesToCheck.add(parentVar);
                 }
+            } else if (variableWhoseAttributesMustBeAlive.equals("this")) {
+                variablesToCheck.addAll(variablesThatMeetReqs);
             }
 
             // Get object attributes and check each variable
             for (String variableToCheck : variablesToCheck) {
-                if (!isValidToSubmit(variableToCheck)) {
+                if (variableWhoseAttributesMustBeAlive.equals("parent")) {
                     invalidVariables.add(parentToChildMap.get(variableToCheck));
+                } else {
+                    invalidVariables.add(variableToCheck);
                 }
             }
 
@@ -609,9 +613,9 @@ public class Generator {
             for (Parameter parameter : parameters) {
                 String value = parameter.getValue();
                 // Uppercase means it's a WebGPU object
-                if (isNotAWebGPUObject(value)) {
-                    continue;
-                }
+//                if (isNotAWebGPUObject(value)) {
+//                    continue;
+//                }
 
                 // Check if has been deleted
                 if (hasBeenDestroyed(getFromCallState(value))) {

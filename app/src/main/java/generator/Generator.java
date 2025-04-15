@@ -13,6 +13,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Generator {
     public final RandomUtils randomUtils;
@@ -625,12 +626,14 @@ public class Generator {
 
     }
 
-    private boolean hasBeenDestroyed(List<String> callHistory) {
-        if (callHistory == null) {
-            return false;
-        }
-
-        return callHistory.contains("destroy");
+    private boolean hasBeenDestroyed(String value) {
+        List<String> callHistory = Stream.of(
+            getFromCallState(value),
+            getFromCallState(getParentVariable(value))
+        ).filter(Objects::nonNull)
+        .flatMap(Collection::stream)
+        .toList();
+        return (callHistory.contains("destroy"));
     }
 
     private boolean isNotAWebGPUObject(String var) {
@@ -656,7 +659,7 @@ public class Generator {
 //                System.out.println("values to check if destroyed " + valuesToCheckIfDestroyed);
 
                 for (String valueToCheck : valuesToCheckIfDestroyed) {
-                    if (hasBeenDestroyed(getFromCallState(valueToCheck))) {
+                    if (hasBeenDestroyed(valueToCheck)) {
                         return false;
                     }
                 }

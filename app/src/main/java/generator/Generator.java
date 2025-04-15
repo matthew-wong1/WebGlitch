@@ -335,6 +335,7 @@ public class Generator {
         Set<String> invalidCommandEncoders = new HashSet<>();
         Set<String> unfinishedCommandEncoders = new HashSet<>();
         Set<String> allRelatedComputePassEncoders = new HashSet<>(toPrintCommandEncoderAndItsPipeline.keySet());
+        Set<String> parentCommanderEncoders = new HashSet<>();
 
         for (String computePassEncoder : toPrintCommandEncoderAndItsPipeline.keySet()) {
             String parentCommandEncoder = getParentVariable(computePassEncoder);
@@ -351,6 +352,7 @@ public class Generator {
         for (String computePassEncoder : allRelatedComputePassEncoders) {
 
             String parentCommandEncoder = getParentVariable(computePassEncoder);
+            parentCommanderEncoders.add(parentCommandEncoder);
 
             if (isValidToSubmit(computePassEncoder)) {
                 unfinishedCommandEncoders.add(parentCommandEncoder);
@@ -359,7 +361,14 @@ public class Generator {
             }
         }
 
+        for (String parentCommandEncoder : parentCommanderEncoders) {
+            if (!isValidToSubmit(parentCommandEncoder)) {
+                invalidCommandEncoders.add(parentCommandEncoder);
+            }
+        }
+
         unfinishedCommandEncoders.removeAll(invalidCommandEncoders);
+
 //        System.out.println("invalid command encoders " + invalidCommandEncoders);
 //        System.out.println("unfinished command encoders " + unfinishedCommandEncoders);
 
@@ -644,6 +653,7 @@ public class Generator {
                 Set<String> valuesToCheckIfDestroyed = new HashSet<>();
                 valuesToCheckIfDestroyed.add(value);
                 valuesToCheckIfDestroyed.addAll(getBuffersUsedFromParentVariable(value));
+//                System.out.println("values to check if destroyed " + valuesToCheckIfDestroyed);
 
                 for (String valueToCheck : valuesToCheckIfDestroyed) {
                     if (hasBeenDestroyed(getFromCallState(valueToCheck))) {

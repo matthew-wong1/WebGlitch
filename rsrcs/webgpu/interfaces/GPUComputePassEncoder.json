@@ -59,7 +59,8 @@
             "conditions": {
               "computePipelineCompatible": true,
               "same": ["GPUDevice"],
-              "allAttributesAlive": "this"
+              "allAttributesAlive": "this",
+              "trackBufferHistory": true
             }
           }
         }

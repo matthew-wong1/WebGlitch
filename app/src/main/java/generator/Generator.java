@@ -262,6 +262,13 @@ public class Generator {
         parentVariableToBuffersUsed.get(parentVariable).add(bufferVariable);
     }
 
+    public void addToParentVariablesAndTheirBuffersUsed(String parentVariable, Set<String> bufferVariables) {
+        if (!parentVariableToBuffersUsed.containsKey(parentVariable)) {
+            parentVariableToBuffersUsed.put(parentVariable, new HashSet<>());
+        }
+        parentVariableToBuffersUsed.get(parentVariable).addAll(bufferVariables);
+    }
+
     public void removeFromParentVariablesAndTheirBuffersUsed(String parentVariable) {
         parentVariableToBuffersUsed.remove(parentVariable);
     }
@@ -327,8 +334,21 @@ public class Generator {
         // Create set of commandEncoderName
         Set<String> invalidCommandEncoders = new HashSet<>();
         Set<String> unfinishedCommandEncoders = new HashSet<>();
+        Set<String> allRelatedComputePassEncoders = new HashSet<>(toPrintCommandEncoderAndItsPipeline.keySet());
 
         for (String computePassEncoder : toPrintCommandEncoderAndItsPipeline.keySet()) {
+            String parentCommandEncoder = getParentVariable(computePassEncoder);
+            List<String> childComputePasses = getAllChildVariables(parentCommandEncoder);
+            for (String childComputePass : childComputePasses) {
+                List<String> callHistory = getFromCallState(childComputePass);
+
+                if (callHistory != null) {
+                    allRelatedComputePassEncoders.add(childComputePass);
+                }
+            }
+        }
+
+        for (String computePassEncoder : allRelatedComputePassEncoders) {
 
             String parentCommandEncoder = getParentVariable(computePassEncoder);
 
@@ -554,9 +574,9 @@ public class Generator {
         }
 
         if (
-                variableWhoseAttributesMustBeAlive != null
-                && symbolTable.containsKey(receiverType)
-                && !variablesThatMeetReqs.isEmpty()
+            variableWhoseAttributesMustBeAlive != null
+            && symbolTable.containsKey(receiverType)
+            && !variablesThatMeetReqs.isEmpty()
         ) {
             List<String> invalidVariables = new ArrayList<>();
             List<String> variablesToCheck = new ArrayList<>();
@@ -614,6 +634,7 @@ public class Generator {
         if (objectAttributes == null) {
             return true;
         }
+//        System.out.println("object attributes: " + objectAttributes);
 
         for (List<Parameter> parameters : objectAttributes.values()) {
             for (Parameter parameter : parameters) {

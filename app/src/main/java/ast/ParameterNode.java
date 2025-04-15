@@ -622,10 +622,19 @@ public class ParameterNode extends ASTNode {
         if (conditionsNode.has("trackedLifetime")) {
             updateTrackedLifetimes(webGPUObject);
         }
+
+        if (conditionsNode.has("trackBufferHistory")) {
+            trackBufferHistory(webGPUObject);
+        }
         this.parameters.add(newParameter);
 
         return conditionsNode;
 
+    }
+
+    private void trackBufferHistory(String bindGroup) {
+        String pipeline = generator.getObjectAttributes(bindGroup, "label").split("\\.", 2)[0];
+        generator.addToParentVariablesAndTheirBuffersUsed(parentList.getReceiver(), generator.getBuffersUsedFromParentVariable(pipeline));
     }
 
     private void updateTrackedLifetimes(String webGPUObject) {

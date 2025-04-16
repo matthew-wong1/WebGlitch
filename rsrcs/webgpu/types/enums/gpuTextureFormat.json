@@ -19,7 +19,6 @@
     "rg16sint",
     "rg16float",
     "rgba8unorm",
-    "rgba8unorm-srgb",
     "rgba8snorm",
     "rgba8uint",
     "rgba8sint",

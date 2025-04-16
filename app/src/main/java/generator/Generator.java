@@ -337,6 +337,7 @@ public class Generator {
         Set<String> unfinishedCommandEncoders = new HashSet<>();
         Set<String> allRelatedComputePassEncoders = new HashSet<>(toPrintCommandEncoderAndItsPipeline.keySet());
         Set<String> parentCommanderEncoders = new HashSet<>();
+//        System.out.println("variables to buffers used " + parentVariableToBuffersUsed);
 
         for (String computePassEncoder : toPrintCommandEncoderAndItsPipeline.keySet()) {
             String parentCommandEncoder = getParentVariable(computePassEncoder);

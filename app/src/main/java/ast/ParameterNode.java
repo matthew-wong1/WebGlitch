@@ -153,6 +153,18 @@ public class ParameterNode extends ASTNode {
                 parameterValue = encodeAsString(parameterValue);
             }
 
+            JsonNode conditionsNode = details.has("conditions") ? details.get("conditions") : null;
+
+            if (conditionsNode != null) {
+                if (conditionsNode.has("trackedLifetime")) {
+                    updateTrackedLifetimes(parameterValue);
+                }
+
+                if (conditionsNode.has("trackBufferHistory")) {
+                    trackBufferHistory(parameterValue);
+                }
+            }
+
             this.parameters.add(new Parameter(parameterValue));
         } else if (isString) {
             this.parameters.add(new Parameter(generator.generateRandVarName(parentList.getCallNode().getReturnType())));

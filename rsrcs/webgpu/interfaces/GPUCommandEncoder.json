@@ -24,7 +24,8 @@
             "type": "GPUQuerySet",
             "excludeFirefox": true,
             "conditions": {
-              "same": ["GPUDevice"]
+              "same": ["GPUDevice"],
+              "trackedLifetime": true
             },
             "optional": true
           }
@@ -184,7 +185,8 @@
           "querySet": {
             "type": "GPUQuerySet",
             "conditions": {
-              "same": ["GPUDevice"]
+              "same": ["GPUDevice"],
+              "trackedLifetime": true
             }
           },
           "firstQuery": {

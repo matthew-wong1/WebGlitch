@@ -300,6 +300,11 @@ public class Parser {
         allBuffersUsed.addAll(generator.getBuffersUsedFromParentVariable(commandEncoder));
 
         for (String buffer : allBuffersUsed) {
+            // hacky temp fix
+            if (buffer.startsWith("GPUQuerySet")) {
+                continue;
+            }
+
             if (generator.getObjectAttributes(buffer, "mapped").equals("true")) {
                 generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUBuffer", "unmap", true),
                         null,

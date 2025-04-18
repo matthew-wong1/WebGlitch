@@ -1,2 +1,3 @@
 import * as fs from "node:fs";
-globalThis.pathPrefix = "D:/final_proj/WebGlitch/rsrcs/html/";
+const __dirname = new URL(".", import.meta.url).pathname;
+globalThis.pathPrefix = new URL("../rsrcs/html/", import.meta.url).pathname;

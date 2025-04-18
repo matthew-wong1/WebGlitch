@@ -5,7 +5,8 @@
     {
       "name": "destroy",
       "returnType": "none",
-      "deletes": true
+      "deletes": true,
+      "dawnOnly": true
     }
   ],
   "attributes": [

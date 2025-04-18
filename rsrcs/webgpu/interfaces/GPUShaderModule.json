@@ -5,7 +5,8 @@
     {
       "name": "getCompilationInfo",
       "returnType": "GPUCompilationInfo",
-      "async": true
+      "async": true,
+      "dawnOnly": true
     }
   ],
   "attributes": [

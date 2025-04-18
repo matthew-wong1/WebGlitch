@@ -159,6 +159,9 @@ public class Generator {
             if (rootJsonNode.has("methods")) {
                 JsonNode methodsJsonNode = rootJsonNode.get("methods");
                 for (JsonNode methodJsonNode : methodsJsonNode) {
+                    if (getWgpuCompatible() && methodJsonNode.has("dawnOnly")) {
+                        continue;
+                    }
                     addCall(apiInterface, methodJsonNode, receiverType, true);
                 }
             }

@@ -4,7 +4,8 @@
   "methods": [
     {
       "name": "onSubmittedWorkDone",
-      "returnType": "none"
+      "returnType": "none",
+      "dawnOnly": true
     },
     {
       "name": "writeBuffer",

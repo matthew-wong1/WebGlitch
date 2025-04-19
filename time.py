@@ -52,11 +52,11 @@ for i in range(NUM_RUNS):
     add_header(dawn_header, output_path, dawn_file)
     log_execution_times(DAWN_CMD, dawn_execution_times)
 
-    add_header(deno_header, output_path, deno_file)
-    log_execution_times(DENO_CMD, deno_execution_times, env=env)
+    # add_header(deno_header, output_path, deno_file)
+    # log_execution_times(DENO_CMD, deno_execution_times, env=env)
 
 avg_gen = sum(generation_times) / len(generation_times)
-avg_dawn_exec = sum(dawn_execution_times) / len(dawn_execution_times)
+# avg_dawn_exec = sum(dawn_execution_times) / len(dawn_execution_times)
 avg_deno_exec = sum(deno_execution_times) / len(deno_execution_times)
 
 print(f"Average generation time: {avg_gen:.6f} seconds")

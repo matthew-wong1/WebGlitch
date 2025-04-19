@@ -56,10 +56,10 @@ for i in range(NUM_RUNS):
     # log_execution_times(DENO_CMD, deno_execution_times, env=env)
 
 avg_gen = sum(generation_times) / len(generation_times)
-# avg_dawn_exec = sum(dawn_execution_times) / len(dawn_execution_times)
-avg_deno_exec = sum(deno_execution_times) / len(deno_execution_times)
+avg_dawn_exec = sum(dawn_execution_times) / len(dawn_execution_times)
+# avg_deno_exec = sum(deno_execution_times) / len(deno_execution_times)
 
 print(f"Average generation time: {avg_gen:.6f} seconds")
 print(f"Average Dawn execution time: {avg_dawn_exec:.6f} seconds")
-print(f"Average Deno execution time: {avg_deno_exec:.6f} seconds")
+# print(f"Average Deno execution time: {avg_deno_exec:.6f} seconds")
 

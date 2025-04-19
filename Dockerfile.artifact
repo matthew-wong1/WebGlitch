@@ -1,23 +1,84 @@
+FROM eclipse-temurin:21 as jdk
 FROM ubuntu:24.04
 
 # Download and install Eclipse Temurin:
-# ENV JAVA_HOME=/opt/java/openjdk
-# COPY --from=amd64/eclipse-temurin:21 $JAVA_HOME $JAVA_HOME
-# ENV PATH="${JAVA_HOME}/bin:${PATH}"
+ENV JAVA_HOME=/opt/java/openjdk
+COPY --from=jdk ${JAVA_HOME} ${JAVA_HOME}
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-# Download and install Gradle:
-# RUN curl -s "https://get.sdkman.io" | bash
+SHELL ["/bin/bash", "-c"]
 
-# SHELL ["/bin/bash", "-c"]
-
-# RUN source "/root/.sdkman/bin/sdkman-init.sh" \
-#    && sdk install gradle 8.12
+# dependencies
+RUN apt-get update && apt-get install -y git \
+    curl \
+    pkg-config \
+    golang-go \
+    clang \
+    cmake \
+    ninja-build \
+    libxi-dev \
+    libxrandr-dev \
+    libxinerama-dev \
+    libxcursor-dev \
+    mesa-common-dev \
+    libx11-xcb-dev \
+    python3 \
+    unzip \
+    zip \
+    build-essential \
+    wget \
+    ca-certificates
 
 # Install nvm: see documentation on github
-# nvm install 22
+ARG NODE_VERSION=22
 
-# git, everything on the dawn list except nodejs and npm , golang-go, clang, cmake, ninja-build, libxi-dev
+# install curl
+RUN apt update && apt install curl -y
 
-# look at the dawn node instructions (slightly different)
+# install nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
 
-# install rust and deno
+# set env
+ENV NVM_DIR=/root/.nvm
+
+# install node
+RUN bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION"
+
+# set ENTRYPOINT for reloading nvm-environment
+ENTRYPOINT ["bash", "-c", "source $NVM_DIR/nvm.sh && exec \"$@\"", "--"]
+
+# set cmd to bash
+CMD ["/bin/bash"]
+
+# install depot_tools
+RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /opt/depot_tools
+ENV PATH="/opt/depot_tools:${PATH}"
+
+# build dawn node (slightly different to regular dawn)
+RUN git clone https://dawn.googlesource.com/dawn dawn && \
+    cd dawn && \
+    git checkout 6e033b033fb64a805ec07fbc6ff7cf216f8cd985 && \
+    cp scripts/standalone-with-node.gclient .gclient && \
+    gclient sync && \
+    mkdir -p out/Debug && \
+    cd out/Debug && \
+    cmake ../.. -GNinja -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DDAWN_BUILD_NODE_BINDINGS=1 && \
+    ninja dawn.node
+
+# install deno
+ENV DENO_INSTALL=/opt/deno
+RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=$DENO_INSTALL sh
+ENV PATH="${DENO_INSTALL}/bin:${PATH}"
+
+# Download and install Gradle:
+RUN curl -s "https://get.sdkman.io" | bash && \
+    source "$HOME/.sdkman/bin/sdkman-init.sh" && \
+    sdk install gradle 8.12 && \
+    ln -s "$HOME/.sdkman/candidates/gradle/current/bin/gradle" /usr/local/bin/gradle
+
+# Install WebGlitch
+RUN git clone https://github.com/matthew-wong1/WebGlitch.git && \
+    cd WebGlitch && \
+    gradle build
+
+

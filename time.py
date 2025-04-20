@@ -28,7 +28,7 @@ def add_header(header_path, body_path, output_path):
 
 def log_execution_times(cmd, execution_times, env=None):
     start_exec = time.perf_counter()
-    result = subprocess.run(cmd, capture_output=False, check=True, env=env)
+    result = subprocess.run(cmd, capture_output=True, check=True, env=env)
     end_exec = time.perf_counter()
     execution_times.append(end_exec - start_exec)
 
@@ -47,12 +47,15 @@ for i in range(NUM_RUNS):
         deno_file
     ]
 
+    print(f"Generating file {i + 1} of {NUM_RUNS}")
     log_execution_times(GENERATION_CMD, generation_times)
 
     add_header(dawn_header, output_path, dawn_file)
+    print("Executing on Dawn")
     log_execution_times(DAWN_CMD, dawn_execution_times)
 
     # add_header(deno_header, output_path, deno_file)
+    # print("Executing on Deno")
     # log_execution_times(DENO_CMD, deno_execution_times, env=env)
 
 avg_gen = sum(generation_times) / len(generation_times)

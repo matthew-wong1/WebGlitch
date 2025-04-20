@@ -14,6 +14,11 @@ RUN apt-get update && apt-get install -y git \
     pkg-config \
     golang-go \
     clang \
+    llvm \
+    llvm-dev \
+    lldb \
+    lld \
+    libclang-dev \
     cmake \
     ninja-build \
     libxi-dev \
@@ -45,7 +50,7 @@ ENV NVM_DIR=/root/.nvm
 RUN bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION"
 
 # set ENTRYPOINT for reloading nvm-environment
-ENTRYPOINT ["bash", "-c", "source $NVM_DIR/nvm.sh && exec \"$@\"", "--"]
+ENTRYPOINT bash -c 'source "$NVM_DIR/nvm.sh" && exec "$@"' bash
 
 # set cmd to bash
 CMD ["/bin/bash"]
@@ -62,7 +67,7 @@ RUN git clone https://dawn.googlesource.com/dawn dawn && \
     gclient sync && \
     mkdir -p out/Debug && \
     cd out/Debug && \
-    cmake ../.. -GNinja -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DDAWN_BUILD_NODE_BINDINGS=1 && \
+    cmake ../.. -GNinja -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DDAWN_BUILD_NODE_BINDINGS=1 -DDAWN_EMIT_COVERAGE=1 && \
     ninja dawn.node
 
 # install deno
@@ -79,6 +84,15 @@ RUN curl -s "https://get.sdkman.io" | bash && \
 # Install WebGlitch
 RUN git clone https://github.com/matthew-wong1/WebGlitch.git && \
     cd WebGlitch && \
-    gradle build
+    gradle build && \
+    mkdir output
 
+# silence error
+ENV XDG_RUNTIME_DIR=/tmp/runtime
+RUN mkdir -p /tmp/runtime
 
+# Coverage
+WORKDIR /dawn/third_party/webgpu-cts
+RUN bash -c "source $NVM_DIR/nvm.sh && npm install"
+
+WORKDIR /

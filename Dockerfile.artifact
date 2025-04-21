@@ -50,7 +50,10 @@ ENV NVM_DIR=/root/.nvm
 RUN bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION"
 
 # set ENTRYPOINT for reloading nvm-environment
-ENTRYPOINT bash -c 'source "$NVM_DIR/nvm.sh" && exec "$@"' bash
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # set cmd to bash
 CMD ["/bin/bash"]
@@ -94,5 +97,10 @@ RUN mkdir -p /tmp/runtime
 # Coverage
 WORKDIR /dawn/third_party/webgpu-cts
 RUN bash -c "source $NVM_DIR/nvm.sh && npm install"
+
+RUN apt-get update && apt-get install -y vulkan-tools \
+    libvulkan1 \
+    nvidia-driver-550
+    
 
 WORKDIR /

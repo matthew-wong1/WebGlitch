@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21 as jdk
+FROM eclipse-temurin:21 AS jdk
 FROM ubuntu:24.04
 
 # Download and install Eclipse Temurin:

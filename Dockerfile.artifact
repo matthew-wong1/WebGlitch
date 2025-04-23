@@ -102,5 +102,15 @@ RUN apt-get update && apt-get install -y vulkan-tools \
     libvulkan1 \
     nvidia-driver-550
     
+# install wg-fuzz
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN git clone https://github.com/wg-fuzz/wg-fuzz.git && \
+    cd wg-fuzz && \
+    git checkout moot_changes && \
+    cargo build
+
+# install cov-compare
+RUN git clone https://github.com/matthew-wong1/CovCompare.git
 
 WORKDIR /

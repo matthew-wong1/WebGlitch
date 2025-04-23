@@ -10,7 +10,7 @@ WEBGLITCH_PARENT_DIR = WEBGLITCH_DIR.parent
 CTS_WEBGPU_TESTS_DIR = WEBGLITCH_PARENT_DIR/"dawn"/"third_party"/"webgpu-cts"/"src"/"webgpu"
 WG_FUZZ_DIR = WEBGLITCH_PARENT_DIR / "wg-fuzz"
 DAWN_DIR = WEBGLITCH_PARENT_DIR / "dawn"
-FAULT_FINDER_DIR = WEBGLITCH_PARENT_DIR / "FaultFinder"
+COV_COMPARE_DIR = WEBGLITCH_PARENT_DIR / "CovCompare"
 # tests located within dawn/third_party/webgpu-cts/src/webgpu/{platform}/{i}/{i}.spec.ts
 
 
@@ -80,7 +80,7 @@ def run_coverage(platform):
             "run-cts",
             "--coverage",
             f"--bin={str(DAWN_DIR/'out'/'Debug')}",
-            f"--export-coverage={str(FAULT_FINDER_DIR / platform)}.lcov",
+            f"--export-coverage={str(COV_COMPARE_DIR / platform)}.lcov",
             f"webgpu:{platform},*"
         ],
         cwd=DAWN_DIR,
@@ -88,7 +88,7 @@ def run_coverage(platform):
     )
 
 
-# parse output with faultfinder
+# parse output with covcompare
 # concatenate api and shader results
 # print to console the results
 def analyze_output():

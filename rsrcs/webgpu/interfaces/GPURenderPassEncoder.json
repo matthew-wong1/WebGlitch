@@ -140,13 +140,6 @@
     {
       "name": "popDebugGroup",
       "returnType": "none",
-      "properties": [
-        {
-          "markerLabel": {
-            "type": "markerLabel"
-          }
-        }
-      ],
       "conditions": {
         "debugGroupAvailable": true
       }

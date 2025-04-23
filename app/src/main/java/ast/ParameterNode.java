@@ -7,6 +7,7 @@ import generator.Generator;
 import generator.NumericConstraints;
 import generator.RandomUtils;
 import generator.WebGlitch;
+import javascript.LoadShaderCall;
 
 import java.io.File;
 import java.io.IOException;
@@ -279,7 +280,7 @@ public class ParameterNode extends ASTNode {
         Map<String, List<String>> vertexShaderRequirements = new HashMap<>();
         vertexShaderRequirements.put("label", List.of("specificVertex"));
         vertexShaderRequirements.put("code",
-                List.of("await loadShader(globalThis.pathPrefix +" + "'" + generator.getShaderProperties(fragmentShader,
+                List.of("await loadShader(" + LoadShaderCall.getPathToUse(generator.getCtsCompatible()) + generator.getShaderProperties(fragmentShader,
                         "path") + "vertex.wgsl" + "')"));
         String vertexShaderModule = generator.generateCall(new Generator.ReceiverTypeCallNameCallType("GPUDevice",
                 "createShaderModule",

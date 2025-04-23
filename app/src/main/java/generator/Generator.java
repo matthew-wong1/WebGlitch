@@ -1118,7 +1118,7 @@ public class Generator {
                         "shader" + shaderNameToProperties.size(),
                         randomUtils,
                         webGlitchOptions);
-                LoadShaderCall loadShaderCallStatement = new LoadShaderCall(fullPath);
+                LoadShaderCall loadShaderCallStatement = new LoadShaderCall(fullPath, ctsCompatible);
                 assignmentNode.addNode(loadShaderCallStatement);
                 String importName = assignmentNode.getVarName();
                 astNodeToPrepend = assignmentNode;

@@ -33,6 +33,11 @@ public class WebGlitch {
         compatibilityModes.put("wgpu", wgpuCompatibilityMode);
         compatibilityModes.put("firefox", firefoxCompatibilityMode);
 
+        double skipValidityCheckChance = 0.0;
+        if (cmd.hasOption("v")) {
+            skipValidityCheckChance = Double.parseDouble(cmd.getOptionValue("v"));
+        }
+
         String filePathToUse = cmd.getOptionValue("o");
 
         Generator generator = new Generator(maxCallsToGenerate,
@@ -40,7 +45,8 @@ public class WebGlitch {
                 ctsCompatiblityMode,
                 specificSeed,
                 generateMainFunctionOnly,
-                clusterFuzzCompatibilityMode);
+                clusterFuzzCompatibilityMode,
+                skipValidityCheckChance);
 
         generator.generateProgram(filePathToUse);
         // Uncomment this for metrics about the programs you generated
@@ -52,28 +58,6 @@ public class WebGlitch {
 
     }
 
-    private static void printCallDistributionMetrics(int maxCallsToGenerate,
-                                                     Map<String, Boolean> compatibilityModes,
-                                                     boolean ctsCompatiblityMode,
-                                                     Long specificSeed,
-                                                     boolean generateMainFunctionOnly,
-                                                     String filePathToUse,
-                                                     boolean clusterFuzzCompatibilityMode) {
-        Map<String, Integer> cumulativeCallDistribution = new HashMap<>();
-        for (int i = 0; i < 1000; i++) {
-            System.out.println("Generating program " + i);
-            Generator generator = new Generator(maxCallsToGenerate,
-                    compatibilityModes,
-                    ctsCompatiblityMode,
-                    specificSeed,
-                    generateMainFunctionOnly,
-                    clusterFuzzCompatibilityMode);
-            Map<String, Integer> callDistribution = generator.generateProgram(filePathToUse);
-            callDistribution.forEach((k, v) -> cumulativeCallDistribution.merge(k, v, Integer::sum));
-        }
-        System.out.println(cumulativeCallDistribution);
-    }
-
 
     private static CommandLine checkCLIOptions(String[] args, Options options) {
         CommandLineParser parser = new DefaultParser();
@@ -82,7 +66,7 @@ public class WebGlitch {
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("webglitch", options);
             System.exit(1);
@@ -106,6 +90,7 @@ public class WebGlitch {
                 "clfzz",
                 false,
                 "Ensures generated programs are ClusterFuzz compatible.");
+        Option skipValidityCheckChance = new Option("v", "skipCheckChance", true, "Chance that validity checks are skipped (0.0-1.0).");
 
         maxCalls.setType(Integer.class);
         maxCalls.setRequired(false);
@@ -131,6 +116,9 @@ public class WebGlitch {
         clusterFuzzCompatible.setRequired(false);
         clusterFuzzCompatible.setType(Boolean.class);
 
+        skipValidityCheckChance.setRequired(false);
+        skipValidityCheckChance.setType(Double.class);
+
         options.addOption(ctsCompatible);
         options.addOption(maxCalls);
         options.addOption(seed);
@@ -139,6 +127,7 @@ public class WebGlitch {
         options.addOption(wgpuCompatible);
         options.addOption(firefoxCompatible);
         options.addOption(clusterFuzzCompatible);
+        options.addOption(skipValidityCheckChance);
         return options;
     }
 

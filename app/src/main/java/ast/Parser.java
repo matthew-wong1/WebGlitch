@@ -186,8 +186,7 @@ public class Parser {
             // Skip generation if error occurs due to previous invalid call
             try {
                 generator.generatePostGenerationRequirement(receiver, requirement);
-            } catch (NullPointerException e) {
-                System.err.println(e.getMessage());
+            } catch (NullPointerException ignored) {
             }
 
         }

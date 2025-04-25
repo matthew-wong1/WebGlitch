@@ -78,7 +78,8 @@ public class Generator {
                      boolean ctsCompatible,
                      Long seed,
                      boolean mainOnly,
-                     boolean clusterFuzzCompatibilityMode) {
+                     boolean clusterFuzzCompatibilityMode,
+                     double skipValidityCheckChance) {
         this.maxCalls = maxCalls;
         this.mainOnly = mainOnly;
         this.ctsCompatible = ctsCompatible;
@@ -99,7 +100,7 @@ public class Generator {
             this.randomUtils = new RandomUtils();
         }
 
-        this.webGlitchOptions = new WebGlitchOptions(randomUtils);
+        this.webGlitchOptions = new WebGlitchOptions(randomUtils, skipValidityCheckChance);
 
         HEADER = ctsCompatible ? HEADER_CTS : HEADER_DEFAULT;
         FOOTER = ctsCompatible ? FOOTER_CTS : FOOTER_DEFAULT;

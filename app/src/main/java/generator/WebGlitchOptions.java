@@ -22,7 +22,7 @@ public class WebGlitchOptions {
     private final double generateConstChance;
     private final double generateAwaitChance;
 
-    public WebGlitchOptions(RandomUtils randomUtils) {
+    public WebGlitchOptions(RandomUtils randomUtils, double skipValidityCheckChance) {
         ObjectMapper mapper = new ObjectMapper();
         String filePath = WebGlitch.getPath() + "/" + CONFIG_FILE_NAME;
         JsonNode configNode = null;
@@ -33,7 +33,7 @@ public class WebGlitchOptions {
         }
 
         Parser.extractNodeAsList(configNode.get("disabledCalls"), disabledCalls);
-        this.skipValidityCheckChance = configNode.get("skipValidityCheckChance").asDouble();
+        this.skipValidityCheckChance = skipValidityCheckChance;
         this.letRandomPercentOfCallsBeAvailable = configNode.get("letRandomPercentOfCallsBeAvailable").asBoolean();
         if (letRandomPercentOfCallsBeAvailable) {
             this.percentOfAvailableCallsToGenerate = randomUtils.nextDouble(1.0);

@@ -4,9 +4,7 @@ from pathlib import Path
 import zlib
 import json
 import sys
-
-TESTS_TO_GEN = 1
-# TESTS_TO_GEN = 2000
+import re
 
 WEBGLITCH_DIR = Path(__file__).parent.resolve()
 WEBGLITCH_OUTPUT_DIR = WEBGLITCH_DIR / "output"
@@ -29,17 +27,37 @@ def create_dir_for_test(platform, test_no):
     return test_case_dir
 
 
-def generate_webglitch_test(test_num):
+def generate_webglitch_test(test_num, generate_invalid):
     test_dir = create_dir_for_test("webglitch", test_num)
     test_file_name = get_test_file_name(test_num)
-    subprocess.run(["python3", "webglitch.py", "-o", str(test_dir/test_file_name), "-c"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    cmd = ["python3", "webglitch.py", "-o", str(test_dir/test_file_name), "-c"]
+
+    if generate_invalid:
+        cmd += ["-v", "0.1"]
+    subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
 
-def generate_wg_fuzz_test(test_num):
+def generate_wg_fuzz_test(test_num, generate_invalid):
     test_dir = create_dir_for_test("wg_fuzz", test_num) # need underscore for CTS
     test_file_name = get_test_file_name(test_num)
-    subprocess.run(["cargo", "run"], check=True, cwd=WG_FUZZ_DIR, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    cmd = ["cargo", "run"]
 
+    if generate_invalid:
+        cmd += ["--", "1.0", "0.1", "0"]
+
+    MAX_RETRIES = 10
+    # wg-fuzz sometimes panics
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            subprocess.run(cmd, check=True, cwd=WG_FUZZ_DIR, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            break
+        except subprocess.CalledProcessError:
+            if attempt == MAX_RETRIES:
+                print(f"wg-fuzz generation of test {test_num} failed. This is a known issue. Skipping...")
+                return
+
+    # The following steps prepare wg_fuzz outputs for the stricter type checking of TypeScript used by the CTS
+    # If the following steps were not executed, then it would be rejected by the conformance test suite
     # Copy contents of WG_FUZZ_DIR/out to test_dir
     out_dir = WG_FUZZ_DIR / "out"
     for file in out_dir.iterdir():
@@ -66,15 +84,54 @@ def generate_wg_fuzz_test(test_num):
             lines.pop(line_no)
             break
 
-    # Replace all instances of null with undefined
-    modified_lines = [line.replace("null", "undefined") for line in lines]
+    # 2. Fix duplicate const uint32 declarations
+    # Collect all uint32_xxx variable names
+    uint32_vars = set()
+    uint32_decl_pattern = re.compile(r'(const|let)\s+(uint32_\d+)\s*=')
 
-    # Replace readFile(' with readFile('test_dir
+    for line in lines:
+        match = uint32_decl_pattern.search(line)
+        if match:
+            var_name = match.group(2)
+            uint32_vars.add(var_name)
+
+    # remove all const/let
+    fixed_lines = []
+    for line in lines:
+        if uint32_decl_pattern.search(line):
+            # Line is a const uint32_xxxx → remove 'const '
+            line = line.replace('const ', '', 1)
+        fixed_lines.append(line)
+
+    # inject var declarations at the top
+    if uint32_vars:
+        var_line = "var " + ", ".join(sorted(uint32_vars)) + ";"
+        fixed_lines = [var_line] + fixed_lines
+
+    # 3. Fix .executeBundles([...]) to call .finish()
+    final_fixed_lines = []
+    execute_bundles_pattern = re.compile(r'\.executeBundles\(\[(.*?)\]\)')
+
+    for line in fixed_lines:
+        if ".executeBundles([" in line:
+            match = execute_bundles_pattern.search(line)
+            if match:
+                bundle_list = match.group(1)
+                bundles = [b.strip() for b in bundle_list.split(",") if b.strip()]
+                bundles = [b + ".finish()" if not b.endswith(".finish()") else b for b in bundles]
+                new_bundle_list = ", ".join(bundles)
+                line = execute_bundles_pattern.sub(f".executeBundles([{new_bundle_list}])", line)
+        final_fixed_lines.append(line)
+
+    # 4. Replace null -> undefined
+    final_fixed_lines = [line.replace("null", "undefined") for line in final_fixed_lines]
+
+    # 5. Fix readFile paths
     test_dir_prefix = test_dir.as_posix()
-    modified_lines = [line.replace("readFile('", f"readFile('{test_dir_prefix}/") for line in modified_lines]
+    final_fixed_lines = [line.replace("readFile('", f"readFile('{test_dir_prefix}/") for line in final_fixed_lines]
 
     # Write the modified content back
-    final_test_file.write_text("\n".join(modified_lines))
+    final_test_file.write_text("\n".join(final_fixed_lines))
 
 
 def decompress_and_format_lcov(input_path, output_path):
@@ -92,7 +149,7 @@ def decompress_and_format_lcov(input_path, output_path):
 
 
 # executes coverage command and returns path to json of results
-def run_coverage(platform, use_pre_collected_data=False):
+def run_coverage(platform, use_previous_run_data, use_pre_collected_data):
     platform_to_pre_collected_paths = {
         "api": COV_COMPARE_DIR / "cts_api_formatted.json",
         "shader": COV_COMPARE_DIR / "cts_shader_formatted.json"
@@ -101,8 +158,12 @@ def run_coverage(platform, use_pre_collected_data=False):
     coverage_path_lcov = WEBGLITCH_OUTPUT_DIR / f"{platform}.lcov"
     coverage_path_json = WEBGLITCH_OUTPUT_DIR / f"{platform}.json"
 
-    if use_pre_collected_data and platform in platform_to_pre_collected_paths.keys():
-        return platform_to_pre_collected_paths[platform]
+    if platform in platform_to_pre_collected_paths.keys():
+        if use_pre_collected_data:
+            return platform_to_pre_collected_paths[platform]
+
+        if use_previous_run_data:
+            return coverage_path_json
 
     subprocess.run(
         [
@@ -273,47 +334,78 @@ def analyze_output(test_queries_to_cov_dict):
     )
 
     webglitch_cov_percent = calc_cov_percentage(
-        parsed_coverage_dict["webglitch"]["total_covered"],
+        parsed_coverage_dict["webglitch"]["total_covered_lines"],
         total_executable
     )
 
     wg_fuzz_cov_percent = calc_cov_percentage(
-        parsed_coverage_dict["wg_fuzz"]["total_covered"],
+        parsed_coverage_dict["wg_fuzz"]["total_covered_lines"],
         total_executable
     )
 
     cts_cov_percent = calc_cov_percentage(cts_total_covered, total_executable)
 
-    print("WebGlitch coverage of Dawn:", f"{webglitch_cov_percent}%")
-    print("wg-fuzz coverage of Dawn:", f"{wg_fuzz_cov_percent}%")
-    print("CTS coverage of Dawn:", f"{cts_cov_percent}%")
-    print(
-        "Lines covered by WebGlitch but missed by wg-fuzz:",
-        lines_covered_by_webglitch_not_wg_fuzz
-    )
-    print(
-        "Lines covered by wg-fuzz but missed by WebGlitch:",
-        lines_covered_by_wg_fuzz_not_webglitch
-    )
+    return {
+        "webglitch_cov_percent": webglitch_cov_percent,
+        "wg_fuzz_cov_percent": wg_fuzz_cov_percent,
+        "cts_cov_percent": cts_cov_percent,
+        "lines_covered_by_webglitch_not_wg_fuzz": lines_covered_by_webglitch_not_wg_fuzz,
+        "lines_covered_by_wg_fuzz_not_webglitch": lines_covered_by_wg_fuzz_not_webglitch
+    }
 
+
+TESTS_TO_GEN = 5
+INVALID_TESTS_TO_GEN = 2
+REPEATS = 1
 
 def main():
-    for i in range(1, TESTS_TO_GEN + 1):
-        # tests must be written in the format name.spec.ts
-        print(f"Generating test case {i} of {TESTS_TO_GEN} for WebGlitch")
-        generate_webglitch_test(i)
-
-        print(f"Generating test case {i} of {TESTS_TO_GEN} for wg-fuzz")
-        generate_wg_fuzz_test(i)
+    results = {
+        "webglitch_cov_percent": 0,
+        "wg_fuzz_cov_percent": 0,
+        "cts_cov_percent": 0,
+        "lines_covered_by_webglitch_not_wg_fuzz": 0,
+        "lines_covered_by_wg_fuzz_not_webglitch": 0
+    }
 
     test_queries = ["api", "shader", "webglitch", "wg_fuzz"]
 
-    test_queries_to_cov_dict = {}
-    for query in test_queries:
-        cov_result_path = run_coverage(query, True)
-        test_queries_to_cov_dict[query] = load_dict_from_file(cov_result_path)
+    for i in range(REPEATS):
+        for i in range(1, TESTS_TO_GEN + 1):
+            generate_invalid = (i > (TESTS_TO_GEN - INVALID_TESTS_TO_GEN))
 
-    analyze_output(test_queries_to_cov_dict)
+            # tests must be written in the format name.spec.ts
+            print(f"Generating test case {i} of {TESTS_TO_GEN} for WebGlitch")
+            generate_webglitch_test(i, generate_invalid)
+
+            print(f"Generating test case {i} of {TESTS_TO_GEN} for wg-fuzz")
+            generate_wg_fuzz_test(i, generate_invalid)
+
+        test_queries_to_cov_dict = {}
+
+        for query in test_queries:
+            cov_result_path = run_coverage(query, i != 0, True)  # set this arg to True to use precollected data
+            test_queries_to_cov_dict[query] = load_dict_from_file(cov_result_path)
+
+        output = analyze_output(test_queries_to_cov_dict)
+
+        # Accumulate the results
+        for key in results:
+            results[key] += output[key]
+
+    for key in results:
+        results[key] /= REPEATS
+
+    print("WebGlitch coverage of Dawn:", f"{results['webglitch_cov_percent']:.2f}%")
+    print("wg-fuzz coverage of Dawn:", f"{results['wg_fuzz_cov_percent']:.2f}%")
+    print("CTS coverage of Dawn:", f"{results['cts_cov_percent']:.2f}%")
+    print(
+        "Lines covered by WebGlitch but missed by wg-fuzz:",
+        round(results['lines_covered_by_webglitch_not_wg_fuzz'])
+    )
+    print(
+        "Lines covered by wg-fuzz but missed by WebGlitch:",
+        round(results['lines_covered_by_wg_fuzz_not_webglitch'])
+    )
 
 
 if __name__ == "__main__":

@@ -6,6 +6,10 @@ import json
 import sys
 import re
 
+TESTS_TO_GEN = 1000
+INVALID_TESTS_TO_GEN = 1000
+REPEATS = 3
+
 WEBGLITCH_DIR = Path(__file__).parent.resolve()
 WEBGLITCH_OUTPUT_DIR = WEBGLITCH_DIR / "output"
 WEBGLITCH_PARENT_DIR = WEBGLITCH_DIR.parent
@@ -353,10 +357,6 @@ def analyze_output(test_queries_to_cov_dict):
         "lines_covered_by_wg_fuzz_not_webglitch": lines_covered_by_wg_fuzz_not_webglitch
     }
 
-
-TESTS_TO_GEN = 5
-INVALID_TESTS_TO_GEN = 2
-REPEATS = 1
 
 def main():
     results = {

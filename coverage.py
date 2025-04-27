@@ -1,13 +1,12 @@
 import subprocess
 import shutil
+import argparse
 from pathlib import Path
 import zlib
 import json
 import sys
 import re
 
-TESTS_TO_GEN = 1000
-INVALID_TESTS_TO_GEN = 1000
 REPEATS = 3
 
 WEBGLITCH_DIR = Path(__file__).parent.resolve()
@@ -153,7 +152,7 @@ def decompress_and_format_lcov(input_path, output_path):
 
 
 # executes coverage command and returns path to json of results
-def run_coverage(platform, use_previous_run_data, use_pre_collected_data):
+def run_coverage(platform, use_pre_collected_data):
     platform_to_pre_collected_paths = {
         "api": COV_COMPARE_DIR / "cts_api_formatted.json",
         "shader": COV_COMPARE_DIR / "cts_shader_formatted.json"
@@ -165,9 +164,6 @@ def run_coverage(platform, use_previous_run_data, use_pre_collected_data):
     if platform in platform_to_pre_collected_paths.keys():
         if use_pre_collected_data:
             return platform_to_pre_collected_paths[platform]
-
-        if use_previous_run_data:
-            return coverage_path_json
 
     subprocess.run(
         [
@@ -357,6 +353,13 @@ def analyze_output(test_queries_to_cov_dict):
         "lines_covered_by_wg_fuzz_not_webglitch": lines_covered_by_wg_fuzz_not_webglitch
     }
 
+parser = argparse.ArgumentParser(description="Run coverage experiments")
+parser.add_argument("--num_tests", type=int, default=2000, help="Total number of test cases to generate per fuzzer (default: 2000). Half will skip validity checking")
+parser.add_argument("--fast", action="store_true", help="Use pre-collected CTS coverage data to speed up execution")  
+args = parser.parse_args()
+
+tests_to_gen = args.num_tests
+invalid_tests_to_gen = args.num_tests // 2
 
 def main():
     results = {
@@ -370,20 +373,20 @@ def main():
     test_queries = ["api", "shader", "webglitch", "wg_fuzz"]
 
     for i in range(REPEATS):
-        for i in range(1, TESTS_TO_GEN + 1):
-            generate_invalid = (i > (TESTS_TO_GEN - INVALID_TESTS_TO_GEN))
+        for i in range(1, tests_to_gen + 1):
+            generate_invalid = (i > (tests_to_gen - invalid_tests_to_gen))
 
             # tests must be written in the format name.spec.ts
-            print(f"Generating test case {i} of {TESTS_TO_GEN} for WebGlitch")
+            print(f"Generating test case {i} of {tests_to_gen} for WebGlitch")
             generate_webglitch_test(i, generate_invalid)
 
-            print(f"Generating test case {i} of {TESTS_TO_GEN} for wg-fuzz")
+            print(f"Generating test case {i} of {tests_to_gen} for wg-fuzz")
             generate_wg_fuzz_test(i, generate_invalid)
 
         test_queries_to_cov_dict = {}
 
         for query in test_queries:
-            cov_result_path = run_coverage(query, i != 0, True)  # set this arg to True to use precollected data
+            cov_result_path = run_coverage(query, args.fast) 
             test_queries_to_cov_dict[query] = load_dict_from_file(cov_result_path)
 
         output = analyze_output(test_queries_to_cov_dict)

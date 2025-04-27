@@ -1,9 +1,8 @@
 import time
 import subprocess
 import os
+import argparse
 from pathlib import Path
-
-NUM_RUNS = 1000
 
 env = os.environ.copy()
 env["DENO_WEBGPU_BACKEND"] = "vulkan"
@@ -32,7 +31,11 @@ def log_execution_times(cmd, execution_times, env=None):
     end_exec = time.perf_counter()
     execution_times.append(end_exec - start_exec)
 
-for i in range(NUM_RUNS):
+parser = argparse.ArgumentParser(description="Run WebGlitch throughput tests")
+parser.add_argument("--num_runs", type=int, default=1000, help="Number of programs to generate and run (default: 1000)")
+args = parser.parse_args()
+
+for i in range(args.num_runs):
     output_path = str(output_dir/f"{i}.js")
     dawn_file = str(output_dir/f"{i}_dawn.js")
     deno_file = str(output_dir/f"{i}_deno.js")
@@ -47,7 +50,7 @@ for i in range(NUM_RUNS):
         deno_file
     ]
 
-    print(f"Generating file {i + 1} of {NUM_RUNS}")
+    print(f"Generating file {i + 1} of {args.num_runs}")
     log_execution_times(GENERATION_CMD, generation_times)
 
     add_header(dawn_header, output_path, dawn_file)

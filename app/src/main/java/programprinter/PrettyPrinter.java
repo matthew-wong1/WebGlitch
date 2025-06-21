@@ -27,6 +27,7 @@ public class PrettyPrinter {
                             boolean mainOnly,
                             boolean ctsCompatible,
                             boolean clusterFuzzCompatible,
+                            boolean denoCompatible,
                             WebGlitchOptions webGlitchOptions) {
         String commentedSeed = "// Seed: " + seed + "\n";
         String commentedErrorsEnabled = "// Errors ";
@@ -45,7 +46,15 @@ public class PrettyPrinter {
         openOptions.add(StandardOpenOption.TRUNCATE_EXISTING);
 
         if (!(mainOnly | clusterFuzzCompatible)) {
-            String HEADER_PATH = ctsCompatible ? CTS_HEADER_PATH : DAWN_HEADER_PATH;
+            String HEADER_PATH;
+
+            if (ctsCompatible) {
+                HEADER_PATH = CTS_HEADER_PATH;
+            } else if (denoCompatible) {
+                HEADER_PATH = DENO_HEADER_PATH;
+            } else {
+                HEADER_PATH = DAWN_HEADER_PATH;
+            }
 
             try {
                 Files.copy(Path.of(HEADER_PATH), destPath, StandardCopyOption.REPLACE_EXISTING);

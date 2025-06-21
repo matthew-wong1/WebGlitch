@@ -28,10 +28,12 @@ public class WebGlitch {
         boolean firefoxCompatibilityMode = cmd.hasOption("f");
         boolean ctsCompatiblityMode = cmd.hasOption("c");
         boolean clusterFuzzCompatibilityMode = cmd.hasOption("z");
+        boolean denoCompatibilityMode = cmd.hasOption("d");
 
         Map<String, Boolean> compatibilityModes = new HashMap<>();
         compatibilityModes.put("wgpu", wgpuCompatibilityMode);
         compatibilityModes.put("firefox", firefoxCompatibilityMode);
+        compatibilityModes.put("deno", denoCompatibilityMode);
 
         double skipValidityCheckChance = 0.0;
         if (cmd.hasOption("v")) {
@@ -91,6 +93,7 @@ public class WebGlitch {
                 false,
                 "Ensures generated programs are ClusterFuzz compatible.");
         Option skipValidityCheckChance = new Option("v", "skipCheckChance", true, "Chance that validity checks are skipped (0.0-1.0).");
+        Option denoCompatible = new Option("d", "deno", false, "Ensures generated programs are deno-compatible.");
 
         maxCalls.setType(Integer.class);
         maxCalls.setRequired(false);
@@ -119,6 +122,9 @@ public class WebGlitch {
         skipValidityCheckChance.setRequired(false);
         skipValidityCheckChance.setType(Double.class);
 
+        denoCompatible.setRequired(false);
+        denoCompatible.setType(Boolean.class);
+
         options.addOption(ctsCompatible);
         options.addOption(maxCalls);
         options.addOption(seed);
@@ -128,6 +134,7 @@ public class WebGlitch {
         options.addOption(firefoxCompatible);
         options.addOption(clusterFuzzCompatible);
         options.addOption(skipValidityCheckChance);
+        options.addOption(denoCompatible);
         return options;
     }
 

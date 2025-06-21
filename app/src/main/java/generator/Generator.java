@@ -71,6 +71,7 @@ public class Generator {
     private final boolean wgpuCompatible;
     private final boolean firefoxCompatible;
     private final boolean clusterFuzzCompatible;
+    private final boolean denoCompatible;
     private ASTNode programNode;
 
     public Generator(int maxCalls,
@@ -91,6 +92,8 @@ public class Generator {
             wgpuCompatible = compatibilityModes.get("wgpu");
             firefoxCompatible = false;
         }
+
+        denoCompatible = compatibilityModes.get("deno");
 
         clusterFuzzCompatible = clusterFuzzCompatibilityMode;
 
@@ -330,6 +333,7 @@ public class Generator {
                 this.mainOnly,
                 this.ctsCompatible,
                 this.clusterFuzzCompatible,
+                this.denoCompatible,
                 webGlitchOptions);
         return programCallDistribution;
     }

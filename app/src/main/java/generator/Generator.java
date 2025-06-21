@@ -85,15 +85,15 @@ public class Generator {
         this.mainOnly = mainOnly;
         this.ctsCompatible = ctsCompatible;
 
+        this.denoCompatible = compatibilityModes.get("deno");
+
         if (compatibilityModes.get("firefox")) {
             wgpuCompatible = true;
             firefoxCompatible = true;
         } else {
-            wgpuCompatible = compatibilityModes.get("wgpu");
+            wgpuCompatible = compatibilityModes.get("wgpu") || denoCompatible;
             firefoxCompatible = false;
         }
-
-        denoCompatible = compatibilityModes.get("deno");
 
         clusterFuzzCompatible = clusterFuzzCompatibilityMode;
 
